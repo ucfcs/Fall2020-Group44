@@ -1,0 +1,34 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "dev": "serverless offline",
+    "deploy": "serverless deploy --stage production"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/aws-lambda": "^8.10.64",
+    "@types/node": "^14.14.9",
+    "@types/serverless": "^1.78.11",
+    "fork-ts-checker-webpack-plugin": "^3.0.1",
+    "serverless": "^2.12.0",
+    "serverless-dotenv-plugin": "^3.1.0",
+    "serverless-offline": "^6.8.0",
+    "serverless-plugin-typescript": "^1.1.9",
+    "serverless-webpack": "^5.3.5",
+    "ts-loader": "^5.3.3",
+    "typescript": "^4.1.2",
+    "webpack": "^4.29.0",
+    "webpack-node-externals": "^1.7.2"
+  },
+  "dependencies": {
+    "mysql2": "^2.2.5",
+    "node-fetch": "^2.6.1",
+    "sequelize": "^6.3.5"
+  }
+}
