@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import QuestionList from "./question-list"
+import ContentTree from "./content-tree"
 import './body.scss'
 
 const Body = () => {
 	return (
 		<div className="body">
-			<QuestionList />
+			<ContentTree />
 		</div>
 	)
 }
