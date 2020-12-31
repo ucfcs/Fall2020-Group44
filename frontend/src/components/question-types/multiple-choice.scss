@@ -1,0 +1,36 @@
+.multiple-choice {
+	display: flex;
+	flex-direction: column;
+	// justify-content: space-between;
+
+	.answer-choice {
+		border: 1px solid #CCCCCC;
+		height: 7vh;
+		width: 80%;
+		margin-bottom: 2vh;
+
+		display: flex;
+
+		.letter {
+			width: 10%;
+			border-right: 1px solid #CCCCCC;
+
+			p {
+				margin: 0;
+				border: 1px solid blue;
+				text-align: center;
+			}
+		}
+
+		.answer-text {
+			margin-left: 2vw;
+			border: 1px solid green;
+			width: 80%;
+			
+
+			span {
+				border: 1px solid red;
+			}
+		}
+	}
+}

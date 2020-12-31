@@ -1,7 +1,7 @@
 import React from "react";
 import Header from './components/header'
 import Body from './components/body'
-import "./App.scss";
+// import "./App.scss";
 
 function App() {
   return (
