@@ -1,0 +1,88 @@
+.answer-choices {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+
+	span {
+		color: #717171;
+		margin-bottom: 2vh;
+	}
+
+	.answer-choice {
+		margin-bottom: 2vh;
+		height: 7vh;
+		width: 100%;
+		border: 1px solid #D1D1D1;
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+
+		div {
+			// border: 1px solid red;
+		}
+
+		.letter{
+			// border: 1px solid red;
+			height: 100%;
+			width: 5%;
+			border-right: 1px solid #D1D1D1;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+
+			p {
+				margin: 0;
+				color: #FFC904;
+				font-weight: bold;
+				// border: 1px solid blue;
+				text-align: center;
+			}
+		}
+
+		.answer-text {
+			// border: 1px solid blue;
+			width: 65%;
+			
+			input {
+				font-size: 0.9vw;
+				color: #717171;
+				width: 100%;
+				border: none;
+				padding: 0.25vw;
+				border-bottom: 1px solid #717171;
+			}
+		}
+
+		.correct-checkbox {
+			// border: 1px solid green;
+			width: 15%;
+			display: flex;
+			// justify-content: space-between;
+
+			input {
+				border: none;
+			}
+
+			label {
+				font-size: 0.7vw;
+				color: #717171;
+				// border: 1px solid green;
+			}
+		}
+
+		.delete-answer {
+			width: 7%;
+			display: flex;
+			justify-content: center;
+
+			button {
+				background: white;
+				border: none;
+				color: #717171;
+				font-weight: bold;
+				font-size: 1vw;
+			}
+		}
+
+	}
+}

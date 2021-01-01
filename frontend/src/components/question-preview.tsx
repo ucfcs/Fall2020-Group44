@@ -13,7 +13,7 @@ const QuestionPreview = ({title, answers}: Props) => {
 			<span className="question-title">{title}?</span>
 			<div className="response-buttons">
 				<button className="show-correct-response">
-					Show Correct Response
+					Show Correct Response <span>&#10003;</span>
 				</button>
 				<button className="see-responses">
 					See Responses
@@ -23,6 +23,11 @@ const QuestionPreview = ({title, answers}: Props) => {
 				<MultipleChoice	
 					answers={answers}
 				/>
+			</div>
+			<div className="option-buttons">
+				<button className="present-button">&#9658; Present</button>
+				<button className="edit-button">Edit</button>
+				<button className="delete-button">Delete</button>
 			</div>
 		</div>
 	);

@@ -1,6 +1,7 @@
 import React from "react";
 import Header from './components/header'
 import Body from './components/body'
+import Creator from './components/creator'
 // import "./App.scss";
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
     <div className="App">
       <Header />
       <Body />
+      <Creator />
     </div>
   );
 }

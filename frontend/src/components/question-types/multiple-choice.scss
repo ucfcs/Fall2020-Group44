@@ -11,25 +11,29 @@
 
 		display: flex;
 
-		.letter {
+		.letter { //TODO: figure out centering
 			width: 10%;
 			border-right: 1px solid #CCCCCC;
 
 			p {
-				margin: 0;
-				border: 1px solid blue;
+				// border: 1px solid blue;
 				text-align: center;
+				color: #FFC904;
+				font-weight: bold;
+				font-size: 1vw;
 			}
 		}
 
 		.answer-text {
 			margin-left: 2vw;
-			border: 1px solid green;
+			margin-top: 2.5vh; //TODO: figure out centering with this
+			// border: 1px solid green;
+			font-size: 1vw;
 			width: 80%;
 			
 
 			span {
-				border: 1px solid red;
+				// border: 1px solid red;
 			}
 		}
 	}
