@@ -3,14 +3,14 @@
 	flex-direction: column;
 	justify-content: space-between;
 
-	span {
+	.answer-choice-header {
 		color: #717171;
 		margin-bottom: 2vh;
 	}
 
 	.answer-choice {
 		margin-bottom: 2vh;
-		height: 7vh;
+		height: 10vh;
 		width: 100%;
 		border: 1px solid #D1D1D1;
 		display: flex;
@@ -84,5 +84,26 @@
 			}
 		}
 
+	}
+
+	.add-answer {
+		
+		.add-answer-button {
+			background: white;
+			padding: 0 0;
+			border: none;
+			display: flex;
+			align-items: center;
+			justify-content: space-around;
+			// border: 1px solid blue;
+			font-size: 1vw;
+			width: 25%;
+			color: #FFC904;
+
+			.add-answer-icon {
+				font-size: 1.5vw;
+				// border: 1px solid green;
+			}
+		}
 	}
 }

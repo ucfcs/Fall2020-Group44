@@ -14,6 +14,11 @@
 		.letter { //TODO: figure out centering
 			width: 10%;
 			border-right: 1px solid #CCCCCC;
+			height: 100%;
+			display: flex;
+			flex-direction: column;
+			justify-content: center;
+
 
 			p {
 				// border: 1px solid blue;
@@ -21,6 +26,7 @@
 				color: #FFC904;
 				font-weight: bold;
 				font-size: 1vw;
+				margin: 0;
 			}
 		}
 

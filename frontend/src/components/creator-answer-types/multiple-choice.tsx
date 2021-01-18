@@ -7,12 +7,12 @@ type Props = {
 	answers: string[];
 }
 
-type AnswerChoiceProps = {
+type SingleAnswerChoiceProps = {
 	answer: string;
 	letter: string;
 }
 
-const AnswerChoice = ({answer, letter}: AnswerChoiceProps) => {
+const AnswerChoice = ({answer, letter}: SingleAnswerChoiceProps) => {
 	return (
 		<div className="answer-choice">
 			<div className="letter">
@@ -56,9 +56,13 @@ const MultipleChoice = ({answers}: Props) => {
 		}, [answers]
 	)
 
+	const onAddAnswer = () => {
+		setAnswerChoices(oldAnswerChoices => [...oldAnswerChoices, ""])
+	}
+
 	return (
 		 <div className="answer-choices">
-			 <span>Answers:</span>
+			 <span className="answer-choice-header">Answers:</span>
 				{answerChoices.map((answer, index) => 
 						<AnswerChoice
 							key={index}
@@ -66,7 +70,17 @@ const MultipleChoice = ({answers}: Props) => {
 							letter={String.fromCharCode(65+index)}
 						/>
 				)}
+				<div className="add-answer">
+					<button 
+						className="add-answer-button"
+						onClick={onAddAnswer}
+					>
+						<span className="add-answer-icon">&#8853;</span>
+						<span>Add Answer Choice</span>
+					</button>
+				</div>
 		 </div>
+		 
 	);
 }
 
