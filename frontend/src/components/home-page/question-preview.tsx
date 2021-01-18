@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import './question-preview.scss'
-import MultipleChoice from "./question-types/multiple-choice";
+import MultipleChoice from "../question-types/multiple-choice";
 
 type Props = {
 	title: string;
