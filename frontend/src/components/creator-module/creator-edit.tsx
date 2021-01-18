@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import MultipleChoice from '../creator-answer-types/multiple-choice'
+import MultipleChoice from './creator-answer-types/multiple-choice'
 import './creator-edit.scss'
 
 //TODO: create question props
