@@ -1,10 +1,10 @@
 export interface Session {
   name: string,
-  average: string
+  average: number
 }
 
 export interface StudentInfo {
   name: string,
-  total: string,
-  sessions: string[]
+  total: number,
+  sessions: number[]
 }
