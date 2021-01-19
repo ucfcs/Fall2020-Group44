@@ -1,0 +1,48 @@
+{
+  "students": [
+    {
+      "name": "Davis",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    },
+    {
+      "name": "Davis",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    },
+    {
+      "name": "Davis",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    },
+    {
+      "name": "Davis",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    },
+    {
+      "name": "Davis",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    },
+    {
+      "name": "Davis",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    }
+  ],
+  "overallSessions": [
+    {
+      "name": "Session 1",
+      "average": 5
+    },
+    {
+      "name": "Session 2",
+      "average": 5
+    },
+    {
+      "name": "Session 3",
+      "average": 5
+    }
+  ]
+}

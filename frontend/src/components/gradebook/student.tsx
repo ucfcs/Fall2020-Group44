@@ -1,4 +1,6 @@
-const Student = (props: Props) => {
+import { StudentInfo } from "../../types";
+
+const Student = (props: StudentInfo) => {
   return (
     <tr className="student">
       <td>{props.name}</td>
@@ -9,11 +11,5 @@ const Student = (props: Props) => {
     </tr>
   );
 };
-
-interface Props {
-  name: string,
-  total: string,
-  sessions: string[]
-}
 
 export default Student;
