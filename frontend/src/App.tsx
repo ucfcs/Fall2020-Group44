@@ -7,10 +7,9 @@ import Present from './components/present-poll/present'
 function App() {
   return (
     <div className="App">
-      {/* <Header />
+      <Header />
       <Body />
-      <Creator /> */}
-      <Present />
+      {/* <Creator /> */}
     </div>
   );
 }
