@@ -1,49 +1,74 @@
+import { useState } from "react";
 import Student from "./student";
 import { StudentInfo, Session } from "../../types";
+
+import "./gradebook.scss";
 
 const data = require("./mock-data.json");
 
 const Gradebook = () => {
-    const students = data.students;
-    const overallSessions = data.overallSessions;
+  const students = data.students;
+  const overallSessions = data.overallSessions;
+  const classAverage: number = data.classAverage;
 
-    return (
-        <div className="gradebook">
-            <label htmlFor="grade-search">Search for Student</label>
+  const [activeSearch, setActiveSearch] = useState(false);
 
-            <input id="grade-search" />
+  const focus = () => {
+    setActiveSearch(true);
+  };
 
-            <button>Export to Canvas</button>
+  const blur = (event: any) => {
+    if (!event.target.value) {
+      setActiveSearch(false);
+    }
+  };
 
-            <table>
-                <thead>
-                    <tr>
-                        <th>Student</th>
-                        <th>Totals</th>
-                        {overallSessions.map((session: Session) => (
-                            <td>{session.name}</td>
-                        ))}
-                    </tr>
-                    <tr>
-                        <th>Class Average</th>
-                        <th>Add average</th>
-                        {overallSessions.map((session: Session) => (
-                            <td>{session.average}</td>
-                        ))}
-                    </tr>
-                </thead>
-                <tbody>
-                    {students.map((student: StudentInfo) => (
-                        <Student
-                            name={student.name}
-                            total={student.total}
-                            sessions={student.sessions}
-                        />
-                    ))}
-                </tbody>
-            </table>
+  return (
+    <div className="gradebook">
+      <div className="grade-navigation">
+        <div className="search">
+          <label
+            htmlFor="grade-search"
+            className={activeSearch ? "active" : ""}
+          >
+            Search for Student...
+          </label>
+
+          <input id="grade-search" onFocus={focus} onBlur={blur} />
         </div>
-    );
+
+        <button>Export to Canvas</button>
+      </div>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Student</th>
+            <th>Totals</th>
+            {overallSessions.map((session: Session) => (
+              <th>{session.name}</th>
+            ))}
+          </tr>
+          <tr>
+            <th>Class Average</th>
+            <th>{classAverage}</th>
+            {overallSessions.map((session: Session) => (
+              <td>{session.average}</td>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {students.map((student: StudentInfo) => (
+            <Student
+              name={student.name}
+              total={student.total}
+              sessions={student.sessions}
+            />
+          ))}
+        </tbody>
+      </table>
+    </div>
+  );
 };
 
 export default Gradebook;

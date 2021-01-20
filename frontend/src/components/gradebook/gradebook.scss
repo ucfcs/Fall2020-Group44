@@ -1,0 +1,69 @@
+.gradebook {
+  width: 100%;
+  font-size: 20px;
+
+  .grade-navigation {
+    margin: 1rem 3rem;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  button, input {
+    font-size: inherit;
+  }
+
+  input {
+    border: none;
+    outline: 0;
+  }
+
+  .search {
+    border-bottom: 1px solid gray;
+    position: relative;
+    padding: 0.25em;
+  }
+
+  label {
+    position: absolute;
+    cursor: text;
+    transform-origin: top left;
+    transform: translate(0, 0) scale(1);
+    transition: all .1s ease-in-out;
+  }
+
+  .active {
+    transform: translate(0, 30px) scale(.75);
+  }
+
+  button {
+    background-color: #FFC904;
+    color: black;
+
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.4);
+
+    font-weight: bold;
+
+    padding: 0.75em;
+  }
+
+  table {
+    width: 100%;
+    text-align: left;
+    border-collapse: collapse;
+    border: 1px solid black;
+  }
+
+  th, td {
+    border: 1px solid lightgray;
+
+    padding: 0.5em 1em;
+  }
+
+  tbody td {
+    font-size: 16px;
+  }
+}
