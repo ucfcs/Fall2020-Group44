@@ -1,0 +1,22 @@
+.poll-controls {
+  button {
+    font-size: 24px;
+    border: none;
+    margin: 0.8rem;
+    cursor: pointer;
+  }
+
+  .back-button, .skip-button {
+    background: none;
+  }
+
+  .next-button {
+    background-color: #FFC904;
+  }
+
+  .next-button, .skip-button {
+    padding: 0.1em 1em;
+    box-shadow: 0 3px 4px rgba(0,0,0,0.4);
+    border-radius: 5px;
+  }
+}
