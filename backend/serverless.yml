@@ -32,6 +32,7 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-webpack
   - serverless-offline
+  - serverless-dotenv-plugin
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -69,6 +70,31 @@ functions:
       - http:
           method: get
           path: hello
+  getFolder:
+    handler: src/folder.getFolder
+    events:
+      - http:
+          method: get
+          path: folder
+  newFolder:
+    handler: src/folder.newFolder
+    events:
+      - http:
+          method: post
+          path: folder
+  updateFolder:
+    handler: src/folder.updateFolder
+    events:
+      - http:
+          method: put
+          path: folder
+  deleteFolder:
+    handler: src/folder.deleteFolder
+    events:
+      - http:
+          method: delete
+          path: folder
+
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
