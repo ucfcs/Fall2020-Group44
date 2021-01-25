@@ -8,7 +8,7 @@
  * @format
  */
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -18,7 +18,13 @@ import Help from './components/Help';
 const Stack = createStackNavigator();
 
 const App = () => {
-	const [loading, setLoading] = useState(false);
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setLoading(false);
+		}, 3000);
+	}, []);
 
 	if (loading) {
 		return <Splash />;
