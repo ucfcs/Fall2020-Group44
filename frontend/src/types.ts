@@ -8,3 +8,8 @@ export interface StudentInfo {
   total: number,
   sessions: number[]
 }
+
+export interface QuestionInfo {
+  text: string;
+  answers: string[];
+}

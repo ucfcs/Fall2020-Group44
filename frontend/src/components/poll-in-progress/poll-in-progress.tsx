@@ -1,3 +1,4 @@
+import { QuestionInfo } from "../../types";
 import { useState } from "react";
 import PollProgress from "../poll-progress/poll-progress";
 import Question from "../question/question";
@@ -12,9 +13,10 @@ export const CORRECT_RESPONSE = 3;
 
 const PollInProgress = () => {
   const [progress, setProgress] = useState(RESPOND);
+  const [questionNumber, setQuestionNumber] = useState(0);
 
-  const questionCount: number = data.questionCount;
-  const QuestionNumber: number = data.QuestionNumber;
+  const questions: QuestionInfo[] = data.questions;
+  const currentQuestion = questions[questionNumber];
 
   const updateProgress = (value: number): void => {
     if (value > progress) {
@@ -25,8 +27,14 @@ const PollInProgress = () => {
   return (
     <div className="poll-in-progress">
       <PollProgress progress={progress} updateProgress={updateProgress} />
-      <Question questionText={"Test"} answers={["Test 1", "Test 2"]} />
-      <PollControls questionCount={questionCount} questionNumber={QuestionNumber} />
+      <Question
+        questionText={currentQuestion.text}
+        answers={currentQuestion.answers}
+      />
+      <PollControls
+        questionCount={questions.length}
+        questionNumber={questionNumber}
+      />
     </div>
   );
 };

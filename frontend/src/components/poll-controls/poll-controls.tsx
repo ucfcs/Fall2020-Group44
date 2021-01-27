@@ -1,13 +1,31 @@
 import "./poll-controls.scss";
 
 const PollControls = (props: PollControlsProps) => {
+  const buttons: any[] = [];
+
+  for (let i = 0; i < props.questionCount; i++) {
+    let activeClass;
+
+    if (i === props.questionNumber) {
+      activeClass = "question-nav-button active";
+    } else {
+      activeClass = "question-nav-button";
+    }
+
+    buttons.push(<span className={activeClass}>Q{i + 1}</span>);
+  }
+
   return (
     <div className="poll-controls">
-      <button className="back-button">Back</button>
+      <div className="question-nav">{buttons.map((button) => button)}</div>
 
-      <button className="next-button">Next</button>
+      <div className="control-buttons">
+        <button className="back-button control-button">Back</button>
 
-      <button className="skip-button">Skip Poll</button>
+        <button className="next-button control-button">Next</button>
+
+        <button className="skip-button control-button">Skip Poll</button>
+      </div>
     </div>
   );
 };
@@ -15,6 +33,6 @@ const PollControls = (props: PollControlsProps) => {
 interface PollControlsProps {
   questionNumber: number;
   questionCount: number;
-};
+}
 
 export default PollControls;
