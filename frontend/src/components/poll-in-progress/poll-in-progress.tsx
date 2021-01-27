@@ -4,6 +4,8 @@ import PollProgress from "../poll-progress/poll-progress";
 import Question from "../question/question";
 import PollControls from "../poll-controls/poll-controls";
 
+import "./poll-in-progress.scss";
+
 const data = require("./mock-data.json");
 
 export const RESPOND = 0;
@@ -26,11 +28,13 @@ const PollInProgress = () => {
 
   return (
     <div className="poll-in-progress">
-      <PollProgress progress={progress} updateProgress={updateProgress} />
-      <Question
-        questionText={currentQuestion.text}
-        answers={currentQuestion.answers}
-      />
+      <div className="content">
+        <PollProgress progress={progress} updateProgress={updateProgress} />
+        <Question
+          questionText={currentQuestion.text}
+          answers={currentQuestion.answers}
+        />
+      </div>
       <PollControls
         questionCount={questions.length}
         questionNumber={questionNumber}

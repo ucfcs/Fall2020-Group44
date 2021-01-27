@@ -72,6 +72,8 @@ const PollProgress = (props: PollProgressProps) => {
           {responseCount} / {classSize} Responses
         </progress>
       </div>
+
+      <hr />
     </div>
   );
 };

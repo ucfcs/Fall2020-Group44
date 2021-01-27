@@ -1,10 +1,12 @@
 .poll-progress {
   width: 100%;
+  padding: 1rem 0;
 
   .progress-control {
     display: flex;
     justify-content: center;
     align-items: center;
+    margin-bottom: 1rem;
   }
 
   button {
@@ -12,6 +14,7 @@
     border: none;
     cursor: pointer;
     font-size: 24px;
+    color: #AAAAAA;
 
     &.active {
       color: #FFC904;
@@ -21,7 +24,7 @@
   .line {
     width: 80px;
     height: 3px;
-    background-color: #000000;
+    background-color: #AAAAAA;
     display: inline-block;
     margin: 0 1rem;
 
@@ -35,6 +38,7 @@
     justify-content: center;
 
     font-size: 16px;
+    margin-bottom: 1rem;
   }
 
   progress {
@@ -51,5 +55,9 @@
     &::-moz-progress-bar, &::-webkit-progress-value {
       background-color: #FFC904;
     }
+  }
+
+  hr {
+    border: 1px solid #AAAAAA;
   }
 }

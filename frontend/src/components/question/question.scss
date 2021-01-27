@@ -11,8 +11,9 @@
   }
 
   .answer-letter {
-    border-right: 1px solid gray;
+    border-right: 2px solid #CCCCCC;
     padding: 1rem 1rem 1rem 0;
+    color: #FFC904;
   }
 
   .answer-text {
@@ -20,7 +21,7 @@
   }
 
   p {
-    border: 1px solid gray;
+    border: 2px solid #CCCCCC;
     padding: 1rem;
     min-width: max-content;
     max-width: 50%;

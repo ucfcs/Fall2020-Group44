@@ -1,9 +1,12 @@
 .poll-controls {
+  flex-shrink: 0;
+
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
   width: 95%;
   margin: auto;
+  padding: 1rem 0;
 
   button {
     cursor: pointer;
@@ -14,10 +17,11 @@
     background: none;
     font-size: 24px;
     margin: 0 0.5rem;
+    color: #999999;
   }
 
   .active {
-    border-bottom: 3px solid black;
+    border-bottom: 3px solid #999999;
   }
 
   .control-button {
