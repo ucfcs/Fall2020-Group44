@@ -1,13 +1,15 @@
 import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda'
 const Folder = require('../model/Folder')
+const querystring = require('querystring')
 
 const mockUserid = 1
 const mockCourseId = 1
 
-const getFolder = async (): Promise<ProxyResult> => {
+const getFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
     return Folder.findAll({
         where: {
             userId: mockUserid,
+            courseId: event?.queryStringParameters?.courseId,
         },
     })
         .then((result: Array<Object>) => {
@@ -26,15 +28,12 @@ const getFolder = async (): Promise<ProxyResult> => {
 }
 
 const newFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-    let body
-    if (event?.body) {
-        body = JSON.parse(event.body)
-    }
+    const body = querystring.parse(event?.body)
 
     return Folder.create({
-        name: body.name,
+        name: body?.name,
         userId: mockUserid,
-        courseId: mockCourseId,
+        courseId: body?.courseId,
     })
         .then(() => {
             return {
@@ -49,10 +48,7 @@ const newFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 }
 
 const updateFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-    let body
-    if (event?.body) {
-        body = JSON.parse(event.body)
-    }
+    const body = querystring.parse(event?.body)
 
     return Folder.update({ name: body.name }, { where: { id: body.folderId } })
         .then(() => {
@@ -68,10 +64,7 @@ const updateFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 }
 
 const deleteFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-    let body
-    if (event?.body) {
-        body = JSON.parse(event.body)
-    }
+    const body = querystring.parse(event?.body)
 
     return Folder.destroy({ where: { id: body.folderId } })
         .then(() => {

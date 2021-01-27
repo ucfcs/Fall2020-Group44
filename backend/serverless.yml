@@ -32,7 +32,6 @@ plugins:
   - serverless-dotenv-plugin
   - serverless-webpack
   - serverless-offline
-  - serverless-dotenv-plugin
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:

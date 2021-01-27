@@ -13,13 +13,18 @@ Folder.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
+        courseId: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
     },
     {
         sequelize,
         modelName: 'Folder',
         indexes: [
             {
-                fields: ['name', 'userId'],
+                unique: true,
+                fields: ['name', 'userId', 'courseId'],
             },
         ],
     }
