@@ -25,7 +25,7 @@ const PollProgress = (props: PollProgressProps) => {
           className={props.progress >= RESPOND ? "active" : ""}
           onClick={updateProgress}
         >
-          Respond
+          <span className="order">1</span>Respond
         </button>
 
         <div className={props.progress >= CLOSE ? "active line" : "line"} />
@@ -35,7 +35,7 @@ const PollProgress = (props: PollProgressProps) => {
           className={props.progress >= CLOSE ? "active" : ""}
           onClick={updateProgress}
         >
-          Close Poll
+          <span className="order">2</span>Close Poll
         </button>
 
         <div className={props.progress >= RESPONSES ? "active line" : "line"} />
@@ -45,7 +45,7 @@ const PollProgress = (props: PollProgressProps) => {
           className={props.progress >= RESPONSES ? "active" : ""}
           onClick={updateProgress}
         >
-          View Responses
+          <span className="order">3</span>View Responses
         </button>
 
         <div
@@ -59,7 +59,7 @@ const PollProgress = (props: PollProgressProps) => {
           className={props.progress >= CORRECT_RESPONSE ? "active" : ""}
           onClick={updateProgress}
         >
-          Correct Response
+          <span className="order">4</span>Correct Response
         </button>
       </div>
 
