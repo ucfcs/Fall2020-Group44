@@ -1,24 +1,27 @@
+import "./question.scss";
+
 const Question = (props: QuestionProps) => {
   return (
     <div className="question">
-      <p>{props.questionText}</p>
+      <h2>{props.questionText}</h2>
 
-      {
-        props.answers.map((answer: string, index: number) => {
+      <div className="answers">
+        {props.answers.map((answer: string, index: number) => {
           return (
-            <div className="answer">
-              <p>{index} {answer}</p>
-            </div>
-          )
-        })
-      }
+            <p>
+              <span className="answer-letter">{String.fromCharCode(65 + index)}</span>
+              <span className="answer-text">{answer}</span>
+            </p>
+          );
+        })}
+      </div>
     </div>
   );
 };
 
 interface QuestionProps {
-  questionText: string,
-  answers: string[]
-};
+  questionText: string;
+  answers: string[];
+}
 
 export default Question;
