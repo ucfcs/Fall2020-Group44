@@ -6,6 +6,7 @@ const mockUserid = 1
 const mockCourseId = 1
 
 const getFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
+    await Folder.sync()
     return Folder.findAll({
         where: {
             userId: mockUserid,
@@ -30,6 +31,7 @@ const getFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 const newFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
     const body = querystring.parse(event?.body)
 
+    await Folder.sync()
     return Folder.create({
         name: body?.name,
         userId: mockUserid,
@@ -50,6 +52,7 @@ const newFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 const updateFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
     const body = querystring.parse(event?.body)
 
+    await Folder.sync()
     return Folder.update({ name: body.name }, { where: { id: body.folderId } })
         .then(() => {
             return {
@@ -66,6 +69,7 @@ const updateFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 const deleteFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
     const body = querystring.parse(event?.body)
 
+    await Folder.sync()
     return Folder.destroy({ where: { id: body.folderId } })
         .then(() => {
             return {
