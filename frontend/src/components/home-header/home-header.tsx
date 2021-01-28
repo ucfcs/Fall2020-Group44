@@ -14,7 +14,7 @@ const HomeHeader = () => {
 					<li><NavLink to="/gradebook">Gradebook</NavLink></li>
 				</ul>
 			</nav>
-			<button className="create-button">Create Question</button>
+			<button className="create-button"><Link to="/create">Create Question</Link></button>
 		</header>
 	)
 }

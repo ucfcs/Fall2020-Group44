@@ -1,10 +1,8 @@
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route
-} from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { ModalContainer, ModalRoute } from "react-router-modal";
 
 import Body from "./components/home-page/body";
+import Creator from "./components/creator-module/creator";
 import Gradebook from "./components/gradebook/gradebook";
 import HomeHeader from "./components/home-header/home-header";
 import PollHeader from "./components/poll-header/poll-header";
@@ -41,6 +39,10 @@ function App() {
           <Gradebook />
         </Route>
       </Switch>
+
+      <ModalRoute component={Creator} path="/create" />
+
+      <ModalContainer />
     </Router>
   );
 }

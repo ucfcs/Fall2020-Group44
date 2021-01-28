@@ -10,10 +10,17 @@
   h1 {
     margin: 2vh 4vw;
     font-size: 3vw;
+
+    a {
+      color: #FFC904;
+    }
+  }
+
+  button a {
+    color: black;
   }
 
   a {
-    color: #FFC904;
     text-decoration: none;
   }
 
