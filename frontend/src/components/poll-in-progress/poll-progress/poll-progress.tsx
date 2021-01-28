@@ -3,7 +3,7 @@ import {
   CLOSE,
   RESPONSES,
   CORRECT_RESPONSE
-} from "../poll-in-progress/poll-in-progress";
+} from "../poll-in-progress";
 
 import "./poll-progress.scss";
 

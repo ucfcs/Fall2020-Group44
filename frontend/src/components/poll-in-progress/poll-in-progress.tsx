@@ -1,8 +1,8 @@
 import { QuestionInfo } from "../../types";
 import { useState } from "react";
-import PollProgress from "../poll-progress/poll-progress";
-import Question from "../question/question";
-import PollControls from "../poll-controls/poll-controls";
+import PollProgress from "./poll-progress/poll-progress";
+import Question from "./question/question";
+import PollControls from "./poll-controls/poll-controls";
 
 import "./poll-in-progress.scss";
 
