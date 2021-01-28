@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 
 import './home-header.scss'
 
@@ -10,8 +10,8 @@ const HomeHeader = () => {
 			</h1>
 			<nav>
 				<ul>
-					<li><Link to="/">Questions</Link></li>
-					<li><Link to="/gradebook">Gradebook</Link></li>
+					<li><NavLink exact to="/">Questions</NavLink></li>
+					<li><NavLink to="/gradebook">Gradebook</NavLink></li>
 				</ul>
 			</nav>
 			<button className="create-button">Create Question</button>

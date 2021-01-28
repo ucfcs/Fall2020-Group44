@@ -5,8 +5,6 @@ header {
 	height: 15vh;
 	font-family: helvetica;
 	background-color: black;
-	// border-top-left-radius: 10px;
-	// border-top-right-radius: 10px;
 
 	.course-code {
 		position: absolute;
@@ -38,6 +36,10 @@ header {
 				font-weight: bold;
 			}
 		}
+	}
+
+	.active {
+		border-bottom: 4px solid #FFC904;
 	}
 
 	.create-button {
