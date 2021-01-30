@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 import { GOLD, WHITE } from '../libs/colors';
@@ -24,14 +24,14 @@ const styles = StyleSheet.create({
 	},
 });
 
-export function Button({
+export const Button: FunctionComponent<ButtonProps> = ({
 	text,
 	type = 'primary',
 	onPress = undefined,
-}: ButtonProps) {
+}) => {
 	return (
 		<TouchableOpacity style={[styles.button, styles[type]]} onPress={onPress}>
 			<Text style={styles.text}>{text}</Text>
 		</TouchableOpacity>
 	);
-}
+};

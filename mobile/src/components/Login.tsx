@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { FunctionComponent } from 'react';
 import { StyleSheet, View, SafeAreaView } from 'react-native';
 
 import { GOLD } from '../libs/colors';
@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
 	},
 });
 
-const Splash = () => {
+export const Login: FunctionComponent = () => {
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
@@ -31,5 +31,3 @@ const Splash = () => {
 		</SafeAreaView>
 	);
 };
-
-export default Splash;

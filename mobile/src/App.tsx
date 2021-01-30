@@ -8,39 +8,34 @@
  * @format
  */
 
-import React, { useEffect, useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 
-import Splash from './components/Splash';
-import Help from './components/Help';
+import { Splash } from './components/Splash';
+import { Login } from './components/Login';
+import Router from './components/Router';
 
-const Stack = createStackNavigator();
-
-const App = () => {
-	const [loading, setLoading] = useState(true);
+const App: FunctionComponent = () => {
+	const [state, setState] = useState<number>(0);
 
 	useEffect(() => {
 		setTimeout(() => {
-			setLoading(false);
+			// to login
+			setState(1);
+
+			// to the rest of the app
+			setState(2);
 		}, 3000);
 	}, []);
 
-	if (loading) {
+	if (state === 0) {
 		return <Splash />;
 	}
 
-	return (
-		<NavigationContainer>
-			<Stack.Navigator>
-				<Stack.Screen
-					name='home'
-					component={Help}
-					options={{ title: 'Welcome' }}
-				/>
-			</Stack.Navigator>
-		</NavigationContainer>
-	);
+	if (state === 1) {
+		return <Login />;
+	}
+
+	return <Router />;
 };
 
 export default App;
