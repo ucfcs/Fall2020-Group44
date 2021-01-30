@@ -5,8 +5,6 @@ header {
 	height: 15vh;
 	font-family: helvetica;
 	background-color: black;
-	// border-top-left-radius: 10px;
-	// border-top-right-radius: 10px;
 
 	.course-code {
 		position: absolute;
@@ -23,10 +21,10 @@ header {
 	}
 
 	nav {
-		position: absolute; 
+		position: absolute;
 		bottom: 0px;
 		width: 30%;
-		
+
 		ul {
 			display: flex;
 			justify-content: space-evenly;
@@ -38,6 +36,10 @@ header {
 				font-weight: bold;
 			}
 		}
+	}
+
+	.active {
+		border-bottom: 4px solid #FFC904;
 	}
 
 	.create-button {
@@ -57,5 +59,10 @@ header {
 		padding: 1vh 1vw;
 		font-size: 1.25vw;
 		box-shadow: 0px 0px 10px white;
+
+		a {
+			color: black;
+			text-decoration: none;
+		}
 	}
 }

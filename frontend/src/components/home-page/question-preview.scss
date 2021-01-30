@@ -29,14 +29,14 @@
 
 			span {
 				color: green;
-				
+
 			}
 		}
 	}
 
 	.answer-choice-wrapper {
 		// border: 1px solid brown;
-		margin-top: 4vh; 
+		margin-top: 4vh;
 	}
 
 	.option-buttons {
@@ -60,11 +60,16 @@
 		}
 
 		button:hover {
-			
+
 		}
 
 		.present-button {
 			background-color: #FFC904;
+
+			a {
+				color: black;
+				text-decoration: none;
+			}
 		}
 	}
 }

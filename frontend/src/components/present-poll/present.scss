@@ -5,32 +5,4 @@
 	button:focus {
 		outline: none;
 	}
-
-
-	.present-header {
-		height: 7%;
-		// border: 1px solid red;
-		background: black;
-
-		display: flex;
-		justify-content: space-between;
-		align-items: center;
-		
-		h1 {
-			margin: 2vh 4vw;
-			font-size: 3vw;
-			color: #FFC904;
-		}
-
-		.exit-button {
-			margin: 2vh 4vw;
-			width: 12vw;
-			height: 70%;
-			font-size: 2vw;
-			border-radius: 5px;
-			border: 0px;
-			background: #FFC904;
-			// padding: 1vh 2vw;
-		}
-	}
 }

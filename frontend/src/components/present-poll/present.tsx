@@ -10,10 +10,6 @@ type Props = {
 const Present = () => {
 	return (
 		<div className='present'>
-			<div className="present-header">
-				<h1>{"CAP1000"}</h1>
-				<button className="exit-button">EXIT</button>
-			</div>
 			<PresentPreview />
 			<PresentFooter />
 		</div>

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import './creator.scss'
 import CreatorEdit from "./creator-edit";
 import CreatorPreview from "./creator-preview";
@@ -12,15 +13,16 @@ const Creator = () => {
 	return (
 		<div className="create-question-module">
 			<div className="creator-header">
+				<button className="exit"><Link to="/">X</Link></button>
 				<span className="header-title">Create Question</span>
 				<div className="header-tabs">
-					<button 
+					<button
 						className={`edit-tab ${isPreview ? '' : 'selected'}`}
 						onClick={() => setIsPreview(false)}
 					>
 						Edit
 					</button>
-					<button 
+					<button
 						className={`preview-tab ${isPreview ? 'selected' : ''}`}
 						onClick={() => setIsPreview(true)}
 					>
@@ -32,7 +34,7 @@ const Creator = () => {
 			? <CreatorPreview />
 			: <CreatorEdit />
 			}
-			
+
 		</div>
 	);
 }

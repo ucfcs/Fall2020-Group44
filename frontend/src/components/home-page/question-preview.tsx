@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
+import { Link } from "react-router-dom";
 import './question-preview.scss'
 import MultipleChoice from "./question-types/multiple-choice";
 
@@ -20,12 +21,12 @@ const QuestionPreview = ({title, answers}: Props) => {
 				</button>
 			</div>
 			<div className="answer-choice-wrapper">
-				<MultipleChoice	
+				<MultipleChoice
 					answers={answers}
 				/>
 			</div>
 			<div className="option-buttons">
-				<button className="present-button">&#9658; Present</button>
+				<button className="present-button"><Link to="/poll/present">&#9658; Present</Link></button>
 				<button className="edit-button">Edit</button>
 				<button className="delete-button">Delete</button>
 			</div>
