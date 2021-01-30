@@ -12,7 +12,7 @@ import React, { FunctionComponent, useEffect, useState } from 'react';
 
 import { Splash } from './components/Splash';
 import { Login } from './components/Login';
-import Router from './components/Router';
+import { Router } from './components/Router';
 
 const App: FunctionComponent = () => {
 	const [state, setState] = useState<number>(0);

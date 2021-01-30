@@ -66,7 +66,7 @@ const HomeRouter: FunctionComponent<DrawerScreenProps<{}>> = ({
 	);
 };
 
-const Router: FunctionComponent = () => {
+export const Router: FunctionComponent = () => {
 	return (
 		<NavigationContainer>
 			<Drawer.Navigator
@@ -110,5 +110,3 @@ const Router: FunctionComponent = () => {
 		</NavigationContainer>
 	);
 };
-
-export default Router;
