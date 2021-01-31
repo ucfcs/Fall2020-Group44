@@ -9,6 +9,7 @@
  */
 
 import React, { FunctionComponent, useEffect, useState } from 'react';
+import { StatusBar } from 'react-native';
 
 import { Splash } from './components/Splash';
 import { Login } from './components/Login';
@@ -28,14 +29,29 @@ const App: FunctionComponent = () => {
 	}, []);
 
 	if (state === 0) {
-		return <Splash />;
+		return (
+			<>
+				<StatusBar barStyle='dark-content' />
+				<Splash />
+			</>
+		);
 	}
 
 	if (state === 1) {
-		return <Login />;
+		return (
+			<>
+				<StatusBar barStyle='dark-content' />
+				<Login />
+			</>
+		);
 	}
 
-	return <Router />;
+	return (
+		<>
+			<StatusBar barStyle='dark-content' />
+			<Router />
+		</>
+	);
 };
 
 export default App;
