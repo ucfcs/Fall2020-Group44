@@ -61,9 +61,37 @@
     border: 1px solid lightgray;
 
     padding: 0.5em 1em;
+    font-size: 16px;
+
+    .expand {
+      color: #FFC904;
+      font-size: 12px;
+      cursor: pointer;
+      text-shadow: 1px 1px gray;
+    }
+
+    .date {
+      font-size: 10px;
+    }
   }
 
   tbody td {
     font-size: 16px;
+  }
+
+  .align-right {
+    text-align: right;
+  }
+}
+
+.bar {
+  width: 100%;
+  margin-top: 8px;
+  background-color: #DDDDDD;
+  border-radius: 8px;
+
+  .bar-value {
+    height: 4px;
+    border-radius: 8px;
   }
 }

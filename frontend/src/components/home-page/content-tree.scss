@@ -53,9 +53,31 @@
 
 			span {
 				font-size: 1.25vw;
-				margin: 0vw 3vw;
+				padding: 0vw 3vw;
 				color: #777777
 			}
 		}
+	}
+
+	.folder {
+		margin: 4px 0 4px 16px;
+		font-weight: 500;
+		cursor: pointer;
+	}
+
+	.preview-question {
+		width: calc(100% - 40px);
+		padding: 4px 16px 4px 24px;
+		display: grid;
+		grid-template-columns: 65% 5% 30%;
+		cursor: pointer;
+	}
+
+	.selected {
+		background: #FFC904;
+	}
+
+	.type {
+		text-align: center;
 	}
 }

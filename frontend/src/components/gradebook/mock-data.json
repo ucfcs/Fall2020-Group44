@@ -6,27 +6,27 @@
       "sessions": [5, 5, 5]
     },
     {
-      "name": "Davis",
+      "name": "abc",
       "total": 20,
       "sessions": [5, 5, 5]
     },
     {
-      "name": "Davis",
+      "name": "def",
       "total": 20,
       "sessions": [5, 5, 5]
     },
     {
-      "name": "Davis",
+      "name": "ghi",
       "total": 20,
       "sessions": [5, 5, 5]
     },
     {
-      "name": "Davis",
+      "name": "sdujio",
       "total": 20,
       "sessions": [5, 5, 5]
     },
     {
-      "name": "Davis",
+      "name": "erkmol",
       "total": 20,
       "sessions": [5, 5, 5]
     }
@@ -34,16 +34,20 @@
   "overallSessions": [
     {
       "name": "Session 1",
-      "average": 5
+      "average": 5,
+      "total": 5
     },
     {
       "name": "Session 2",
-      "average": 5
+      "average": 5,
+      "total": 5
     },
     {
       "name": "Session 3",
-      "average": 5
+      "average": 5,
+      "total": 5
     }
   ],
-  "classAverage": 5
+  "classAverage": 2,
+  "classTotal": 5
 }

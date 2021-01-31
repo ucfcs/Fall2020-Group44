@@ -5,9 +5,9 @@ const Student = (props: StudentInfo) => {
     <tr className="student">
       <td>{props.name}</td>
 
-      <td>{props.total}</td>
+      <td className="align-right">{props.total.toFixed(2)}</td>
 
-      {props.sessions.map(session => <td>{session}</td>)}
+      {props.sessions.map(session => <td className="align-right">{session.toFixed(2)}</td>)}
     </tr>
   );
 };

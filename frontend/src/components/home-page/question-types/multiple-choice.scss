@@ -12,7 +12,8 @@
 		display: flex;
 
 		.letter { //TODO: figure out centering
-			width: 10%;
+			width: 100%;
+			max-width: 40px;
 			border-right: 1px solid #CCCCCC;
 			height: 100%;
 			display: flex;
@@ -32,15 +33,29 @@
 
 		.answer-text {
 			margin-left: 2vw;
-			margin-top: 2.5vh; //TODO: figure out centering with this
-			// border: 1px solid green;
+			align-content: center;
+			display: inline-grid;
+			height: 100%;
 			font-size: 1vw;
-			width: 80%;
-			
+			width: 100%;
 
 			span {
 				// border: 1px solid red;
 			}
 		}
+	}
+
+	.responses {
+		align-content: center;
+    display: inline-grid;
+		height: 100%;
+		width: 32px;
+		font-size: 14px;
+		margin-right: 8px;
+		padding-left: 8px;
+	}
+
+	.correct {
+		background-color: #00ff0036;
 	}
 }

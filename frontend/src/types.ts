@@ -1,6 +1,7 @@
 export interface Session {
   name: string,
-  average: number
+  average: number,
+  total: number
 }
 
 export interface StudentInfo {
