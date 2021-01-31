@@ -1,9 +1,10 @@
-import { APIGatewayEvent, Context, ProxyResult } from 'aws-lambda'
-const Folder = require('../model/Folder')
-const querystring = require('querystring')
+import { APIGatewayEvent, ProxyResult } from 'aws-lambda'
+import Folder from '../model/Folder'
+import querystring from 'querystring'
 
 const mockUserid = 1
 
+// GET /api/v1/folder
 const getFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
     const params = event?.queryStringParameters
 
@@ -16,30 +17,34 @@ const getFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
         }
     }
 
-    await Folder.sync()
-    return Folder.findAll({
-        where: {
-            userId: mockUserid,
-            courseId: params?.courseId,
-        },
-    })
-        .then((result: Array<Object>) => {
-            return {
-                status: 200,
-                body: JSON.stringify({
-                    folderList: result,
-                }),
-            }
+    try {
+        await Folder.sync()
+        const result = await Folder.findAll({
+            where: {
+                userId: mockUserid,
+                courseId: params?.courseId,
+            },
         })
-        .catch(() => {
-            return {
-                status: 400,
-            }
-        })
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({
+                folderList: result,
+            }),
+        }
+    } catch (error) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                message: error.name || 'Fail to query',
+            }),
+        }
+    }
 }
 
+// POST /api/v1/folder
 const newFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-    const body = querystring.parse(event?.body)
+    const body = querystring.parse(event?.body || '')
     const params = event?.queryStringParameters
 
     if (!params?.courseId) {
@@ -51,26 +56,34 @@ const newFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
         }
     }
 
-    await Folder.sync()
-    return Folder.create({
-        name: body?.name,
-        userId: mockUserid,
-        courseId: params?.courseId,
-    })
-        .then(() => {
-            return {
-                status: 200,
-            }
+    try {
+        await Folder.sync()
+        const result = await Folder.create({
+            name: body?.name,
+            userId: mockUserid,
+            courseId: params?.courseId,
         })
-        .catch(() => {
-            return {
-                status: 400,
-            }
-        })
+
+        return {
+            statusCode: 200,
+            body: JSON.stringify({
+                message: 'Success',
+                data: result,
+            }),
+        }
+    } catch (error) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                message: error.name || 'Fail to create',
+            }),
+        }
+    }
 }
 
+// PUT /api/v1/folder
 const updateFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-    const body = querystring.parse(event?.body)
+    const body = querystring.parse(event?.body || '')
     const params = event?.queryStringParameters
 
     if (!params?.folderId) {
@@ -82,23 +95,29 @@ const updateFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
         }
     }
 
-    await Folder.sync()
-    return Folder.update(
-        { name: body.name },
-        { where: { id: params?.folderId } }
-    )
-        .then(() => {
-            return {
-                status: 200,
-            }
-        })
-        .catch(() => {
-            return {
-                status: 400,
-            }
-        })
+    try {
+        await Folder.sync()
+        await Folder.update(
+            { name: body.name },
+            { where: { id: params?.folderId } }
+        )
+        return {
+            statusCode: 200,
+            body: JSON.stringify({
+                message: 'Success',
+            }),
+        }
+    } catch (error) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                message: error.name || 'Fail to update',
+            }),
+        }
+    }
 }
 
+// DELETE /api/v1/folder
 const deleteFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
     const params = event?.queryStringParameters
 
@@ -110,18 +129,24 @@ const deleteFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
             }),
         }
     }
-    await Folder.sync()
-    return Folder.destroy({ where: { id: params?.folderId } })
-        .then(() => {
-            return {
-                status: 200,
-            }
-        })
-        .catch(() => {
-            return {
-                status: 400,
-            }
-        })
+
+    try {
+        await Folder.sync()
+        await Folder.destroy({ where: { id: params?.folderId } })
+        return {
+            statusCode: 200,
+            body: JSON.stringify({
+                message: 'Success',
+            }),
+        }
+    } catch (error) {
+        return {
+            statusCode: 400,
+            body: JSON.stringify({
+                message: error.name || 'Fail to create',
+            }),
+        }
+    }
 }
 
 export { getFolder, newFolder, updateFolder, deleteFolder }

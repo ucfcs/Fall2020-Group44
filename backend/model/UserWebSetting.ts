@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize'
-const sequelize = require('../config/database')
+import sequelize from '../config/database'
 
 class UserWebSetting extends Model {}
 
@@ -15,4 +15,4 @@ UserWebSetting.init(
     }
 )
 
-module.exports = UserWebSetting
+export default UserWebSetting

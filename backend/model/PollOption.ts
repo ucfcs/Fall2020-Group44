@@ -1,5 +1,5 @@
 import { DataTypes, Model } from 'sequelize'
-const sequelize = require('../config/database')
+import sequelize from '../config/database'
 
 class PollOption extends Model {}
 
@@ -32,4 +32,4 @@ PollOption.init(
     }
 )
 
-module.exports = PollOption
+export default PollOption

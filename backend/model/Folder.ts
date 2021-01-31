@@ -1,5 +1,5 @@
-const { DataTypes, Model } = require('sequelize')
-const sequelize = require('../config/database')
+import { DataTypes, Model } from 'sequelize'
+import sequelize from '../config/database'
 
 class Folder extends Model {}
 
@@ -30,4 +30,4 @@ Folder.init(
     }
 )
 
-module.exports = Folder
+export default Folder

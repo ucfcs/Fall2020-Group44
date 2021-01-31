@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize'
 
-module.exports = new Sequelize(
+export default new Sequelize(
     process.env.MYSQL_DATABASE as string,
     process.env.MYSQL_USER as string,
     process.env.MYSQL_PASSWORD,
