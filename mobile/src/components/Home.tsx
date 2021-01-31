@@ -1,5 +1,12 @@
 import React, { FunctionComponent } from 'react';
-import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
+import {
+	StyleSheet,
+	View,
+	SafeAreaView,
+	Text,
+	TouchableOpacity,
+} from 'react-native';
+import { StackScreenProps } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -13,11 +20,15 @@ const styles = StyleSheet.create({
 	},
 });
 
-export const Home: FunctionComponent = () => {
+export const Home: FunctionComponent<
+	StackScreenProps<PollStackTree, 'Home'>
+> = ({ navigation }) => {
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
-				<Text>HOME</Text>
+				<TouchableOpacity onPress={() => navigation.push('Polls')}>
+					<Text>HOME</Text>
+				</TouchableOpacity>
 			</View>
 		</SafeAreaView>
 	);

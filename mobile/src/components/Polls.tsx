@@ -14,13 +14,13 @@ const styles = StyleSheet.create({
 	},
 });
 
-export const Settings: FunctionComponent<
-	StackScreenProps<SettingsStackTree, 'Settings'>
+export const Polls: FunctionComponent<
+	StackScreenProps<PollStackTree, 'Polls'>
 > = () => {
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
-				<Text>Settings</Text>
+				<Text>Polls</Text>
 			</View>
 		</SafeAreaView>
 	);
