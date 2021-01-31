@@ -6,10 +6,8 @@ import redis from "redis";
 
 // init redis connection
 const client = redis.createClient({
-  // host: process.env.REDIS_HOST,
-  host: "redis.rlkrrv.ng.0001.use1.cache.amazonaws.com",
+  host: process.env.REDIS_HOST,
   port: 6379,
-  password: "on ~* +@all",
 });
 
 // init db connection
