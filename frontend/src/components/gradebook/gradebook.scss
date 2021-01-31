@@ -10,7 +10,8 @@
     align-items: center;
   }
 
-  button, input {
+  button,
+  input {
     font-size: inherit;
   }
 
@@ -30,15 +31,15 @@
     cursor: text;
     transform-origin: top left;
     transform: translate(0, 0) scale(1);
-    transition: all .1s ease-in-out;
+    transition: all 0.1s ease-in-out;
   }
 
   .active {
-    transform: translate(0, 30px) scale(.75);
+    transform: translate(0, 30px) scale(0.75);
   }
 
   button {
-    background-color: #FFC904;
+    background-color: #ffc904;
     color: black;
 
     border: none;
@@ -57,7 +58,8 @@
     border: 1px solid black;
   }
 
-  th, td {
+  th,
+  td {
     border: 1px solid lightgray;
 
     padding: 0.5em 1em;

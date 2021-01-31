@@ -1,12 +1,12 @@
-import { useState } from "react";
+import React, { ReactElement, useState } from "react";
 import Student from "./student";
 import { StudentInfo, Session } from "../../types";
 
 import "./gradebook.scss";
 
-const data = require("./mock-data.json");
+import data from "./mock-data.json";
 
-const Gradebook = () => {
+const Gradebook = (): ReactElement => {
   const students = data.students;
   const overallSessions = data.overallSessions;
   const classAverage: number = data.classAverage;
@@ -45,21 +45,22 @@ const Gradebook = () => {
           <tr>
             <th>Student</th>
             <th>Totals</th>
-            {overallSessions.map((session: Session) => (
-              <th>{session.name}</th>
+            {overallSessions.map((session: Session, index: number) => (
+              <th key={index}>{session.name}</th>
             ))}
           </tr>
           <tr>
             <th>Class Average</th>
             <th>{classAverage}</th>
-            {overallSessions.map((session: Session) => (
-              <td>{session.average}</td>
+            {overallSessions.map((session: Session, index: number) => (
+              <td key={index}>{session.average}</td>
             ))}
           </tr>
         </thead>
         <tbody>
-          {students.map((student: StudentInfo) => (
+          {students.map((student: StudentInfo, index: number) => (
             <Student
+              key={index}
               name={student.name}
               total={student.total}
               sessions={student.sessions}

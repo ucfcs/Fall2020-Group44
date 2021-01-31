@@ -1,81 +1,79 @@
 .create-question-module {
-	height: 80vh;
-	width: 55%;
-	border: 1px solid white;
-	border-radius: 15px;
-	background: #F2F2F2;
-	position: fixed;
+  height: 80vh;
+  width: 55%;
+  border: 1px solid white;
+  border-radius: 15px;
+  background: #f2f2f2;
+  position: fixed;
 
   z-index: 1001;
 
   left: 50%;
   top: 50%;
-	transform: translate(-50%, -50%);
-	box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.5);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.5);
 
-	.exit {
-		background-color: #FFC904;
-		font-size: 28px;
-		border: none;
-		border-radius: 50%;
-		width: max-content;
+  .exit {
+    background-color: #ffc904;
+    font-size: 28px;
+    border: none;
+    border-radius: 50%;
+    width: max-content;
 
-		position: absolute;
-		top: 0;
-		right: 0;
+    position: absolute;
+    top: 0;
+    right: 0;
 
-		a {
-			color: black;
-			text-decoration: none;
-		}
-	}
+    a {
+      color: black;
+      text-decoration: none;
+    }
+  }
 
-	button:focus {
-		outline: none;
-	}
+  button:focus {
+    outline: none;
+  }
 
-	.creator-header {
-		background: black;
-		height: 15%;
-		display: flex;
-		box-shadow: 0px 5px 15px rgba(0,0,0,0.25);
+  .creator-header {
+    background: black;
+    height: 15%;
+    display: flex;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
 
-		display: flex;
-		flex-direction: column;
-		justify-content: space-between;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
-		.header-title {
-			margin-top: 2vh;
-			color: #FFC904;
-			font-weight: bold;
-			font-size: 1.5vw;
-			text-align: center;
-		}
+    .header-title {
+      margin-top: 2vh;
+      color: #ffc904;
+      font-weight: bold;
+      font-size: 1.5vw;
+      text-align: center;
+    }
 
-		.header-tabs {
-			// border: 1px solid white;
-			height: 30%;
-			display: flex;
-			justify-content: space-around;
+    .header-tabs {
+      // border: 1px solid white;
+      height: 30%;
+      display: flex;
+      justify-content: space-around;
 
-			button {
-				background: none;
-				border: none;
-				// font-weight: bold;
-				font-size: 1.2vw;
-				color: #FFC904;
-				width: 100%;
-			}
+      button {
+        background: none;
+        border: none;
+        // font-weight: bold;
+        font-size: 1.2vw;
+        color: #ffc904;
+        width: 100%;
+      }
 
-			.selected {
-				border-bottom: 2px solid #FFC904;
-			}
-		}
-	}
+      .selected {
+        border-bottom: 2px solid #ffc904;
+      }
+    }
+  }
 
-
-
-	.creator-body::-webkit-scrollbar {
-		display: none;
-	}
+  .creator-body::-webkit-scrollbar {
+    display: none;
+  }
 }

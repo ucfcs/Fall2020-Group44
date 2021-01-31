@@ -1,17 +1,18 @@
+import React, { ReactElement } from "react";
 import {
   RESPOND,
   CLOSE,
   RESPONSES,
-  CORRECT_RESPONSE
+  CORRECT_RESPONSE,
 } from "../poll-in-progress";
 
 import "./poll-progress.scss";
 
-const data = require("./mock-data.json");
+import data from "./mock-data.json";
 
-const PollProgress = (props: PollProgressProps) => {
+const PollProgress = (props: PollProgressProps): ReactElement => {
   const classSize: number = data.classSize;
-  let responseCount: number = data.responseCount;
+  const responseCount: number = data.responseCount;
 
   const updateProgress = (event: any): void => {
     props.updateProgress(event.target.value);

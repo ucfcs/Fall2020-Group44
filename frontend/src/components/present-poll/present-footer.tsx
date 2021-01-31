@@ -1,33 +1,30 @@
-import React, { useState, useEffect } from "react";
-import './present-footer.scss'
+import React, { ReactElement } from "react";
+import "./present-footer.scss";
 
 type QuestionProps = {
-	question: string;
-}
+  question: string;
+};
 
-const FooterQuestion = ({question}: QuestionProps) => {
-	return (
-		<div className="footer-question">
-			<img src="/img/logo.svg"/>
-			<p>{question}</p>
-			<button className="delete">X</button>
-		</div>
-	)
-}
+const FooterQuestion = ({ question }: QuestionProps): ReactElement => {
+  return (
+    <div className="footer-question">
+      <img src="/img/logo.svg" />
+      <p>{question}</p>
+      <button className="delete">X</button>
+    </div>
+  );
+};
 
-const PresentFooter = () => {
-	const questions = ["Q1", "Q2", "Q3"]
+const PresentFooter = (): ReactElement => {
+  const questions = ["Q1", "Q2", "Q3"];
 
-	return (
-		<div className="present-footer">
-			{questions.map((question, index) =>
-				<FooterQuestion
-					key={index}
-					question={question}
-				/>
-			)}
-		</div>
-	)
-}
+  return (
+    <div className="present-footer">
+      {questions.map((question, index) => (
+        <FooterQuestion key={index} question={question} />
+      ))}
+    </div>
+  );
+};
 
-export default PresentFooter
+export default PresentFooter;

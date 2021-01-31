@@ -11,8 +11,8 @@
 
   .order {
     text-align: center;
-    background-color: #AAAAAA;
-    color: #FFFFFF;
+    background-color: #aaaaaa;
+    color: #ffffff;
     border: none;
     border-radius: 50%;
     width: 32px;
@@ -26,13 +26,13 @@
     border: none;
     cursor: pointer;
     font-size: 24px;
-    color: #AAAAAA;
+    color: #aaaaaa;
 
     &.active {
-      color: #FFC904;
+      color: #ffc904;
 
       .order {
-        background-color: #FFC904;
+        background-color: #ffc904;
       }
     }
   }
@@ -40,12 +40,12 @@
   .line {
     width: 80px;
     height: 3px;
-    background-color: #AAAAAA;
+    background-color: #aaaaaa;
     display: inline-block;
     margin: 0 1rem;
 
     &.active {
-      background-color: #FFC904;
+      background-color: #ffc904;
     }
   }
 
@@ -66,14 +66,15 @@
     border: none;
     border-radius: 5px;
 
-    background-color: #AAAAAA;
+    background-color: #aaaaaa;
 
-    &::-moz-progress-bar, &::-webkit-progress-value {
-      background-color: #FFC904;
+    &::-moz-progress-bar,
+    &::-webkit-progress-value {
+      background-color: #ffc904;
     }
   }
 
   hr {
-    border: 1px solid #AAAAAA;
+    border: 1px solid #aaaaaa;
   }
 }

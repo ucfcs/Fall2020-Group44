@@ -1,6 +1,7 @@
+import React, { ReactElement } from "react";
 import "./question.scss";
 
-const Question = (props: QuestionProps) => {
+const Question = (props: QuestionProps): ReactElement => {
   return (
     <div className="question">
       <h2>{props.questionText}</h2>
@@ -8,8 +9,10 @@ const Question = (props: QuestionProps) => {
       <div className="answers">
         {props.answers.map((answer: string, index: number) => {
           return (
-            <p>
-              <span className="answer-letter">{String.fromCharCode(65 + index)}</span>
+            <p key={index}>
+              <span className="answer-letter">
+                {String.fromCharCode(65 + index)}
+              </span>
               <span className="answer-text">{answer}</span>
             </p>
           );
