@@ -69,30 +69,32 @@ functions:
       - http:
           method: get
           path: hello
+  dbInit:
+    handler: src/db.init
   getFolder:
     handler: src/folder.getFolder
     events:
       - http:
           method: get
-          path: folder
+          path: /api/v1/folder
   newFolder:
     handler: src/folder.newFolder
     events:
       - http:
           method: post
-          path: folder
+          path: /api/v1/folder
   updateFolder:
     handler: src/folder.updateFolder
     events:
       - http:
           method: put
-          path: folder
+          path: /api/v1/folder
   deleteFolder:
     handler: src/folder.deleteFolder
     events:
       - http:
           method: delete
-          path: folder
+          path: /api/v1/folder
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

@@ -1,9 +1,9 @@
 import { DataTypes, Model } from 'sequelize'
 import sequelize from '../config/database'
 
-class Folder extends Model {}
+class Poll extends Model {}
 
-Folder.init(
+Poll.init(
     {
         id: {
             type: DataTypes.INTEGER,
@@ -11,29 +11,37 @@ Folder.init(
             primaryKey: true,
             autoIncrement: true,
         },
+        folderId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
         },
         userId: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.STRING,
             allowNull: false,
         },
         courseId: {
             type: DataTypes.STRING,
             allowNull: false,
         },
+        publishedAt: {
+            type: DataTypes.DATE,
+            allowNull: true,
+        },
     },
     {
         sequelize,
-        modelName: 'Folder',
+        modelName: 'Poll',
         indexes: [
             {
                 unique: true,
-                fields: ['name', 'userId', 'courseId'],
+                fields: ['name', 'userId', 'folderId'],
             },
         ],
     }
 )
 
-export default Folder
+export default Poll

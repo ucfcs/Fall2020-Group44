@@ -6,7 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "tsc",
-    "dev": "serverless offline",
+    "db:build": "serverless invoke local --function dbInit",
+    "dev": "npm run db:build && serverless offline",
     "deploy": "serverless deploy --stage production"
   },
   "author": "",
