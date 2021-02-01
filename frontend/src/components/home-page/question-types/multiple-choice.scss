@@ -4,12 +4,11 @@
 	// justify-content: space-between;
 
 	.answer-choice {
+		position: relative;
 		border: 1px solid #CCCCCC;
 		height: 7vh;
 		width: 80%;
 		margin-bottom: 2vh;
-
-		display: flex;
 
 		.letter { //TODO: figure out centering
 			width: 100%;
@@ -26,22 +25,39 @@
 				text-align: center;
 				color: #FFC904;
 				font-weight: bold;
-				font-size: 1vw;
+				font-size: 16px;
 				margin: 0;
 			}
 		}
 
+		.answer-info {
+			display: flex;
+			position: absolute;
+			height: 100%;
+			width: 100%;
+		}
+
 		.answer-text {
-			margin-left: 2vw;
+			position: relative;
+			margin-left: 8px;
 			align-content: center;
 			display: inline-grid;
 			height: 100%;
-			font-size: 1vw;
+			font-size: 14px;
 			width: 100%;
 
 			span {
 				// border: 1px solid red;
 			}
+		}
+
+		.answer-text-input {
+			padding-left: 8px;
+			position: relative;
+			align-content: center;
+			display: inline-grid;
+			font-size: 14px;
+			width: 100%;
 		}
 	}
 
@@ -56,6 +72,18 @@
 	}
 
 	.correct {
-		background-color: #00ff0036;
+		.response-bar {
+			position: absolute;
+			background-color: #00ff0036;
+			height: 100%;
+		}
+	}
+
+	.incorrect {
+		.response-bar {
+			position: absolute;
+			background-color: #ff0f0f3f;
+			height: 100%;
+		}
 	}
 }
