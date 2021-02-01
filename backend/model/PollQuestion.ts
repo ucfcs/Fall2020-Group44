@@ -5,8 +5,14 @@ class PollQuestion extends Model {}
 
 PollQuestion.init(
     {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
         pollId: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         question: {
@@ -15,6 +21,7 @@ PollQuestion.init(
         },
         timeToAnswer: {
             type: DataTypes.DATE,
+            allowNull: true,
         },
     },
     {

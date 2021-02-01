@@ -18,7 +18,6 @@ const getFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
     }
 
     try {
-        await Folder.sync()
         const result = await Folder.findAll({
             where: {
                 userId: mockUserid,
@@ -57,7 +56,6 @@ const newFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
     }
 
     try {
-        await Folder.sync()
         const result = await Folder.create({
             name: body?.name,
             userId: mockUserid,
@@ -96,7 +94,6 @@ const updateFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
     }
 
     try {
-        await Folder.sync()
         await Folder.update(
             { name: body.name },
             { where: { id: params?.folderId } }
@@ -131,7 +128,6 @@ const deleteFolder = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
     }
 
     try {
-        await Folder.sync()
         await Folder.destroy({ where: { id: params?.folderId } })
         return {
             statusCode: 200,

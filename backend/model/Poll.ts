@@ -5,6 +5,16 @@ class Poll extends Model {}
 
 Poll.init(
     {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
+        folderId: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
         name: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -17,11 +27,9 @@ Poll.init(
             type: DataTypes.STRING,
             allowNull: false,
         },
-        folderId: {
-            type: DataTypes.STRING,
-        },
         publishedAt: {
             type: DataTypes.DATE,
+            allowNull: true,
         },
     },
     {

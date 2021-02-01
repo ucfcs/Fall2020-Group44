@@ -5,8 +5,14 @@ class PollOption extends Model {}
 
 PollOption.init(
     {
+        id: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
+        },
         pollId: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
         text: {
@@ -16,14 +22,6 @@ PollOption.init(
         isAnswer: {
             type: DataTypes.BOOLEAN,
             defaultValue: false,
-        },
-        createAt: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
-        },
-        updatedAt: {
-            type: DataTypes.DATE,
-            defaultValue: DataTypes.NOW,
         },
     },
     {

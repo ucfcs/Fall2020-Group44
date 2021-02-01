@@ -5,16 +5,18 @@ class PollUserResponse extends Model {}
 
 PollUserResponse.init(
     {
-        userId: {
-            type: DataTypes.STRING,
+        id: {
+            type: DataTypes.INTEGER,
             allowNull: false,
-        },
-        optionId: {
-            type: DataTypes.STRING,
-            allowNull: false,
+            primaryKey: true,
+            autoIncrement: true,
         },
         pollId: {
-            type: DataTypes.STRING,
+            type: DataTypes.INTEGER,
+            allowNull: false,
+        },
+        pollOptionId: {
+            type: DataTypes.INTEGER,
             allowNull: false,
         },
     },
@@ -24,7 +26,7 @@ PollUserResponse.init(
         indexes: [
             {
                 unique: true,
-                fields: ['userId', 'pollId', 'optionId'],
+                fields: ['userId', 'pollId', 'pollOptionId'],
             },
         ],
     }

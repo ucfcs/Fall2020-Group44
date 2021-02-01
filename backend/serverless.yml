@@ -69,6 +69,8 @@ functions:
       - http:
           method: get
           path: hello
+  dbInit:
+    handler: src/db.init
   getFolder:
     handler: src/folder.getFolder
     events:
