@@ -60,17 +60,21 @@
 	}
 
 	.folder {
-		margin: 4px 0 4px 16px;
+		margin: 4px 0 4px 8px;
 		font-weight: 500;
 		cursor: pointer;
 		user-select: none;
+
+		input {
+			margin-right: 8px;
+		}
 	}
 
 	.preview-question {
 		width: calc(100% - 40px);
 		padding: 4px 16px 4px 24px;
 		display: grid;
-		grid-template-columns: 65% 5% 30%;
+		grid-template-columns: 24px 58% 5% 30%;
 		cursor: pointer;
 	}
 

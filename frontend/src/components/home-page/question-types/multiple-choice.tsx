@@ -6,6 +6,8 @@ type Props = {
 	answers: string[];
 	correct: number;
 	responses: string[];
+	showPreviewResponse: boolean;
+	showCorrectPreviewResponse: boolean;
 };
 
 type AnswerChoiceProps = {
@@ -13,7 +15,8 @@ type AnswerChoiceProps = {
 	letter: string;
 	correct: boolean;
 	response: string;
-	index: number;
+	showPreviewResponse: boolean;
+	showCorrectPreviewResponse: boolean;
 };
 
 const AnswerChoice = ({
@@ -21,36 +24,21 @@ const AnswerChoice = ({
 	letter,
 	correct,
 	response,
-	index,
+	showPreviewResponse,
+	showCorrectPreviewResponse,
 }: AnswerChoiceProps) => {
-	const global = useContext(store) as any;
-	const dispatch = global.dispatch;
-	const state = global.state;
-
-	const editQuestion = (event: any, index: number) => {
-		const newQuestions = state.questions.slice();
-		newQuestions[state.preview[0]].questions[state.preview[1]].choices[index] =
-			event.target.value;
-
-		dispatch({ type: 'edit-preview-question', payload: newQuestions });
-	};
-
 	return (
 		<div
 			className={`answer-choice ${
-				state.showCorrectPreviewResponse
-					? correct
-						? 'correct'
-						: 'incorrect'
-					: ''
+				showCorrectPreviewResponse ? (correct ? 'correct' : 'incorrect') : ''
 			}`}
 		>
 			<div
 				className='response-bar'
 				style={{
-					width: state.showPreviewResponse
+					width: showPreviewResponse
 						? response
-						: state.showCorrectPreviewResponse
+						: showCorrectPreviewResponse
 						? '100%'
 						: '',
 				}}
@@ -59,37 +47,33 @@ const AnswerChoice = ({
 				<div className='letter'>
 					<p>{letter}</p>
 				</div>
-				{state.isEditingQuestion ? (
-					<input
-						type='text'
-						className='answer-text-input'
-						onChange={(e) => editQuestion(e, index)}
-						value={answer}
-					/>
-				) : (
-					<div className='answer-text'>
-						<span>{answer}</span>
-					</div>
-				)}
-				<div className='responses'>
-					{state.showPreviewResponse ? response : ''}
+				<div className='answer-text'>
+					<span>{answer}</span>
 				</div>
+				<div className='responses'>{showPreviewResponse ? response : ''}</div>
 			</div>
 		</div>
 	);
 };
 
-const MultipleChoice = ({ answers, correct, responses }: Props) => {
+const MultipleChoice = ({
+	answers,
+	correct,
+	responses,
+	showPreviewResponse,
+	showCorrectPreviewResponse,
+}: Props) => {
 	return (
 		<div className='multiple-choice'>
 			{answers.map((answer, index) => (
 				<AnswerChoice
 					key={index}
-					index={index}
 					answer={answer}
 					correct={correct === index}
 					response={responses[index]}
 					letter={String.fromCharCode(65 + index)}
+					showPreviewResponse={showPreviewResponse}
+					showCorrectPreviewResponse={showCorrectPreviewResponse}
 				/>
 			))}
 		</div>

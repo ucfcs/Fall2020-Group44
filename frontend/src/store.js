@@ -1,7 +1,8 @@
 import React, { useReducer } from 'react';
 
 const init = {
-	preview: [0, 0],
+	previewFolder: 0,
+	previewQuestion: 0,
 	questions: [
 		{
 			folder: 'Chapter 1',
@@ -43,8 +44,7 @@ const init = {
 			],
 		},
 	],
-	showPreviewResponse: false,
-	showCorrectPreviewResponse: false,
+	poll: 1,
 	isEditingQuestion: false,
 };
 const store = React.createContext(init);
@@ -53,21 +53,14 @@ const { Provider } = store;
 const StateProvider = ({ children }) => {
 	const [state, dispatch] = useReducer((state, action) => {
 		switch (action.type) {
+			case 'update-preview-folder':
+				return { ...state, previewFolder: action.payload };
 			case 'update-preview-question':
-				return { ...state, preview: action.payload };
-			case 'toggle-show-preview-response':
-				return { ...state, showPreviewResponse: !state.showPreviewResponse };
-			case 'toggle-show-correct-preview-response':
-				return {
-					...state,
-					showCorrectPreviewResponse: !state.showCorrectPreviewResponse,
-				};
+				return { ...state, previewQuestion: action.payload };
 			case 'toggle-edit-preview-question':
 				return { ...state, isEditingQuestion: !state.isEditingQuestion };
-			case 'edit-preview-question':
-				return { ...state, questions: action.payload };
-			case 'delete-preview-question':
-				return { ...state, questions: action.payload };
+			case 'update-session-questions':
+				return { ...state, poll: action.payload };
 			default:
 				throw new Error('Base reducer: this action type was not defined');
 		}

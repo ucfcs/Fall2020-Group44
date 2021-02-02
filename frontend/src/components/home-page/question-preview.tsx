@@ -9,12 +9,17 @@ const QuestionPreview = () => {
 	const dispatch = global.dispatch;
 	const state = global.state;
 
+	const [showPreviewResponse, setShowPreviewResponse] = useState(false);
+	const [showCorrectPreviewResponse, setShowCorrectPreviewResponse] = useState(
+		false,
+	);
+
 	const toggleShowResponse = () => {
-		dispatch({ type: 'toggle-show-preview-response' });
+		setShowPreviewResponse(!showPreviewResponse);
 	};
 
 	const toggleShowCorrectResponse = () => {
-		dispatch({ type: 'toggle-show-correct-preview-response' });
+		setShowCorrectPreviewResponse(showCorrectPreviewResponse);
 	};
 
 	const toggleEditQuestion = () => {
@@ -22,39 +27,34 @@ const QuestionPreview = () => {
 	};
 
 	const editQuestion = (event: any) => {
-		const newQuestions = state.questions.slice();
-		newQuestions[state.preview[0]].questions[state.preview[1]].title =
-			event.target.value;
+		// const newQuestions = state.questions.slice();
+		// newQuestions[state.previewFolder].questions[state.previewQuestion].title =
+		// 	event.target.value;
 
-		dispatch({ type: 'edit-preview-question', payload: newQuestions });
+		// dispatch({ type: 'edit-preview-question', payload: newQuestions });
+		console.log('editQuestion');
 	};
 
 	const deleteQuestion = () => {
-		const newQuestions = state.questions.slice();
-		newQuestions[state.preview[0]].questions.splice(state.preview[1], 1);
-		if (newQuestions[state.preview[0]].questions.length < 1) {
-			newQuestions.splice(state.preview[0], 1);
-		}
+		// const newQuestions = state.questions.slice();
+		// newQuestions[state.previewFolder].questions.splice(
+		// 	state.previewQuestion,
+		// 	1,
+		// );
+		// if (newQuestions[state.previewFolder].questions.length < 1) {
+		// 	newQuestions.splice(state.previewFolder, 1);
+		// }
 
-		dispatch({ type: 'delete-preview-question', payload: newQuestions });
+		// dispatch({ type: 'delete-preview-question', payload: newQuestions });
+		console.log('deleteQuestion');
 	};
 
 	const previewQuestion =
-		state.questions[state.preview[0]] &&
-		state.questions[state.preview[0]].questions[state.preview[1]];
+		state.questions[state.previewFolder].questions[state.previewQuestion];
 
 	return previewQuestion ? (
 		<div className='question-preview'>
-			{state.isEditingQuestion ? (
-				<input
-					type='text'
-					className='question-title'
-					onChange={editQuestion}
-					value={previewQuestion.title}
-				/>
-			) : (
-				<span className='question-title'>{previewQuestion.title}?</span>
-			)}
+			<span className='question-title'>{previewQuestion.title}?</span>
 			<div className='response-buttons'>
 				<button
 					className='show-correct-response'
@@ -71,6 +71,8 @@ const QuestionPreview = () => {
 					answers={previewQuestion.choices}
 					correct={previewQuestion.correct}
 					responses={['20%', '30%', '50%']}
+					showPreviewResponse={showPreviewResponse}
+					showCorrectPreviewResponse={showCorrectPreviewResponse}
 				/>
 			</div>
 			<div className='option-buttons'>
@@ -78,7 +80,7 @@ const QuestionPreview = () => {
 					<Link to='/poll/present'>&#9658; Present</Link>
 				</button>
 				<button className='edit-button' onClick={toggleEditQuestion}>
-					{state.isEditingQuestion ? 'Done' : 'Edit'}
+					Edit
 				</button>
 				<button className='delete-button' onClick={deleteQuestion}>
 					Delete
