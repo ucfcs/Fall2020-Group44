@@ -11,6 +11,14 @@
 
 ## Development
 
+### Initialize Database
+
+To create database tables and their relationship.
+
+```
+npm run db:build
+```
+
 ### Local Server
 
 For the use case of working on the Canvas LTI you will need a local instance of the backend running. Luckily servereless provides this using Serverless-Offline. Run the following command to start the local lambda server.
