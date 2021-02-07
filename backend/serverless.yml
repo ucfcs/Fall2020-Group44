@@ -71,6 +71,9 @@ functions:
           path: hello
   dbInit:
     handler: src/db.init
+
+
+  # Folder endpoints
   getFolder:
     handler: src/folder.getFolder
     events:
@@ -95,6 +98,81 @@ functions:
       - http:
           method: delete
           path: /api/v1/folder
+
+
+  # Poll endpoints
+  getPoll:
+    handler: src/poll.get
+    events:
+      - http:
+          method: get
+          path: /api/v1/poll
+  createPoll:
+    handler: src/poll.create
+    events:
+      - http:
+          method: post
+          path: /api/v1/poll
+  updatePoll:
+    handler: src/poll.update
+    events:
+      - http:
+          method: put
+          path: /api/v1/poll
+  deletePoll:
+    handler: src/poll.remove
+    events:
+      - http:
+          method: delete
+          path: /api/v1/poll
+
+
+  # Poll Question endpoints
+  getPollQuestion:
+    handler: src/poll_question.get
+    events:
+      - http:
+          method: get
+          path: /api/v1/poll_question
+  createPollQuestion:
+    handler: src/poll_question.create
+    events:
+      - http:
+          method: post
+          path: /api/v1/poll_question
+  updatePollQuestion:
+    handler: src/poll_question.update
+    events:
+      - http:
+          method: put
+          path: /api/v1/poll_question
+  deletePollQuestion:
+    handler: src/poll_question.remove
+    events:
+      - http:
+          method: delete
+          path: /api/v1/poll_question
+
+  # Poll Option endpoints
+  createPollQuestion:
+    handler: src/poll_option.create
+    events:
+      - http:
+          method: post
+          path: /api/v1/poll_option
+  updatePollQuestion:
+    handler: src/poll_option.update
+    events:
+      - http:
+          method: put
+          path: /api/v1/poll_option
+  deletePollQuestion:
+    handler: src/poll_option.remove
+    events:
+      - http:
+          method: delete
+          path: /api/v1/poll_option
+
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

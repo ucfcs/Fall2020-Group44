@@ -34,6 +34,8 @@ const init = async () => {
     User.hasOne(UserMobileSetting, { foreignKey: 'userId' })
     UserMobileSetting.belongsTo(User, { foreignKey: 'userId' })
 
+    User.create({ firstName: 'Mock', lastName: 'User' })
+
     try {
         await User.sync({ alter: true })
         await Folder.sync({ alter: true })
