@@ -7,7 +7,7 @@ import {
 	User,
 	UserMobileSetting,
 	UserWebSetting,
-} from './model';
+} from './models';
 
 const init = async (): Promise<void> => {
 	Folder.hasMany(Poll, { foreignKey: 'folderId' });
