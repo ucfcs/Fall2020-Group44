@@ -9,12 +9,14 @@ const init = {
 			questions: [
 				{
 					title: 'What’s my middle name',
+					question: 'What’s my middle name',
 					type: 'Mult Choice',
 					choices: ['Joe', 'Mama', 'xXxDarkRevenge69xXx'],
 					correct: 0,
 				},
 				{
 					title: 'Where is the capital of Florida',
+					question: 'Where is the capital of Florida',
 					type: 'Mult Choice',
 					choices: ['Washington DC', 'Paris', 'Egypt'],
 					correct: 1,
@@ -26,12 +28,14 @@ const init = {
 			questions: [
 				{
 					title: 'Where is the capital of Florida',
+					question: 'Where is the capital of Florida',
 					type: 'Mult Choice',
 					choices: ['Washington DC', 'Paris', 'Egypt'],
 					correct: 1,
 				},
 				{
 					title: 'Who was the first President',
+					question: 'Who was the first President',
 					type: 'Mult Choice',
 					choices: [
 						'Joe Mama',
@@ -45,7 +49,7 @@ const init = {
 		},
 	],
 	poll: 1,
-	isEditingQuestion: false,
+	editPreviewQuestion: false,
 };
 const store = React.createContext(init);
 const { Provider } = store;
@@ -57,8 +61,10 @@ const StateProvider = ({ children }) => {
 				return { ...state, previewFolder: action.payload };
 			case 'update-preview-question':
 				return { ...state, previewQuestion: action.payload };
-			case 'toggle-edit-preview-question':
-				return { ...state, isEditingQuestion: !state.isEditingQuestion };
+			case 'edit-preview-question':
+				return { ...state, editPreviewQuestion: true };
+			case 'close-preview-question':
+				return { ...state, editPreviewQuestion: false };
 			case 'update-session-questions':
 				return { ...state, poll: action.payload };
 			default:

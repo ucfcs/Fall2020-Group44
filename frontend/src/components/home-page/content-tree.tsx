@@ -17,7 +17,10 @@ const ContentTree = () => {
 	const dispatch = global.dispatch;
 	const state = global.state;
 
-	const [selectedQuestion, setSelectedQuestion] = useState([0, 0]);
+	const [selectedQuestion, setSelectedQuestion] = useState([
+		state.previewFolder,
+		state.previewQuestion,
+	]);
 	const [questions, setQuestions] = useState(state.questions);
 
 	useEffect(() => {

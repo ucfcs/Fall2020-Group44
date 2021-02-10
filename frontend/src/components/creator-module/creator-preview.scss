@@ -5,4 +5,21 @@
 	margin: 3vh 3vw;
 	padding: 2vh 2vw;
 	background: white;
+
+	.answer {
+		display: flex;
+		border: 1px solid #CCCCCC;
+		margin-top: 0.5rem;
+
+		&-letter {
+			padding: 0.5rem;
+			color: #FFC904;
+			align-self: center;
+		}
+
+		&-text {
+			padding: 0.5rem;
+			border-left: 1px solid #CCCCCC;
+		}
+	}
 }

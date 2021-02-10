@@ -19,11 +19,11 @@ const QuestionPreview = () => {
 	};
 
 	const toggleShowCorrectResponse = () => {
-		setShowCorrectPreviewResponse(showCorrectPreviewResponse);
+		setShowCorrectPreviewResponse(!showCorrectPreviewResponse);
 	};
 
 	const toggleEditQuestion = () => {
-		dispatch({ type: 'toggle-edit-preview-question' });
+		dispatch({ type: 'edit-preview-question' });
 	};
 
 	const editQuestion = (event: any) => {
@@ -54,7 +54,7 @@ const QuestionPreview = () => {
 
 	return previewQuestion ? (
 		<div className='question-preview'>
-			<span className='question-title'>{previewQuestion.title}?</span>
+			<span className='question-title'>{previewQuestion.question}?</span>
 			<div className='response-buttons'>
 				<button
 					className='show-correct-response'
@@ -80,7 +80,7 @@ const QuestionPreview = () => {
 					<Link to='/poll/present'>&#9658; Present</Link>
 				</button>
 				<button className='edit-button' onClick={toggleEditQuestion}>
-					Edit
+					<Link to='/create'>Edit</Link>
 				</button>
 				<button className='delete-button' onClick={deleteQuestion}>
 					Delete
