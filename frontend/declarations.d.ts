@@ -1,1 +1,1 @@
-declare module 'react-router-modal';
+declare module "react-router-modal";

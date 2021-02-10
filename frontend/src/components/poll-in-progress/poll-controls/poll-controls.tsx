@@ -1,7 +1,8 @@
-import './poll-controls.scss';
+import React, { ReactElement } from "react";
+import "./poll-controls.scss";
 
-const PollControls = (props: PollControlsProps) => {
-	const buttons: any[] = [];
+const PollControls = (props: PollControlsProps): ReactElement => {
+  const buttons: any[] = [];
 
 	for (let i = 0; i < props.questionCount; i++) {
 		let activeClass;
@@ -12,12 +13,12 @@ const PollControls = (props: PollControlsProps) => {
 			activeClass = 'question-nav-button';
 		}
 
-		buttons.push(
-			<span key={i} className={activeClass}>
-				<img src='/img/logo.svg' alt='' />Q{i + 1}
-			</span>,
-		);
-	}
+    buttons.push(
+      <span className={activeClass}>
+        <img src="/img/logo.svg" alt="" />Q{i + 1}
+      </span>
+    );
+  }
 
 	return (
 		<div className='poll-controls'>

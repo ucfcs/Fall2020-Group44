@@ -8,8 +8,9 @@ import HomeHeader from "./components/home-header/home-header";
 import PollHeader from "./components/poll-header/poll-header";
 import PollInProgress from "./components/poll-in-progress/poll-in-progress";
 import Present from "./components/present-poll/present";
+import React, { ReactElement } from "react";
 
-function App() {
+function App(): ReactElement {
   return (
     <Router>
       <Switch>

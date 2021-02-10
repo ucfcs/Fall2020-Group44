@@ -1,7 +1,7 @@
 .multiple-choice {
-	display: flex;
-	flex-direction: column;
-	// justify-content: space-between;
+  display: flex;
+  flex-direction: column;
+  // justify-content: space-between;
 
 	.answer-choice {
 		position: relative;
@@ -20,6 +20,15 @@
 			flex-direction: column;
 			justify-content: center;
 
+      p {
+        // border: 1px solid blue;
+        text-align: center;
+        color: #ffc904;
+        font-weight: bold;
+        font-size: 1vw;
+        margin: 0;
+      }
+    }
 
 			p {
 				// border: 1px solid blue;
