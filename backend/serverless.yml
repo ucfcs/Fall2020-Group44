@@ -93,6 +93,26 @@ functions:
       - http:
           method: delete
           path: folder
+  connect: 
+    handler: src/ws/connect.handler
+    events: 
+      - websocket:
+          route: $connect
+  join: 
+    handler: src/ws/join.handler
+    events: 
+      - websocket: 
+          route: join
+  create: 
+    handler: src/ws/create.handler
+    events: 
+      - websocket: 
+          route: create
+  submit: 
+    handler: src/ws/submit.handler
+    events: 
+      - websocket: 
+          route: submit
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
