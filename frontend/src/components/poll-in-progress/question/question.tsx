@@ -23,8 +23,8 @@ const Question = (props: QuestionProps): ReactElement => {
 };
 
 interface QuestionProps {
-	questionText: string;
-	answers: string[];
+  questionText: string;
+  answers: string[];
 }
 
 export default Question;

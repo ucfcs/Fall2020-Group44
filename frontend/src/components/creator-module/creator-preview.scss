@@ -1,25 +1,25 @@
 .creator-preview {
-	display: flex;
-	flex-direction: column;
-	justify-content: space-evenly;
-	margin: 3vh 3vw;
-	padding: 2vh 2vw;
-	background: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 3vh 3vw;
+  padding: 2vh 2vw;
+  background: white;
 
-	.answer {
-		display: flex;
-		border: 1px solid #CCCCCC;
-		margin-top: 0.5rem;
+  .answer {
+    display: flex;
+    border: 1px solid #cccccc;
+    margin-top: 0.5rem;
 
-		&-letter {
-			padding: 0.5rem;
-			color: #FFC904;
-			align-self: center;
-		}
+    &-letter {
+      padding: 0.5rem;
+      color: #ffc904;
+      align-self: center;
+    }
 
-		&-text {
-			padding: 0.5rem;
-			border-left: 1px solid #CCCCCC;
-		}
-	}
+    &-text {
+      padding: 0.5rem;
+      border-left: 1px solid #cccccc;
+    }
+  }
 }

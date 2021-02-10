@@ -1,56 +1,56 @@
 {
-	"students": [
-		{
-			"name": "Davis",
-			"total": 20,
-			"sessions": [5, 5, 5]
-		},
-		{
-			"name": "abc",
-			"total": 20,
-			"sessions": [5, 5, 5]
-		},
-		{
-			"name": "def",
-			"total": 20,
-			"sessions": [5, 5, 5]
-		},
-		{
-			"name": "ghi",
-			"total": 20,
-			"sessions": [5, 5, 5]
-		},
-		{
-			"name": "sdujio",
-			"total": 20,
-			"sessions": [5, 5, 5]
-		},
-		{
-			"name": "erkmol",
-			"total": 20,
-			"sessions": [5, 5, 5]
-		}
-	],
-	"overallSessions": [
-		{
-			"name": "Session 1",
-			"average": 5,
-			"total": 5,
-			"date": "Jan 23"
-		},
-		{
-			"name": "Session 2",
-			"average": 5,
-			"total": 5,
-			"date": "Jan 25"
-		},
-		{
-			"name": "Session 3",
-			"average": 5,
-			"total": 5,
-			"date": "Jan 27"
-		}
-	],
-	"classAverage": 2,
-	"classTotal": 5
+  "students": [
+    {
+      "name": "Davis",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    },
+    {
+      "name": "abc",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    },
+    {
+      "name": "def",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    },
+    {
+      "name": "ghi",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    },
+    {
+      "name": "sdujio",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    },
+    {
+      "name": "erkmol",
+      "total": 20,
+      "sessions": [5, 5, 5]
+    }
+  ],
+  "overallSessions": [
+    {
+      "name": "Session 1",
+      "average": 5,
+      "total": 5,
+      "date": "Jan 23"
+    },
+    {
+      "name": "Session 2",
+      "average": 5,
+      "total": 5,
+      "date": "Jan 25"
+    },
+    {
+      "name": "Session 3",
+      "average": 5,
+      "total": 5,
+      "date": "Jan 27"
+    }
+  ],
+  "classAverage": 2,
+  "classTotal": 5
 }

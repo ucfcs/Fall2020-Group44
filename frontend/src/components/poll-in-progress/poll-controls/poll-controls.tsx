@@ -2,16 +2,16 @@ import React, { ReactElement } from "react";
 import "./poll-controls.scss";
 
 const PollControls = (props: PollControlsProps): ReactElement => {
-  const buttons: any[] = [];
+  const buttons: ReactElement[] = [];
 
-	for (let i = 0; i < props.questionCount; i++) {
-		let activeClass;
+  for (let i = 0; i < props.questionCount; i++) {
+    let activeClass;
 
-		if (i === props.questionNumber) {
-			activeClass = 'question-nav-button active';
-		} else {
-			activeClass = 'question-nav-button';
-		}
+    if (i === props.questionNumber) {
+      activeClass = "question-nav-button active";
+    } else {
+      activeClass = "question-nav-button";
+    }
 
     buttons.push(
       <span className={activeClass}>
@@ -20,24 +20,24 @@ const PollControls = (props: PollControlsProps): ReactElement => {
     );
   }
 
-	return (
-		<div className='poll-controls'>
-			<div className='question-nav'>{buttons.map((button) => button)}</div>
+  return (
+    <div className="poll-controls">
+      <div className="question-nav">{buttons.map((button) => button)}</div>
 
-			<div className='control-buttons'>
-				<button className='back-button control-button'>Back</button>
+      <div className="control-buttons">
+        <button className="back-button control-button">Back</button>
 
-				<button className='next-button control-button'>Next</button>
+        <button className="next-button control-button">Next</button>
 
-				<button className='skip-button control-button'>Skip Poll</button>
-			</div>
-		</div>
-	);
+        <button className="skip-button control-button">Skip Poll</button>
+      </div>
+    </div>
+  );
 };
 
 interface PollControlsProps {
-	questionNumber: number;
-	questionCount: number;
+  questionNumber: number;
+  questionCount: number;
 }
 
 export default PollControls;
