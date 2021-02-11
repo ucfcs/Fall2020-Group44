@@ -7,14 +7,17 @@ This project was bootstrapped with
 
 In the project directory, you can run:
 
-### npx prettier -w .
+### `npm run format`
 
-Runs prettier on the frontend files.
+Runs prettier on the frontend files in `src/`.
 
-### npx eslint . --fix
+### `npm run lint`
 
-Runs eslint on the frontend files. This should also apply the prettier rules as
-well.
+Runs eslint on the frontend files in `src/`.
+
+### `npm run cleanup`
+
+Runs eslint and prettier on the frontend files in `src/`.
 
 ### `npm start`
 
