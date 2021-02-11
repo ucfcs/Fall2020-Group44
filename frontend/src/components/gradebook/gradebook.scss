@@ -51,6 +51,18 @@
     padding: 0.75em;
   }
 
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .expanded {
+    border: 2px solid #ffc904;
+
+    .question-name {
+      margin-top: 8px;
+    }
+  }
+
   table {
     width: 100%;
     text-align: left;
@@ -60,12 +72,41 @@
 
   th,
   td {
+    min-width: 130px;
     border: 1px solid lightgray;
 
     padding: 0.5em 1em;
+    font-size: 16px;
+
+    .expand {
+      color: #ffc904;
+      font-size: 12px;
+      cursor: pointer;
+      text-shadow: 1px 1px gray;
+    }
+
+    .date {
+      font-size: 12px;
+    }
   }
 
   tbody td {
     font-size: 16px;
+  }
+
+  .align-right {
+    text-align: right;
+  }
+}
+
+.bar {
+  width: 100%;
+  margin-top: 8px;
+  background-color: #dddddd;
+  border-radius: 8px;
+
+  .bar-value {
+    height: 4px;
+    border-radius: 8px;
   }
 }

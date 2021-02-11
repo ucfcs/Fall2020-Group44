@@ -1,10 +1,48 @@
-import React, { ReactElement } from "react";
+import React, { useState, useEffect, useContext, SyntheticEvent } from "react";
 import MultipleChoice from "./creator-answer-types/multiple-choice";
+import { store } from "../../store";
 import "./creator-edit.scss";
 
 //TODO: create question props
 
-const CreatorEdit = (): ReactElement => {
+interface Prop {
+  newQuestion: Question;
+  setNewQuestion: (arg0: Question) => void;
+}
+
+interface Question {
+  title: string;
+  question: string;
+  type: string;
+  choices: string[];
+  correct: number;
+}
+
+const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop) => {
+  const global = useContext(store) as any;
+  const dispatch = global.dispatch;
+  const state = global.state;
+
+  const handleTitleChange = (e: SyntheticEvent) => {
+    const tempQuestion = {
+      ...newQuestion,
+      title: (e.target as HTMLInputElement).value,
+    };
+    setNewQuestion(tempQuestion);
+  };
+
+  const handleQuestionChange = (e: SyntheticEvent) => {
+    const tempQuestion = {
+      ...newQuestion,
+      question: (e.target as HTMLInputElement).value,
+    };
+    setNewQuestion(tempQuestion);
+  };
+
+  const previewQuestion = state.editPreviewQuestion
+    ? state.questions[state.previewFolder].questions[state.previewQuestion]
+    : newQuestion;
+
   return (
     <div className="creator-body">
       <div className="question-details">
@@ -18,6 +56,8 @@ const CreatorEdit = (): ReactElement => {
             tabIndex={0}
             className="question-title-input"
             placeholder="eg: Question 1 Title"
+            defaultValue={previewQuestion.title}
+            onChange={handleTitleChange}
           />
         </div>
         <div className="question-text">
@@ -27,10 +67,17 @@ const CreatorEdit = (): ReactElement => {
             tabIndex={1}
             className="question-text-input"
             placeholder="eg: Who was the first President of the United States?"
+            defaultValue={previewQuestion.question}
+            onChange={handleQuestionChange}
           />
         </div>
         <div className="question-answers">
-          <MultipleChoice answers={[]} />
+          <MultipleChoice
+            answers={previewQuestion.choices}
+            correct={previewQuestion.correct}
+            newQuestion={newQuestion}
+            setNewQuestion={setNewQuestion}
+          />
         </div>
       </div>
       <div className="question-options">

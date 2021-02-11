@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import "./poll-controls.scss";
 
 const PollControls = (props: PollControlsProps): ReactElement => {
-  const buttons: any[] = [];
+  const buttons: ReactElement[] = [];
 
   for (let i = 0; i < props.questionCount; i++) {
     let activeClass;
