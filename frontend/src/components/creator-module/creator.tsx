@@ -25,6 +25,11 @@ const Creator = () => {
     dispatch({ type: "close-preview-question" });
   };
 
+  const saveQuestion = () => {
+    closePreviewQuestion();
+    console.log("saveQuestion");
+  };
+
   return (
     <div className="create-question-module">
       <div className="creator-header">
@@ -55,6 +60,14 @@ const Creator = () => {
           setNewQuestion={setNewQuestion}
         />
       )}
+      <div className="buttons">
+        <button className="cancel-button" onClick={closePreviewQuestion}>
+          <Link to="/">Cancel</Link>
+        </button>
+        <button className="save-button" onClick={saveQuestion}>
+          <Link to="/">Save</Link>
+        </button>
+      </div>
     </div>
   );
 };

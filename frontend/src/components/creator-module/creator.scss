@@ -1,5 +1,4 @@
 .create-question-module {
-  height: 80vh;
   width: 55%;
   border: 1px solid #cccccc;
   border-radius: 16px;
@@ -77,5 +76,37 @@
 
   .creator-body::-webkit-scrollbar {
     display: none;
+  }
+
+  .buttons {
+    background: black;
+    height: 48px;
+    display: flex;
+    box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
+    border-radius:  0 0 16px 16px;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+
+    .save-button,
+    .cancel-button {
+      align-self: center;
+      width: 80px;
+      height: 24px;
+      background-color: #ffc904;
+      border: none;
+      color: black;
+      font-weight: bold;
+      border-radius: 5px;
+      text-align: center;
+      text-decoration: none;
+      font-size: 12px;
+    }
+
+    .cancel-button {
+      background-color: #cccccc;
+      color: black;
+    }
   }
 }

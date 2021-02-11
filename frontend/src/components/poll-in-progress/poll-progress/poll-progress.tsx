@@ -15,7 +15,7 @@ const PollProgress = (props: PollProgressProps): ReactElement => {
   const responseCount: number = data.responseCount;
 
   const updateProgress = (event: SyntheticEvent): void => {
-    props.updateProgress((event.target as HTMLInputElement).value);
+    props.updateProgress(~~(event.target as HTMLInputElement).value);
   };
 
   return (
@@ -81,7 +81,7 @@ const PollProgress = (props: PollProgressProps): ReactElement => {
 
 interface PollProgressProps {
   progress: number;
-  updateProgress: any;
+  updateProgress: (value: number) => void;
 }
 
 export default PollProgress;

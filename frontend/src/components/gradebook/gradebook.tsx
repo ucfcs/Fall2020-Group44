@@ -1,4 +1,9 @@
-import React, { useState, useContext, ReactElement } from "react";
+import React, {
+  useState,
+  useContext,
+  ReactElement,
+  SyntheticEvent,
+} from "react";
 import Student from "./student";
 import { StudentInfo, Session } from "../../types";
 import { store } from "../../store";
@@ -10,9 +15,13 @@ import data from "./mock-data.json";
 const RED = 0.5;
 const YELLOW = 0.75;
 
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue((value) => value + 1); // update the state to force render
+}
+
 const Gradebook = (): ReactElement => {
-  const global = useContext(store) as any;
-  const dispatch = global.dispatch;
+  const forceUpdate = useForceUpdate();
 
   const overallSessions = data.overallSessions;
   const classAverage: number = data.classAverage;
@@ -20,21 +29,26 @@ const Gradebook = (): ReactElement => {
 
   const [activeSearch, setActiveSearch] = useState(false);
   const [students, setStudents] = useState(data.students);
+  const [isExpanded, setIsExpanded] = useState(
+    new Array(overallSessions.length).fill(false)
+  );
 
   const focus = () => {
     setActiveSearch(true);
   };
 
-  const blur = (event: any) => {
-    if (!event.target.value) {
+  const blur = (event: SyntheticEvent) => {
+    if (!(event.target as HTMLInputElement).value) {
       setActiveSearch(false);
     }
   };
 
-  const searchStudent = (event: any) => {
+  const searchStudent = (event: SyntheticEvent) => {
     setStudents(
       data.students.filter((student: StudentInfo) =>
-        student.name.toLowerCase().includes(event.target.value.toLowerCase())
+        student.name
+          .toLowerCase()
+          .includes((event.target as HTMLInputElement).value.toLowerCase())
       )
     );
   };
@@ -46,11 +60,55 @@ const Gradebook = (): ReactElement => {
   };
 
   const expandSession = (session: number) => {
-    console.log("lul expand session " + session);
+    isExpanded[session] = !isExpanded[session];
+    setIsExpanded(isExpanded);
+    forceUpdate();
   };
 
   const exportToCanvas = () => {
     console.log("Uhhhhh yeah export to canvas I guess");
+  };
+
+  const createQuestionHeaders = (sIndex: number) => {
+    return isExpanded[sIndex]
+      ? overallSessions[sIndex].questions.title.map((question, qIndex) => (
+          <th key={sIndex + "-" + qIndex + "question"} className="expanded">
+            <div>{overallSessions[sIndex].name}</div>
+            <div className="question-name">{qIndex + 1 + ": " + question}</div>
+          </th>
+        ))
+      : "";
+  };
+
+  const createQuestionAverages = (sIndex: number) => {
+    return isExpanded[sIndex]
+      ? overallSessions[sIndex].questions.average.map((average, qIndex) => (
+          <th
+            key={sIndex + "-" + qIndex + "average"}
+            className="expanded align-right"
+          >
+            <div>
+              {average.toFixed(2)}/
+              {overallSessions[sIndex].questions.total[qIndex].toFixed(2)}
+            </div>
+            <div className="bar">
+              <div
+                className="bar-value"
+                style={{
+                  width:
+                    (average /
+                      overallSessions[sIndex].questions.total[qIndex]) *
+                      100 +
+                    "%",
+                  backgroundColor: getBackgroundColor(
+                    average / overallSessions[sIndex].questions.total[qIndex]
+                  ),
+                }}
+              ></div>
+            </div>{" "}
+          </th>
+        ))
+      : "";
   };
 
   return (
@@ -75,72 +133,74 @@ const Gradebook = (): ReactElement => {
         <button onClick={exportToCanvas}>Export to Canvas</button>
       </div>
 
-      <table>
-        <thead>
-          <tr>
-            <th>Student</th>
-            <th>Totals</th>
-            {overallSessions.map((session: Session, index: number) => (
-              <th key={index}>
+      <div className="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Student</th>
+              <th>Totals</th>
+              {overallSessions.map((session: Session, sIndex: number) => [
+                <th key={sIndex} className="session-name">
+                  <div>
+                    <span>{session.name} </span>
+                    <span
+                      className="expand"
+                      onClick={() => expandSession(sIndex)}
+                    >
+                      {isExpanded[sIndex] ? "Close <" : "Expand >"}
+                    </span>
+                  </div>
+                  <div className="date">{session.date}</div>
+                </th>,
+                createQuestionHeaders(sIndex),
+              ])}
+            </tr>
+            <tr>
+              <th>Class Average</th>
+              <th className="align-right">
                 <div>
-                  <span>{session.name} </span>
-                  <span className="expand" onClick={() => expandSession(index)}>
-                    Expand&nbsp;&gt;
-                  </span>
-                </div>
-                <div className="date">{session.date}</div>
-              </th>
-            ))}
-          </tr>
-          <tr>
-            <th>Class Average</th>
-            <th className="align-right">
-              <div>
-                {classAverage.toFixed(2)}/{overallTotal.toFixed(2)}
-              </div>
-              <div className="bar">
-                <div
-                  className="bar-value"
-                  style={{
-                    width: (classAverage / overallTotal) * 100 + "%",
-                    backgroundColor: getBackgroundColor(
-                      classAverage / overallTotal
-                    ),
-                  }}
-                ></div>
-              </div>
-            </th>
-            {overallSessions.map((session: Session, index: number) => (
-              <td key={index} className="align-right">
-                <div>
-                  {session.average.toFixed(2)}/{session.total.toFixed(2)}
+                  {classAverage.toFixed(2)}/{overallTotal.toFixed(2)}
                 </div>
                 <div className="bar">
                   <div
                     className="bar-value"
                     style={{
-                      width: (session.average / session.total) * 100 + "%",
+                      width: (classAverage / overallTotal) * 100 + "%",
                       backgroundColor: getBackgroundColor(
-                        session.average / session.total
+                        classAverage / overallTotal
                       ),
                     }}
                   ></div>
                 </div>
-              </td>
+              </th>
+              {overallSessions.map((session: Session, sIndex: number) => [
+                <td key={sIndex} className="align-right">
+                  <div>
+                    {session.average.toFixed(2)}/{session.total.toFixed(2)}
+                  </div>
+                  <div className="bar">
+                    <div
+                      className="bar-value"
+                      style={{
+                        width: (session.average / session.total) * 100 + "%",
+                        backgroundColor: getBackgroundColor(
+                          session.average / session.total
+                        ),
+                      }}
+                    ></div>
+                  </div>
+                </td>,
+                createQuestionAverages(sIndex),
+              ])}
+            </tr>
+          </thead>
+          <tbody>
+            {students.map((student: StudentInfo, index: number) => (
+              <Student key={index} student={student} isExpanded={isExpanded} />
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {students.map((student: StudentInfo, index: number) => (
-            <Student
-              key={index}
-              name={student.name}
-              total={student.total}
-              sessions={student.sessions}
-            />
-          ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

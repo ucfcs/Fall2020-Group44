@@ -22,4 +22,17 @@
       border-left: 1px solid #cccccc;
     }
   }
+
+  .preview-title,
+  .preview-question {
+    margin-bottom: 0.5rem;
+  }
+
+  .preview-title:before {
+    content: 'Title: '
+  }
+
+  .preview-question:before {
+    content: 'Question: '
+  }
 }

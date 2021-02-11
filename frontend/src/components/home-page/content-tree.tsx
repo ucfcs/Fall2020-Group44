@@ -1,4 +1,10 @@
-import React, { useState, useEffect, useContext, ReactElement } from "react";
+import React, {
+  useState,
+  useEffect,
+  useContext,
+  ReactElement,
+  SyntheticEvent,
+} from "react";
 import { store } from "../../store";
 import "./content-tree.scss";
 
@@ -10,6 +16,14 @@ interface Folder {
 interface Question {
   title: string;
   type: string;
+}
+
+interface PollQuestion {
+  title: string;
+  question: string;
+  type: string;
+  choices: string[];
+  correct: number;
 }
 
 const ContentTree = (): ReactElement => {
@@ -31,10 +45,10 @@ const ContentTree = (): ReactElement => {
     new Array(questions.length).fill(false)
   );
 
-  const questionCheckboxRefs: any = {};
-  const folderCheckboxRefs: any = [];
+  const questionCheckboxRefs: { [key: number]: HTMLInputElement[] } = {};
+  const folderCheckboxRefs: HTMLInputElement[] = [];
 
-  const sessionQuestions: any = {};
+  const sessionQuestions: { [key: string]: number[] } = {};
 
   const handleUpdatePreviewQuestion = (folder: number, question: number) => {
     setSelectedQuestion([folder, question]);
@@ -54,7 +68,7 @@ const ContentTree = (): ReactElement => {
     setFolderCollapse(newFolderCollapse);
   };
 
-  const searchQuestions = (event: any) => {
+  const searchQuestions = (event: SyntheticEvent) => {
     const newFolders: Folder[] = [];
     state.questions.forEach((folder: Folder) => {
       const newQuestions: Question[] = [];
@@ -62,7 +76,7 @@ const ContentTree = (): ReactElement => {
         if (
           question.title
             .toLowerCase()
-            .includes(event.target.value.toLowerCase())
+            .includes((event.target as HTMLInputElement).value.toLowerCase())
         ) {
           newQuestions.push(question);
         }
@@ -75,13 +89,13 @@ const ContentTree = (): ReactElement => {
   };
 
   const selectQuestionsForPoll = (
-    event: any,
+    event: SyntheticEvent,
     isFolder: boolean,
     folder: number,
     question = -1
   ) => {
     event.stopPropagation();
-    if (event.target.checked) {
+    if ((event.target as HTMLInputElement).checked) {
       if (isFolder) {
         // push entire folder to session
         sessionQuestions[folder] = [
@@ -111,8 +125,8 @@ const ContentTree = (): ReactElement => {
       }
     }
 
-    const newPoll: any = [];
-    Object.keys(sessionQuestions).forEach((f) => {
+    const newPoll: PollQuestion[] = [];
+    Object.keys(sessionQuestions).forEach((f: string) => {
       sessionQuestions[f].forEach((q: number) => {
         newPoll.push(state.questions[f].questions[q]);
       });
@@ -148,7 +162,9 @@ const ContentTree = (): ReactElement => {
                 onClick={() => handleFolderCollapse(fIndex)}
               >
                 <input
-                  ref={(e) => (folderCheckboxRefs[fIndex] = e)}
+                  ref={(e: HTMLInputElement) =>
+                    (folderCheckboxRefs[fIndex] = e)
+                  }
                   type="checkbox"
                   onClick={(e) => selectQuestionsForPoll(e, true, fIndex)}
                 />
@@ -164,10 +180,10 @@ const ContentTree = (): ReactElement => {
                         ? "selected"
                         : ""
                     }`}
-                    onClick={(e) => handleUpdatePreviewQuestion(fIndex, qIndex)}
+                    onClick={() => handleUpdatePreviewQuestion(fIndex, qIndex)}
                   >
                     <input
-                      ref={(e) => {
+                      ref={(e: HTMLInputElement) => {
                         if (!questionCheckboxRefs[fIndex])
                           questionCheckboxRefs[fIndex] = [];
                         questionCheckboxRefs[fIndex][qIndex] = e;

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, SyntheticEvent } from "react";
 import MultipleChoice from "./creator-answer-types/multiple-choice";
 import { store } from "../../store";
 import "./creator-edit.scss";
@@ -23,13 +23,19 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop) => {
   const dispatch = global.dispatch;
   const state = global.state;
 
-  const handleTitleChange = (e: any) => {
-    const tempQuestion = { ...newQuestion, title: e.target.value };
+  const handleTitleChange = (e: SyntheticEvent) => {
+    const tempQuestion = {
+      ...newQuestion,
+      title: (e.target as HTMLInputElement).value,
+    };
     setNewQuestion(tempQuestion);
   };
 
-  const handleQuestionChange = (e: any) => {
-    const tempQuestion = { ...newQuestion, question: e.target.value };
+  const handleQuestionChange = (e: SyntheticEvent) => {
+    const tempQuestion = {
+      ...newQuestion,
+      question: (e.target as HTMLInputElement).value,
+    };
     setNewQuestion(tempQuestion);
   };
 

@@ -1,18 +1,30 @@
 import React, { ReactElement } from "react";
 import { StudentInfo } from "../../types";
 
-const Student = (props: StudentInfo): ReactElement => {
+interface Props {
+  student: StudentInfo;
+  isExpanded: boolean[];
+}
+
+const Student = ({ student, isExpanded }: Props): ReactElement => {
   return (
     <tr className="student">
-      <td>{props.name}</td>
+      <td>{student.name}</td>
 
-      <td className="align-right">{props.total.toFixed(2)}</td>
+      <td className="align-right">{student.total.toFixed(2)}</td>
 
-      {props.sessions.map((session, index) => (
-        <td key={index} className="align-right">
+      {student.sessions.map((session, sIndex) => [
+        <td key={sIndex} className="align-right">
           {session.toFixed(2)}
-        </td>
-      ))}
+        </td>,
+        isExpanded[sIndex]
+          ? student.questions[sIndex].map((question, qIndex) => (
+              <td key={sIndex + "-" + qIndex} className="expanded align-right">
+                {question.toFixed(2)}
+              </td>
+            ))
+          : "",
+      ])}
     </tr>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, SyntheticEvent } from "react";
 import "./multiple-choice.scss";
 
 const MIN_QUESTIONS = 2;
@@ -35,9 +35,9 @@ const AnswerChoice = ({
   newQuestion,
   setNewQuestion,
 }: SingleAnswerChoiceProps) => {
-  const handleAnswerChange = (e: any, index: number) => {
+  const handleAnswerChange = (e: SyntheticEvent, index: number) => {
     const tempQuestion = newQuestion;
-    tempQuestion.choices[index] = e.target.value;
+    tempQuestion.choices[index] = (e.target as HTMLInputElement).value;
     setNewQuestion(tempQuestion);
   };
 

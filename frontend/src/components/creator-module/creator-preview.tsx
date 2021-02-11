@@ -30,17 +30,14 @@ const CreatorPreview = ({ newQuestion }: Prop) => {
 
   return (
     <div className="creator-preview">
-      <div className="preview-title">
-        <span>{previewQuestion.question}</span>
-        {previewQuestion.choices.map((answer: string, index: number) => (
-          <div key={index} className="answer">
-            <div className="answer-letter">
-              {String.fromCharCode(65 + index)}
-            </div>
-            <div className="answer-text">{answer}</div>
-          </div>
-        ))}
-      </div>
+      <div className="preview-title">{previewQuestion.title}</div>
+      <div className="preview-question">{previewQuestion.question}</div>
+      {previewQuestion.choices.map((answer: string, index: number) => (
+        <div key={index} className="answer">
+          <div className="answer-letter">{String.fromCharCode(65 + index)}</div>
+          <div className="answer-text">{answer}</div>
+        </div>
+      ))}
     </div>
   );
 };

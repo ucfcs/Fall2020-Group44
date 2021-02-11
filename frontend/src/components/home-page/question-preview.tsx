@@ -26,15 +26,6 @@ const QuestionPreview = () => {
     dispatch({ type: "edit-preview-question" });
   };
 
-  const editQuestion = (event: any) => {
-    // const newQuestions = state.questions.slice();
-    // newQuestions[state.previewFolder].questions[state.previewQuestion].title =
-    // 	event.target.value;
-
-    // dispatch({ type: 'edit-preview-question', payload: newQuestions });
-    console.log("editQuestion");
-  };
-
   const deleteQuestion = () => {
     // const newQuestions = state.questions.slice();
     // newQuestions[state.previewFolder].questions.splice(
@@ -54,7 +45,7 @@ const QuestionPreview = () => {
 
   return previewQuestion ? (
     <div className="question-preview">
-      <span className="question-title">{previewQuestion.question}?</span>
+      <span className="question">{previewQuestion.question}</span>
       <div className="response-buttons">
         <button
           className="show-correct-response"

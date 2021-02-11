@@ -51,6 +51,18 @@
     padding: 0.75em;
   }
 
+  .table-wrapper {
+    overflow-x: auto;
+  }
+
+  .expanded {
+    border: 2px solid #ffc904;
+
+    .question-name {
+      margin-top: 8px;
+    }
+  }
+
   table {
     width: 100%;
     text-align: left;
@@ -60,6 +72,7 @@
 
   th,
   td {
+    min-width: 130px;
     border: 1px solid lightgray;
 
     padding: 0.5em 1em;
