@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { ReactElement, useContext } from "react";
 import { store } from "../../store";
 
 import "./creator-preview.scss";
@@ -19,9 +19,8 @@ interface Question {
   correct: number;
 }
 
-const CreatorPreview = ({ newQuestion }: Prop) => {
+const CreatorPreview = ({ newQuestion }: Prop): ReactElement => {
   const global = useContext(store) as any;
-  const dispatch = global.dispatch;
   const state = global.state;
 
   const previewQuestion = state.editPreviewQuestion

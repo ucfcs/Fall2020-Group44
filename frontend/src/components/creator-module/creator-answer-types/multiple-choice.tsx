@@ -1,7 +1,10 @@
-import React, { useState, useEffect, SyntheticEvent } from "react";
+import React, {
+  useState,
+  useEffect,
+  SyntheticEvent,
+  ReactElement,
+} from "react";
 import "./multiple-choice.scss";
-
-const MIN_QUESTIONS = 2;
 
 type Props = {
   answers: string[];
@@ -86,7 +89,7 @@ const MultipleChoice = ({
   correct,
   newQuestion,
   setNewQuestion,
-}: Props) => {
+}: Props): ReactElement => {
   const [answerChoices, setAnswerChoices] = useState(["", ""]);
 
   useEffect(() => {

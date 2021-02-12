@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import "./creator.scss";
 import { store } from "../../store";
@@ -7,10 +7,9 @@ import CreatorPreview from "./creator-preview";
 
 //todo: create question props
 
-const Creator = () => {
+const Creator = (): ReactElement => {
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
-  const state = global.state;
 
   const [isPreview, setIsPreview] = useState(false);
   const [newQuestion, setNewQuestion] = useState({
