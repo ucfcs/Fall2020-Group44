@@ -1,6 +1,6 @@
 import React, { useContext, SyntheticEvent, ReactElement } from "react";
-import MultipleChoice from "./creator-answer-types/multiple-choice";
-import { store } from "../../store";
+import MultipleChoice from "../creator-answer-types/multiple-choice";
+import { store } from "../../../store";
 import "./creator-edit.scss";
 
 //TODO: create question props

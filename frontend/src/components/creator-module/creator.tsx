@@ -2,8 +2,8 @@ import React, { useState, useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import "./creator.scss";
 import { store } from "../../store";
-import CreatorEdit from "./creator-edit";
-import CreatorPreview from "./creator-preview";
+import CreatorEdit from "./creator-edit/creator-edit";
+import CreatorPreview from "./creator-preview/creator-preview";
 
 //todo: create question props
 
