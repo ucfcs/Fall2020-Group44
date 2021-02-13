@@ -10,8 +10,6 @@ export class Connection {
   }
 
   init (event) {
-		console.log('init')
-
     this.client = redis.createClient({
       host: this.host,
       port: this.port,
@@ -33,7 +31,7 @@ export class Connection {
    * - success of redis operation SADD
    *****************************************************/
   addStudent (key, connectionId) {
-		return this.client.sadd(key, connectionId)
+		return this.client.sadd(`room${key}`, connectionId)
   }
 
   /******************************************************
@@ -47,7 +45,7 @@ export class Connection {
    * - success of redis operation ADD
    *****************************************************/
   addProfessor (key, connectionId) {
-    return this.client.add(`${key}-prof`, connectionId)
+    return this.client.set(`prof${key}`, connectionId)
   }
 
   /******************************************************
@@ -60,8 +58,8 @@ export class Connection {
    *****************************************************/
   deleteRoom (key) {
     return (
-      this.client.del(`${key}-prof`)
-      && this.client.del(key)
+      this.client.del(`prof${key}`)
+      && this.client.del(`room${key}`)
     )
   }
 
@@ -73,7 +71,7 @@ export class Connection {
    * - 1 if room exists, 0 otherwise
    *****************************************************/
   roomExists (key) {
-    return this.client.exists(key)
+    return this.client.exists(`room${key}`)
   }
 
   /******************************************************
@@ -85,7 +83,7 @@ export class Connection {
    * - success of redis operation SREM
    *****************************************************/
   removeStudent (key, connectionId) {
-    return this.client.srem(key, connectionId)
+    return this.client.srem(`room${key}`, connectionId)
   }
 
   /******************************************************
@@ -96,8 +94,24 @@ export class Connection {
    * - All connectionIds in the student set
    *****************************************************/
   getStudents (key) {
-    return this.client.smembers(key)
+    return this.client.smembers(`room${key}`)
   }
+
+  /******************************************************
+   * get professor connectionId
+   * params
+   * - key: roomId == courseId
+   * returns
+   * - professors connection id if it exists
+   *****************************************************/
+  getProfessor (key) {
+    return this.client.get(`prof${key}`)
+  }
+
+  // flushAll() {
+  //   this.client.flushall();
+  //   console.log("all keys gone");
+  // }
 
   /******************************************************
    * publish message to all students in a room
@@ -105,17 +119,15 @@ export class Connection {
    * - key: roomId == courseId
    * - message: data to send
    *****************************************************/
-  async publish (key, message) {
+  async publish (key, action, payload=null) {
 		const connections = await this.getStudents(key)
 		
 		console.log("connections:")
 		console.log(connections)
 
     for (const connectionId of connections) {
-      // console.log(connectionId)
-      if (event.requestContext.connectionId === connectionId) continue
       try {
-        await this.gateway.postToConnection({ ConnectionId: connectionId, Data: message }).promise()
+        await this.gateway.postToConnection({ ConnectionId: connectionId, action: action, payload: payload }).promise()
       } catch (e) {
         this.removeStudent(key, connectionId)
         console.log(e)

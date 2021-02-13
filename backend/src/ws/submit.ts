@@ -18,7 +18,9 @@ export const handler = async (
 	}
 	
 	try {
+
 		//TODO: once PollUserResponse is created
+		
 	} catch (error) {  
 		console.log(error)
 		return {

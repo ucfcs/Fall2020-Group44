@@ -26,6 +26,7 @@ export const handler = async (
 		// a new key in redis	
 		if(!(await connection.roomExists(room))){
 			await connection.addProfessor(room, event?.requestContext.connectionId)
+			console.log(`room ${room} created`)
 			return {
 				statusCode: 200,
 				body: JSON.stringify({
@@ -33,6 +34,7 @@ export const handler = async (
 				})
 			}
 		} else { // if room already exists return error
+			console.log(`room ${room} already exists`)
 			return {
 				statusCode: 400, 
 				body: JSON.stringify({

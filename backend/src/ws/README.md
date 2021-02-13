@@ -29,3 +29,14 @@ Student submits response to a question
 Professor creates a room for students to join
 - **payload** `courseId: String`
 - **returns** success creating room
+
+### StartQuestion
+Professor starts question for a room, allowing responses to be submitted
+- **payload** `courseId: String, question: QuestionObject`
+- **returns** success starting question
+
+### EndQuestion
+Professor ends question for a room, preventing further
+responses from being submitted.
+- **payload** `courseId: String`
+- **returns** success ending question

@@ -98,6 +98,11 @@ functions:
     events: 
       - websocket:
           route: $connect
+  disconnect:
+    handler: src/ws/disconnect.handler
+    events: 
+      - websocket:
+          route: $disconnect
   join: 
     handler: src/ws/join.handler
     events: 
@@ -113,6 +118,11 @@ functions:
     events: 
       - websocket: 
           route: submit
+  endQuestion: 
+    handler: src/ws/end.handler
+    events: 
+      - websocket: 
+          route: endQuestion
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
