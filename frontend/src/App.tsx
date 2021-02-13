@@ -1,16 +1,20 @@
+import React, { ReactElement, useContext } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import { ModalContainer, ModalRoute } from "react-router-modal";
+
+import { store } from "./store";
 
 import Body from "./components/home-page/body";
-import Creator from "./components/creator-module/creator";
 import Gradebook from "./components/gradebook/gradebook";
 import HomeHeader from "./components/home-header/home-header";
 import PollHeader from "./components/poll-header/poll-header";
 import PollInProgress from "./components/poll-in-progress/poll-in-progress";
 import Present from "./components/present-poll/present";
-import React, { ReactElement } from "react";
+import Creator from "./components/creator-module/creator";
 
 function App(): ReactElement {
+  const global = useContext(store) as any;
+  const state = global.state;
+
   return (
     <Router>
       <Switch>
@@ -41,9 +45,7 @@ function App(): ReactElement {
         </Route>
       </Switch>
 
-      <ModalRoute component={Creator} path="/create" />
-
-      <ModalContainer />
+      {state.openCreator ? <Creator /> : null}
     </Router>
   );
 }

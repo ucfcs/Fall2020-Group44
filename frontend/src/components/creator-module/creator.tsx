@@ -22,6 +22,7 @@ const Creator = (): ReactElement => {
 
   const closePreviewQuestion = () => {
     dispatch({ type: "close-preview-question" });
+    dispatch({ type: "close-creator" });
   };
 
   const saveQuestion = () => {
@@ -33,7 +34,7 @@ const Creator = (): ReactElement => {
     <div className="create-question-module">
       <div className="creator-header">
         <button className="exit" onClick={closePreviewQuestion}>
-          <Link to="/">X</Link>
+          X
         </button>
         <span className="header-title">Create Question</span>
         <div className="header-tabs">

@@ -23,11 +23,7 @@
     position: absolute;
     top: 0;
     right: 0;
-
-    a {
-      color: black;
-      text-decoration: none;
-    }
+    cursor: pointer;
   }
 
   button:focus {
