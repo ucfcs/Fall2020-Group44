@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, SyntheticEvent } from "react";
+import React, { useContext, SyntheticEvent, ReactElement } from "react";
 import MultipleChoice from "./creator-answer-types/multiple-choice";
 import { store } from "../../store";
 import "./creator-edit.scss";
@@ -18,9 +18,8 @@ interface Question {
   correct: number;
 }
 
-const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop) => {
+const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
   const global = useContext(store) as any;
-  const dispatch = global.dispatch;
   const state = global.state;
 
   const handleTitleChange = (e: SyntheticEvent) => {

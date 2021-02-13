@@ -1,10 +1,10 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import "./question-preview.scss";
 import { store } from "../../store";
 import MultipleChoice from "./question-types/multiple-choice";
 
-const QuestionPreview = () => {
+const QuestionPreview = (): ReactElement => {
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
   const state = global.state;

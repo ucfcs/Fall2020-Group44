@@ -1,12 +1,6 @@
-import React, {
-  useState,
-  useContext,
-  ReactElement,
-  SyntheticEvent,
-} from "react";
+import React, { useState, ReactElement, SyntheticEvent } from "react";
 import Student from "./student";
 import { StudentInfo, Session } from "../../types";
-import { store } from "../../store";
 
 import "./gradebook.scss";
 
