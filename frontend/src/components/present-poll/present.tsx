@@ -1,12 +1,18 @@
 import React, { ReactElement } from "react";
-import PresentPreview from "./present-preview";
-import PresentFooter from "./present-footer";
+import PresentPreview from "./present-preview/present-preview";
+import PresentFooter from "./present-footer/present-footer";
 import "./present.scss";
+import PollHeader from "../poll-header/poll-header";
 
 const Present = (): ReactElement => {
   return (
     <div className="present">
-      <PresentPreview />
+      <div className="content">
+        <PollHeader />
+
+        <PresentPreview />
+      </div>
+
       <PresentFooter />
     </div>
   );

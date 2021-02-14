@@ -1,7 +1,8 @@
 .present {
-  height: 100vh;
+  display: flex;
+  flex-direction: column;
 
-  button:focus {
-    outline: none;
+  .content {
+    flex: 1 0 auto;
   }
 }
