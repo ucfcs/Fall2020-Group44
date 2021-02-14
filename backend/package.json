@@ -8,6 +8,7 @@
 		"build": "tsc",
 		"db:build": "serverless invoke local --function dbInit",
 		"db:drop": "serverless invoke local --function dbDrop",
+		"db:rebuild": "npm run db:drop && npm run db:build",
 		"dev": "serverless offline",
 		"deploy": "serverless deploy --stage production"
 	},

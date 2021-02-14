@@ -1,5 +1,5 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Collection } from './models';
+import { Collection, Question } from './models';
 import responses from './util/API_Responses';
 
 const mockUserid = 1;
@@ -18,6 +18,9 @@ const get = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 				id: params?.collectionId,
 				userId: mockUserid,
 			},
+			include: {
+				model: Question,
+			},
 		});
 
 		return responses._200({
@@ -25,7 +28,7 @@ const get = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 		});
 	} catch (error) {
 		return responses._400({
-			message: error.name || 'Fail to query',
+			message: error || 'Fail to query',
 		});
 	}
 };

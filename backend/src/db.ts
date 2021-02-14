@@ -10,34 +10,6 @@ import {
 } from './models';
 
 const init = async (): Promise<void> => {
-	Folder.hasMany(Collection, { foreignKey: 'folderId' });
-	Collection.belongsTo(Folder, { foreignKey: 'folderId' });
-
-	Collection.hasMany(Question, { foreignKey: 'collectionId' });
-	Question.belongsTo(Collection, { foreignKey: 'collectionId' });
-
-	Question.hasMany(QuestionOption, { foreignKey: 'questionId' });
-	QuestionOption.belongsTo(Question, { foreignKey: 'questionId' });
-
-	Question.hasMany(QuestionUserResponse, { foreignKey: 'questionId' });
-	QuestionUserResponse.belongsTo(Question, { foreignKey: 'questionId' });
-
-	QuestionOption.hasMany(QuestionUserResponse, {
-		foreignKey: 'questionUserResponseId',
-	});
-	QuestionUserResponse.belongsTo(QuestionOption, {
-		foreignKey: 'questionUserResponseId',
-	});
-
-	User.hasMany(QuestionUserResponse, { foreignKey: 'userId' });
-	QuestionUserResponse.belongsTo(User, { foreignKey: 'userId' });
-
-	User.hasOne(UserWebSetting, { foreignKey: 'userId' });
-	UserWebSetting.belongsTo(User, { foreignKey: 'userId' });
-
-	User.hasOne(UserMobileSetting, { foreignKey: 'userId' });
-	UserMobileSetting.belongsTo(User, { foreignKey: 'userId' });
-
 	try {
 		await User.sync({ alter: true });
 		await Folder.sync({ alter: true });
@@ -50,11 +22,11 @@ const init = async (): Promise<void> => {
 
 		await User.create({
 			firstName: 'Mock',
-			lastName: 'Last',
+			lastName: 'User',
 			token: null,
 			refreshToken: null,
 		});
-		await Folder.create({ name: 'First Folder', userId: 1, courseId: '1' });
+		await Folder.create({ name: 'Folder 1', userId: 1, courseId: '1' });
 		await Collection.create({
 			name: 'Collection 1',
 			userId: 1,

@@ -1,5 +1,5 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Question } from './models';
+import { Question, QuestionOption } from './models';
 import responses from './util/API_Responses';
 
 // GET /api/v1/question
@@ -14,6 +14,9 @@ const get = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 		const question = await Question.findOne({
 			where: {
 				id: params?.questionId,
+			},
+			include: {
+				model: QuestionOption,
 			},
 		});
 
