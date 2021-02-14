@@ -17,12 +17,7 @@
     align-items: center;
     justify-content: space-between;
 
-    div {
-      // border: 1px solid red;
-    }
-
     .letter {
-      // border: 1px solid red;
       height: 100%;
       width: 5%;
       border-right: 1px solid #d1d1d1;
@@ -34,13 +29,11 @@
         margin: 0;
         color: #ffc904;
         font-weight: bold;
-        // border: 1px solid blue;
         text-align: center;
       }
     }
 
     .answer-text {
-      // border: 1px solid blue;
       width: 65%;
 
       input {
@@ -54,10 +47,8 @@
     }
 
     .correct-checkbox {
-      // border: 1px solid green;
       width: 15%;
       display: flex;
-      // justify-content: space-between;
 
       input {
         border: none;
@@ -66,7 +57,6 @@
       label {
         font-size: 0.7vw;
         color: #717171;
-        // border: 1px solid green;
       }
     }
 
@@ -93,15 +83,9 @@
       display: flex;
       align-items: center;
       justify-content: space-around;
-      // border: 1px solid blue;
       font-size: 1vw;
       width: 25%;
       color: #ffc904;
-
-      .add-answer-icon {
-        font-size: 1.5vw;
-        // border: 1px solid green;
-      }
     }
   }
 }
