@@ -1,26 +1,26 @@
 import { DataTypes, ModelDefined } from 'sequelize';
 import sequelize from '../config/database';
 
-export const PollQuestion: ModelDefined<
-	PollQuestionAttributes,
-	PollQuestionCreationAttributes
-> = sequelize.define('PollQuestion', {
+export const QuestionOption: ModelDefined<
+	QuestionlOptionAttributes,
+	QuestionOptionCreationAttributes
+> = sequelize.define('QuestionOption', {
 	id: {
 		type: DataTypes.INTEGER,
 		allowNull: false,
 		primaryKey: true,
 		autoIncrement: true,
 	},
-	pollId: {
+	questionId: {
 		type: DataTypes.INTEGER,
 		allowNull: false,
 	},
-	question: {
+	text: {
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
-	timeToAnswer: {
-		type: DataTypes.DATE,
-		allowNull: true,
+	isAnswer: {
+		type: DataTypes.BOOLEAN,
+		defaultValue: false,
 	},
 });

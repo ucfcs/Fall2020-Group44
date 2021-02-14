@@ -1,18 +1,18 @@
 import { Folder } from './Folder';
-import { Poll } from './Poll';
-import { PollOption } from './PollOption';
-import { PollQuestion } from './PollQuestion';
-import { PollUserResponse } from './PollUserResponse';
+import { Collection } from './Collection';
+import { QuestionOption } from './QuestionOption';
+import { Question } from './Question';
+import { QuestionUserResponse } from './QuestionUserResponse';
 import { User } from './User';
 import { UserMobileSetting } from './UserMobileSetting';
 import { UserWebSetting } from './UserWebSetting';
 
 export {
 	Folder,
-	Poll,
-	PollOption,
-	PollQuestion,
-	PollUserResponse,
+	Collection,
+	QuestionOption,
+	Question,
+	QuestionUserResponse,
 	User,
 	UserMobileSetting,
 	UserWebSetting,

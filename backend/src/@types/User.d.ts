@@ -11,6 +11,6 @@ interface UserAttributes {
 interface UserCreationAttributes {
 	firstName: string;
 	lastName: string;
-	token: string;
-	refreshToken: string;
+	token: string | null;
+	refreshToken: string | null;
 }

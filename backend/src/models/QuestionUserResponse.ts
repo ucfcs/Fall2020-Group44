@@ -1,11 +1,11 @@
 import { DataTypes, ModelDefined } from 'sequelize';
 import sequelize from '../config/database';
 
-export const Poll: ModelDefined<
-	PollAttributes,
-	PollCreationAttributes
+export const QuestionUserResponse: ModelDefined<
+	QuestionUserResponseAttributes,
+	QuestionUserResponseCreationAttributes
 > = sequelize.define(
-	'Poll',
+	'QuestionUserResponse',
 	{
 		id: {
 			type: DataTypes.INTEGER,
@@ -13,32 +13,24 @@ export const Poll: ModelDefined<
 			primaryKey: true,
 			autoIncrement: true,
 		},
-		folderId: {
+		collectionId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		name: {
-			type: DataTypes.STRING,
-			allowNull: false,
-		},
 		userId: {
-			type: DataTypes.STRING,
+			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		courseId: {
-			type: DataTypes.STRING,
+		questionOptionId: {
+			type: DataTypes.INTEGER,
 			allowNull: false,
-		},
-		publishedAt: {
-			type: DataTypes.DATE,
-			allowNull: true,
 		},
 	},
 	{
 		indexes: [
 			{
 				unique: true,
-				fields: ['name', 'userId', 'folderId'],
+				fields: ['userId', 'collectionId', 'questionOptionId'],
 			},
 		],
 	}

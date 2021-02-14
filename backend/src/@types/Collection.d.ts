@@ -1,7 +1,7 @@
-type PollId = number;
+type CollectionId = number;
 
-interface PollAttributes {
-	id: PollId;
+interface CollectionAttributes {
+	id: CollectionId;
 	folderId: FolderId;
 	name: string;
 	userId: UserId;
@@ -9,10 +9,10 @@ interface PollAttributes {
 	publishedAt: string;
 }
 
-interface PollCreationAttributes {
+interface CollectionCreationAttributes {
 	folderId: FolderId;
 	name: string;
 	userId: UserId;
 	courseId: CourseId;
-	publishedAt: string;
+	publishedAt: string | null;
 }

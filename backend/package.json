@@ -7,6 +7,7 @@
 		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "tsc",
 		"db:build": "serverless invoke local --function dbInit",
+		"db:drop": "serverless invoke local --function dbDrop",
 		"dev": "serverless offline",
 		"deploy": "serverless deploy --stage production"
 	},

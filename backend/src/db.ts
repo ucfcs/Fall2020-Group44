@@ -1,32 +1,36 @@
 import {
 	Folder,
-	Poll,
-	PollOption,
-	PollQuestion,
-	PollUserResponse,
+	Collection,
+	QuestionOption,
+	Question,
+	QuestionUserResponse,
 	User,
 	UserMobileSetting,
 	UserWebSetting,
 } from './models';
 
 const init = async (): Promise<void> => {
-	Folder.hasMany(Poll, { foreignKey: 'folderId' });
-	Poll.belongsTo(Folder, { foreignKey: 'folderId' });
+	Folder.hasMany(Collection, { foreignKey: 'folderId' });
+	Collection.belongsTo(Folder, { foreignKey: 'folderId' });
 
-	Poll.hasMany(PollQuestion, { foreignKey: 'pollId' });
-	PollQuestion.belongsTo(Poll, { foreignKey: 'pollId' });
+	Collection.hasMany(Question, { foreignKey: 'collectionId' });
+	Question.belongsTo(Collection, { foreignKey: 'collectionId' });
 
-	PollQuestion.hasMany(PollOption, { foreignKey: 'pollQuestionId' });
-	PollOption.belongsTo(PollQuestion, { foreignKey: 'pollQuestionId' });
+	Question.hasMany(QuestionOption, { foreignKey: 'questionId' });
+	QuestionOption.belongsTo(Question, { foreignKey: 'questionId' });
 
-	PollQuestion.hasMany(PollUserResponse, { foreignKey: 'pollQuestionId' });
-	PollUserResponse.belongsTo(PollQuestion, { foreignKey: 'pollQuestionId' });
+	Question.hasMany(QuestionUserResponse, { foreignKey: 'questionId' });
+	QuestionUserResponse.belongsTo(Question, { foreignKey: 'questionId' });
 
-	PollOption.hasMany(PollUserResponse, { foreignKey: 'pollUserResponseId' });
-	PollUserResponse.belongsTo(PollOption, { foreignKey: 'pollUserResponseId' });
+	QuestionOption.hasMany(QuestionUserResponse, {
+		foreignKey: 'questionUserResponseId',
+	});
+	QuestionUserResponse.belongsTo(QuestionOption, {
+		foreignKey: 'questionUserResponseId',
+	});
 
-	User.hasMany(PollUserResponse, { foreignKey: 'userId' });
-	PollUserResponse.belongsTo(User, { foreignKey: 'userId' });
+	User.hasMany(QuestionUserResponse, { foreignKey: 'userId' });
+	QuestionUserResponse.belongsTo(User, { foreignKey: 'userId' });
 
 	User.hasOne(UserWebSetting, { foreignKey: 'userId' });
 	UserWebSetting.belongsTo(User, { foreignKey: 'userId' });
@@ -37,12 +41,37 @@ const init = async (): Promise<void> => {
 	try {
 		await User.sync({ alter: true });
 		await Folder.sync({ alter: true });
-		await Poll.sync({ alter: true });
-		await PollQuestion.sync({ alter: true });
-		await PollOption.sync({ alter: true });
-		await PollUserResponse.sync({ alter: true });
+		await Collection.sync({ alter: true });
+		await Question.sync({ alter: true });
+		await QuestionOption.sync({ alter: true });
+		await QuestionUserResponse.sync({ alter: true });
 		await UserMobileSetting.sync({ alter: true });
 		await UserWebSetting.sync({ alter: true });
+
+		await User.create({
+			firstName: 'Mock',
+			lastName: 'Last',
+			token: null,
+			refreshToken: null,
+		});
+		await Folder.create({ name: 'First Folder', userId: 1, courseId: '1' });
+		await Collection.create({
+			name: 'Collection 1',
+			userId: 1,
+			folderId: 1,
+			courseId: '1',
+			publishedAt: null,
+		});
+		await Question.create({
+			question: 'Q1',
+			collectionId: 1,
+			timeToAnswer: null,
+		});
+		await QuestionOption.create({
+			text: 'Option 1',
+			questionId: 1,
+			isAnswer: false,
+		});
 
 		console.log('Database tables created');
 		process.exit(0);
@@ -52,4 +81,21 @@ const init = async (): Promise<void> => {
 	}
 };
 
-export { init };
+const drop = async (): Promise<void> => {
+	try {
+		await UserWebSetting.drop();
+		await UserMobileSetting.drop();
+		await QuestionUserResponse.drop();
+		await QuestionOption.drop();
+		await Question.drop();
+		await Collection.drop();
+		await Folder.drop();
+		await User.drop();
+		process.exit(0);
+	} catch (error) {
+		console.log(error);
+		process.exit(1);
+	}
+};
+
+export { init, drop };
