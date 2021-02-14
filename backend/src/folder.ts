@@ -1,6 +1,5 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 import { Folder } from './models/Folder';
-import querystring from 'querystring';
 
 const mockUserid = 1;
 
@@ -43,7 +42,7 @@ const getFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 // POST /api/v1/folder
 const newFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = querystring.parse(event.body || '');
+	const body = JSON.parse(event.body || '{}');
 	const params = event.queryStringParameters;
 
 	// eslint-disable-next-line no-constant-condition
@@ -83,7 +82,7 @@ const newFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 // PUT /api/v1/folder
 const updateFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = querystring.parse(event?.body || '');
+	const body = JSON.parse(event?.body || '{}');
 	const params = event?.queryStringParameters;
 
 	if (!params?.folderId) {

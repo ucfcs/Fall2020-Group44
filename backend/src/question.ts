@@ -1,5 +1,4 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import querystring from 'querystring';
 import { Question } from './models';
 import responses from './util/API_Responses';
 
@@ -30,7 +29,7 @@ const get = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 
 // POST /api/v1/question
 const create = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = querystring.parse(event?.body || '');
+	const body = JSON.parse(event?.body || '{}');
 	const params = event?.queryStringParameters;
 
 	if (!params?.collectionId) {
@@ -57,7 +56,7 @@ const create = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 
 // PUT /api/v1/question
 const update = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = querystring.parse(event?.body || '');
+	const body = JSON.parse(event?.body || '{}');
 	const params = event?.queryStringParameters;
 
 	if (!params?.questionId) {
