@@ -62,10 +62,10 @@ const Creator = (): ReactElement => {
       )}
       <div className="buttons">
         <button className="cancel-button" onClick={closePreviewQuestion}>
-          <Link to="/">Cancel</Link>
+          Cancel
         </button>
         <button className="save-button" onClick={saveQuestion}>
-          <Link to="/">Save</Link>
+          Save
         </button>
       </div>
     </div>
