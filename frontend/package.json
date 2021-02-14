@@ -14,7 +14,6 @@
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-router-dom": "^5.2.0",
-    "react-router-modal": "^1.5.2",
     "react-scripts": "4.0.1",
     "typescript": "^4.1.2",
     "web-vitals": "^1.0.1"

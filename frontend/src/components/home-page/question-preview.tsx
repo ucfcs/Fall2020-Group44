@@ -24,6 +24,7 @@ const QuestionPreview = (): ReactElement => {
 
   const toggleEditQuestion = () => {
     dispatch({ type: "edit-preview-question" });
+    dispatch({ type: "open-creator" });
   };
 
   const deleteQuestion = () => {
@@ -71,7 +72,7 @@ const QuestionPreview = (): ReactElement => {
           <Link to="/poll/present">&#9658; Present</Link>
         </button>
         <button className="edit-button" onClick={toggleEditQuestion}>
-          <Link to="/create">Edit</Link>
+          Edit
         </button>
         <button className="delete-button" onClick={deleteQuestion}>
           Delete

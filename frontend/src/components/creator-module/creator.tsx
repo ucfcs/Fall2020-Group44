@@ -2,8 +2,8 @@ import React, { useState, useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import "./creator.scss";
 import { store } from "../../store";
-import CreatorEdit from "./creator-edit";
-import CreatorPreview from "./creator-preview";
+import CreatorEdit from "./creator-edit/creator-edit";
+import CreatorPreview from "./creator-preview/creator-preview";
 
 //todo: create question props
 
@@ -22,6 +22,7 @@ const Creator = (): ReactElement => {
 
   const closePreviewQuestion = () => {
     dispatch({ type: "close-preview-question" });
+    dispatch({ type: "close-creator" });
   };
 
   const saveQuestion = () => {
@@ -33,7 +34,7 @@ const Creator = (): ReactElement => {
     <div className="create-question-module">
       <div className="creator-header">
         <button className="exit" onClick={closePreviewQuestion}>
-          <Link to="/">X</Link>
+          X
         </button>
         <span className="header-title">Create Question</span>
         <div className="header-tabs">
@@ -61,10 +62,10 @@ const Creator = (): ReactElement => {
       )}
       <div className="buttons">
         <button className="cancel-button" onClick={closePreviewQuestion}>
-          <Link to="/">Cancel</Link>
+          Cancel
         </button>
         <button className="save-button" onClick={saveQuestion}>
-          <Link to="/">Save</Link>
+          Save
         </button>
       </div>
     </div>

@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext } from "react";
-import { store } from "../../store";
+import { store } from "../../../store";
 
 import "./creator-preview.scss";
 

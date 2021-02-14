@@ -51,6 +51,7 @@ const init = {
   ],
   poll: 1,
   editPreviewQuestion: false,
+  openCreator: false,
 };
 const store = React.createContext(init);
 const { Provider } = store;
@@ -69,6 +70,10 @@ const StateProvider = ({ children }) => {
         return { ...state, editPreviewQuestion: false };
       case "update-session-questions":
         return { ...state, poll: action.payload };
+      case "open-creator":
+        return { ...state, openCreator: true };
+      case "close-creator":
+        return { ...state, openCreator: false };
       default:
         throw new Error("Base reducer: this action type was not defined");
     }
