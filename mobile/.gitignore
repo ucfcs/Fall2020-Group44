@@ -64,3 +64,4 @@ buck-out/
 
 .env
 .DS_Store
+node
