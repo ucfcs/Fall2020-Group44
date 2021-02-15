@@ -10,7 +10,9 @@ const Present = (): ReactElement => {
       <div className="content">
         <PollHeader />
 
-        <PresentPreview />
+        <div className="centering">
+          <PresentPreview />
+        </div>
       </div>
 
       <PresentFooter />
