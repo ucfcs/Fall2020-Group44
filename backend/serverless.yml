@@ -27,10 +27,24 @@ provider:
   region: us-east-1
   apiGateway:
     shouldStartNameWithService: true
+  iamRoleStatements:
+  - Effect: Allow
+    Action:
+      - "dynamodb:PutItem"
+      - "dynamodb:GetItem"
+      - "dynamodb:UpdateItem"
+      - "dynamodb:DeleteItem"
+      - "dynamodb:BatchGetItem"
+      - "dynamodb:BatchWriteItem"
+      - "dynamodb:Query"
+    Resource:
+      - "*"
+
 
 plugins:
   - serverless-dotenv-plugin
   - serverless-webpack
+  - serverless-dynamodb-local
   - serverless-offline
 
 # you can add statements to the Lambda function's IAM Role here
@@ -118,6 +132,11 @@ functions:
     events: 
       - websocket: 
           route: submit
+  startQuestion: 
+    handler: src/ws/start.handler
+    events: 
+      - websocket: 
+          route: startQuestion
   endQuestion: 
     handler: src/ws/end.handler
     events: 
@@ -175,6 +194,29 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+resources: 
+  Resources:
+    connectionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties: 
+        TableName: connectionsTable
+        AttributeDefinitions:
+          - AttributeName: courseId
+            AttributeType: S
+          - AttributeName: professor
+            AttributeType: S
+        KeySchema:
+          - AttributeName: courseId
+            KeyType: HASH
+        LocalSecondaryIndexes:
+          - IndexName: professorIndex
+            KeySchema:
+              - AttributeName: professor
+                KeyType: HASH
+            Projection:
+              ProjectionType: ALL
+
 
 custom:
   webpack:

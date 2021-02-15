@@ -1,11 +1,13 @@
 const { Connection } = require('./connections.js')
+const AWS = require('aws-sdk')
+
 
 import { APIGatewayEvent, APIGatewayProxyEvent, Context, ProxyResult } from "aws-lambda";
 
 // let connection: typeof Connection;
 // const host = process.env.REDIS_HOST;
 // const port = 6379;
-
+const ddb = new AWS.DynamoDB({ apiVersion: '2012-08-10', region: 'localhost', endpoint: 'http://localhost:8000' });
 
 export const handler = async (
   event?: APIGatewayEvent,

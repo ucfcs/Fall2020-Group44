@@ -1,20 +1,26 @@
-const { Connection } = require('./connections.js')
+const { Connection } = require('./dbconnections.js')
 import { APIGatewayEvent, APIGatewayProxyEvent, Context, ProxyResult } from "aws-lambda";
 
 let connection: typeof Connection;
 let room: String;
-const host = process.env.REDIS_HOST;
-const port = 6379;
+// const host = process.env.REDIS_HOST;
+// const port = 6379;
 
 export const handler = async (
 	event?: APIGatewayEvent,
   content?: Context
 ): Promise<ProxyResult> => {
 
-	// initialize connection to redis/apigateway
+	// // initialize connection to redis/apigateway
+	// if (!connection) {
+  //   connection = new Connection({ host, port })
+  //   connection.init(event);
+	// }
+
+	// initialize connection to dynamodb/apigateway
 	if (!connection) {
-    connection = new Connection({ host, port })
-    connection.init(event);
+		connection = new Connection()
+		connection.init(event);
 	}
 	
 	try {
@@ -22,29 +28,8 @@ export const handler = async (
 		room = JSON.parse(event.body).courseId
 		if(!room) throw "courseId not provided in payload"
 
-		// make sure room exists in redis before joining
-		//TODO: room doesn't exist yet, figure out what to check for
-		if(await connection.roomExists(room)){
-			await connection.addStudent(room, event?.requestContext.connectionId)
-			console.log(`student added to room ${room}`)
-			return {
-				statusCode: 200,
-				body: JSON.stringify({
-					message: `connected to room ${room}`
-				})
-			}
-		} else { // if room doesn't exist return error
-			console.log(`room ${room} does not exist`)
-			return {
-				statusCode: 400, 
-				body: JSON.stringify({
-					message: `error, room ${room} does not exist`
-				})
-			}
-		}
-		
-
-		
+		// if the room exists, add this connectionID to the room
+		return await connection.addStudent(room, event?.requestContext.connectionId)
 	} catch (error) {
 		console.log(error)
 		return {
