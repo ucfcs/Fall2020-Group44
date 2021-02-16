@@ -4,13 +4,13 @@ import {
   CLOSE,
   RESPONSES,
   CORRECT_RESPONSE,
-} from "../poll-in-progress";
+} from "../session-in-progress";
 
-import "./poll-progress.scss";
+import "./session-progress.scss";
 
 import data from "./mock-data.json";
 
-const PollProgress = (props: PollProgressProps): ReactElement => {
+const SessionProgress = (props: SessionProgressProps): ReactElement => {
   const classSize: number = data.classSize;
   const responseCount: number = data.responseCount;
 
@@ -19,7 +19,7 @@ const PollProgress = (props: PollProgressProps): ReactElement => {
   };
 
   return (
-    <div className="poll-progress">
+    <div className="session-progress">
       <div className="progress-control">
         <button
           value={RESPOND}
@@ -36,7 +36,7 @@ const PollProgress = (props: PollProgressProps): ReactElement => {
           className={props.progress >= CLOSE ? "active" : ""}
           onClick={updateProgress}
         >
-          <span className="order">2</span>Close Poll
+          <span className="order">2</span>Close Question
         </button>
 
         <div className={props.progress >= RESPONSES ? "active line" : "line"} />
@@ -79,9 +79,9 @@ const PollProgress = (props: PollProgressProps): ReactElement => {
   );
 };
 
-interface PollProgressProps {
+interface SessionProgressProps {
   progress: number;
   updateProgress: (value: number) => void;
 }
 
-export default PollProgress;
+export default SessionProgress;

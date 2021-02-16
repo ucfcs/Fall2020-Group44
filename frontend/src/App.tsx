@@ -5,7 +5,7 @@ import { store } from "./store";
 
 import Home from "./components/home-page/home";
 import Gradebook from "./components/gradebook/gradebook";
-import PollInProgress from "./components/poll-in-progress/poll-in-progress";
+import SessionInProgress from "./components/session-in-progress/session-in-progress";
 import Present from "./components/present-poll/present";
 import Creator from "./components/creator-module/creator";
 
@@ -25,7 +25,7 @@ function App(): ReactElement {
         </Route>
 
         <Route path="/poll/display">
-          <PollInProgress />
+          <SessionInProgress />
         </Route>
 
         <Route path="/gradebook">

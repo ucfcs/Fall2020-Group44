@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
-import "./poll-controls.scss";
+import "./session-controls.scss";
 
-const PollControls = (props: PollControlsProps): ReactElement => {
+const SessionControls = (props: SessionControlsProps): ReactElement => {
   const buttons: ReactElement[] = [];
 
   for (let i = 0; i < props.questionCount; i++) {
@@ -21,7 +21,7 @@ const PollControls = (props: PollControlsProps): ReactElement => {
   }
 
   return (
-    <div className="poll-controls">
+    <div className="session-controls">
       <div className="question-nav">{buttons.map((button) => button)}</div>
 
       <div className="control-buttons">
@@ -29,15 +29,15 @@ const PollControls = (props: PollControlsProps): ReactElement => {
 
         <button className="next-button control-button">Next</button>
 
-        <button className="skip-button control-button">Skip Poll</button>
+        <button className="skip-button control-button">Skip Question</button>
       </div>
     </div>
   );
 };
 
-interface PollControlsProps {
+interface SessionControlsProps {
   questionNumber: number;
   questionCount: number;
 }
 
-export default PollControls;
+export default SessionControls;

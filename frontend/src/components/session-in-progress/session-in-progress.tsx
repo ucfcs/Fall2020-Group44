@@ -1,10 +1,10 @@
 import { QuestionInfo } from "../../types";
 import React, { ReactElement, useState } from "react";
-import PollProgress from "./poll-progress/poll-progress";
+import SessionProgress from "./session-progress/session-progress";
 import Question from "./question/question";
-import PollControls from "./poll-controls/poll-controls";
+import SessionControls from "./session-controls/session-controls";
 
-import "./poll-in-progress.scss";
+import "./session-in-progress.scss";
 
 import data from "./mock-data.json";
 import PollHeader from "../poll-header/poll-header";
@@ -14,7 +14,7 @@ export const CLOSE = 1;
 export const RESPONSES = 2;
 export const CORRECT_RESPONSE = 3;
 
-const PollInProgress = (): ReactElement => {
+const SessionInProgress = (): ReactElement => {
   const [progress, setProgress] = useState(RESPOND);
   const [questionNumber, setQuestionNumber] = useState(0);
 
@@ -28,11 +28,11 @@ const PollInProgress = (): ReactElement => {
   };
 
   return (
-    <div className="poll-in-progress">
+    <div className="session-in-progress">
       <div className="content">
         <PollHeader />
 
-        <PollProgress progress={progress} updateProgress={updateProgress} />
+        <SessionProgress progress={progress} updateProgress={updateProgress} />
 
         <Question
           questionText={currentQuestion.text}
@@ -40,7 +40,7 @@ const PollInProgress = (): ReactElement => {
         />
       </div>
 
-      <PollControls
+      <SessionControls
         questionCount={questions.length}
         questionNumber={questionNumber}
       />
@@ -48,4 +48,4 @@ const PollInProgress = (): ReactElement => {
   );
 };
 
-export default PollInProgress;
+export default SessionInProgress;
