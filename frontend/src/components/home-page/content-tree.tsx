@@ -145,7 +145,6 @@ const ContentTree = (): ReactElement => {
     });
 
     state.poll = newPoll;
-    console.log(state.poll);
   };
 
   return (
