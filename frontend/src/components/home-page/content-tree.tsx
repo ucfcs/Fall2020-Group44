@@ -48,7 +48,9 @@ const ContentTree = (): ReactElement => {
   const questionCheckboxRefs: { [key: number]: HTMLInputElement[] } = {};
   const folderCheckboxRefs: HTMLInputElement[] = [];
 
-  const sessionQuestions: { [key: string]: number[] } = {};
+  const [sessionQuestions, setSessionQuestions] = useState(
+    {} as { [key: string]: number[] }
+  );
 
   const handleUpdatePreviewQuestion = (folder: number, question: number) => {
     setSelectedQuestion([folder, question]);
@@ -105,6 +107,15 @@ const ContentTree = (): ReactElement => {
           checkbox.checked = true;
         });
       } else {
+        let isAllChecked = true;
+        questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
+          if (!checkbox.checked) isAllChecked = false;
+        });
+
+        if (isAllChecked) {
+          folderCheckboxRefs[folder].checked = true;
+        }
+
         if (!sessionQuestions[folder]) sessionQuestions[folder] = [];
         sessionQuestions[folder].push(question);
         sessionQuestions[folder].sort((a: number, b: number) => a - b);
@@ -123,6 +134,7 @@ const ContentTree = (): ReactElement => {
         );
         folderCheckboxRefs[folder].checked = false;
       }
+      setSessionQuestions(sessionQuestions);
     }
 
     const newPoll: PollQuestion[] = [];
@@ -133,6 +145,7 @@ const ContentTree = (): ReactElement => {
     });
 
     state.poll = newPoll;
+    console.log(state.poll);
   };
 
   return (
@@ -170,34 +183,33 @@ const ContentTree = (): ReactElement => {
                 />
                 {folder.folder}
               </div>
-              {!folderCollapse[fIndex] &&
-                folder.questions.map((question, qIndex) => (
-                  <div
-                    key={fIndex + "-" + qIndex}
-                    className={`preview-question ${
-                      selectedQuestion[0] === fIndex &&
-                      selectedQuestion[1] === qIndex
-                        ? "selected"
-                        : ""
-                    }`}
-                    onClick={() => handleUpdatePreviewQuestion(fIndex, qIndex)}
-                  >
-                    <input
-                      ref={(e: HTMLInputElement) => {
-                        if (!questionCheckboxRefs[fIndex])
-                          questionCheckboxRefs[fIndex] = [];
-                        questionCheckboxRefs[fIndex][qIndex] = e;
-                      }}
-                      type="checkbox"
-                      onClick={(e) =>
-                        selectQuestionsForPoll(e, false, fIndex, qIndex)
-                      }
-                    />
-                    <div className="title">{question.title}</div>
-                    <div></div>
-                    <div className="type">{question.type}</div>
-                  </div>
-                ))}
+              {folder.questions.map((question, qIndex) => (
+                <div
+                  key={fIndex + "-" + qIndex}
+                  className={`preview-question ${
+                    selectedQuestion[0] === fIndex &&
+                    selectedQuestion[1] === qIndex
+                      ? "selected"
+                      : ""
+                  } ${folderCollapse[fIndex] ? "collapsed-item" : ""}`}
+                  onClick={() => handleUpdatePreviewQuestion(fIndex, qIndex)}
+                >
+                  <input
+                    ref={(e: HTMLInputElement) => {
+                      if (!questionCheckboxRefs[fIndex])
+                        questionCheckboxRefs[fIndex] = [];
+                      questionCheckboxRefs[fIndex][qIndex] = e;
+                    }}
+                    type="checkbox"
+                    onClick={(e) =>
+                      selectQuestionsForPoll(e, false, fIndex, qIndex)
+                    }
+                  />
+                  <div className="title">{question.title}</div>
+                  <div></div>
+                  <div className="type">{question.type}</div>
+                </div>
+              ))}
             </div>
           ))}
         </div>
