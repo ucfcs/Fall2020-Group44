@@ -1,5 +1,5 @@
 import { QuestionInfo } from "../../types";
-import React, { ReactElement, useState } from "react";
+import React, { ReactElement, useContext } from "react";
 import SessionProgress from "./session-progress/session-progress";
 import Question from "./question/question";
 import SessionControls from "./session-controls/session-controls";
@@ -8,22 +8,39 @@ import "./session-in-progress.scss";
 
 import data from "./mock-data.json";
 import PollHeader from "../poll-header/poll-header";
-
-export const RESPOND = 0;
-export const CLOSE = 1;
-export const RESPONSES = 2;
-export const CORRECT_RESPONSE = 3;
+import Close from "./close/close";
+import CorrectResponse from "./correct-response/correct-response";
+import Responses from "./responses/responses";
+import { CLOSE, CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../constants";
+import { store } from "../../store";
 
 const SessionInProgress = (): ReactElement => {
-  const [progress, setProgress] = useState(RESPOND);
-  const [questionNumber, setQuestionNumber] = useState(0);
+  const global = useContext(store) as any;
+  const state = global.state;
+
+  const questionProgress = state.questionProgress;
+  const questionNumber = state.questionNumber;
 
   const questions: QuestionInfo[] = data.questions;
   const currentQuestion = questions[questionNumber];
 
-  const updateProgress = (value: number): void => {
-    if (value > progress) {
-      setProgress(value);
+  const content = (): ReactElement => {
+    switch (questionProgress) {
+      case RESPOND:
+        return (
+          <Question
+            questionText={currentQuestion.text}
+            answers={currentQuestion.answers}
+          />
+        );
+      case CLOSE:
+        return <Close />;
+      case RESPONSES:
+        return <CorrectResponse />;
+      case CORRECT_RESPONSE:
+        return <Responses />;
+      default:
+        return <></>;
     }
   };
 
@@ -32,18 +49,12 @@ const SessionInProgress = (): ReactElement => {
       <div className="content">
         <PollHeader />
 
-        <SessionProgress progress={progress} updateProgress={updateProgress} />
+        <SessionProgress />
 
-        <Question
-          questionText={currentQuestion.text}
-          answers={currentQuestion.answers}
-        />
+        {content()}
       </div>
 
-      <SessionControls
-        questionCount={questions.length}
-        questionNumber={questionNumber}
-      />
+      <SessionControls questionCount={questions.length} />
     </div>
   );
 };

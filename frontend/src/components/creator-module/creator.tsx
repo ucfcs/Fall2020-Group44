@@ -1,5 +1,4 @@
 import React, { useState, useContext, ReactElement } from "react";
-import { Link } from "react-router-dom";
 import "./creator.scss";
 import { store } from "../../store";
 import CreatorEdit from "./creator-edit/creator-edit";

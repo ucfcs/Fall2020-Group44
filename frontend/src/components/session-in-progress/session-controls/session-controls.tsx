@@ -1,42 +1,94 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useContext } from "react";
+import { Link } from "react-router-dom";
+import { CORRECT_RESPONSE, RESPOND } from "../../../constants";
+import { store } from "../../../store";
 import "./session-controls.scss";
 
 const SessionControls = (props: SessionControlsProps): ReactElement => {
-  const buttons: ReactElement[] = [];
+  const global = useContext(store) as any;
+  const dispatch = global.dispatch;
+  const state = global.state;
+
+  const questionProgress = state.questionProgress;
+  const questionNumber = state.questionNumber;
+
+  const buttons: number[] = [];
 
   for (let i = 0; i < props.questionCount; i++) {
-    let activeClass;
-
-    if (i === props.questionNumber) {
-      activeClass = "question-nav-button active";
-    } else {
-      activeClass = "question-nav-button";
-    }
-
-    buttons.push(
-      <span className={activeClass}>
-        <img src="/img/logo.svg" alt="" />Q{i + 1}
-      </span>
-    );
+    buttons.push(i + 1);
   }
+
+  const progress = (): void => {
+    if (questionProgress < CORRECT_RESPONSE) {
+      dispatch({
+        type: "update-question-progress",
+        payload: questionProgress + 1,
+      });
+    } else {
+      nextQuestion();
+    }
+  };
+
+  const nextQuestion = (): void => {
+    if (questionNumber >= props.questionCount - 1) {
+      // this would make an api call to record what happened since it is the end of the session
+      dispatch({ type: "update-question-number", payload: 0 });
+      dispatch({ type: "update-question-progress", payload: RESPOND });
+    } else {
+      dispatch({ type: "update-question-number", payload: questionNumber + 1 });
+      dispatch({ type: "update-question-progress", payload: RESPOND });
+    }
+  };
 
   return (
     <div className="session-controls">
-      <div className="question-nav">{buttons.map((button) => button)}</div>
+      <div className="question-nav">
+        {buttons.map((number: number, index: number) => (
+          <span
+            key={index}
+            className={`question-nav-button ${
+              index === questionNumber ? "active" : ""
+            }`}
+          >
+            <img src="/img/logo.svg" alt="" />Q{number}{" "}
+          </span>
+        ))}
+      </div>
 
       <div className="control-buttons">
-        <button className="back-button control-button">Back</button>
+        {/* This next bit is ugly. What it does is make sure that on the last question
+            the skip button turns into End Session, and the Next button will go away on
+            the last stage of the last question. */}
 
-        <button className="next-button control-button">Next</button>
+        {questionProgress < CORRECT_RESPONSE ? (
+          <button className="next-button control-button" onClick={progress}>
+            Next
+          </button>
+        ) : questionNumber < props.questionCount - 1 ? (
+          <button className="next-button control-button" onClick={progress}>
+            Next
+          </button>
+        ) : null}
 
-        <button className="skip-button control-button">Skip Question</button>
+        {questionNumber < props.questionCount - 1 ? (
+          <button className="skip-button control-button" onClick={nextQuestion}>
+            Skip to Next Question
+          </button>
+        ) : (
+          <Link
+            onClick={nextQuestion}
+            className="control-button skip-button link-button"
+            to="/"
+          >
+            End Session
+          </Link>
+        )}
       </div>
     </div>
   );
 };
 
 interface SessionControlsProps {
-  questionNumber: number;
   questionCount: number;
 }
 

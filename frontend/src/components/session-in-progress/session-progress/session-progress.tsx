@@ -1,21 +1,35 @@
-import React, { ReactElement, SyntheticEvent } from "react";
+import React, { ReactElement, SyntheticEvent, useContext } from "react";
 import {
   RESPOND,
   CLOSE,
   RESPONSES,
   CORRECT_RESPONSE,
-} from "../session-in-progress";
+} from "../../../constants";
 
 import "./session-progress.scss";
 
 import data from "./mock-data.json";
+import { store } from "../../../store";
 
-const SessionProgress = (props: SessionProgressProps): ReactElement => {
+const SessionProgress = (): ReactElement => {
+  const global = useContext(store) as any;
+  const dispatch = global.dispatch;
+  const state = global.state;
+
+  const questionProgress = state.questionProgress;
+
   const classSize: number = data.classSize;
   const responseCount: number = data.responseCount;
 
   const updateProgress = (event: SyntheticEvent): void => {
-    props.updateProgress(~~(event.target as HTMLInputElement).value);
+    const progress: number = parseInt((event.target as HTMLInputElement).value);
+
+    if (progress > questionProgress) {
+      dispatch({
+        type: "update-question-progress",
+        payload: progress,
+      });
+    }
   };
 
   return (
@@ -23,27 +37,29 @@ const SessionProgress = (props: SessionProgressProps): ReactElement => {
       <div className="progress-control">
         <button
           value={RESPOND}
-          className={props.progress >= RESPOND ? "active" : ""}
+          className={questionProgress >= RESPOND ? "active" : ""}
           onClick={updateProgress}
         >
           <span className="order">1</span>Respond
         </button>
 
-        <div className={props.progress >= CLOSE ? "active line" : "line"} />
+        <div className={questionProgress >= CLOSE ? "active line" : "line"} />
 
         <button
           value={CLOSE}
-          className={props.progress >= CLOSE ? "active" : ""}
+          className={questionProgress >= CLOSE ? "active" : ""}
           onClick={updateProgress}
         >
           <span className="order">2</span>Close Question
         </button>
 
-        <div className={props.progress >= RESPONSES ? "active line" : "line"} />
+        <div
+          className={questionProgress >= RESPONSES ? "active line" : "line"}
+        />
 
         <button
           value={RESPONSES}
-          className={props.progress >= RESPONSES ? "active" : ""}
+          className={questionProgress >= RESPONSES ? "active" : ""}
           onClick={updateProgress}
         >
           <span className="order">3</span>View Responses
@@ -51,13 +67,13 @@ const SessionProgress = (props: SessionProgressProps): ReactElement => {
 
         <div
           className={
-            props.progress >= CORRECT_RESPONSE ? "active line" : "line"
+            questionProgress >= CORRECT_RESPONSE ? "active line" : "line"
           }
         />
 
         <button
           value={CORRECT_RESPONSE}
-          className={props.progress >= CORRECT_RESPONSE ? "active" : ""}
+          className={questionProgress >= CORRECT_RESPONSE ? "active" : ""}
           onClick={updateProgress}
         >
           <span className="order">4</span>Correct Response
@@ -78,10 +94,5 @@ const SessionProgress = (props: SessionProgressProps): ReactElement => {
     </div>
   );
 };
-
-interface SessionProgressProps {
-  progress: number;
-  updateProgress: (value: number) => void;
-}
 
 export default SessionProgress;

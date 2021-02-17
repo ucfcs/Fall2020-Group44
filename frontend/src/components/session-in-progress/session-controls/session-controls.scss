@@ -36,7 +36,6 @@
     margin: 0.8rem;
   }
 
-  .back-button,
   .skip-button {
     background: none;
   }
@@ -50,5 +49,10 @@
     padding: 0.1em 1em;
     box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
     border-radius: 5px;
+  }
+
+  .link-button {
+    text-decoration: none;
+    color: black;
   }
 }
