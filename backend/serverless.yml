@@ -72,6 +72,10 @@ functions:
           path: hello
   dbInit:
     handler: src/db.init
+  dbDrop:
+    handler: src/db.drop
+
+  # Folder endpoints
   getFolder:
     handler: src/folder.getFolder
     events:
@@ -96,6 +100,81 @@ functions:
       - http:
           method: delete
           path: /api/v1/folder
+
+
+  # Collection endpoints
+  getCollection:
+    handler: src/collection.get
+    events:
+      - http:
+          method: get
+          path: /api/v1/collection
+  createCollection:
+    handler: src/collection.create
+    events:
+      - http:
+          method: post
+          path: /api/v1/collection
+  updateCollection:
+    handler: src/collection.update
+    events:
+      - http:
+          method: put
+          path: /api/v1/collection
+  deleteCollection:
+    handler: src/collection.remove
+    events:
+      - http:
+          method: delete
+          path: /api/v1/collection
+
+
+  # Question endpoints
+  getQuestion:
+    handler: src/question.get
+    events:
+      - http:
+          method: get
+          path: /api/v1/question
+  createQuestion:
+    handler: src/question.create
+    events:
+      - http:
+          method: post
+          path: /api/v1/question
+  updateQuestion:
+    handler: src/question.update
+    events:
+      - http:
+          method: put
+          path: /api/v1/question
+  deleteQuestion:
+    handler: src/question.remove
+    events:
+      - http:
+          method: delete
+          path: /api/v1/question
+
+  # Question Option endpoints
+  createQuestionOption:
+    handler: src/question_option.create
+    events:
+      - http:
+          method: post
+          path: /api/v1/question_option
+  updateQuestionOption:
+    handler: src/question_option.update
+    events:
+      - http:
+          method: put
+          path: /api/v1/question_option
+  deleteQuestionOption:
+    handler: src/question_option.remove
+    events:
+      - http:
+          method: delete
+          path: /api/v1/question_option
+
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events

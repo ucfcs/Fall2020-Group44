@@ -1,12 +1,11 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 import { Folder } from './models/Folder';
-import querystring from 'querystring';
 
 const mockUserid = 1;
 
 // GET /api/v1/folder
 const getFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event?.queryStringParameters;
+	const params = event.queryStringParameters;
 
 	if (!params?.courseId) {
 		return {
@@ -43,11 +42,11 @@ const getFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 // POST /api/v1/folder
 const newFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = querystring.parse(event.body || '');
+	const body = JSON.parse(event.body || '{}');
 	const params = event.queryStringParameters;
 
 	// eslint-disable-next-line no-constant-condition
-	if (!params?.courseId || true) {
+	if (!params?.courseId) {
 		return {
 			statusCode: 400,
 			body: JSON.stringify({
@@ -83,8 +82,8 @@ const newFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 // PUT /api/v1/folder
 const updateFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = querystring.parse(event?.body || '');
-	const params = event?.queryStringParameters;
+	const body = JSON.parse(event.body || '{}');
+	const params = event.queryStringParameters;
 
 	if (!params?.folderId) {
 		return {
@@ -118,7 +117,7 @@ const updateFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 // DELETE /api/v1/folder
 const deleteFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event?.queryStringParameters;
+	const params = event.queryStringParameters;
 
 	if (!params?.folderId) {
 		return {

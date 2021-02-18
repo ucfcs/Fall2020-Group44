@@ -11,6 +11,14 @@
 
 ## Development
 
+### Initialize Database
+
+To create database tables and their relationship.
+
+```
+npm run db:build
+```
+
 ### Local Server
 
 #### Environment Variable

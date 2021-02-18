@@ -1,12 +1,12 @@
-type PollUserResponseId = number;
+type QuestionUserResponse = number;
 
-interface PollUserResponseAttributes {
-	id: PollUserResponseId;
-	pollId: PollId;
-	pollOptionId: PollOptionId;
+interface QuestionUserResponseAttributes {
+	id: QuestionUserResponse;
+	collectionId: CollectionId;
+	questionOptionId: QuestionOptionId;
 }
 
-interface PollUserResponseCreationAttributes {
-	pollId: PollId;
-	pollOptionId: PollOptionId;
+interface QuestionUserResponseCreationAttributes {
+	collectionId: CollectionId;
+	questionOptionId: QuestionOptionId;
 }
