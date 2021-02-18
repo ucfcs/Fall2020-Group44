@@ -9,22 +9,24 @@ export const handler = async (
   content?: Context
 ): Promise<ProxyResult> => {
 
-	// initialize connection to redis/apigateway
 	if (!connection) {
-    connection = new Connection()
-    connection.init(event);
+		connection = new Connection()
+		connection.init(event);
 	}
-	
-	try {
 
-		//TODO: once PollUserResponse is created
-		
+	try {
+		// get room from payload
+		room = JSON.parse(event.body).courseId
+		if(!room) throw "courseId not provided in payload"
+
+		await connection.closeRoom(room)
+ 
 	} catch (error) {  
 		console.log(error)
 		return {
 			statusCode: 400, 
 			body: JSON.stringify({
-				message: `error submitting response`
+				message: `error closing room: ${error}`
 			})
 		}
 	}

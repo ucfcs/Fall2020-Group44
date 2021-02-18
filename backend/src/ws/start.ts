@@ -1,4 +1,5 @@
-const { Connection } = require('./connections.js')
+// const { Connection } = require('./connections.js')
+const { Connection } = require('./dbconnections.js')
 import { APIGatewayEvent, APIGatewayProxyEvent, Context, ProxyResult } from "aws-lambda";
 
 interface QuestionObject {
@@ -12,8 +13,8 @@ interface QuestionObject {
 let connection: typeof Connection;
 var room: String;
 var question: QuestionObject;
-const host = process.env.REDIS_HOST;
-const port = 6379;
+// const host = process.env.REDIS_HOST;
+// const port = 6379;
 
 export const handler = async (
 	event?: APIGatewayEvent,
@@ -22,7 +23,7 @@ export const handler = async (
 
 	// initialize connection to redis/apigateway
 	if (!connection) {
-    connection = new Connection({ host, port })
+    connection = new Connection()
     connection.init(event)
 	}
 	

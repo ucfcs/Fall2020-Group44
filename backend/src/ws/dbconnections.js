@@ -25,7 +25,7 @@ export class Connection {
    * - success of dynamodb update
    *****************************************************/
 	async addStudent(courseId, connectionId) {
-		const updateParams = {
+		const params = {
 			TableName: process.env.TABLE_NAME,
 			Key: {
 				"courseId": courseId
@@ -38,7 +38,7 @@ export class Connection {
 		}
 
 		try {
-			await this.client.update(updateParams).promise()
+			await this.client.update(params).promise()
 			console.log(`DynamoDB student ${connectionId} added to room ${courseId}: `)
 			return {
 				statusCode: 200, 
@@ -76,7 +76,7 @@ export class Connection {
    * - 1 if room exists, 0 otherwise
    *****************************************************/
 	roomExists(room) {
-		const getParams = {
+		const params = {
 			TableName: process.env.TABLE_NAME,
 			Key: {
 				courseId: room
@@ -84,7 +84,7 @@ export class Connection {
 		}
 
 		try {
-			this.client.get(getParams, function(err, data) {
+			this.client.get(params, function(err, data) {
 				if (err) throw err
 				else {
 					// room does not exist in table
@@ -113,7 +113,7 @@ export class Connection {
    * - success of DynamoDB PUT
    *****************************************************/
 	async createRoom(courseId, connectionId) {
-		const putParams = {
+		const params = {
 			TableName: process.env.TABLE_NAME,
 			Item: {
 				courseId: courseId,
@@ -124,7 +124,7 @@ export class Connection {
 		}
 
 		try {
-			await this.client.put(putParams).promise();
+			await this.client.put(params).promise();
 			console.log(`room ${courseId} successfully created`)
 			return {
 				statusCode: 200, 
@@ -153,6 +153,49 @@ export class Connection {
 		}
 	}
 
+	async closeRoom(courseId) {
+		const params = {
+			TableName: process.env.TABLE_NAME,
+			Key: {
+				courseId: courseId
+			}
+		}
+
+		try {
+			const result = await this.client.delete(params).promise()
+			console.log(result)
+			if(Object.entries(result).length !== 0) {
+				throw `room ${courseId} does not exist`
+			}
+			return {
+				statusCode: 200, 
+				body: JSON.stringify({
+					message: `room ${courseId} closed successfully`
+				})
+			}
+		} catch(error) {
+			console.log(`Error closing room ${courseId}`)
+			console.log(error)
+			return {
+				statusCode: 400, 
+					body: JSON.stringify({
+						message: `DynamoDB DELETE error when closing room ${courseId}`
+					})
+			}
+		}
+		
+	}
+
+	/******************************************************
+   * remove a student connectionId from the SET if 
+	 * their websocket connection has gone 'stale' i.e.
+	 * no longer connected
+	 * 
+   * params
+   * - courseId, connectionId of student
+   * returns
+   * - success of DynamoDB connection set update
+   *****************************************************/
 	async removeStudent(courseId, connectionId) {
 		const params = {
 			TableName: process.env.TABLE_NAME,
@@ -168,6 +211,14 @@ export class Connection {
 		await this.client.update(params).promise()
 	}
 
+	/******************************************************
+   * Get a list of connectionIds for a particular room
+	 * 
+   * params
+   * - courseId
+   * returns
+   * - list of connection id's as an array of strings
+   *****************************************************/
 	async getConnections(courseId) {
 		const params = {
 			TableName: process.env.TABLE_NAME,
@@ -184,11 +235,27 @@ export class Connection {
 		return data.Item.connections.values
 	}
 
+	/******************************************************
+   * Publish a message to all connections in the room. 
+	 * published in the format 
+	 * {
+	 * 	action: an common action for the client to act on,
+	 *  payload: associated data if relevant to the action
+	 * }
+	 * 
+   * params
+   * - courseId, action, payload (optional)
+   * returns
+   * - n/a
+   *****************************************************/
 	async publish(courseId, action, payload=null) {
+		// first get all connections for the room
 		const connections = await this.getConnections(courseId)
 		console.log('connections:')
 		console.log(connections)
 
+		// loop thru each connection, publishing the message 
+		// to them individually
 		for (const connectionId of connections) {
 			try {
         await this.gateway.postToConnection({ 
@@ -199,6 +266,8 @@ export class Connection {
 					})
 				}).promise()
       } catch (e) {
+				// if the student is no longer connected, remove them
+				// from the connection set in DynamoDB
 				if(e.statusCode == 410) {
 					console.log(`Found stale connection, deleting connectionId ${connectionId}`)
 					await this.removeStudent(courseId, connectionId)

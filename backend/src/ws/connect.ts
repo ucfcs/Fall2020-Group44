@@ -1,4 +1,3 @@
-const { Connection } = require('./connections.js')
 const AWS = require('aws-sdk')
 
 
