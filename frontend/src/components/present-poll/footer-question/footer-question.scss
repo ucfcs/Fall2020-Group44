@@ -1,0 +1,23 @@
+.footer-question {
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  margin: 0.25vh 0.15vw;
+  min-width: 20vw;
+
+  img {
+    height: 3.5vh;
+    width: auto;
+  }
+
+  p {
+    width: 55%;
+  }
+
+  .delete {
+    border: none;
+    background: white;
+    color: #aaaaaa;
+  }
+}

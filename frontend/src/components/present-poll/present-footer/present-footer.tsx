@@ -1,19 +1,6 @@
 import React, { ReactElement } from "react";
+import FooterQuestion from "../footer-question/footer-question";
 import "./present-footer.scss";
-
-type QuestionProps = {
-  question: string;
-};
-
-const FooterQuestion = ({ question }: QuestionProps): ReactElement => {
-  return (
-    <div className="footer-question">
-      <img src="/img/logo.svg" />
-      <p>{question}</p>
-      <button className="delete">X</button>
-    </div>
-  );
-};
 
 const PresentFooter = (): ReactElement => {
   const questions = ["Q1", "Q2", "Q3"];

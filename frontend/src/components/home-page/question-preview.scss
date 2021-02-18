@@ -1,16 +1,13 @@
 .question-preview {
-  // border: 1px solid blue;
   width: 55%;
   padding: 7vh 4vw;
 
   .question {
     font-size: 2.5vw;
     font-family: helvetica;
-    // border: 1px solid red;
   }
 
   .response-buttons {
-    // border: 1px solid green;
     display: flex;
     align-items: center;
     justify-content: space-evenly;
@@ -35,7 +32,6 @@
   }
 
   .answer-choice-wrapper {
-    // border: 1px solid brown;
     margin-top: 4vh;
   }
 

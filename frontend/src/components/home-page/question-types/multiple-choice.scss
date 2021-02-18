@@ -1,7 +1,6 @@
 .multiple-choice {
   display: flex;
   flex-direction: column;
-  // justify-content: space-between;
 
   .answer-choice {
     position: relative;
@@ -22,7 +21,6 @@
       justify-content: center;
 
       p {
-        // border: 1px solid blue;
         text-align: center;
         color: #ffc904;
         font-weight: bold;
@@ -32,7 +30,6 @@
     }
 
     p {
-      // border: 1px solid blue;
       text-align: center;
       color: #ffc904;
       font-weight: bold;
@@ -55,10 +52,6 @@
       height: 100%;
       font-size: 14px;
       width: 100%;
-
-      span {
-        // border: 1px solid red;
-      }
     }
 
     .answer-text-input {

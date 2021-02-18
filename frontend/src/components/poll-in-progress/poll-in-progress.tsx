@@ -7,6 +7,7 @@ import PollControls from "./poll-controls/poll-controls";
 import "./poll-in-progress.scss";
 
 import data from "./mock-data.json";
+import PollHeader from "../poll-header/poll-header";
 
 export const RESPOND = 0;
 export const CLOSE = 1;
@@ -29,12 +30,16 @@ const PollInProgress = (): ReactElement => {
   return (
     <div className="poll-in-progress">
       <div className="content">
+        <PollHeader />
+
         <PollProgress progress={progress} updateProgress={updateProgress} />
+
         <Question
           questionText={currentQuestion.text}
           answers={currentQuestion.answers}
         />
       </div>
+
       <PollControls
         questionCount={questions.length}
         questionNumber={questionNumber}

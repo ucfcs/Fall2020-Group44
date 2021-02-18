@@ -5,6 +5,7 @@ import { StudentInfo, Session } from "../../types";
 import "./gradebook.scss";
 
 import data from "./mock-data.json";
+import HomeHeader from "../home-header/home-header";
 
 const RED = 0.5;
 const YELLOW = 0.75;
@@ -106,96 +107,104 @@ const Gradebook = (): ReactElement => {
   };
 
   return (
-    <div className="gradebook">
-      <div className="grade-navigation">
-        <div className="search">
-          <label
-            htmlFor="grade-search"
-            className={activeSearch ? "active" : ""}
-          >
-            Search for Student...
-          </label>
+    <>
+      <HomeHeader />
 
-          <input
-            id="grade-search"
-            onFocus={focus}
-            onBlur={blur}
-            onChange={searchStudent}
-          />
+      <div className="gradebook">
+        <div className="grade-navigation">
+          <div className="search">
+            <label
+              htmlFor="grade-search"
+              className={activeSearch ? "active" : ""}
+            >
+              Search for Student...
+            </label>
+
+            <input
+              id="grade-search"
+              onFocus={focus}
+              onBlur={blur}
+              onChange={searchStudent}
+            />
+          </div>
+
+          <button onClick={exportToCanvas}>Export to Canvas</button>
         </div>
 
-        <button onClick={exportToCanvas}>Export to Canvas</button>
-      </div>
-
-      <div className="table-wrapper">
-        <table>
-          <thead>
-            <tr>
-              <th>Student</th>
-              <th>Totals</th>
-              {overallSessions.map((session: Session, sIndex: number) => [
-                <th key={sIndex} className="session-name">
+        <div className="table-wrapper">
+          <table>
+            <thead>
+              <tr>
+                <th>Student</th>
+                <th>Totals</th>
+                {overallSessions.map((session: Session, sIndex: number) => [
+                  <th key={sIndex} className="session-name">
+                    <div>
+                      <span>{session.name} </span>
+                      <span
+                        className="expand"
+                        onClick={() => expandSession(sIndex)}
+                      >
+                        {isExpanded[sIndex] ? "Close <" : "Expand >"}
+                      </span>
+                    </div>
+                    <div className="date">{session.date}</div>
+                  </th>,
+                  createQuestionHeaders(sIndex),
+                ])}
+              </tr>
+              <tr>
+                <th>Class Average</th>
+                <th className="align-right">
                   <div>
-                    <span>{session.name} </span>
-                    <span
-                      className="expand"
-                      onClick={() => expandSession(sIndex)}
-                    >
-                      {isExpanded[sIndex] ? "Close <" : "Expand >"}
-                    </span>
-                  </div>
-                  <div className="date">{session.date}</div>
-                </th>,
-                createQuestionHeaders(sIndex),
-              ])}
-            </tr>
-            <tr>
-              <th>Class Average</th>
-              <th className="align-right">
-                <div>
-                  {classAverage.toFixed(2)}/{overallTotal.toFixed(2)}
-                </div>
-                <div className="bar">
-                  <div
-                    className="bar-value"
-                    style={{
-                      width: (classAverage / overallTotal) * 100 + "%",
-                      backgroundColor: getBackgroundColor(
-                        classAverage / overallTotal
-                      ),
-                    }}
-                  ></div>
-                </div>
-              </th>
-              {overallSessions.map((session: Session, sIndex: number) => [
-                <td key={sIndex} className="align-right">
-                  <div>
-                    {session.average.toFixed(2)}/{session.total.toFixed(2)}
+                    {classAverage.toFixed(2)}/{overallTotal.toFixed(2)}
                   </div>
                   <div className="bar">
                     <div
                       className="bar-value"
                       style={{
-                        width: (session.average / session.total) * 100 + "%",
+                        width: (classAverage / overallTotal) * 100 + "%",
                         backgroundColor: getBackgroundColor(
-                          session.average / session.total
+                          classAverage / overallTotal
                         ),
                       }}
                     ></div>
                   </div>
-                </td>,
-                createQuestionAverages(sIndex),
-              ])}
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((student: StudentInfo, index: number) => (
-              <Student key={index} student={student} isExpanded={isExpanded} />
-            ))}
-          </tbody>
-        </table>
+                </th>
+                {overallSessions.map((session: Session, sIndex: number) => [
+                  <td key={sIndex} className="align-right">
+                    <div>
+                      {session.average.toFixed(2)}/{session.total.toFixed(2)}
+                    </div>
+                    <div className="bar">
+                      <div
+                        className="bar-value"
+                        style={{
+                          width: (session.average / session.total) * 100 + "%",
+                          backgroundColor: getBackgroundColor(
+                            session.average / session.total
+                          ),
+                        }}
+                      ></div>
+                    </div>
+                  </td>,
+                  createQuestionAverages(sIndex),
+                ])}
+              </tr>
+            </thead>
+            <tbody>
+              {students.map((student: StudentInfo, index: number) => (
+                <Student
+                  key={index}
+                  student={student}
+                  isExpanded={isExpanded}
+                />
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
