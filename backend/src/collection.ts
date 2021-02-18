@@ -5,8 +5,8 @@ import responses from './util/API_Responses';
 const mockUserid = 1;
 
 // GET /api/v1/collection
-const get = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event?.queryStringParameters;
+const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const params = event.queryStringParameters;
 
 	if (!params?.collectionId) {
 		return responses._400({ message: 'Missing collectionId parameter' });
@@ -34,9 +34,9 @@ const get = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // POST /api/v1/collection
-const create = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = JSON.parse(event?.body || '{}');
-	const params = event?.queryStringParameters;
+const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const body = JSON.parse(event.body || '{}');
+	const params = event.queryStringParameters;
 
 	if (!params?.folderId) {
 		return responses._400({ message: 'Missing folderId parameter' });
@@ -66,9 +66,9 @@ const create = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // PUT /api/v1/collection
-const update = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = JSON.parse(event?.body || '{}');
-	const params = event?.queryStringParameters;
+const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const body = JSON.parse(event.body || '{}');
+	const params = event.queryStringParameters;
 
 	if (!params?.collectionId) {
 		return responses._400({ message: 'Missing collectionId parameter' });
@@ -90,8 +90,8 @@ const update = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // DELETE /api/v1/collection
-const remove = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event?.queryStringParameters;
+const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const params = event.queryStringParameters;
 
 	if (!params?.collectionId) {
 		return responses._400({ message: 'Missing collectionId parameter' });

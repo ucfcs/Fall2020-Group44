@@ -3,8 +3,8 @@ import { Question, QuestionOption } from './models';
 import responses from './util/API_Responses';
 
 // GET /api/v1/question
-const get = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event?.queryStringParameters;
+const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const params = event.queryStringParameters;
 
 	if (!params?.questionId) {
 		return responses._400({ message: 'Missing questionId' });
@@ -31,9 +31,9 @@ const get = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // POST /api/v1/question
-const create = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = JSON.parse(event?.body || '{}');
-	const params = event?.queryStringParameters;
+const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const body = JSON.parse(event.body || '{}');
+	const params = event.queryStringParameters;
 
 	if (!params?.collectionId) {
 		return responses._400({ message: 'Missing collectionId parameter' });
@@ -58,9 +58,9 @@ const create = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // PUT /api/v1/question
-const update = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = JSON.parse(event?.body || '{}');
-	const params = event?.queryStringParameters;
+const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const body = JSON.parse(event.body || '{}');
+	const params = event.queryStringParameters;
 
 	if (!params?.questionId) {
 		return responses._400({ message: 'Missing questionId parameter' });
@@ -82,8 +82,8 @@ const update = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // DELETE /api/v1/question
-const remove = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event?.queryStringParameters;
+const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const params = event.queryStringParameters;
 
 	if (!params?.questionId) {
 		return responses._400({ message: 'Missing questionId parameter' });

@@ -3,9 +3,9 @@ import { QuestionOption } from './models';
 import responses from './util/API_Responses';
 
 // POST /api/v1/question_option
-const create = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = JSON.parse(event?.body || '{}');
-	const params = event?.queryStringParameters;
+const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const body = JSON.parse(event.body || '{}');
+	const params = event.queryStringParameters;
 
 	if (!params?.questionId) {
 		return responses._400({ message: 'Missing questionId parameter' });
@@ -30,9 +30,9 @@ const create = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // PUT /api/v1/question_option
-const update = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const body = JSON.parse(event?.body || '{}');
-	const params = event?.queryStringParameters;
+const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const body = JSON.parse(event.body || '{}');
+	const params = event.queryStringParameters;
 
 	if (!params?.questionOptionId) {
 		return responses._400({ message: 'Missing questionOptionId parameter' });
@@ -54,8 +54,8 @@ const update = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // DELETE /api/v1/question_option
-const remove = async (event?: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event?.queryStringParameters;
+const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const params = event.queryStringParameters;
 
 	if (!params?.questionOptionId) {
 		return responses._400({ message: 'Missing questionOptionId parameter' });
