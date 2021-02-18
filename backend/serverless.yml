@@ -138,7 +138,7 @@ functions:
       - websocket: 
           route: submit
   startQuestion: 
-    handler: src/ws/start.handler
+    handler: src/ws/startQuestion.handler
     events: 
       - websocket: 
           route: startQuestion
