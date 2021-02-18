@@ -6,24 +6,46 @@
     font-size: 32px;
   }
 
+  p {
+    margin: 0;
+    padding: 1rem;
+  }
+
   .answers {
     font-size: 24px;
   }
 
   .answer-letter {
-    border-right: 2px solid #cccccc;
-    padding: 1rem 1rem 1rem 0;
     color: #ffc904;
+    border-right: 2px solid #cccccc;
   }
 
   .answer-text {
     margin-left: 1rem;
   }
 
-  p {
+  .answer {
     border: 2px solid #cccccc;
-    padding: 1rem;
     min-width: max-content;
     max-width: 50%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+  }
+
+  .always-displayed {
+    display: flex;
+  }
+
+  .percent-info {
+    display: flex;
+  }
+
+  .correct {
+    background-color: green;
+  }
+
+  .incorrect {
+    background-color: red;
   }
 }

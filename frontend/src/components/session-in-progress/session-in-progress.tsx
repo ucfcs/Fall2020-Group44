@@ -9,8 +9,6 @@ import "./session-in-progress.scss";
 import data from "./mock-data.json";
 import PollHeader from "../poll-header/poll-header";
 import Close from "./close/close";
-import CorrectResponse from "./correct-response/correct-response";
-import Responses from "./responses/responses";
 import { CLOSE, CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../constants";
 import { store } from "../../store";
 
@@ -31,14 +29,28 @@ const SessionInProgress = (): ReactElement => {
           <Question
             questionText={currentQuestion.text}
             answers={currentQuestion.answers}
+            showPercentages={false}
           />
         );
       case CLOSE:
         return <Close />;
       case RESPONSES:
-        return <CorrectResponse />;
+        return (
+          <Question
+            questionText={currentQuestion.text}
+            answers={currentQuestion.answers}
+            showPercentages={true}
+          />
+        );
       case CORRECT_RESPONSE:
-        return <Responses />;
+        return (
+          <Question
+            questionText={currentQuestion.text}
+            answers={currentQuestion.answers}
+            correctAnswer={currentQuestion.correctIndex}
+            showPercentages={false}
+          />
+        );
       default:
         return <></>;
     }
