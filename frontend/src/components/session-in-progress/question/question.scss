@@ -6,18 +6,27 @@
     font-size: 32px;
   }
 
-  p {
+  p,
+  label {
     margin: 0;
     padding: 1rem;
   }
 
-  .answers {
+  .main-info {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .answers,
+  .percentages {
     font-size: 24px;
+    width: 49%;
   }
 
   .answer-letter {
     color: #ffc904;
     border-right: 2px solid #cccccc;
+    background-color: white;
   }
 
   .answer-text {
@@ -27,7 +36,7 @@
   .answer {
     border: 2px solid #cccccc;
     min-width: max-content;
-    max-width: 50%;
+    width: 100%;
     display: flex;
     justify-content: space-between;
     margin-bottom: 1.5rem;
@@ -39,13 +48,31 @@
 
   .percent-info {
     display: flex;
+    width: 100%;
+
+    // having trouble with getting the height right, so this centers the bars at least
+    padding-top: 2px;
+    margin-bottom: calc(1.5rem + 2px);
+
+    progress {
+      width: 100%;
+      position: relative;
+
+      background: none;
+      border: none;
+
+      &::-moz-progress-bar,
+      &::-webkit-progress-value {
+        background-color: #ffc904;
+      }
+    }
   }
 
   .correct {
-    background-color: green;
+    background-color: #c9ffc9;
   }
 
   .incorrect {
-    background-color: red;
+    background-color: #ffc3c3;
   }
 }

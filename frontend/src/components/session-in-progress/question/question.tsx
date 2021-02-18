@@ -6,7 +6,7 @@ import data from "./mock-data.json";
 const Question = (props: QuestionProps): ReactElement => {
   const correctClass = props.correctAnswer !== undefined ? "correct" : "";
   const incorrectClass = props.correctAnswer !== undefined ? "incorrect" : "";
-  let percentages: number[];
+  let percentages: number[] = [];
 
   if (props.showPercentages) {
     // This will become api call
@@ -18,35 +18,45 @@ const Question = (props: QuestionProps): ReactElement => {
     <div className="question">
       <h2>{props.questionText}</h2>
 
-      <div className="answers">
-        {props.answers.map((answer: string, index: number) => {
-          return (
-            <div
-              key={index}
-              className={`answer ${
-                index === props.correctAnswer ? correctClass : incorrectClass
-              }`}
-            >
-              <div className="always-displayed">
-                <p className="answer-letter">
-                  {String.fromCharCode(65 + index)}
-                </p>
+      <div className="main-info">
+        <div className="answers">
+          {props.answers.map((answer: string, index: number) => {
+            return (
+              <div
+                key={index}
+                className={`answer ${
+                  index === props.correctAnswer ? correctClass : incorrectClass
+                }`}
+              >
+                <div className="always-displayed">
+                  <p className="answer-letter">
+                    {String.fromCharCode(65 + index)}
+                  </p>
 
-                <p className="answer-text">{answer}</p>
-              </div>
-
-              {percentages !== undefined ? (
-                <div className="percent-info">
-                  <progress max="100" value={percentages[index]}>
-                    {percentages[index]}%
-                  </progress>
-
-                  <p>{percentages[index]}%</p>
+                  <p className="answer-text">{answer}</p>
                 </div>
-              ) : null}
-            </div>
-          );
-        })}
+              </div>
+            );
+          })}
+        </div>
+
+        {props.showPercentages ? (
+          <div className="percentages">
+            {percentages.map(
+              (percentage: number, index: number): ReactElement => {
+                return (
+                  <div className="percent-info" key={index}>
+                    <label htmlFor={`prog-${index}`}>{percentage}%</label>
+
+                    <progress max="100" value={percentage} id={`prog-${index}`}>
+                      {percentage}%
+                    </progress>
+                  </div>
+                );
+              }
+            )}
+          </div>
+        ) : null}
       </div>
     </div>
   );
