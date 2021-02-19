@@ -55,6 +55,8 @@ const ContentTree = (): ReactElement => {
   const questionCheckboxRefs: { [key: number]: HTMLInputElement[] } = {};
 
   // organizing the questions to be presented in a session.
+  // key = folder index
+  // data = array of question indices
   const [sessionQuestions, setSessionQuestions] = useState(
     {} as { [key: string]: number[] }
   );
