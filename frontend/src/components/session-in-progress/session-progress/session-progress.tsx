@@ -22,7 +22,15 @@ const SessionProgress = (): ReactElement => {
   const responseCount: number = data.responseCount;
 
   const updateProgress = (event: SyntheticEvent): void => {
-    const progress: number = parseInt((event.target as HTMLInputElement).value);
+    let progress: number;
+    const target = event.target as HTMLInputElement;
+
+    if (target.tagName === "SPAN") {
+      const parent = target.parentElement as HTMLInputElement;
+      progress = parseInt(parent.value);
+    } else {
+      progress = parseInt(target.value);
+    }
 
     if (progress > questionProgress) {
       dispatch({
