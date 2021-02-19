@@ -7,7 +7,7 @@ import SessionControls from "./session-controls/session-controls";
 import "./session-in-progress.scss";
 
 import data from "./mock-data.json";
-import PollHeader from "../poll-header/poll-header";
+import PollHeader from "../session-header/session-header";
 import Close from "./close/close";
 import { CLOSE, CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../constants";
 import { store } from "../../store";
