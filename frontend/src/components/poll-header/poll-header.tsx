@@ -9,9 +9,9 @@ const PollHeader = (): ReactElement => {
       <h1>
         <Link to="/">CAP1000</Link>
       </h1>
-      <button className="exit-button">
-        <Link to="/">EXIT</Link>
-      </button>
+      <Link className="exit-button" to="/">
+        EXIT
+      </Link>
     </div>
   );
 };
