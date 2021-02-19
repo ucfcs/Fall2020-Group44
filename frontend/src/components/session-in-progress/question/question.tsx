@@ -16,6 +16,8 @@ const Question = (props: QuestionProps): ReactElement => {
 
   return (
     <div className="question">
+      {props.closed ? <p className="closed-warning">Closed</p> : null}
+
       <h2>{props.questionText}</h2>
 
       <div className="main-info">
@@ -65,6 +67,7 @@ const Question = (props: QuestionProps): ReactElement => {
 interface QuestionProps {
   questionText: string;
   answers: string[];
+  closed?: boolean;
   showPercentages: boolean;
   correctAnswer?: number | number[];
 }

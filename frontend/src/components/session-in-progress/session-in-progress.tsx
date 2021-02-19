@@ -8,7 +8,6 @@ import "./session-in-progress.scss";
 
 import data from "./mock-data.json";
 import PollHeader from "../session-header/session-header";
-import Close from "./close/close";
 import { CLOSE, CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../constants";
 import { store } from "../../store";
 
@@ -33,7 +32,14 @@ const SessionInProgress = (): ReactElement => {
           />
         );
       case CLOSE:
-        return <Close />;
+        return (
+          <Question
+            questionText={currentQuestion.text}
+            answers={currentQuestion.answers}
+            showPercentages={false}
+            closed={true}
+          />
+        );
       case RESPONSES:
         return (
           <Question
