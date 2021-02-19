@@ -31,27 +31,38 @@ const ContentTree = (): ReactElement => {
   const dispatch = global.dispatch;
   const state = global.state;
 
-  const [selectedQuestion, setSelectedQuestion] = useState([
+  const [selectedPreviewQuestion, setSelectedPreviewQuestion] = useState([
     state.previewFolder,
     state.previewQuestion,
   ]);
+
   const [questions, setQuestions] = useState(state.questions);
 
   useEffect(() => {
     setQuestions(state.questions);
   }, [state.questions]);
 
+  // Array of booleans indicating whether each folder is collapsed
   const [folderCollapse, setFolderCollapse] = useState(
     new Array(questions.length).fill(false)
   );
 
-  const questionCheckboxRefs: { [key: number]: HTMLInputElement[] } = {};
   const folderCheckboxRefs: HTMLInputElement[] = [];
 
-  const sessionQuestions: { [key: string]: number[] } = {};
+  // an object containing refs of the checkbox of each question
+  // key = index of the folders
+  // data = arrays of checkbox refs from the questions in the folder
+  const questionCheckboxRefs: { [key: number]: HTMLInputElement[] } = {};
+
+  // organizing the questions to be presented in a session.
+  // key = folder index
+  // data = array of question indices
+  const [sessionQuestions, setSessionQuestions] = useState(
+    {} as { [key: string]: number[] }
+  );
 
   const handleUpdatePreviewQuestion = (folder: number, question: number) => {
-    setSelectedQuestion([folder, question]);
+    setSelectedPreviewQuestion([folder, question]);
     dispatch({
       type: "update-preview-folder",
       payload: folder,
@@ -95,43 +106,69 @@ const ContentTree = (): ReactElement => {
     question = -1
   ) => {
     event.stopPropagation();
+
+    // if checking a checkbox
     if ((event.target as HTMLInputElement).checked) {
+      // if it's a folder's checkbox
       if (isFolder) {
+        // check all the questions in the folder
+        questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
+          checkbox.checked = true;
+        });
         // push entire folder to session
         sessionQuestions[folder] = [
           ...Array(state.questions[folder].questions.length).keys(),
         ];
+      }
+      // if it's a single question
+      else {
+        // see if all the questions in the folder are checked.
+        let isAllChecked = true;
         questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
-          checkbox.checked = true;
+          if (!checkbox.checked) isAllChecked = false;
         });
-      } else {
+        // check the folder's checkbox if so
+        if (isAllChecked) {
+          folderCheckboxRefs[folder].checked = true;
+        }
+        // push question and sort the question order within the folder
         if (!sessionQuestions[folder]) sessionQuestions[folder] = [];
         sessionQuestions[folder].push(question);
         sessionQuestions[folder].sort((a: number, b: number) => a - b);
       }
-    } else {
+    }
+    // if unchecking a checkbox
+    else {
+      // folder
       if (isFolder) {
-        sessionQuestions[folder] = [];
+        // uncheck all the questions in the folder
         questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
           checkbox.checked = false;
         });
-      } else {
+        // delete all the questions in the folder from the session
+        sessionQuestions[folder] = [];
+      }
+      // question
+      else {
+        // uncheck the question
+        folderCheckboxRefs[folder].checked = false;
+        // delete question from session.
         sessionQuestions[folder] = sessionQuestions[folder].filter(
           (q: number) => {
             return q !== question;
           }
         );
-        folderCheckboxRefs[folder].checked = false;
       }
+      setSessionQuestions(sessionQuestions);
     }
 
+    // Update the poll with the questions in sessionQuestions
     const newPoll: PollQuestion[] = [];
     Object.keys(sessionQuestions).forEach((f: string) => {
       sessionQuestions[f].forEach((q: number) => {
         newPoll.push(state.questions[f].questions[q]);
       });
     });
-
     state.poll = newPoll;
   };
 
@@ -170,34 +207,34 @@ const ContentTree = (): ReactElement => {
                 />
                 {folder.folder}
               </div>
-              {!folderCollapse[fIndex] &&
-                folder.questions.map((question, qIndex) => (
-                  <div
-                    key={fIndex + "-" + qIndex}
-                    className={`preview-question ${
-                      selectedQuestion[0] === fIndex &&
-                      selectedQuestion[1] === qIndex
-                        ? "selected"
-                        : ""
-                    }`}
-                    onClick={() => handleUpdatePreviewQuestion(fIndex, qIndex)}
-                  >
-                    <input
-                      ref={(e: HTMLInputElement) => {
-                        if (!questionCheckboxRefs[fIndex])
-                          questionCheckboxRefs[fIndex] = [];
-                        questionCheckboxRefs[fIndex][qIndex] = e;
-                      }}
-                      type="checkbox"
-                      onClick={(e) =>
-                        selectQuestionsForPoll(e, false, fIndex, qIndex)
-                      }
-                    />
-                    <div className="title">{question.title}</div>
-                    <div></div>
-                    <div className="type">{question.type}</div>
-                  </div>
-                ))}
+              {folder.questions.map((question, qIndex) => (
+                <div
+                  key={fIndex + "-" + qIndex}
+                  className={`preview-question ${
+                    selectedPreviewQuestion[0] === fIndex &&
+                    selectedPreviewQuestion[1] === qIndex
+                      ? "selected"
+                      : ""
+                  } ${folderCollapse[fIndex] ? "collapsed-item" : ""}`}
+                  onClick={() => handleUpdatePreviewQuestion(fIndex, qIndex)}
+                >
+                  <input
+                    ref={(e: HTMLInputElement) => {
+                      // if folder doesn't exist, init it to an array
+                      if (!questionCheckboxRefs[fIndex])
+                        questionCheckboxRefs[fIndex] = [];
+                      questionCheckboxRefs[fIndex][qIndex] = e;
+                    }}
+                    type="checkbox"
+                    onClick={(e) =>
+                      selectQuestionsForPoll(e, false, fIndex, qIndex)
+                    }
+                  />
+                  <div className="title">{question.title}</div>
+                  <div></div>
+                  <div className="type">{question.type}</div>
+                </div>
+              ))}
             </div>
           ))}
         </div>
