@@ -16,7 +16,7 @@ const SessionHeader = (): ReactElement => {
 
   return (
     <div className="session-header">
-      <h1>
+      <h1 onClick={clearSession}>
         <Link to="/">CAP1000</Link>
       </h1>
       <Link onClick={clearSession} className="exit-button" to="/">
