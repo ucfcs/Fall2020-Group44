@@ -6,13 +6,15 @@ import React, {
   useContext,
 } from "react";
 import { store } from "../../../store";
+import "./present-footer.scss";
+
+// https://github.com/atlassian/react-beautiful-dnd
 import {
   DragDropContext,
   Droppable,
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
-import "./present-footer.scss";
 
 interface PollQuestion {
   title: string;
@@ -34,16 +36,20 @@ const PresentFooter = (): ReactElement => {
   const forceUpdate = useForceUpdate();
 
   const [questions, setQuestions] = useState<PollQuestion[]>(state.poll);
-  const [questionsShown, setQuestionsShown] = useState(
+
+  // array of booleans indicating which tooltip(s) is/are shown
+  const [showTooltip, setShowTooltip] = useState(
     new Array(state.poll.length).fill(false)
   );
 
+  // reorganize session questions on drag end
   const handleDragEnd = (result: DropResult) => {
     if (result.destination) {
       const newQuestions: PollQuestion[] = questions;
       const [srcQuestion] = questions.splice(result.source.index, 1);
       newQuestions.splice(result.destination.index, 0, srcQuestion);
-      setQuestions(state.poll);
+      state.poll = newQuestions;
+      setQuestions(newQuestions);
     }
   };
 
@@ -53,9 +59,9 @@ const PresentFooter = (): ReactElement => {
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    const newShowArray = questionsShown;
+    const newShowArray = showTooltip;
     newShowArray[index] = true;
-    setQuestionsShown(newShowArray);
+    setShowTooltip(newShowArray);
     forceUpdate();
   };
 
@@ -65,9 +71,9 @@ const PresentFooter = (): ReactElement => {
   ) => {
     e.preventDefault();
     e.stopPropagation();
-    const newShowArray = questionsShown;
+    const newShowArray = showTooltip;
     newShowArray[index] = false;
-    setQuestionsShown(newShowArray);
+    setShowTooltip(newShowArray);
     forceUpdate();
   };
 
@@ -101,7 +107,7 @@ const PresentFooter = (): ReactElement => {
                   >
                     <div
                       className={`footer-tooltip ${
-                        questionsShown[index] ? "show" : ""
+                        showTooltip[index] ? "show" : ""
                       }`}
                     >
                       {question.title}
