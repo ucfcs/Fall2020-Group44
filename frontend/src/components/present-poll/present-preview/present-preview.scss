@@ -1,8 +1,14 @@
 .present-preview {
+  position: relative;
+  left: 10%;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
+
+  h2 {
+    width: 80%;
+  }
 
   .present-preview-logo {
     height: 10vh;
