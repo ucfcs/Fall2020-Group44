@@ -55,10 +55,10 @@ export class Connection {
 				})
 			}
 		} catch (error) {
-			console.log(`Error adding student ${connectionId} to room ${courseId}`)
-			console.log(error)
-			// specific error for room already exists
+			console.log(`Error adding student ${connectionId} to room ${courseId}:`)
+			// specific error for room does not exist
 			if(error.code == 'ConditionalCheckFailedException') {
+				console.log(`room ${courseId} does not exist`)
 				return {
 					statusCode: 402, 
 					body: JSON.stringify({
@@ -66,6 +66,7 @@ export class Connection {
 					})
 				}
 			}
+			console.log(error)
 			return {
 				statusCode: 400, 
 					body: JSON.stringify({
@@ -83,25 +84,25 @@ export class Connection {
    * returns
    * - 1 if room exists, 0 otherwise
    *****************************************************/
-	roomExists(room) {
+	async roomExists(courseId) {
 		const params = {
 			TableName: process.env.TABLE_NAME,
 			Key: {
-				courseId: room
+				courseId: courseId
 			}
 		}
 
 		try {
-			this.client.get(params, function(err, data) {
-				if (err) throw err
-				else {
-					// room does not exist in table
-					if (Object.keys(data).length == 0) return 0;
-					// otherwise return 1: room does exist
-					console.log(data)
-					return 1;
-				}
-			})
+			const result = await this.client.get(params).promise();
+
+			// if the room does not exist, return falsey
+			if(Object.keys(result).length == 0){
+				return 0;
+			} 
+
+			// it does exist, return truthy
+			return 1;
+
 		} catch (error) {
 			console.log(`Error getting room ${room}:`)
 			console.log(error)
@@ -142,10 +143,11 @@ export class Connection {
 				})
 			}
 		} catch(error) {
-			console.log(`Error creating room ${courseId}`)
-			console.log(error)
+			console.log(`Error creating room ${courseId}:`)
+			
 			// specific error for room already exists
 			if(error.code == 'ConditionalCheckFailedException') {
+				console.log(`the room ${courseId} already exists`)
 				return {
 					statusCode: 401, 
 					body: JSON.stringify({
@@ -153,6 +155,7 @@ export class Connection {
 					})
 				}
 			}
+			console.log(error)
 			return {
 				statusCode: 400, 
 					body: JSON.stringify({
@@ -181,17 +184,17 @@ export class Connection {
 		}
 
 		try {
+			// first check if room exists
+			if(await this.roomExists(courseId) == false) {
+				throw `room ${courseId} does not exist`
+			}
+
 			// publish endSession to all students
 			await this.publish(courseId, "endSession");
 
 			//delete the room from DynamoDB
 			const result = await this.client.delete(params).promise()
 			console.log(result)
-			
-			// if the room did not exist, throw an error
-			if(Object.entries(result).length !== 0) {
-				throw `room ${courseId} does not exist`
-			}
 
 			// otherwise all was successful
 			return {
@@ -255,14 +258,12 @@ export class Connection {
    * - courseId if matching a professor, null otherwise
    *****************************************************/
 	async isProfessor(connectionId) {
-		params = {
+		const params = {
 			TableName: process.env.TABLE_NAME,
 			IndexName: "ProfessorIndex",
 			KeyConditionExpression: "professor = :c",
 			ExpressionAttributeValues: {
-				":c": {
-					"S": connectionId
-				}
+				":c": connectionId
 			}
 		}
 
@@ -286,7 +287,7 @@ export class Connection {
    * - connectionId of professor if successful
    *****************************************************/
 	async getProfessor(courseId) {
-		params = {
+		const params = {
 			TableName: process.env.TABLE_NAME,
 			Key: {
 				courseId: courseId
@@ -297,13 +298,13 @@ export class Connection {
 		}
 
 		try {
-			console.log(`getting professor for room: ${courseId}`)
 			const data = await this.client.get(params).promise();
-			console.log(data)
-			const professor = data.Item.professor.value;
-			console.log(professor)
-
-			return professor;
+			if(data.Item.professor){
+				return data.Item.professor
+			} else {
+				throw `DynamoDB unable to GET professor for room ${courseId}`
+			}
+			
 
 		} catch (err) {
 			console.log(`Error getting professor for room ${courseId}: ${err}`)
@@ -350,6 +351,18 @@ export class Connection {
 
 		} catch (err) {
 			console.log(`Error posting message to professor for room ${courseId}: ${err}`)
+
+			// if for some reason the professor is no longer connected to the websocket, close the room
+			if(err.statusCode == 410) {
+				console.log(`The professor (${professor}) for room ${courseId} is no longer connected. Closing the room.`)
+				await this.closeRoom(courseId);
+				return {
+					statusCode: 410,
+					body: JSON.stringify({
+						message: `The professor (${professor}) for room ${courseId} is no longer connected`
+					})
+				}
+			}
 			return {
 				statusCode: 400,
 				body: JSON.stringify({
@@ -399,9 +412,9 @@ export class Connection {
 			Key: {
 				"courseId": courseId
 			},
-			UpdateExpression: "SET questionOpen :boolean",
+			UpdateExpression: "SET questionOpen = :b",
 			ExpressionAttributeValues: {
-				':boolean': { "BOOL": true }
+				':b': true
 			},
 			ConditionExpression: 'attribute_exists(courseId)'
 		}
@@ -421,10 +434,11 @@ export class Connection {
 				})
 			}
 		} catch (error) {
-			console.log(`Error starting question in room ${courseId}`)
-			console.log(error)
+			console.log(`Error starting question in room ${courseId}:`)
+			
 			// specific error for room already exists
 			if(error.code == 'ConditionalCheckFailedException') {
+				console.log(`room ${courseId} does not exist`)
 				return {
 					statusCode: 402, 
 					body: JSON.stringify({
@@ -432,6 +446,7 @@ export class Connection {
 					})
 				}
 			}
+			console.log(error)
 			return {
 				statusCode: 400, 
 					body: JSON.stringify({
@@ -457,9 +472,9 @@ export class Connection {
 			Key: {
 				"courseId": courseId
 			},
-			UpdateExpression: "SET questionOpen :boolean",
+			UpdateExpression: "SET questionOpen = :b",
 			ExpressionAttributeValues: {
-				':boolean': { "BOOL": false }
+				':b': false
 			},
 			ConditionExpression: 'attribute_exists(courseId)'
 		}
@@ -479,10 +494,11 @@ export class Connection {
 				})
 			}
 		} catch (error) {
-			console.log(`Error ending question in room ${courseId}`)
-			console.log(error)
+			console.log(`Error ending question in room ${courseId}:`)
+			
 			// specific error for room already exists
 			if(error.code == 'ConditionalCheckFailedException') {
+				console.log(`room ${courseId} does not exist`)
 				return {
 					statusCode: 402, 
 					body: JSON.stringify({
@@ -490,6 +506,7 @@ export class Connection {
 					})
 				}
 			}
+			console.log(error)
 			return {
 				statusCode: 400, 
 					body: JSON.stringify({

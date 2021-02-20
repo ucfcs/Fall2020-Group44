@@ -23,6 +23,7 @@ export const handler = async (
 		
 		// if it was, close the room
 		if(courseId) {
+			console.log("a professor disconnected, closing the room")
 			await connection.closeRoom(courseId);
 
 			console.log(`professor disconnected, successfully closed room ${courseId}`)
@@ -45,7 +46,7 @@ export const handler = async (
 
 	} catch (error) {
 		console.log(`There was an error disconnecting: ${event?.requestContext.connectionId} `);
-		throw error;
+		console.log(error);
 	}
 
 };
