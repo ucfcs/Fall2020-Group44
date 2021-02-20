@@ -1,4 +1,3 @@
-// const { Connection } = require('./connections.js')
 const { Connection } = require('./dbconnections.js')
 import { APIGatewayEvent, APIGatewayProxyEvent, Context, ProxyResult } from "aws-lambda";
 
@@ -13,8 +12,6 @@ interface QuestionObject {
 let connection: typeof Connection;
 var room: String;
 var question: QuestionObject;
-// const host = process.env.REDIS_HOST;
-// const port = 6379;
 
 export const handler = async (
 	event?: APIGatewayEvent,
@@ -35,15 +32,7 @@ export const handler = async (
 		if(!room) throw "courseId not provided in payload"
 		if(!!question) throw "question not provided in payload"
 		
-		await connection.publish(room, "startQuestion", question)
-		console.log(`starting question for room ${room}: `)
-		console.log(question)
-		return {
-			statusCode: 200,
-			body: JSON.stringify({
-				message: `successfully started question in room ${room}`
-			})
-		}
+		return await connection.startQuestion(room, question)
 
 	} catch (error) {
 		console.log(error)

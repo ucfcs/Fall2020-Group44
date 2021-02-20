@@ -3,8 +3,6 @@ import { APIGatewayEvent, APIGatewayProxyEvent, Context, ProxyResult } from "aws
 
 let connection: typeof Connection;
 let room: String;
-// const host = process.env.REDIS_HOST;
-// const port = 6379;
 
 export const handler = async (
 	event?: APIGatewayEvent,
@@ -24,13 +22,7 @@ export const handler = async (
 		
 		// tell all students in the room that this question has ended
 		// can no longer submit responses
-		await connection.publish(room, "endQuestion")
-		return {
-			statusCode: 200,
-			body: JSON.stringify({
-				message: `successfully ended question in room ${room}`
-			})
-		}
+		return await connection.endQuestion(room);
 
 	} catch (error) {
 		console.log(error)

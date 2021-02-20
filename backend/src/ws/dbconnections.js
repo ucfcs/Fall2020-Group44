@@ -18,6 +18,9 @@ export class Connection {
 	
 	/******************************************************
    * add student to set of connectionIds for a room
+	 * 
+	 * inform the professor with message `studentConnected`
+	 * 
    * params
    * - key: roomId == courseId
    * - connectionId: websocket connectionId of student
@@ -38,8 +41,13 @@ export class Connection {
 		}
 
 		try {
+			// add student to the room
 			await this.client.update(params).promise()
 			console.log(`DynamoDB student ${connectionId} added to room ${courseId}: `)
+
+			// inform professor that student has connected
+			await this.sendToProfessor(courseId, "studentConnected")
+
 			return {
 				statusCode: 200, 
 				body: JSON.stringify({
@@ -118,7 +126,8 @@ export class Connection {
 			Item: {
 				courseId: courseId,
 				professor: connectionId,
-				connections: this.client.createSet([connectionId])
+				connections: this.client.createSet([connectionId]),
+				questionOpen: false
 			},
 			ConditionExpression: 'attribute_not_exists(courseId)'
 		}
@@ -153,6 +162,16 @@ export class Connection {
 		}
 	}
 
+	/******************************************************
+   * close the room in DynamoDB by
+	 * - publishing `endSession` to all connections
+	 * - deleting the room item from DynamoDB
+	 * 
+   * params
+   * - courseId
+   * returns
+   * - success of DynamoDB delete
+   *****************************************************/
 	async closeRoom(courseId) {
 		const params = {
 			TableName: process.env.TABLE_NAME,
@@ -162,14 +181,23 @@ export class Connection {
 		}
 
 		try {
+			// publish endSession to all students
+			await this.publish(courseId, "endSession");
+
+			//delete the room from DynamoDB
 			const result = await this.client.delete(params).promise()
 			console.log(result)
+			
+			// if the room did not exist, throw an error
 			if(Object.entries(result).length !== 0) {
 				throw `room ${courseId} does not exist`
 			}
+
+			// otherwise all was successful
 			return {
 				statusCode: 200, 
-				body: JSON.stringify({
+				body
+				: JSON.stringify({
 					message: `room ${courseId} closed successfully`
 				})
 			}
@@ -191,6 +219,8 @@ export class Connection {
 	 * their websocket connection has gone 'stale' i.e.
 	 * no longer connected
 	 * 
+	 * inform the professor with message `studentDisconnected`
+	 * 
    * params
    * - courseId, connectionId of student
    * returns
@@ -208,7 +238,125 @@ export class Connection {
 			}
 		}
 
+		//remove student connection from the room
 		await this.client.update(params).promise()
+
+		// inform the professor that a student disconnected
+		await this.sendToProfessor(courseId, "studentDisconnected");
+
+	}
+
+	/******************************************************
+   * Check if a disconnected connectionId was a professor
+	 * 
+   * params
+   * - connectionId
+   * returns
+   * - courseId if matching a professor, null otherwise
+   *****************************************************/
+	async isProfessor(connectionId) {
+		params = {
+			TableName: process.env.TABLE_NAME,
+			IndexName: "ProfessorIndex",
+			KeyConditionExpression: "professor = :c",
+			ExpressionAttributeValues: {
+				":c": {
+					"S": connectionId
+				}
+			}
+		}
+
+		const result = await this.client.query(params).promise();
+		const courseId = null;
+
+		// if it was a professor, the result will contain the room Item
+		if(result.Count > 0) {
+			courseId = result.Items[0].courseId;
+		}
+
+		return courseId;
+	}
+
+	/******************************************************
+   * Get professors connectionId for a given room
+	 * 
+   * params
+   * - courseId
+   * returns
+   * - connectionId of professor if successful
+   *****************************************************/
+	async getProfessor(courseId) {
+		params = {
+			TableName: process.env.TABLE_NAME,
+			Key: {
+				courseId: courseId
+			},
+			AttributesToGet: [
+				'professor'
+			]
+		}
+
+		try {
+			console.log(`getting professor for room: ${courseId}`)
+			const data = await this.client.get(params).promise();
+			console.log(data)
+			const professor = data.Item.professor.value;
+			console.log(professor)
+
+			return professor;
+
+		} catch (err) {
+			console.log(`Error getting professor for room ${courseId}: ${err}`)
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `Error getting professor for room ${courseId}`
+				})
+			}
+		}
+			
+	}
+
+	/******************************************************
+   * send a websocket message to the professor only
+	 * 
+   * params
+   * - courseId, action, payload object (optional)
+   * returns
+   * - success of posting message
+   *****************************************************/
+	async sendToProfessor(courseId, action, payload=null) {
+		try {
+			// first get professors connectionId
+			const professor = await this.getProfessor(courseId);
+
+			// then post message to professor
+			await this.gateway.postToConnection({
+				ConnectionId: professor, 
+				Data: JSON.stringify({ 
+					action: action, 
+					payload: payload  
+				})
+			}).promise();
+
+			console.log(`Successfully posted message to professor for room: ${courseId}`)
+
+			return {
+				statusCode: 200, 
+				body: JSON.stringify({
+					message: `successfully posted message to professor of room ${courseId}`
+				})
+			}
+
+		} catch (err) {
+			console.log(`Error posting message to professor for room ${courseId}: ${err}`)
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `Error posting message to professor for room ${courseId}`
+				})
+			}
+		}
 	}
 
 	/******************************************************
@@ -233,6 +381,122 @@ export class Connection {
 		const data = await this.client.get(params).promise();
 		console.log(data)
 		return data.Item.connections.values
+	}
+
+	/******************************************************
+   * start a question for a given room by:
+	 * - setting questionOpen to `true` for the room
+	 * - publishing the question to all students
+	 * 
+   * params
+   * - courseId, question object
+   * returns
+   * - success of both operations
+   *****************************************************/
+	async startQuestion(courseId, question) {
+		const params = {
+			TableName: process.env.TABLE_NAME,
+			Key: {
+				"courseId": courseId
+			},
+			UpdateExpression: "SET questionOpen :boolean",
+			ExpressionAttributeValues: {
+				':boolean': { "BOOL": true }
+			},
+			ConditionExpression: 'attribute_exists(courseId)'
+		}
+
+		try {
+			// first set questionOpen to true for the room
+			await this.client.update(params).promise()
+			
+			// then publish the question to all students
+			await this.publish(courseId, "startQuestion", question)
+
+			console.log(`Question started in room ${courseId}: `)
+			return {
+				statusCode: 200, 
+				body: JSON.stringify({
+					message: `successfully started question in room ${courseId}`
+				})
+			}
+		} catch (error) {
+			console.log(`Error starting question in room ${courseId}`)
+			console.log(error)
+			// specific error for room already exists
+			if(error.code == 'ConditionalCheckFailedException') {
+				return {
+					statusCode: 402, 
+					body: JSON.stringify({
+						message: 'RoomNotExistsException'
+					})
+				}
+			}
+			return {
+				statusCode: 400, 
+					body: JSON.stringify({
+						message: `DynamoDB UPDATE error when starting question in room ${courseId}`
+					})
+			}
+		}
+	}
+
+	/******************************************************
+   * end a question for a given room by:
+	 * - setting questionOpen to `false` for the room
+	 * - publishing endQuestion to all students
+	 * 
+   * params
+   * - courseId
+   * returns
+   * - success of both operations
+   *****************************************************/
+	async endQuestion(courseId) {
+		const params = {
+			TableName: process.env.TABLE_NAME,
+			Key: {
+				"courseId": courseId
+			},
+			UpdateExpression: "SET questionOpen :boolean",
+			ExpressionAttributeValues: {
+				':boolean': { "BOOL": false }
+			},
+			ConditionExpression: 'attribute_exists(courseId)'
+		}
+
+		try {
+			// first set questionOpen to false for the room
+			await this.client.update(params).promise()
+			
+			// then publish endQuestion to all students
+			await this.publish(courseId, "endQuestion")
+
+			console.log(`Question ended in room ${courseId}: `)
+			return {
+				statusCode: 200, 
+				body: JSON.stringify({
+					message: `successfully ended question in room ${courseId}`
+				})
+			}
+		} catch (error) {
+			console.log(`Error ending question in room ${courseId}`)
+			console.log(error)
+			// specific error for room already exists
+			if(error.code == 'ConditionalCheckFailedException') {
+				return {
+					statusCode: 402, 
+					body: JSON.stringify({
+						message: 'RoomNotExistsException'
+					})
+				}
+			}
+			return {
+				statusCode: 400, 
+					body: JSON.stringify({
+						message: `DynamoDB UPDATE error when ending question in room ${courseId}`
+					})
+			}
+		}
 	}
 
 	/******************************************************

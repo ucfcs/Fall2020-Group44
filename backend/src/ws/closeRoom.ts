@@ -19,8 +19,7 @@ export const handler = async (
 		room = JSON.parse(event.body).courseId
 		if(!room) throw "courseId not provided in payload"
 
-		await connection.closeRoom(room)
- 
+		return await connection.closeRoom(room)
 	} catch (error) {  
 		console.log(error)
 		return {
