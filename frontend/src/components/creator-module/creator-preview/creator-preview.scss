@@ -1,0 +1,38 @@
+.creator-preview {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  margin: 3vh 3vw;
+  padding: 2vh 2vw;
+  background: white;
+
+  .answer {
+    display: flex;
+    border: 1px solid #cccccc;
+    margin-top: 0.5rem;
+
+    &-letter {
+      padding: 0.5rem;
+      color: #ffc904;
+      align-self: center;
+    }
+
+    &-text {
+      padding: 0.5rem;
+      border-left: 1px solid #cccccc;
+    }
+  }
+
+  .preview-title,
+  .preview-question {
+    margin-bottom: 0.5rem;
+  }
+
+  .preview-title:before {
+    content: "Title: ";
+  }
+
+  .preview-question:before {
+    content: "Question: ";
+  }
+}

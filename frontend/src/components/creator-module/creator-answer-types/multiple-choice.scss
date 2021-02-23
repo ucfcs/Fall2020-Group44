@@ -1,0 +1,91 @@
+.answer-choices {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .answer-choice-header {
+    color: #717171;
+    margin-bottom: 2vh;
+  }
+
+  .answer-choice {
+    margin-bottom: 2vh;
+    height: 10vh;
+    width: 100%;
+    border: 1px solid #d1d1d1;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    .letter {
+      height: 100%;
+      width: 5%;
+      border-right: 1px solid #d1d1d1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      p {
+        margin: 0;
+        color: #ffc904;
+        font-weight: bold;
+        text-align: center;
+      }
+    }
+
+    .answer-text {
+      width: 65%;
+
+      input {
+        font-size: 0.9vw;
+        color: #717171;
+        width: 100%;
+        border: none;
+        padding: 0.25vw;
+        border-bottom: 1px solid #717171;
+      }
+    }
+
+    .correct-checkbox {
+      width: 15%;
+      display: flex;
+
+      input {
+        border: none;
+      }
+
+      label {
+        font-size: 0.7vw;
+        color: #717171;
+      }
+    }
+
+    .delete-answer {
+      width: 7%;
+      display: flex;
+      justify-content: center;
+
+      button {
+        background: white;
+        border: none;
+        color: #717171;
+        font-weight: bold;
+        font-size: 1vw;
+      }
+    }
+  }
+
+  .add-answer {
+    .add-answer-button {
+      background: white;
+      padding: 0 0;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: space-around;
+      font-size: 1vw;
+      width: 25%;
+      color: #ffc904;
+    }
+  }
+}

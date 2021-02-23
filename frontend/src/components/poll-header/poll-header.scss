@@ -1,0 +1,35 @@
+.poll-header {
+  background: black;
+
+  flex-shrink: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  h1 {
+    margin: 2vh 4vw;
+    font-size: 3vw;
+
+    a {
+      color: #ffc904;
+    }
+  }
+
+  button a {
+    color: black;
+  }
+
+  a {
+    text-decoration: none;
+  }
+
+  .exit-button {
+    margin: 2vh 4vw;
+    width: 12vw;
+    height: 70%;
+    font-size: 2vw;
+    border-radius: 5px;
+    border: 0px;
+    background: #ffc904;
+  }
+}

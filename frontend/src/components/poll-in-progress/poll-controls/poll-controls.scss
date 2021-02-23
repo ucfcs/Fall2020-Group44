@@ -1,0 +1,54 @@
+.poll-controls {
+  flex-shrink: 0;
+
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 95%;
+  margin: auto;
+  padding: 1rem 0;
+
+  button {
+    cursor: pointer;
+  }
+
+  .question-nav-button {
+    border: none;
+    background: none;
+    font-size: 24px;
+    margin: 0 0.5rem;
+    color: #999999;
+
+    img {
+      width: auto;
+      height: 24px;
+      margin-right: 0.2rem;
+    }
+  }
+
+  .active {
+    border-bottom: 3px solid #999999;
+  }
+
+  .control-button {
+    font-size: 24px;
+    border: none;
+    margin: 0.8rem;
+  }
+
+  .back-button,
+  .skip-button {
+    background: none;
+  }
+
+  .next-button {
+    background-color: #ffc904;
+  }
+
+  .next-button,
+  .skip-button {
+    padding: 0.1em 1em;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+  }
+}

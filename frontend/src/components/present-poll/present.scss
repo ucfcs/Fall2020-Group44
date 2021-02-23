@@ -1,0 +1,19 @@
+.present {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    flex: 1 0 auto;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .centering {
+    flex: 1 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+  }
+}
