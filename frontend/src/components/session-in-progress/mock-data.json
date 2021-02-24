@@ -6,14 +6,14 @@
       "correctIndex": 1
     },
     {
-      "text": "Who was the first president of the United States?",
+      "text": "Who was the president who made slavery illegal?",
       "answers": ["Abraham Lincoln", "George Washington", "Thomas Jefferson"],
-      "correctIndex": 1
+      "correctIndex": 0
     },
     {
-      "text": "Who was the first president of the United States?",
+      "text": "Who was the third president of the United States?",
       "answers": ["Abraham Lincoln", "George Washington", "Thomas Jefferson"],
-      "correctIndex": 1
+      "correctIndex": 2
     }
   ]
 }

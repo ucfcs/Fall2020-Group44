@@ -1,10 +1,5 @@
 import React, { ReactElement, SyntheticEvent, useContext } from "react";
-import {
-  RESPOND,
-  CLOSE,
-  RESPONSES,
-  CORRECT_RESPONSE,
-} from "../../../constants";
+import { RESPOND, RESPONSES, CORRECT_RESPONSE } from "../../../constants";
 
 import "./session-progress.scss";
 
@@ -32,12 +27,10 @@ const SessionProgress = (): ReactElement => {
       progress = parseInt(target.value);
     }
 
-    if (progress > questionProgress) {
-      dispatch({
-        type: "update-question-progress",
-        payload: progress,
-      });
-    }
+    dispatch({
+      type: "update-question-progress",
+      payload: progress,
+    });
   };
 
   return (
@@ -51,16 +44,6 @@ const SessionProgress = (): ReactElement => {
           <span className="order">1</span>Respond
         </button>
 
-        <div className={questionProgress >= CLOSE ? "active line" : "line"} />
-
-        <button
-          value={CLOSE}
-          className={questionProgress >= CLOSE ? "active" : ""}
-          onClick={updateProgress}
-        >
-          <span className="order">2</span>Close Question
-        </button>
-
         <div
           className={questionProgress >= RESPONSES ? "active line" : "line"}
         />
@@ -70,7 +53,7 @@ const SessionProgress = (): ReactElement => {
           className={questionProgress >= RESPONSES ? "active" : ""}
           onClick={updateProgress}
         >
-          <span className="order">3</span>View Responses
+          <span className="order">2</span>View Responses
         </button>
 
         <div
@@ -84,7 +67,7 @@ const SessionProgress = (): ReactElement => {
           className={questionProgress >= CORRECT_RESPONSE ? "active" : ""}
           onClick={updateProgress}
         >
-          <span className="order">4</span>Correct Response
+          <span className="order">3</span>Correct Response
         </button>
       </div>
 

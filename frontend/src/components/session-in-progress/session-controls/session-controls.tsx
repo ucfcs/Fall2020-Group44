@@ -18,7 +18,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     buttons.push(i + 1);
   }
 
-  const progress = (): void => {
+  const goForward = (): void => {
     if (questionProgress < CORRECT_RESPONSE) {
       dispatch({
         type: "update-question-progress",
@@ -29,6 +29,17 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     }
   };
 
+  const goBack = (): void => {
+    if (questionProgress > RESPOND) {
+      dispatch({
+        type: "update-question-progress",
+        payload: questionProgress - 1,
+      });
+    } else {
+      previousQuestion();
+    }
+  };
+
   const nextQuestion = (): void => {
     if (questionNumber >= props.questionCount - 1) {
       // this would make an api call to record what happened since it is the end of the session
@@ -36,6 +47,16 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
       dispatch({ type: "update-question-progress", payload: RESPOND });
     } else {
       dispatch({ type: "update-question-number", payload: questionNumber + 1 });
+      dispatch({ type: "update-question-progress", payload: RESPOND });
+    }
+  };
+
+  const previousQuestion = (): void => {
+    if (questionNumber > 0) {
+      dispatch({
+        type: "update-question-number",
+        payload: state.questionNumber - 1,
+      });
       dispatch({ type: "update-question-progress", payload: RESPOND });
     }
   };
@@ -56,16 +77,20 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
       </div>
 
       <div className="control-buttons">
+        <button className="control-button back-button" onClick={goBack}>
+          Back
+        </button>
+
         {/* This next bit is ugly. What it does is make sure that on the last question
             the skip button turns into End Session, and the Next button will go away on
             the last stage of the last question. */}
 
         {questionProgress < CORRECT_RESPONSE ? (
-          <button className="next-button control-button" onClick={progress}>
+          <button className="next-button control-button" onClick={goForward}>
             Next
           </button>
         ) : questionNumber < props.questionCount - 1 ? (
-          <button className="next-button control-button" onClick={progress}>
+          <button className="next-button control-button" onClick={goForward}>
             Next
           </button>
         ) : null}
