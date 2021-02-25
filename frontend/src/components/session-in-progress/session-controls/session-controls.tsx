@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement, SyntheticEvent, useContext } from "react";
 import { Link } from "react-router-dom";
 import { CORRECT_RESPONSE, RESPOND } from "../../../constants";
 import { store } from "../../../store";
@@ -61,18 +61,36 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     }
   };
 
+  const pickQuestion = (event: SyntheticEvent): void => {
+    const target: HTMLInputElement = event.target as HTMLInputElement;
+    let num: number;
+
+    if (target.tagName === "IMG") {
+      num = parseInt((target.parentElement as HTMLInputElement).value);
+    } else {
+      num = parseInt(target.value);
+    }
+
+    if (num !== state.questionNumber) {
+      dispatch({ type: "update-question-number", payload: num });
+      dispatch({ type: "update-question-progress", payload: RESPOND });
+    }
+  };
+
   return (
     <div className="session-controls">
       <div className="question-nav">
         {buttons.map((number: number, index: number) => (
-          <span
+          <button
             key={index}
             className={`question-nav-button ${
               index === questionNumber ? "active" : ""
             }`}
+            value={number - 1}
+            onClick={pickQuestion}
           >
             <img src="/img/logo.svg" alt="" />Q{number}{" "}
-          </span>
+          </button>
         ))}
       </div>
 
