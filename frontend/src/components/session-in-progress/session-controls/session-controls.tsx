@@ -1,6 +1,6 @@
 import React, { ReactElement, SyntheticEvent, useContext } from "react";
 import { Link } from "react-router-dom";
-import { CORRECT_RESPONSE, RESPOND } from "../../../constants";
+import { CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../../constants";
 import { store } from "../../../store";
 import "./session-controls.scss";
 
@@ -13,6 +13,21 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
   const questionNumber = state.questionNumber;
 
   const buttons: number[] = [];
+  let nextStage: string;
+
+  switch (questionProgress) {
+    case RESPOND:
+      nextStage = "View Responses";
+      break;
+    case RESPONSES:
+      nextStage = "Correct Response";
+      break;
+    case CORRECT_RESPONSE:
+      nextStage = "Next Question";
+      break;
+    default:
+      nextStage = "Next";
+  }
 
   for (let i = 0; i < props.questionCount; i++) {
     buttons.push(i + 1);
@@ -105,11 +120,11 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
 
         {questionProgress < CORRECT_RESPONSE ? (
           <button className="next-button control-button" onClick={goForward}>
-            Next
+            {nextStage}
           </button>
         ) : questionNumber < props.questionCount - 1 ? (
           <button className="next-button control-button" onClick={goForward}>
-            Next
+            {nextStage}
           </button>
         ) : null}
 
