@@ -16,7 +16,8 @@ const init = {
           correct: 0,
         },
         {
-          title: "Where is the capital of Florida",
+          title:
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long?",
           question: "Where is the capital of Florida",
           type: "Mult Choice",
           choices: ["Washington DC", "Paris", "Egypt"],
@@ -49,7 +50,7 @@ const init = {
       ],
     },
   ],
-  poll: 1,
+  poll: [],
   editPreviewQuestion: false,
   openCreator: false,
 };
