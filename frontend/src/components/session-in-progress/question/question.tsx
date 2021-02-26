@@ -35,30 +35,25 @@ const Question = (props: QuestionProps): ReactElement => {
                     {String.fromCharCode(65 + index)}
                   </p>
 
-                  <p className="answer-text">{answer}</p>
+                  <div className="answer-info">
+                    <p className="answer-text">{answer}</p>
+
+                    {props.showPercentages ? (
+                      <>
+                        <div
+                          style={{ width: `${percentages[index]}%` }}
+                          className="correct-bar"
+                        />
+
+                        <p>{percentages[index]}%</p>
+                      </>
+                    ) : null}
+                  </div>
                 </div>
               </div>
             );
           })}
         </div>
-
-        {props.showPercentages ? (
-          <div className="percentages">
-            {percentages.map(
-              (percentage: number, index: number): ReactElement => {
-                return (
-                  <div className="percent-info" key={index}>
-                    <label htmlFor={`prog-${index}`}>{percentage}%</label>
-
-                    <progress max="100" value={percentage} id={`prog-${index}`}>
-                      {percentage}%
-                    </progress>
-                  </div>
-                );
-              }
-            )}
-          </div>
-        ) : null}
       </div>
     </div>
   );

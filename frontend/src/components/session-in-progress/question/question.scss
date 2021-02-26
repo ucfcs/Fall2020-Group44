@@ -24,6 +24,12 @@
     justify-content: space-between;
   }
 
+  .always-displayed {
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
   .answers,
   .percentages {
     font-size: 24px;
@@ -31,13 +37,16 @@
   }
 
   .answer-letter {
-    color: #ffc904;
     border-right: 2px solid #cccccc;
     background-color: white;
   }
 
-  .answer-text {
-    margin-left: 1rem;
+  .answer-info {
+    margin: 0 1rem;
+    display: flex;
+    justify-content: space-between;
+    flex: 1 0 auto;
+    position: relative;
   }
 
   .answer {
@@ -53,26 +62,12 @@
     display: flex;
   }
 
-  .percent-info {
-    display: flex;
-    width: 100%;
-
-    // having trouble with getting the height right, so this centers the bars at least
-    padding-top: 2px;
-    margin-bottom: calc(1.5rem + 2px);
-
-    progress {
-      width: 100%;
-      position: relative;
-
-      background: none;
-      border: none;
-
-      &::-moz-progress-bar,
-      &::-webkit-progress-value {
-        background-color: #ffc904;
-      }
-    }
+  .correct-bar {
+    background-color: #ffc904;
+    position: absolute;
+    height: 100%;
+    left: -1rem;
+    z-index: -1;
   }
 
   .correct {
