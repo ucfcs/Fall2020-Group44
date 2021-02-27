@@ -1,38 +1,44 @@
-const { Connection } = require('./dbconnections.js')
-import { APIGatewayEvent, APIGatewayProxyEvent, Context, ProxyResult } from "aws-lambda";
-import { ConnectionTimedOutError } from "sequelize/types";
+import { Connection } from './dbconnections';
+import {
+	APIGatewayEvent,
+	APIGatewayProxyEvent,
+	Context,
+	ProxyResult,
+} from 'aws-lambda';
+import { ConnectionTimedOutError } from 'sequelize/types';
 
-let connection: typeof Connection;
-let courseId: String;
-
-
+let connection: Connection;
+let courseId: string | null;
 
 export const handler = async (
-  event?: APIGatewayEvent,
-  content?: Context
+	event?: APIGatewayEvent,
+	content?: Context
 ): Promise<ProxyResult> => {
-	
 	if (!connection) {
-    connection = new Connection()
-    connection.init(event);
-  }
-	
+		connection = new Connection();
+		connection.init(event);
+	}
+
 	try {
 		// check if disconnected user was a professor:
-		courseId = await connection.isProfessor(event?.requestContext.connectionId);
-		
+		courseId = await connection.isProfessor(
+			event?.requestContext.connectionId as string
+		);
+
 		// if it was, close the room
-		if(courseId) {
-			console.log("a professor disconnected, closing the room")
+		if (courseId) {
+			console.log('a professor disconnected, closing the room');
 			await connection.closeRoom(courseId);
 
-			console.log(`professor disconnected, successfully closed room ${courseId}`)
+			console.log(
+				`professor disconnected, successfully closed room ${courseId}`
+			);
 			return {
 				statusCode: 200,
 				body: JSON.stringify({
-					message: `professor disconnected, successfully closed room ${courseId}`
-				})
-			}
+					message: `professor disconnected, successfully closed room ${courseId}`,
+				}),
+			};
 		}
 
 		// otherwise it was just a student, nothing to do
@@ -40,13 +46,19 @@ export const handler = async (
 		return {
 			statusCode: 200,
 			body: JSON.stringify({
-				message: "disconnect successful"
-			})
-		 };
-
+				message: 'disconnect successful',
+			}),
+		};
 	} catch (error) {
-		console.log(`There was an error disconnecting: ${event?.requestContext.connectionId} `);
+		console.log(
+			`There was an error disconnecting: ${event?.requestContext.connectionId} `
+		);
 		console.log(error);
+		return {
+			statusCode: 400,
+			body: JSON.stringify({
+				message: 'error disconnecting',
+			}),
+		};
 	}
-
 };

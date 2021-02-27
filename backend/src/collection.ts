@@ -109,7 +109,7 @@ const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		return {
 			statusCode: 400,
 			body: JSON.stringify({
-				message: error.name || 'Fail to create',
+				message: error.name || 'Fail to delete',
 			}),
 		};
 	}

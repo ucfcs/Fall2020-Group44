@@ -56,6 +56,9 @@ const newFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		};
 	}
 
+	console.log(params.courseId);
+	console.log(body);
+
 	try {
 		const result = await Folder.create({
 			name: body?.name as string,

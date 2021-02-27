@@ -29,18 +29,17 @@ provider:
   apiGateway:
     shouldStartNameWithService: true
   iamRoleStatements:
-  - Effect: Allow
-    Action:
-      - "dynamodb:PutItem"
-      - "dynamodb:GetItem"
-      - "dynamodb:UpdateItem"
-      - "dynamodb:DeleteItem"
-      - "dynamodb:BatchGetItem"
-      - "dynamodb:BatchWriteItem"
-      - "dynamodb:Query"
-    Resource:
-      - "*"
-
+    - Effect: Allow
+      Action:
+        - 'dynamodb:PutItem'
+        - 'dynamodb:GetItem'
+        - 'dynamodb:UpdateItem'
+        - 'dynamodb:DeleteItem'
+        - 'dynamodb:BatchGetItem'
+        - 'dynamodb:BatchWriteItem'
+        - 'dynamodb:Query'
+      Resource:
+        - '*'
 
 plugins:
   - serverless-dotenv-plugin
@@ -141,7 +140,6 @@ functions:
           method: delete
           path: /api/v1/collection
 
-
   # Question endpoints
   getQuestion:
     handler: src/question.get
@@ -187,50 +185,63 @@ functions:
       - http:
           method: delete
           path: /api/v1/question_option
-  
+
+  # Question User Response endpoints
+  createQuestionUserResponse:
+    handler: src/question_user_response.create
+    events:
+      - http:
+          method: post
+          path: /api/v1/question_user_response
+  deleteQuestionUserResponse:
+    handler: src/question_user_response.remove
+    events:
+      - http:
+          method: delete
+          path: /api/v1/question_user_response
+
   # websocket endpoints
-  connect: 
+  connect:
     handler: src/ws/connect.handler
-    events: 
+    events:
       - websocket:
           route: $connect
   disconnect:
     handler: src/ws/disconnect.handler
-    events: 
+    events:
       - websocket:
           route: $disconnect
-  join: 
+  join:
     handler: src/ws/join.handler
-    events: 
-      - websocket: 
+    events:
+      - websocket:
           route: join
-  createRoom: 
+  createRoom:
     handler: src/ws/createRoom.handler
-    events: 
-      - websocket: 
+    events:
+      - websocket:
           route: createRoom
-  closeRoom: 
+  closeRoom:
     handler: src/ws/closeRoom.handler
-    events: 
-      - websocket: 
+    events:
+      - websocket:
           route: closeRoom
-  submit: 
+  submit:
     handler: src/ws/submit.handler
-    events: 
-      - websocket: 
+    events:
+      - websocket:
           route: submit
-  startQuestion: 
+  startQuestion:
     handler: src/ws/startQuestion.handler
-    events: 
-      - websocket: 
+    events:
+      - websocket:
           route: startQuestion
-  endQuestion: 
+  endQuestion:
     handler: src/ws/endQuestion.handler
-    events: 
-      - websocket: 
+    events:
+      - websocket:
           route: endQuestion
           path: /api/v1/folder
-
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -284,12 +295,12 @@ functions:
 #       Description: "Description for the output"
 #       Value: "Some output value"
 
-resources: 
+resources:
   Resources:
     connectionsTable:
       Type: AWS::DynamoDB::Table
-      Properties: 
-        TableName: connectionsTable
+      Properties:
+        TableName: Connections
         AttributeDefinitions:
           - AttributeName: courseId
             AttributeType: S
@@ -298,14 +309,19 @@ resources:
         KeySchema:
           - AttributeName: courseId
             KeyType: HASH
-        LocalSecondaryIndexes:
-          - IndexName: professorIndex
-            KeySchema:
-              - AttributeName: professor
-                KeyType: HASH
-            Projection:
-              ProjectionType: ALL
-
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        GlobalSecondaryIndexes:
+          IndexName: ProfessorIndex
+          KeySchema:
+            - AttributeName: professor
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
 
 custom:
   webpack:

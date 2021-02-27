@@ -1,34 +1,42 @@
-const { Connection } = require('./dbconnections.js')
-import { APIGatewayEvent, APIGatewayProxyEvent, Context, ProxyResult } from "aws-lambda";
+import { Connection } from './dbconnections';
+import {
+	APIGatewayEvent,
+	APIGatewayProxyEvent,
+	Context,
+	ProxyResult,
+} from 'aws-lambda';
 
-let connection: typeof Connection;
-let room: String;
+let connection: Connection;
+let room: string;
 
 export const handler = async (
 	event?: APIGatewayEvent,
-  content?: Context
+	content?: Context
 ): Promise<ProxyResult> => {
-
 	// initialize connection to dynamodb/apigateway
 	if (!connection) {
-		connection = new Connection()
+		connection = new Connection();
 		connection.init(event);
 	}
-	
+
 	try {
-		// get room from payload	
-		room = JSON.parse(event.body).courseId
-		if(!room) throw "courseId not provided in payload"
+		const params = JSON.parse(event?.body || '{}');
+		// get room from payload
+		room = params?.courseId;
+		if (!room) throw 'courseId not provided in payload';
 
 		// if the room exists, add this connectionID to the room
-		return await connection.addStudent(room, event?.requestContext.connectionId)
+		return await connection.addStudent(
+			room,
+			event?.requestContext.connectionId as string
+		);
 	} catch (error) {
-		console.log(error)
+		console.log(error);
 		return {
-			statusCode: 400, 
+			statusCode: 400,
 			body: JSON.stringify({
-				message: `error connecting to room: ${error}`
-			})
-		}
+				message: `error connecting to room: ${error}`,
+			}),
+		};
 	}
 };
