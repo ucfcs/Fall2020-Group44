@@ -75,6 +75,15 @@ functions:
   dbDrop:
     handler: src/db.drop
 
+  ltiLaunch:
+    handler: src/lti.launch
+    timeout: 10
+    events:
+      - http:
+          path: "/api/v1/lti"
+          method: post
+          cors: true
+
   # Folder endpoints
   getFolder:
     handler: src/folder.getFolder
