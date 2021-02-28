@@ -35,8 +35,6 @@ MYSQL_HOST=localhost
 MYSQL_DATABASE=ucfpoll
 MYSQL_USER=root
 MYSQL_PASSWORD=root
-
-REDIS_HOST=localhost
 ```
 
 ### Initialize Docker

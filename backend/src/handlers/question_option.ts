@@ -1,6 +1,6 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { QuestionOption } from '../../models';
-import responses from '../../util/API_Responses';
+import { QuestionOption } from '../models';
+import responses from '../util/api/responses';
 
 // POST /api/v1/question_option
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
@@ -8,7 +8,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.questionId) {
-		return responses._400({ message: 'Missing questionId parameter' });
+		return responses.badRequest({ message: 'Missing questionId parameter' });
 	}
 
 	try {
@@ -18,12 +18,12 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			questionId: parseInt(params?.questionId),
 		});
 
-		return responses._200({
+		return responses.ok({
 			message: 'Success',
 			data: result,
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error.name || 'Fail to create',
 		});
 	}
@@ -35,7 +35,9 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.questionOptionId) {
-		return responses._400({ message: 'Missing questionOptionId parameter' });
+		return responses.badRequest({
+			message: 'Missing questionOptionId parameter',
+		});
 	}
 
 	try {
@@ -43,11 +45,11 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			{ text: String(body?.text), isAnswer: body?.isAnswer == 'true' },
 			{ where: { id: params?.questionOptionId } }
 		);
-		return responses._200({
+		return responses.ok({
 			message: 'Success',
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error.name || 'Fail to update',
 		});
 	}
@@ -58,17 +60,19 @@ const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.questionOptionId) {
-		return responses._400({ message: 'Missing questionOptionId parameter' });
+		return responses.badRequest({
+			message: 'Missing questionOptionId parameter',
+		});
 	}
 
 	try {
 		await QuestionOption.destroy({ where: { id: params?.questionOptionId } });
 
-		return responses._200({
+		return responses.ok({
 			message: 'Success',
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error.name || 'Fail to create',
 		});
 	}

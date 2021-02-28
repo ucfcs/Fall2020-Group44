@@ -1,6 +1,6 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Collection, Question } from '../../models';
-import responses from '../../util/API_Responses';
+import { Collection, Question } from '../models';
+import responses from '../util/api/responses';
 
 const mockUserid = 1;
 
@@ -9,7 +9,7 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.collectionId) {
-		return responses._400({ message: 'Missing collectionId parameter' });
+		return responses.badRequest({ message: 'Missing collectionId parameter' });
 	}
 
 	try {
@@ -23,11 +23,11 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			},
 		});
 
-		return responses._200({
+		return responses.ok({
 			collection,
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error || 'Fail to query',
 		});
 	}
@@ -39,10 +39,10 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.folderId) {
-		return responses._400({ message: 'Missing folderId parameter' });
+		return responses.badRequest({ message: 'Missing folderId parameter' });
 	}
 	if (!params?.courseId) {
-		return responses._400({ message: 'Missing courseId parameter' });
+		return responses.badRequest({ message: 'Missing courseId parameter' });
 	}
 
 	try {
@@ -54,12 +54,12 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			publishedAt: null,
 		});
 
-		return responses._200({
+		return responses.ok({
 			message: 'Success',
 			data: result,
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error || 'Fail to create',
 		});
 	}
@@ -71,7 +71,7 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.collectionId) {
-		return responses._400({ message: 'Missing collectionId parameter' });
+		return responses.badRequest({ message: 'Missing collectionId parameter' });
 	}
 
 	try {
@@ -79,11 +79,11 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			{ name: String(body.name) },
 			{ where: { id: params?.collectionId } }
 		);
-		return responses._200({
+		return responses.badRequest({
 			message: 'Success',
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error.name || 'Fail to update',
 		});
 	}
@@ -94,7 +94,7 @@ const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.collectionId) {
-		return responses._400({ message: 'Missing collectionId parameter' });
+		return responses.badRequest({ message: 'Missing collectionId parameter' });
 	}
 
 	try {
