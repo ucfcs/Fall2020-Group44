@@ -53,6 +53,7 @@ const init = {
   poll: [],
   editPreviewQuestion: false,
   openCreator: false,
+  isPreviewTab: true,
 };
 const store = React.createContext(init);
 const { Provider } = store;
@@ -75,6 +76,10 @@ const StateProvider = ({ children }) => {
         return { ...state, openCreator: true };
       case "close-creator":
         return { ...state, openCreator: false };
+      case "open-preview-tab":
+        return { ...state, isPreviewTab: true };
+      case "close-preview-tab":
+        return { ...state, isPreviewTab: false };
       default:
         throw new Error("Base reducer: this action type was not defined");
     }

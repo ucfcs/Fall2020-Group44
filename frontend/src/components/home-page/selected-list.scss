@@ -1,0 +1,13 @@
+.selected-list {
+  &__wrapper {
+    width: calc(100% - 80px);
+  }
+
+  &__questions {
+    margin: 7vh 4vw;
+  }
+
+  &__question {
+    margin-bottom: 0.5rem;
+  }
+}

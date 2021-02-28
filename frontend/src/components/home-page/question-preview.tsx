@@ -1,5 +1,4 @@
 import React, { useState, useContext, ReactElement } from "react";
-import { Link } from "react-router-dom";
 import "./question-preview.scss";
 import { store } from "../../store";
 import MultipleChoice from "./question-types/multiple-choice";
@@ -22,25 +21,6 @@ const QuestionPreview = (): ReactElement => {
     setShowCorrectPreviewResponse(!showCorrectPreviewResponse);
   };
 
-  const toggleEditQuestion = () => {
-    dispatch({ type: "edit-preview-question" });
-    dispatch({ type: "open-creator" });
-  };
-
-  const deleteQuestion = () => {
-    // const newQuestions = state.questions.slice();
-    // newQuestions[state.previewFolder].questions.splice(
-    // 	state.previewQuestion,
-    // 	1,
-    // );
-    // if (newQuestions[state.previewFolder].questions.length < 1) {
-    // 	newQuestions.splice(state.previewFolder, 1);
-    // }
-
-    // dispatch({ type: 'delete-preview-question', payload: newQuestions });
-    console.log("deleteQuestion");
-  };
-
   const previewQuestion =
     state.questions[state.previewFolder].questions[state.previewQuestion];
 
@@ -52,10 +32,11 @@ const QuestionPreview = (): ReactElement => {
           className="show-correct-response"
           onClick={toggleShowCorrectResponse}
         >
-          Show Correct Response <span>&#10003;</span>
+          {showCorrectPreviewResponse ? "Hide" : "Show"} Correct Response{" "}
+          <span>&#10003;</span>
         </button>
         <button className="see-responses" onClick={toggleShowResponse}>
-          See Responses
+          {showPreviewResponse ? "Hide" : "Show"} Responses
         </button>
       </div>
       <div className="answer-choice-wrapper">
@@ -66,17 +47,6 @@ const QuestionPreview = (): ReactElement => {
           showPreviewResponse={showPreviewResponse}
           showCorrectPreviewResponse={showCorrectPreviewResponse}
         />
-      </div>
-      <div className="option-buttons">
-        <button className="present-button">
-          <Link to="/poll/present">&#9658; Present</Link>
-        </button>
-        <button className="edit-button" onClick={toggleEditQuestion}>
-          Edit
-        </button>
-        <button className="delete-button" onClick={deleteQuestion}>
-          Delete
-        </button>
       </div>
     </div>
   ) : (

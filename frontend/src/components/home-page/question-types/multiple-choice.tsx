@@ -29,27 +29,33 @@ const AnswerChoice = ({
   return (
     <div
       className={`answer-choice ${
-        showCorrectPreviewResponse ? (correct ? "correct" : "incorrect") : ""
+        showCorrectPreviewResponse
+          ? correct
+            ? "correct"
+            : "incorrect"
+          : "neutral"
       }`}
     >
-      <div
-        className="response-bar"
-        style={{
-          width: showPreviewResponse
-            ? response
-            : showCorrectPreviewResponse
-            ? "100%"
-            : "",
-        }}
-      ></div>
       <div className="answer-info">
         <div className="letter">
           <p>{letter}</p>
         </div>
-        <div className="answer-text">
-          <span>{answer}</span>
+        <div className="answer-body">
+          <div
+            className="response-bar"
+            style={{
+              width: showPreviewResponse
+                ? response
+                : showCorrectPreviewResponse
+                ? "100%"
+                : "",
+            }}
+          ></div>
+          <div className="answer-text">
+            <span>{answer}</span>
+          </div>
+          <div className="responses">{showPreviewResponse ? response : ""}</div>
         </div>
-        <div className="responses">{showPreviewResponse ? response : ""}</div>
       </div>
     </div>
   );
