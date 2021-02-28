@@ -4,7 +4,6 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"test": "echo \"Error: no test specified\" && exit 1",
 		"build": "tsc",
 		"db:build": "serverless invoke local --function dbInit",
 		"db:drop": "serverless invoke local --function dbDrop",
@@ -18,7 +17,6 @@
 		"@types/aws-lambda": "^8.10.71",
 		"@types/node": "^14.14.25",
 		"@types/node-fetch": "^2.5.8",
-		"@types/redis": "^2.8.28",
 		"@types/serverless": "^1.78.20",
 		"@typescript-eslint/eslint-plugin": "^4.15.0",
 		"@typescript-eslint/parser": "^4.15.0",
@@ -38,7 +36,6 @@
 	"dependencies": {
 		"mysql2": "^2.2.5",
 		"node-fetch": "^2.6.1",
-		"redis": "^3.0.2",
 		"sequelize": "^6.5.0",
 		"serverless-dynamodb-local": "^0.2.39"
 	}
