@@ -2,11 +2,13 @@ type QuestionUserResponse = number;
 
 interface QuestionUserResponseAttributes {
 	id: QuestionUserResponse;
-	collectionId: CollectionId;
+	questionId: QuestionId;
 	questionOptionId: QuestionOptionId;
+	userId: UserId;
 }
 
 interface QuestionUserResponseCreationAttributes {
-	collectionId: CollectionId;
+	questionId: QuestionId;
 	questionOptionId: QuestionOptionId;
+	userId: UserId;
 }

@@ -1,6 +1,6 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Collection, Question } from './models';
-import responses from './util/API_Responses';
+import { Collection, Question } from '../../models';
+import responses from '../../util/API_Responses';
 
 const mockUserid = 1;
 
@@ -109,7 +109,7 @@ const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		return {
 			statusCode: 400,
 			body: JSON.stringify({
-				message: error.name || 'Fail to create',
+				message: error.name || 'Fail to delete',
 			}),
 		};
 	}

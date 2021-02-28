@@ -7,7 +7,7 @@ import {
 	User,
 	UserMobileSetting,
 	UserWebSetting,
-} from './models';
+} from '../../models';
 
 const init = async (): Promise<void> => {
 	try {

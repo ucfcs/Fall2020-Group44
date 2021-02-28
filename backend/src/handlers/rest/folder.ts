@@ -1,5 +1,5 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Folder } from './models/Folder';
+import { Folder } from '../../models/Folder';
 
 const mockUserid = 1;
 
@@ -55,6 +55,9 @@ const newFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			}),
 		};
 	}
+
+	console.log(params.courseId);
+	console.log(body);
 
 	try {
 		const result = await Folder.create({

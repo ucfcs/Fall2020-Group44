@@ -28,10 +28,23 @@ provider:
   lambdaHashingVersion: 20201221
   apiGateway:
     shouldStartNameWithService: true
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - 'dynamodb:PutItem'
+        - 'dynamodb:GetItem'
+        - 'dynamodb:UpdateItem'
+        - 'dynamodb:DeleteItem'
+        - 'dynamodb:BatchGetItem'
+        - 'dynamodb:BatchWriteItem'
+        - 'dynamodb:Query'
+      Resource:
+        - '*'
 
 plugins:
   - serverless-dotenv-plugin
   - serverless-webpack
+  - serverless-dynamodb-local
   - serverless-offline
 
 # you can add statements to the Lambda function's IAM Role here
@@ -65,91 +78,89 @@ plugins:
 
 functions:
   hello:
-    handler: src/handler.hello
+    handler: src/handlers/handler.hello
     events:
       - http:
           method: get
           path: hello
   dbInit:
-    handler: src/db.init
+    handler: src/handlers/db.init
   dbDrop:
-    handler: src/db.drop
+    handler: src/handlers/db.drop
 
   # Folder endpoints
   getFolder:
-    handler: src/folder.getFolder
+    handler: src/handlers/folder.getFolder
     events:
       - http:
           method: get
           path: /api/v1/folder
   newFolder:
-    handler: src/folder.newFolder
+    handler: src/handlers/folder.newFolder
     events:
       - http:
           method: post
           path: /api/v1/folder
   updateFolder:
-    handler: src/folder.updateFolder
+    handler: src/handlers/folder.updateFolder
     events:
       - http:
           method: put
           path: /api/v1/folder
   deleteFolder:
-    handler: src/folder.deleteFolder
+    handler: src/handlers/folder.deleteFolder
     events:
       - http:
           method: delete
           path: /api/v1/folder
 
-
   # Collection endpoints
   getCollection:
-    handler: src/collection.get
+    handler: src/handlers/collection.get
     events:
       - http:
           method: get
           path: /api/v1/collection
   createCollection:
-    handler: src/collection.create
+    handler: src/handlers/collection.create
     events:
       - http:
           method: post
           path: /api/v1/collection
   updateCollection:
-    handler: src/collection.update
+    handler: src/handlers/collection.update
     events:
       - http:
           method: put
           path: /api/v1/collection
   deleteCollection:
-    handler: src/collection.remove
+    handler: src/handlers/collection.remove
     events:
       - http:
           method: delete
           path: /api/v1/collection
 
-
   # Question endpoints
   getQuestion:
-    handler: src/question.get
+    handler: src/handlers/question.get
     events:
       - http:
           method: get
           path: /api/v1/question
   createQuestion:
-    handler: src/question.create
+    handler: src/handlers/question.create
     events:
       - http:
           method: post
           path: /api/v1/question
   updateQuestion:
-    handler: src/question.update
+    handler: src/handlers/question.update
     events:
       - http:
           method: put
           path: /api/v1/question
   deleteQuestion:
-    handler: src/question.remove
+    handler: src/handlers/question.remove
     events:
       - http:
           method: delete
@@ -157,24 +168,80 @@ functions:
 
   # Question Option endpoints
   createQuestionOption:
-    handler: src/question_option.create
+    handler: src/handlers/question_option.create
     events:
       - http:
           method: post
           path: /api/v1/question_option
   updateQuestionOption:
-    handler: src/question_option.update
+    handler: src/handlers/question_option.update
     events:
       - http:
           method: put
           path: /api/v1/question_option
   deleteQuestionOption:
-    handler: src/question_option.remove
+    handler: src/handlers/question_option.remove
     events:
       - http:
           method: delete
           path: /api/v1/question_option
 
+  # Question User Response endpoints
+  createQuestionUserResponse:
+    handler: src/handlers/question_user_response.create
+    events:
+      - http:
+          method: post
+          path: /api/v1/question_user_response
+  deleteQuestionUserResponse:
+    handler: src/handlers/question_user_response.remove
+    events:
+      - http:
+          method: delete
+          path: /api/v1/question_user_response
+
+  # websocket endpoints
+  connect:
+    handler: src/handlers/websocket/connect.handler
+    events:
+      - websocket:
+          route: $connect
+  disconnect:
+    handler: src/handlers/websocket/disconnect.handler
+    events:
+      - websocket:
+          route: $disconnect
+  join:
+    handler: src/handlers/websocket/join.handler
+    events:
+      - websocket:
+          route: join
+  createRoom:
+    handler: src/handlers/websocket/createRoom.handler
+    events:
+      - websocket:
+          route: createRoom
+  closeRoom:
+    handler: src/handlers/websocket/closeRoom.handler
+    events:
+      - websocket:
+          route: closeRoom
+  submit:
+    handler: src/handlers/websocket/submit.handler
+    events:
+      - websocket:
+          route: submit
+  startQuestion:
+    handler: src/handlers/websocket/startQuestion.handler
+    events:
+      - websocket:
+          route: startQuestion
+  endQuestion:
+    handler: src/handlers/websocket/endQuestion.handler
+    events:
+      - websocket:
+          route: endQuestion
+          path: /api/v1/folder
 
 #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
@@ -201,7 +268,7 @@ functions:
 #            detail:
 #              state:
 #                - pending
-#      - cloudwatchLog: '/aws/lambda/hello'
+#      - cloudwatchLog: '/awebsocket/lambda/hello'
 #      - cognitoUserPool:
 #          pool: MyUserPool
 #          trigger: PreSignUp
@@ -227,6 +294,34 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+resources:
+  Resources:
+    connectionsTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: Connections
+        AttributeDefinitions:
+          - AttributeName: courseId
+            AttributeType: S
+          - AttributeName: professor
+            AttributeType: S
+        KeySchema:
+          - AttributeName: courseId
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 5
+          WriteCapacityUnits: 5
+        GlobalSecondaryIndexes:
+          IndexName: ProfessorIndex
+          KeySchema:
+            - AttributeName: professor
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
 
 custom:
   webpack:

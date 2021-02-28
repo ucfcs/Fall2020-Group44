@@ -13,7 +13,7 @@ export const QuestionUserResponse: ModelDefined<
 			primaryKey: true,
 			autoIncrement: true,
 		},
-		collectionId: {
+		questionId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
@@ -30,7 +30,7 @@ export const QuestionUserResponse: ModelDefined<
 		indexes: [
 			{
 				unique: true,
-				fields: ['userId', 'collectionId', 'questionOptionId'],
+				fields: ['userId', 'questionId', 'questionOptionId'],
 			},
 		],
 	}
