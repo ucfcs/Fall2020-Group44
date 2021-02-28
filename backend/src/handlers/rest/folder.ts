@@ -1,5 +1,5 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Folder } from './models/Folder';
+import { Folder } from '../../models/Folder';
 
 const mockUserid = 1;
 

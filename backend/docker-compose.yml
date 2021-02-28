@@ -13,26 +13,15 @@ services:
       MYSQL_PASSWORD: root
     ports:
       - 3306:3306
-  # ucf-poll-redis:
-  #   image: redis:6
-  #   volumes:
-  #     - redis_data:/data
-  #   restart: always
-  #   ports:
-  #     - 6379:6379
   ucf-poll-dynamodb:
-    command: "-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data"
+    command: '-jar DynamoDBLocal.jar -sharedDb -optimizeDbBeforeStartup -dbPath ./data'
     image: amazon/dynamodb-local:latest
-    ports: 
+    ports:
       - 8000:8000
-    volumes: 
-      # - dynamo_data:/data
-      - "./docker/dynamodb:/home/dynamodblocal/data"
+    volumes:
+      - './docker/dynamodb:/home/dynamodblocal/data'
     working_dir: /home/dynamodblocal
     restart: always
-    
 
 volumes:
   db_data: {}
-  # redis_data: {}
-  dynamo_data: {}

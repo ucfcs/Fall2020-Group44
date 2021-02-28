@@ -7,10 +7,10 @@ import {
 } from 'aws-lambda';
 
 let connection: Connection;
-// let room: string;
-// let questionId: string;
-// let questionOptionId: string;
-// let userId: string;
+let courseId: string;
+let questionId: string;
+let questionOptionId: string;
+let userId: string;
 
 export const handler = async (
 	event?: APIGatewayEvent,
@@ -24,8 +24,12 @@ export const handler = async (
 
 	try {
 		const params = JSON.parse(event?.body || '{}');
-		// get room from payload
-		const { courseId, questionId, questionOptionId, userId } = params;
+		// get vars from payload
+		courseId = params?.courseId;
+		questionId = params?.questionId;
+		questionOptionId = params?.questionOptionId;
+		userId = params?.userId;
+
 		if (!courseId || !questionId || !questionOptionId || !userId)
 			throw 'all of courseId, questionId, questionOptionId, and userId required';
 

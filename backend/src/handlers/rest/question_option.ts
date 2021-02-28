@@ -1,6 +1,6 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { QuestionOption } from './models';
-import responses from './util/API_Responses';
+import { QuestionOption } from '../../models';
+import responses from '../../util/API_Responses';
 
 // POST /api/v1/question_option
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {

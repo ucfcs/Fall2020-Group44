@@ -1,6 +1,6 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Collection, Question } from './models';
-import responses from './util/API_Responses';
+import { Collection, Question } from '../../models';
+import responses from '../../util/API_Responses';
 
 const mockUserid = 1;
 
