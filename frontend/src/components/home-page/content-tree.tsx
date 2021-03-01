@@ -71,6 +71,7 @@ const ContentTree = (): ReactElement => {
       type: "update-preview-question",
       payload: question,
     });
+    dispatch({ type: "open-preview-tab" });
   };
 
   const handleFolderCollapse = (folder: number) => {
@@ -169,7 +170,8 @@ const ContentTree = (): ReactElement => {
         newPoll.push(state.questions[f].questions[q]);
       });
     });
-    state.poll = newPoll;
+    dispatch({ type: "update-session-questions", payload: newPoll });
+    dispatch({ type: "close-preview-tab" });
   };
 
   return (
@@ -187,7 +189,8 @@ const ContentTree = (): ReactElement => {
       <div className="question-list">
         <div className="question-list-header">
           <span>Title</span>
-          <span>Question Type</span>
+          <span></span>
+          <span>Type</span>
         </div>
         <div className="question-list-body">
           {questions.map((folder: Folder, fIndex: number) => (

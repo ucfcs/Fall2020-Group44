@@ -49,10 +49,56 @@ const init = {
         },
       ],
     },
+    {
+      folder: "Chapter 3",
+      questions: [
+        {
+          title: "Im out of questions snh",
+          question: "Im out of questions snh",
+          type: "Mult Choice",
+          choices: ["RIP", "LMAO", "BLOCC"],
+          correct: 1,
+        },
+        {
+          title:
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long?",
+          question:
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long?",
+          type: "Mult Choice",
+          choices: ["Washington DC", "Paris", "Egypt"],
+          correct: 1,
+        },
+      ],
+    },
+    {
+      folder: "Chapter 4",
+      questions: [
+        {
+          title: "Where is the capital of Florida",
+          question: "Where is the capital of Florida",
+          type: "Mult Choice",
+          choices: ["Washington DC", "Paris", "Egypt"],
+          correct: 1,
+        },
+        {
+          title: "Who was the first President",
+          question: "Who was the first President",
+          type: "Mult Choice",
+          choices: [
+            "Joe Mama",
+            "Abraham Lincoln",
+            "George Washington",
+            "Thomas Jefferson",
+          ],
+          correct: 2,
+        },
+      ],
+    },
   ],
   poll: [],
   editPreviewQuestion: false,
   openCreator: false,
+  isPreviewTab: true,
 };
 const store = React.createContext(init);
 const { Provider } = store;
@@ -75,6 +121,10 @@ const StateProvider = ({ children }) => {
         return { ...state, openCreator: true };
       case "close-creator":
         return { ...state, openCreator: false };
+      case "open-preview-tab":
+        return { ...state, isPreviewTab: true };
+      case "close-preview-tab":
+        return { ...state, isPreviewTab: false };
       default:
         throw new Error("Base reducer: this action type was not defined");
     }
