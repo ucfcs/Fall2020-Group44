@@ -156,12 +156,18 @@ functions:
           path: /api/v1/question_user_response
 
   # mobile oauth
-  mobileOauth:
+  mobileOauthRedirect:
     handler: src/handlers/mobile.oauth.redirect
     events:
       - http:
           method: get
           path: api/v1/oauth/mobile/redirect
+  mobileOauthURL:
+    handler: src/handlers/mobile.oauth.url
+    events:
+      - http:
+          method: get
+          path: api/v1/oauth/mobile/url
 
   # websocket endpoints
   connect:

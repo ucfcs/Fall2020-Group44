@@ -3,6 +3,9 @@ import fetch from 'node-fetch';
 
 import responses from '../util/api/responses';
 
+/**
+ * @see http://localhost:3000/dev/api/v1/oauth/mobile/redirect
+ */
 export const redirect: APIGatewayProxyHandler = async (event) => {
 	const { queryStringParameters } = event;
 
@@ -31,8 +34,21 @@ export const redirect: APIGatewayProxyHandler = async (event) => {
 		});
 		const data = await res.json();
 
-		return responses.ok(data);
+		// console.log(data);
+		// return responses.ok(data);
+		return responses.movedPermanently(
+			`ucf-react://authentication?token=${data.access_token}`
+		);
 	} catch (error) {
 		return responses.internalServerError(error);
 	}
+};
+
+/**
+ * @see http://localhost:3000/dev/api/v1/oauth/mobile/url
+ */
+export const url: APIGatewayProxyHandler = async () => {
+	return responses.ok({
+		url: `${process.env.CANVAS_URL}/login/oauth2/auth?response_type=code&client_id=${process.env.CANVAS_ID}&redirect_uri=${process.env.CANVAS_REDIRECT}`,
+	});
 };

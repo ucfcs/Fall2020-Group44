@@ -16,6 +16,20 @@ export default {
 		};
 	},
 	/**
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/301
+	 */
+	movedPermanently(url: string): APIGatewayProxyResult {
+		return {
+			headers: {
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Origin': '*',
+				Location: url,
+			},
+			statusCode: 301,
+			body: '',
+		};
+	},
+	/**
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/400
 	 */
 	badRequest(data?: unknown): APIGatewayProxyResult {
