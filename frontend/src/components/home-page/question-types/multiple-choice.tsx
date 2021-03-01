@@ -9,58 +9,6 @@ type Props = {
   showCorrectPreviewResponse: boolean;
 };
 
-type AnswerChoiceProps = {
-  answer: string;
-  letter: string;
-  correct: boolean;
-  response: string;
-  showPreviewResponse: boolean;
-  showCorrectPreviewResponse: boolean;
-};
-
-const AnswerChoice = ({
-  answer,
-  letter,
-  correct,
-  response,
-  showPreviewResponse,
-  showCorrectPreviewResponse,
-}: AnswerChoiceProps) => {
-  return (
-    <div
-      className={`answer-choice ${
-        showCorrectPreviewResponse
-          ? correct
-            ? "correct"
-            : "incorrect"
-          : "neutral"
-      }`}
-    >
-      <div className="answer-info">
-        <div className="letter">
-          <p>{letter}</p>
-        </div>
-        <div className="answer-body">
-          <div
-            className="response-bar"
-            style={{
-              width: showPreviewResponse
-                ? response
-                : showCorrectPreviewResponse
-                ? "100%"
-                : "",
-            }}
-          ></div>
-          <div className="answer-text">
-            <span>{answer}</span>
-          </div>
-          <div className="responses">{showPreviewResponse ? response : ""}</div>
-        </div>
-      </div>
-    </div>
-  );
-};
-
 const MultipleChoice = ({
   answers,
   correct,
@@ -71,15 +19,40 @@ const MultipleChoice = ({
   return (
     <div className="multiple-choice">
       {answers.map((answer, index) => (
-        <AnswerChoice
+        <div
           key={index}
-          answer={answer}
-          correct={correct === index}
-          response={responses[index]}
-          letter={String.fromCharCode(65 + index)}
-          showPreviewResponse={showPreviewResponse}
-          showCorrectPreviewResponse={showCorrectPreviewResponse}
-        />
+          className={`answer-choice ${
+            showCorrectPreviewResponse
+              ? correct === index
+                ? "correct"
+                : "incorrect"
+              : "neutral"
+          }`}
+        >
+          <div className="answer-info">
+            <div className="letter">
+              <p>{String.fromCharCode(65 + index)}</p>
+            </div>
+            <div className="answer-body">
+              <div
+                className="response-bar"
+                style={{
+                  width: showPreviewResponse
+                    ? responses[index]
+                    : showCorrectPreviewResponse
+                    ? "100%"
+                    : "",
+                }}
+              ></div>
+              <div className="answer-text">
+                <span>{answer}</span>
+              </div>
+              <div className="responses">
+                {showPreviewResponse ? responses[index] : ""}
+              </div>
+            </div>
+          </div>
+        </div>
       ))}
     </div>
   );

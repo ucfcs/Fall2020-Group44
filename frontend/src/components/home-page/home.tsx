@@ -18,16 +18,6 @@ const Body = (): ReactElement => {
   };
 
   const deleteQuestion = () => {
-    // const newQuestions = state.questions.slice();
-    // newQuestions[state.previewFolder].questions.splice(
-    // 	state.previewQuestion,
-    // 	1,
-    // );
-    // if (newQuestions[state.previewFolder].questions.length < 1) {
-    // 	newQuestions.splice(state.previewFolder, 1);
-    // }
-
-    // dispatch({ type: 'delete-preview-question', payload: newQuestions });
     console.log("deleteQuestion");
   };
 
