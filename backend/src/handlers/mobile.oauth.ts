@@ -34,8 +34,6 @@ export const redirect: APIGatewayProxyHandler = async (event) => {
 		});
 		const data = await res.json();
 
-		// console.log(data);
-		// return responses.ok(data);
 		return responses.movedPermanently(
 			`ucf-react://authentication?token=${data.access_token}`
 		);
