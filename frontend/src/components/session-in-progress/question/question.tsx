@@ -50,6 +50,16 @@ const Question = (props: QuestionProps): ReactElement => {
                     ) : null}
                   </div>
                 </div>
+
+                {props.correctAnswer !== undefined ? (
+                  // for some reason .svg breaks vscode colors, but it actually works fine
+                  <img
+                    src={`/img/${
+                      index === props.correctAnswer ? "check" : "x"
+                    }.svg`}
+                    alt=""
+                  />
+                ) : null}
               </div>
             );
           })}
