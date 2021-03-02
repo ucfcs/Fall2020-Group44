@@ -87,7 +87,7 @@ export const Login: FunctionComponent = () => {
 
 			// get value after the ket "token="
 			const token = temp1.split('=')[1];
-			console.log(token);
+			console.log('jwt =', token);
 
 			// make call to server for user info
 			// then save it to the app state context

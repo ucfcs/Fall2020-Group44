@@ -4,7 +4,7 @@ import fetch from 'node-fetch';
 import responses from '../../util/api/responses';
 
 /**
- * @see http://localhost:3000/dev/api/v1/oauth/mobile/redirect
+ * @see http://localhost:3000/dev/api/v1/auth/mobile/redirect
  */
 export const redirect: APIGatewayProxyHandler = async (event) => {
 	const { queryStringParameters } = event;
@@ -45,7 +45,7 @@ export const redirect: APIGatewayProxyHandler = async (event) => {
 };
 
 /**
- * @see http://localhost:3000/dev/api/v1/oauth/mobile/url
+ * @see http://localhost:3000/dev/api/v1/auth/mobile/url
  */
 export const url: APIGatewayProxyHandler = async () => {
 	return responses.ok({
