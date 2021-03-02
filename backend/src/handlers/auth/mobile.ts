@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import fetch from 'node-fetch';
 
-import responses from '../util/api/responses';
+import responses from '../../util/api/responses';
 
 /**
  * @see http://localhost:3000/dev/api/v1/oauth/mobile/redirect
@@ -33,6 +33,8 @@ export const redirect: APIGatewayProxyHandler = async (event) => {
 			}),
 		});
 		const data = await res.json();
+
+		// do we have a user with that info
 
 		return responses.movedPermanently(
 			`ucf-react://authentication?token=${data.access_token}`

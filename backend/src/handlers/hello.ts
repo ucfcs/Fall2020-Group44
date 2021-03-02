@@ -15,7 +15,7 @@ const sequelize = new Sequelize(
 );
 
 // declare lambda function
-export const hello: APIGatewayProxyHandler = async (event, context) => {
+export const world: APIGatewayProxyHandler = async (event, context) => {
 	try {
 		// Test the db connection and creds
 		await sequelize.authenticate();

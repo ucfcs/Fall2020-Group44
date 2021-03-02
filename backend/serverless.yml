@@ -35,7 +35,7 @@ plugins:
 functions:
   # local dev endpoints
   hello:
-    handler: src/handlers/handler.hello
+    handler: src/handlers/hello.world
     events:
       - http:
           method: get
@@ -44,15 +44,6 @@ functions:
     handler: src/handlers/db.init
   dbDrop:
     handler: src/handlers/db.drop
-
-  ltiLaunch:
-    handler: src/handlers/lti.launch
-    timeout: 10
-    events:
-      - http:
-          path: '/api/v1/lti'
-          method: post
-          cors: true
 
   # Folder endpoints
   getFolder:
@@ -166,19 +157,33 @@ functions:
           method: delete
           path: /api/v1/question_user_response
 
-  # mobile oauth
-  mobileOauthRedirect:
-    handler: src/handlers/mobile.oauth.redirect
+  #
+  # Auth
+  #
+  mobileAuthRedirect:
+    handler: src/handlers/auth/mobile.redirect
+    timeout: 10
     events:
       - http:
           method: get
-          path: api/v1/oauth/mobile/redirect
-  mobileOauthURL:
-    handler: src/handlers/mobile.oauth.url
+          path: api/v1/auth/mobile/redirect
+          cors: true
+  mobileAuthURL:
+    handler: src/handlers/auth/mobile.url
+    timeout: 10
     events:
       - http:
           method: get
-          path: api/v1/oauth/mobile/url
+          path: api/v1/auth/mobile/url
+          cors: true
+  ltiLaunch:
+    handler: src/handlers/auth/lti.launch
+    timeout: 10
+    events:
+      - http:
+          path: /api/v1/auth/lti
+          method: post
+          cors: true
 
   # websocket endpoints
   connect:
