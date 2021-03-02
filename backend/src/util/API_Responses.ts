@@ -25,7 +25,7 @@ const Responses = {
 		};
 	},
 
-	_301(url: string, data = {}): ProxyResult {
+	_301(url: string): ProxyResult {
 		return {
 			headers: {
 				'Content-Type': 'application/json',
@@ -34,7 +34,7 @@ const Responses = {
 				Location: url,
 			},
 			statusCode: 301,
-			body: JSON.stringify(data),
+			body: '',
 		};
 	},
 };
