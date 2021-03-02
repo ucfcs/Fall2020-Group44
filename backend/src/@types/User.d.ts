@@ -2,15 +2,15 @@ type UserId = number;
 
 interface UserAttributes {
 	id: UserId;
-	firstName: string;
-	lastName: string;
-	token: string;
-	refreshToken: string;
+	canvasId: number;
+	fullName: string | null;
+	token: string | null;
+	refreshToken: string | null;
 }
 
 interface UserCreationAttributes {
-	firstName: string;
-	lastName: string;
-	token: string | null;
-	refreshToken: string | null;
+	canvasId: number;
+	fullName?: string | null;
+	token?: string | null;
+	refreshToken?: string | null;
 }
