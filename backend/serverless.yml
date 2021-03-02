@@ -11,18 +11,20 @@ provider:
   lambdaHashingVersion: 20201221
   apiGateway:
     shouldStartNameWithService: true
-  iamRoleStatements:
-    - Effect: Allow
-      Action:
-        - 'dynamodb:PutItem'
-        - 'dynamodb:GetItem'
-        - 'dynamodb:UpdateItem'
-        - 'dynamodb:DeleteItem'
-        - 'dynamodb:BatchGetItem'
-        - 'dynamodb:BatchWriteItem'
-        - 'dynamodb:Query'
-      Resource:
-        - '*'
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - 'dynamodb:PutItem'
+            - 'dynamodb:GetItem'
+            - 'dynamodb:UpdateItem'
+            - 'dynamodb:DeleteItem'
+            - 'dynamodb:BatchGetItem'
+            - 'dynamodb:BatchWriteItem'
+            - 'dynamodb:Query'
+          Resource:
+            - '*'
 
 plugins:
   - serverless-dotenv-plugin
@@ -44,11 +46,11 @@ functions:
     handler: src/handlers/db.drop
 
   ltiLaunch:
-    handler: src/lti.launch
+    handler: src/handlers/lti.launch
     timeout: 10
     events:
       - http:
-          path: "/api/v1/lti"
+          path: '/api/v1/lti'
           method: post
           cors: true
 
@@ -219,7 +221,6 @@ functions:
     events:
       - websocket:
           route: endQuestion
-          path: /api/v1/folder
 
 resources:
   Resources:
