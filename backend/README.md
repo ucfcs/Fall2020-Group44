@@ -35,6 +35,11 @@ MYSQL_HOST=localhost
 MYSQL_DATABASE=ucfpoll
 MYSQL_USER=root
 MYSQL_PASSWORD=root
+
+CANVAS_URL=http://example.com
+CANVAS_ID=101
+CANVAS_KEY=shhhh
+CANVAS_REDIRECT=http://somewhere.else
 ```
 
 ### Initialize Docker
