@@ -32,6 +32,7 @@ function useForceUpdate() {
 const PresentFooter = (): ReactElement => {
   const global = useContext(store) as any;
   const state = global.state;
+  const dispatch = global.dispatch;
 
   const forceUpdate = useForceUpdate();
 
@@ -48,7 +49,7 @@ const PresentFooter = (): ReactElement => {
       const newQuestions: PollQuestion[] = questions;
       const [srcQuestion] = questions.splice(result.source.index, 1);
       newQuestions.splice(result.destination.index, 0, srcQuestion);
-      state.poll = newQuestions;
+      dispatch({ type: "update-session-questions", payload: newQuestions });
       setQuestions(newQuestions);
     }
   };
@@ -79,7 +80,7 @@ const PresentFooter = (): ReactElement => {
 
   const handleDeleteQuestion = (index: number) => {
     const newQuestions = questions.filter((_, i) => i !== index);
-    state.poll = newQuestions;
+    dispatch({ type: "update-session-questions", payload: newQuestions });
     setQuestions(newQuestions);
   };
 
