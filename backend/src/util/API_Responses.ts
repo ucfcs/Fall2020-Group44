@@ -1,5 +1,7 @@
+import { ProxyResult } from 'aws-lambda';
+
 const Responses = {
-	_200(data = {}) {
+	_200(data = {}): ProxyResult {
 		return {
 			headers: {
 				'Content-Type': 'application/json',
@@ -11,7 +13,7 @@ const Responses = {
 		};
 	},
 
-	_400(data = {}) {
+	_400(data = {}): ProxyResult {
 		return {
 			headers: {
 				'Content-Type': 'application/json',
@@ -20,6 +22,19 @@ const Responses = {
 			},
 			statusCode: 400,
 			body: JSON.stringify(data),
+		};
+	},
+
+	_301(url: string): ProxyResult {
+		return {
+			headers: {
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Origin': '*',
+				Location: url,
+			},
+			statusCode: 301,
+			body: '',
 		};
 	},
 };
