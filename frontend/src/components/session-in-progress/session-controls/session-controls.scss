@@ -46,7 +46,8 @@
   }
 
   .next-button,
-  .skip-button {
+  .skip-button,
+  .close-button {
     padding: 0.1em 1em;
     box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
     border-radius: 5px;
@@ -60,5 +61,16 @@
   .link-button {
     text-decoration: none;
     color: black;
+  }
+
+  .close-button {
+    margin-right: 4rem;
+    background-color: #ffc904;
+  }
+
+  .closed {
+    background-color: #fff0bb;
+    color: #686868;
+    cursor: default;
   }
 }

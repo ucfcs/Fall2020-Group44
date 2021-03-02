@@ -33,6 +33,12 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     buttons.push(i + 1);
   }
 
+  const close = (): void => {
+    if (!state.closedQuestions.has(questionNumber)) {
+      dispatch({ type: "close-question", payload: questionNumber });
+    }
+  };
+
   const goForward = (): void => {
     if (questionProgress < CORRECT_RESPONSE) {
       dispatch({
@@ -60,6 +66,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
       // this would make an api call to record what happened since it is the end of the session
       dispatch({ type: "update-question-number", payload: 0 });
       dispatch({ type: "update-question-progress", payload: RESPOND });
+      dispatch({ type: "open-questions" });
     } else {
       dispatch({ type: "update-question-number", payload: questionNumber + 1 });
       dispatch({ type: "update-question-progress", payload: RESPOND });
@@ -110,6 +117,15 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
       </div>
 
       <div className="control-buttons">
+        <button
+          onClick={close}
+          className={`control-button close-button ${
+            state.closedQuestions.has(questionNumber) ? "closed" : ""
+          }`}
+        >
+          Close
+        </button>
+
         <button className="control-button back-button" onClick={goBack}>
           Back
         </button>

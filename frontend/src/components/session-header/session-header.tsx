@@ -12,6 +12,7 @@ const SessionHeader = (): ReactElement => {
   const clearSession = (): void => {
     dispatch({ type: "update-question-number", payload: 0 });
     dispatch({ type: "update-question-progress", payload: RESPOND });
+    dispatch({ type: "open-questions" });
   };
 
   return (

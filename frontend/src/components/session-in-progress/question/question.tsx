@@ -1,12 +1,19 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useContext } from "react";
 import "./question.scss";
 
 import data from "./mock-data.json";
+import { store } from "../../../store";
 
 const Question = (props: QuestionProps): ReactElement => {
+  const global = useContext(store) as any;
+  const state = global.state;
+
   const correctClass = props.correctAnswer !== undefined ? "correct" : "";
   const incorrectClass = props.correctAnswer !== undefined ? "incorrect" : "";
   let percentages: number[] = [];
+
+  const questionNumber = state.questionNumber;
+  console.log(state.closedQuestions);
 
   if (props.showPercentages) {
     // This will become api call
@@ -16,7 +23,9 @@ const Question = (props: QuestionProps): ReactElement => {
 
   return (
     <div className="question">
-      {props.closed ? <p className="closed-warning">Closed</p> : null}
+      {state.closedQuestions.has(questionNumber) ? (
+        <p className="closed-warning">Closed</p>
+      ) : null}
 
       <h2>{props.questionText}</h2>
 
