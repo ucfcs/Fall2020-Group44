@@ -190,7 +190,7 @@ const ContentTree = (): ReactElement => {
         <div className="question-list-header">
           <span>Title</span>
           <span></span>
-          <span>Type</span>
+          <span className="type">Type</span>
         </div>
         <div className="question-list-body">
           {questions.map((folder: Folder, fIndex: number) => (

@@ -1,13 +1,19 @@
 .selected-list {
-  &__wrapper {
-    width: calc(100% - 80px);
-  }
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  min-width: 40rem;
 
   &__questions {
-    margin: 7vh 4vw;
+    width: 40rem;
+    padding: 2rem 0 0 4rem;
   }
 
   &__question {
-    margin-bottom: 0.5rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
 }
