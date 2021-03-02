@@ -93,7 +93,7 @@ functions:
     timeout: 10
     events:
       - http:
-          path: "/api/v1/lti"
+          path: '/api/v1/lti'
           method: post
           cors: true
 
@@ -225,6 +225,11 @@ functions:
     events:
       - websocket:
           route: join
+  leave:
+    handler: src/handlers/websocket/leave.handler
+    events:
+      - websocket:
+          route: leave
   createRoom:
     handler: src/handlers/websocket/createRoom.handler
     events:
