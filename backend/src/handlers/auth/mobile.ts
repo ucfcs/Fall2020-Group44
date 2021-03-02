@@ -2,6 +2,7 @@ import { APIGatewayProxyHandler } from 'aws-lambda';
 import fetch from 'node-fetch';
 
 import responses from '../../util/api/responses';
+import { userAuthFlowGetToken } from '../../util/auth';
 
 /**
  * @see http://localhost:3000/dev/api/v1/auth/mobile/redirect
@@ -32,12 +33,17 @@ export const redirect: APIGatewayProxyHandler = async (event) => {
 				code: queryStringParameters.code,
 			}),
 		});
-		const data = await res.json();
+		const data: CanvasOAuthResponses = await res.json();
 
-		// do we have a user with that info
+		const token = await userAuthFlowGetToken(
+			data.user.id,
+			data.user.name,
+			data.access_token,
+			data.refresh_token
+		);
 
 		return responses.movedPermanently(
-			`ucf-react://authentication?token=${data.access_token}`
+			`ucf-react://authentication?token=${token}`
 		);
 	} catch (error) {
 		return responses.internalServerError(error);
