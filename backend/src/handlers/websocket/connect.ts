@@ -1,15 +1,6 @@
-import AWS from 'aws-sdk';
-import {
-	APIGatewayEvent,
-	APIGatewayProxyEvent,
-	Context,
-	ProxyResult,
-} from 'aws-lambda';
+import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 
-export const handler = async (
-	event?: APIGatewayEvent,
-	content?: Context
-): Promise<ProxyResult> => {
+export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	try {
 		console.log(`connection added: ${event?.requestContext.connectionId}`);
 

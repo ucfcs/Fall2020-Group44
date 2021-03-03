@@ -1,12 +1,10 @@
-import { Connection } from './dbconnections';
+import { Connection } from '../../util/websocket';
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 
 let connection: Connection;
 let room: string;
 
-export const handler = async (
-	event?: APIGatewayEvent
-): Promise<ProxyResult> => {
+export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	// initialize connection to dynamodb/apigateway
 	if (!connection) {
 		connection = new Connection();

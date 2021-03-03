@@ -1,12 +1,12 @@
 import AWS from 'aws-sdk';
-import { APIGatewayEvent } from 'aws-lambda';
+import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 import fetch from 'node-fetch';
 
 export class Connection {
 	client?: AWS.DynamoDB.DocumentClient;
 	gateway?: AWS.ApiGatewayManagementApi;
 
-	init(event?: APIGatewayEvent) {
+	init(event?: APIGatewayEvent): void {
 		this.client = new AWS.DynamoDB.DocumentClient({
 			apiVersion: '2012-08-10',
 			region: 'localhost',
@@ -33,7 +33,10 @@ export class Connection {
 	 * returns
 	 * - success of dynamodb update
 	 *****************************************************/
-	async addStudent(courseId: string, connectionId: string) {
+	async addStudent(
+		courseId: string,
+		connectionId: string
+	): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Key: {
@@ -91,7 +94,7 @@ export class Connection {
 	 * returns
 	 * - 1 if room exists, 0 otherwise
 	 *****************************************************/
-	async roomExists(courseId: string) {
+	async roomExists(courseId: string): Promise<1 | 0> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Key: {
@@ -100,7 +103,12 @@ export class Connection {
 		};
 
 		try {
-			const result: any = await this.client?.get(params).promise();
+			const result = await this.client?.get(params).promise();
+
+			// if there is no result return 0
+			if (!result) {
+				return 0;
+			}
 
 			// if the room does not exist, return falsey
 			if (Object.keys(result).length == 0) {
@@ -127,7 +135,10 @@ export class Connection {
 	 * returns
 	 * - success of DynamoDB PUT
 	 *****************************************************/
-	async createRoom(courseId: string, connectionId: string) {
+	async createRoom(
+		courseId: string,
+		connectionId: string
+	): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Item: {
@@ -181,7 +192,7 @@ export class Connection {
 	 * returns
 	 * - success of DynamoDB delete
 	 *****************************************************/
-	async closeRoom(courseId: string) {
+	async closeRoom(courseId: string): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Key: {
@@ -233,7 +244,10 @@ export class Connection {
 	 * returns
 	 * - success of DynamoDB connection set update
 	 *****************************************************/
-	async removeStudent(courseId: string, connectionId: string) {
+	async removeStudent(
+		courseId: string,
+		connectionId: string
+	): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Key: {
@@ -249,7 +263,7 @@ export class Connection {
 		await this.client?.update(params).promise();
 
 		// inform the professor that a student disconnected
-		await this.sendToProfessor(courseId, 'studentDisconnected');
+		return await this.sendToProfessor(courseId, 'studentDisconnected');
 	}
 
 	/******************************************************
@@ -260,7 +274,7 @@ export class Connection {
 	 * returns
 	 * - courseId if matching a professor, null otherwise
 	 *****************************************************/
-	async isProfessor(connectionId: string) {
+	async isProfessor(connectionId: string): Promise<CourseId | null> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			IndexName: 'ProfessorIndex',
@@ -270,8 +284,12 @@ export class Connection {
 			},
 		};
 
-		const result: any = await this.client?.query(params).promise();
+		const result = await this.client?.query(params).promise();
 		let courseId = null;
+
+		if (!result || !result.Count || !result.Items) {
+			return null;
+		}
 
 		// if it was a professor, the result will contain the room Item
 		if (result.Count > 0) {
@@ -289,7 +307,7 @@ export class Connection {
 	 * returns
 	 * - connectionId of professor if successful
 	 *****************************************************/
-	async getProfessor(courseId: string) {
+	async getProfessor(courseId: string): Promise<string | null> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Key: {
@@ -299,20 +317,20 @@ export class Connection {
 		};
 
 		try {
-			const data: any = await this.client?.get(params).promise();
+			const data = await this.client?.get(params).promise();
+
+			if (!data || !data.Item) {
+				return null;
+			}
+
 			if (data.Item.professor) {
 				return data.Item.professor;
 			} else {
 				throw `DynamoDB unable to GET professor for room ${courseId}`;
 			}
 		} catch (err) {
-			console.log(`Error getting professor for room ${courseId}: ${err}`);
-			return {
-				statusCode: 400,
-				body: JSON.stringify({
-					message: `Error getting professor for room ${courseId}`,
-				}),
-			};
+			console.error(`Error getting professor for room ${courseId}: ${err}`);
+			return null;
 		}
 	}
 
@@ -324,18 +342,27 @@ export class Connection {
 	 * returns
 	 * - success of posting message
 	 *****************************************************/
-	async sendToProfessor(courseId: string, action: string, payload = null) {
+	async sendToProfessor(
+		courseId: string,
+		action: string,
+		payload?: unknown
+	): Promise<APIGatewayProxyResult> {
 		try {
 			// first get professors connectionId
 			const professor = await this.getProfessor(courseId);
+
+			// there is no professor in this course
+			if (professor === null) {
+				throw `No professor was found within the Course with the id = ${courseId}`;
+			}
 
 			// then post message to professor
 			await this.gateway
 				?.postToConnection({
 					ConnectionId: professor,
 					Data: JSON.stringify({
-						action: action,
-						payload: payload,
+						action,
+						payload,
 					}),
 				})
 				.promise();
@@ -390,7 +417,7 @@ export class Connection {
 		questionId: string,
 		questionOptionId: string,
 		userId: string
-	) {
+	): Promise<APIGatewayProxyResult> {
 		const params = {
 			questionId: questionId,
 			questionOptionId: questionOptionId,
@@ -402,7 +429,7 @@ export class Connection {
 
 		try {
 			// POST student response to DB
-			const response: any = await fetch(
+			const response = await fetch(
 				`${endpoint}/dev/api/v1/question_user_response`,
 				{
 					method: 'POST',
@@ -449,7 +476,7 @@ export class Connection {
 	 * returns
 	 * - list of connection id's as an array of strings
 	 *****************************************************/
-	async getConnections(courseId: string) {
+	async getConnections(courseId: string): Promise<string[]> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Key: {
@@ -458,8 +485,14 @@ export class Connection {
 			AttributesToGet: ['connections'],
 		};
 
-		const data: any = await this.client?.get(params).promise();
-		console.log(data);
+		const data = await this.client?.get(params).promise();
+
+		console.trace(data);
+
+		if (!data || !data.Item) {
+			return [];
+		}
+
 		return data.Item.connections.values;
 	}
 
@@ -474,7 +507,10 @@ export class Connection {
 	 * - success of both operations
 	 *****************************************************/
 	// TODO: i don't know what a question object looks like yet
-	async startQuestion(courseId: string, question: any) {
+	async startQuestion(
+		courseId: string,
+		question: unknown
+	): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Key: {
@@ -534,7 +570,7 @@ export class Connection {
 	 * returns
 	 * - success of both operations
 	 *****************************************************/
-	async endQuestion(courseId: string) {
+	async endQuestion(courseId: string): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Key: {
@@ -594,10 +630,15 @@ export class Connection {
 	 *
 	 * params
 	 * - courseId, action, payload (optional)
+	 *
 	 * returns
 	 * - n/a
 	 *****************************************************/
-	async publish(courseId: string, action: string, payload = null) {
+	async publish(
+		courseId: string,
+		action: string,
+		payload?: unknown
+	): Promise<void> {
 		// first get all connections for the room
 		const connections = await this.getConnections(courseId);
 		console.log('connections:');
