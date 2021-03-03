@@ -2,7 +2,6 @@ import { QuestionInfo } from "../../types";
 import React, { ReactElement, useContext } from "react";
 import SessionProgress from "./session-progress/session-progress";
 import Question from "./question/question";
-import SessionControls from "./session-controls/session-controls";
 
 import "./session-in-progress.scss";
 
@@ -10,6 +9,7 @@ import data from "./mock-data.json";
 import PollHeader from "../session-header/session-header";
 import { CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../constants";
 import { store } from "../../store";
+import Sidebar from "./sidebar/sidebar";
 
 const SessionInProgress = (): ReactElement => {
   const global = useContext(store) as any;
@@ -29,6 +29,7 @@ const SessionInProgress = (): ReactElement => {
             questionText={currentQuestion.text}
             answers={currentQuestion.answers}
             showPercentages={false}
+            questionCount={questions.length}
           />
         );
       case RESPONSES:
@@ -37,6 +38,7 @@ const SessionInProgress = (): ReactElement => {
             questionText={currentQuestion.text}
             answers={currentQuestion.answers}
             showPercentages={true}
+            questionCount={questions.length}
           />
         );
       case CORRECT_RESPONSE:
@@ -45,7 +47,8 @@ const SessionInProgress = (): ReactElement => {
             questionText={currentQuestion.text}
             answers={currentQuestion.answers}
             correctAnswer={currentQuestion.correctIndex}
-            showPercentages={false}
+            showPercentages={true}
+            questionCount={questions.length}
           />
         );
       default:
@@ -55,15 +58,15 @@ const SessionInProgress = (): ReactElement => {
 
   return (
     <div className="session-in-progress">
-      <div className="content">
-        <PollHeader />
+      <PollHeader />
 
-        <SessionProgress />
+      {/* <div className="grid"> */}
+      <SessionProgress />
 
-        {content()}
-      </div>
+      <Sidebar questionCount={questions.length} />
 
-      <SessionControls questionCount={questions.length} />
+      <div className="content">{content()}</div>
+      {/* </div> */}
     </div>
   );
 };

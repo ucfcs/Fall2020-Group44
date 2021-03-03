@@ -1,6 +1,16 @@
 .session-progress {
   width: 100%;
   padding: 1rem 0;
+  grid-column: 3 / span 10;
+  grid-row: 2 / span 1;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-bottom: 2px solid #737373;
+
+  .progress-info {
+    width: 80%;
+  }
 
   .progress-control {
     display: flex;
@@ -11,7 +21,7 @@
 
   .order {
     text-align: center;
-    background-color: #aaaaaa;
+    background-color: #737373;
     color: #ffffff;
     border: none;
     border-radius: 50%;
@@ -21,18 +31,18 @@
     margin-right: 0.5rem;
   }
 
-  button {
+  .control-button {
     background: none;
     border: none;
     cursor: pointer;
     font-size: 24px;
-    color: #aaaaaa;
+    color: #737373;
 
     &.active {
-      color: #ffc904;
+      color: #0009b3;
 
       .order {
-        background-color: #ffc904;
+        background-color: #0009b3;
       }
     }
   }
@@ -40,12 +50,12 @@
   .line {
     width: 80px;
     height: 3px;
-    background-color: #aaaaaa;
+    background-color: #737373;
     display: inline-block;
     margin: 0 1rem;
 
     &.active {
-      background-color: #ffc904;
+      background-color: #0009b3;
     }
   }
 
@@ -66,7 +76,7 @@
     border: none;
     border-radius: 5px;
 
-    background-color: #aaaaaa;
+    background-color: #737373;
 
     &::-moz-progress-bar {
       background-color: #ffc904;
@@ -75,7 +85,7 @@
 
   progress[value] {
     &::-webkit-progress-bar {
-      background-color: #aaaaaa;
+      background-color: #737373;
     }
 
     &::-webkit-progress-value {
@@ -83,7 +93,23 @@
     }
   }
 
-  hr {
-    border: 1px solid #aaaaaa;
+  .close-button {
+    border: none;
+    background-color: #ffc904;
+    font-size: 24px;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
+    color: black;
+
+    img {
+      height: 24px;
+      width: auto;
+      margin-right: 4px;
+    }
+  }
+
+  .closed {
+    cursor: default;
   }
 }

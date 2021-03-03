@@ -1,9 +1,9 @@
 .question {
-  width: 95%;
   margin: auto;
 
   h2 {
     font-size: 32px;
+    text-align: center;
   }
 
   p,
@@ -19,21 +19,20 @@
     color: #ffc904;
   }
 
-  .main-info {
-    display: flex;
-    justify-content: space-between;
-  }
-
   .always-displayed {
     width: 100%;
     display: flex;
     align-items: center;
   }
 
+  .answers {
+    margin: auto;
+  }
+
   .answers,
   .percentages {
     font-size: 24px;
-    width: 49%;
+    width: 60%;
   }
 
   .answer-letter {
@@ -50,7 +49,6 @@
   }
 
   .answer {
-    border: 2px solid #cccccc;
     min-width: max-content;
     width: 100%;
     display: flex;
@@ -61,12 +59,21 @@
       height: 32px;
       width: auto;
       align-self: center;
-      margin-right: 1rem;
+      margin-left: 1rem;
     }
   }
 
   .always-displayed {
     display: flex;
+    border: 2px solid #cccccc;
+
+    // total - size of icons and padding - border
+    width: calc(100% - 3rem - 4px);
+  }
+
+  .answer-text {
+    position: relative;
+    z-index: 3;
   }
 
   .correct-bar {
@@ -74,14 +81,22 @@
     position: absolute;
     height: 100%;
     left: -1rem;
-    z-index: -1;
+    z-index: 2;
   }
 
   .correct {
+    background-color: green;
+  }
+
+  .correct-background {
     background-color: #c9ffc9;
   }
 
   .incorrect {
+    background-color: #d60000;
+  }
+
+  .incorrect-background {
     background-color: #ffc3c3;
   }
 }

@@ -1,4 +1,4 @@
-import React, { ReactElement, SyntheticEvent, useContext } from "react";
+import React, { ReactElement, useContext } from "react";
 import { Link } from "react-router-dom";
 import { CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../../constants";
 import { store } from "../../../store";
@@ -12,7 +12,6 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
   const questionProgress = state.questionProgress;
   const questionNumber = state.questionNumber;
 
-  const buttons: number[] = [];
   let nextStage: string;
 
   switch (questionProgress) {
@@ -28,16 +27,6 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     default:
       nextStage = "Next";
   }
-
-  for (let i = 0; i < props.questionCount; i++) {
-    buttons.push(i + 1);
-  }
-
-  const close = (): void => {
-    if (!state.closedQuestions.has(questionNumber)) {
-      dispatch({ type: "close-question", payload: questionNumber });
-    }
-  };
 
   const goForward = (): void => {
     if (questionProgress < CORRECT_RESPONSE) {
@@ -83,81 +72,33 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     }
   };
 
-  const pickQuestion = (event: SyntheticEvent): void => {
-    const target: HTMLInputElement = event.target as HTMLInputElement;
-    let num: number;
-
-    if (target.tagName === "IMG") {
-      num = parseInt((target.parentElement as HTMLInputElement).value);
-    } else {
-      num = parseInt(target.value);
-    }
-
-    if (num !== state.questionNumber) {
-      dispatch({ type: "update-question-number", payload: num });
-      dispatch({ type: "update-question-progress", payload: RESPOND });
-    }
-  };
-
   return (
     <div className="session-controls">
-      <div className="question-nav">
-        {buttons.map((number: number, index: number) => (
-          <button
-            key={index}
-            className={`question-nav-button ${
-              index === questionNumber ? "active" : ""
-            }`}
-            value={number - 1}
-            onClick={pickQuestion}
-          >
-            <img src="/img/logo.svg" alt="" />Q{number}{" "}
-          </button>
-        ))}
-      </div>
+      <button className="control-button back-button" onClick={goBack}>
+        Back
+      </button>
 
-      <div className="control-buttons">
-        <button
-          onClick={close}
-          className={`control-button close-button ${
-            state.closedQuestions.has(questionNumber) ? "closed" : ""
-          }`}
-        >
-          Close
-        </button>
-
-        <button className="control-button back-button" onClick={goBack}>
-          Back
-        </button>
-
-        {/* This next bit is ugly. What it does is make sure that on the last question
+      {/* This next bit is ugly. What it does is make sure that on the last question
             the skip button turns into End Session, and the Next button will go away on
             the last stage of the last question. */}
 
-        {questionProgress < CORRECT_RESPONSE ? (
-          <button className="next-button control-button" onClick={goForward}>
-            {nextStage}
-          </button>
-        ) : questionNumber < props.questionCount - 1 ? (
-          <button className="next-button control-button" onClick={goForward}>
-            {nextStage}
-          </button>
-        ) : null}
-
-        {questionNumber < props.questionCount - 1 ? (
-          <button className="skip-button control-button" onClick={nextQuestion}>
-            Skip to Next Question
-          </button>
-        ) : (
-          <Link
-            onClick={nextQuestion}
-            className="control-button skip-button link-button"
-            to="/"
-          >
-            End Session
-          </Link>
-        )}
-      </div>
+      {questionProgress < CORRECT_RESPONSE ? (
+        <button className="next-button control-button" onClick={goForward}>
+          {nextStage}
+        </button>
+      ) : questionNumber < props.questionCount - 1 ? (
+        <button className="next-button control-button" onClick={goForward}>
+          {nextStage}
+        </button>
+      ) : (
+        <Link
+          onClick={nextQuestion}
+          className="control-button skip-button link-button"
+          to="/"
+        >
+          End Session
+        </Link>
+      )}
     </div>
   );
 };

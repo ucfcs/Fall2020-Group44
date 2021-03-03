@@ -1,19 +1,17 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement } from "react";
 import "./question.scss";
 
 import data from "./mock-data.json";
-import { store } from "../../../store";
+import SessionControls from "../session-controls/session-controls";
 
 const Question = (props: QuestionProps): ReactElement => {
-  const global = useContext(store) as any;
-  const state = global.state;
-
   const correctClass = props.correctAnswer !== undefined ? "correct" : "";
   const incorrectClass = props.correctAnswer !== undefined ? "incorrect" : "";
+  const correctClassBackground =
+    props.correctAnswer !== undefined ? "correct-background" : "";
+  const incorrectClassBackground =
+    props.correctAnswer !== undefined ? "incorrect-background" : "";
   let percentages: number[] = [];
-
-  const questionNumber = state.questionNumber;
-  console.log(state.closedQuestions);
 
   if (props.showPercentages) {
     // This will become api call
@@ -23,56 +21,57 @@ const Question = (props: QuestionProps): ReactElement => {
 
   return (
     <div className="question">
-      {state.closedQuestions.has(questionNumber) ? (
-        <p className="closed-warning">Closed</p>
-      ) : null}
-
       <h2>{props.questionText}</h2>
 
-      <div className="main-info">
-        <div className="answers">
-          {props.answers.map((answer: string, index: number) => {
-            return (
+      <div className="answers">
+        {props.answers.map((answer: string, index: number) => {
+          return (
+            <div key={index} className="answer">
               <div
-                key={index}
-                className={`answer ${
-                  index === props.correctAnswer ? correctClass : incorrectClass
+                className={`always-displayed ${
+                  index === props.correctAnswer
+                    ? correctClassBackground
+                    : incorrectClassBackground
                 }`}
               >
-                <div className="always-displayed">
-                  <p className="answer-letter">
-                    {String.fromCharCode(65 + index)}
-                  </p>
+                <p className="answer-letter">
+                  {String.fromCharCode(65 + index)}
+                </p>
 
-                  <div className="answer-info">
-                    <p className="answer-text">{answer}</p>
+                <div className="answer-info">
+                  <p className="answer-text">{answer}</p>
 
-                    {props.showPercentages ? (
-                      <>
-                        <div
-                          style={{ width: `${percentages[index]}%` }}
-                          className="correct-bar"
-                        />
+                  {props.showPercentages ? (
+                    <>
+                      <div
+                        style={{ width: `${percentages[index]}%` }}
+                        className={`correct-bar ${
+                          index === props.correctAnswer
+                            ? correctClass
+                            : incorrectClass
+                        }`}
+                      />
 
-                        <p>{percentages[index]}%</p>
-                      </>
-                    ) : null}
-                  </div>
+                      <p>{percentages[index]}%</p>
+                    </>
+                  ) : null}
                 </div>
-
-                {props.correctAnswer !== undefined ? (
-                  // for some reason .svg breaks vscode colors, but it actually works fine
-                  <img
-                    src={`/img/${
-                      index === props.correctAnswer ? "check" : "x"
-                    }.svg`}
-                    alt=""
-                  />
-                ) : null}
               </div>
-            );
-          })}
-        </div>
+
+              {props.correctAnswer !== undefined ? (
+                // for some reason .svg breaks vscode colors, but it actually works fine
+                <img
+                  src={`/img/${
+                    index === props.correctAnswer ? "check" : "x"
+                  }.svg`}
+                  alt=""
+                />
+              ) : null}
+            </div>
+          );
+        })}
+
+        <SessionControls questionCount={props.questionCount} />
       </div>
     </div>
   );
@@ -84,6 +83,7 @@ interface QuestionProps {
   closed?: boolean;
   showPercentages: boolean;
   correctAnswer?: number | number[];
+  questionCount: number;
 }
 
 export default Question;
