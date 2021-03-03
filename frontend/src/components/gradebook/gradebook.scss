@@ -10,7 +10,28 @@
     align-items: center;
   }
 
-  button,
+  .session-info-wrapper {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .session-info-name {
+    font-weight: 700;
+    margin-right: 1rem;
+  }
+
+  .close-expand-button {
+    vertical-align: middle;
+    margin-right: 1rem;
+    background-color: whitesmoke;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.4);
+    font-weight: bold;
+  }
+
+  .export-button,
   input {
     font-size: inherit;
   }
@@ -38,7 +59,7 @@
     transform: translate(0, 30px) scale(0.75);
   }
 
-  button {
+  .export-button {
     background-color: #ffc904;
     color: black;
 
@@ -53,14 +74,6 @@
 
   .table-wrapper {
     overflow-x: auto;
-  }
-
-  .expanded {
-    border: 2px solid #ffc904;
-
-    .question-name {
-      margin-top: 8px;
-    }
   }
 
   table {
