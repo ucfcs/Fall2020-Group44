@@ -201,6 +201,11 @@ functions:
     events:
       - websocket:
           route: join
+  leave:
+    handler: src/handlers/websocket/leave.handler
+    events:
+      - websocket:
+          route: leave
   createRoom:
     handler: src/handlers/websocket/createRoom.handler
     events:
