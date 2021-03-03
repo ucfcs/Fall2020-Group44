@@ -11,11 +11,11 @@ export const User: ModelDefined<
 		primaryKey: true,
 		autoIncrement: true,
 	},
-	firstName: {
-		type: DataTypes.STRING,
-		allowNull: true,
+	canvasId: {
+		type: DataTypes.INTEGER,
+		allowNull: false,
 	},
-	lastName: {
+	fullName: {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},

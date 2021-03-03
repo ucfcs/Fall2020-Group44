@@ -1,13 +1,13 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Question, QuestionOption } from '../../models';
-import responses from '../../util/API_Responses';
+import { Question, QuestionOption } from '../models';
+import responses from '../util/api/responses';
 
 // GET /api/v1/question
 const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.questionId) {
-		return responses._400({ message: 'Missing questionId' });
+		return responses.badRequest({ message: 'Missing questionId' });
 	}
 
 	try {
@@ -20,11 +20,11 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			},
 		});
 
-		return responses._200({
+		return responses.ok({
 			question,
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error || 'Fail to query',
 		});
 	}
@@ -36,7 +36,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.collectionId) {
-		return responses._400({ message: 'Missing collectionId parameter' });
+		return responses.badRequest({ message: 'Missing collectionId parameter' });
 	}
 
 	try {
@@ -46,12 +46,12 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			timeToAnswer: String(body?.timeToAnswer),
 		});
 
-		return responses._200({
+		return responses.ok({
 			message: 'Success',
 			data: result,
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error.name || 'Fail to create',
 		});
 	}
@@ -63,7 +63,7 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.questionId) {
-		return responses._400({ message: 'Missing questionId parameter' });
+		return responses.badRequest({ message: 'Missing questionId parameter' });
 	}
 
 	try {
@@ -71,11 +71,11 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			{ question: String(body.question || '') },
 			{ where: { id: params?.questionId } }
 		);
-		return responses._200({
+		return responses.ok({
 			message: 'Success',
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error.name || 'Fail to update',
 		});
 	}
@@ -86,17 +86,17 @@ const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.questionId) {
-		return responses._400({ message: 'Missing questionId parameter' });
+		return responses.badRequest({ message: 'Missing questionId parameter' });
 	}
 
 	try {
 		await Question.destroy({ where: { id: params?.questionId } });
 
-		return responses._200({
+		return responses.ok({
 			message: 'Success',
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error.name || 'Fail to create',
 		});
 	}

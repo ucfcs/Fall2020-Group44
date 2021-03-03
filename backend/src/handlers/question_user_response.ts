@@ -1,13 +1,13 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { QuestionUserResponse } from '../../models/QuestionUserResponse';
-import responses from '../../util/API_Responses';
+import { QuestionUserResponse } from '../models/QuestionUserResponse';
+import responses from '../util/api/responses';
 
 // POST /api/v1/question_user_response
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = JSON.parse(event.body || '{}');
 
 	if (!params.questionId || !params.userId || !params.questionOptionId) {
-		return responses._400({
+		return responses.badRequest({
 			message:
 				'Missing parameter: questionId, userId, questionOptionId all required',
 		});
@@ -20,12 +20,12 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			questionOptionId: parseInt(params.questionOptionId),
 		});
 
-		return responses._200({
+		return responses.ok({
 			message: 'Success',
 			data: result,
 		});
 	} catch (error) {
-		return responses._400({
+		return responses.badRequest({
 			message: error.name || 'Failed to create',
 			error: error,
 		});
@@ -37,7 +37,7 @@ const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
 	if (!params?.questionId || !params?.userId) {
-		return responses._400({
+		return responses.badRequest({
 			message: 'Missing parameter: questionId and userId required',
 		});
 	}

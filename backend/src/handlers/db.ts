@@ -7,7 +7,7 @@ import {
 	User,
 	UserMobileSetting,
 	UserWebSetting,
-} from '../../models';
+} from '../models';
 
 const init = async (): Promise<void> => {
 	try {
@@ -21,10 +21,8 @@ const init = async (): Promise<void> => {
 		await UserWebSetting.sync({ alter: true });
 
 		await User.create({
-			firstName: 'Mock',
-			lastName: 'User',
-			token: null,
-			refreshToken: null,
+			canvasId: 1,
+			fullName: 'Mock',
 		});
 		await Folder.create({ name: 'Folder 1', userId: 1, courseId: '1' });
 		await Collection.create({
