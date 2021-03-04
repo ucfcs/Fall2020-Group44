@@ -1,25 +1,23 @@
 .create-question-module {
-  width: 55%;
+  width: 48rem;
   border: 1px solid #cccccc;
   border-radius: 16px;
   background: #f2f2f2;
-  position: fixed;
-
+  position: absolute;
   z-index: 1001;
-
   left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
+  transform: translate(-50%, 0);
+  top: 2rem;
   box-shadow: 0 0 30px 10px rgba(0, 0, 0, 0.5);
 
   .exit {
     background-color: #ffc904;
-    font-size: 28px;
+    font-size: 1.5rem;
+    width: 2rem;
+    height: 2rem;
     border: none;
     border-radius: 50%;
-    width: max-content;
-    margin: 4px 4px 0 0;
-
+    margin: 0.5rem 0.5rem 0 0;
     position: absolute;
     top: 0;
     right: 0;
@@ -32,7 +30,7 @@
 
   .creator-header {
     background: black;
-    height: 15%;
+    height: 4rem;
     box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.25);
     border-radius: 16px 16px 0 0;
 
@@ -41,22 +39,22 @@
     justify-content: space-between;
 
     .header-title {
-      margin-top: 2vh;
+      margin-top: 1rem;
       color: #ffc904;
       font-weight: bold;
-      font-size: 1.5vw;
+      font-size: 1.5rem;
       text-align: center;
     }
 
     .header-tabs {
-      height: 30%;
+      height: 30rem;
       display: flex;
       justify-content: space-around;
 
       button {
         background: none;
         border: none;
-        font-size: 1.2vw;
+        font-size: 1rem;
         color: #ffc904;
         width: 100%;
       }

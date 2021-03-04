@@ -1,7 +1,6 @@
 .content-tree {
-  // position: fixed;
-  // height: 100%;
   width: 32rem;
+  height: calc(100vh - 8rem);
   border-right: 1px solid #cccccc;
   overflow-y: auto;
 
@@ -25,6 +24,7 @@
     }
 
     .filter-button {
+      margin-left: 1rem;
       color: #ffc904;
       background: black;
       font-weight: bold;
@@ -40,16 +40,14 @@
 
   .question-list {
     width: 100%;
-    height: 90%;
 
     .question-list-header {
       height: 5%;
-      display: flex;
       justify-content: space-between;
       align-items: center;
       display: grid;
       padding: 0 16px 0 24px;
-      grid-template-columns: 63% 24px 30%;
+      grid-template-columns: 48% 24px 30% 52px;
 
       span {
         text-align: center;
@@ -64,7 +62,7 @@
     cursor: pointer;
     user-select: none;
     display: grid;
-    grid-template-columns: 24px auto;
+    grid-template-columns: auto;
 
 
     input {
@@ -77,14 +75,18 @@
   }
 
   .preview-question {
-    width: calc(100% - 40px);
-    padding: 4px 16px 4px 24px;
+    width: calc(100% - 24px);
+    padding: 4px 0 4px 24px;
     display: grid;
-    grid-template-columns: 24px 58% 5% 30%;
+    grid-template-columns: 51% 8px 30% 52px;
     cursor: pointer;
 
     &:hover {
       background: whitesmoke;
+
+      .content-tree-icon {
+        opacity: 1;
+      }
     }
   }
 
@@ -108,9 +110,60 @@
   .type {
     text-align: center;
   }
+
+  .create-buttons {
+    display: flex;
+    justify-content: space-evenly;
+    margin-bottom: 0.5rem;
+  }
+
+  .create-question-button,
+  .create-folder-button {
+    background-color: #ffc904;
+    border: 0.125rem solid #ffc904;
+    color: black;
+    border-radius: 0.5rem;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+
+    &:before {
+      content: 'Create ';
+    }
+  }
+
+  .folder-item {
+    display: grid;
+    grid-template-columns: auto 52px;
+
+    &:hover {
+      .content-tree-icon {
+        opacity: 1;
+      }
+    }
+  }
 }
 
-@media screen and (max-width: 1200px) {
+.content-tree-icons {
+  display: flex;
+  flex-direction: row;
+}
+
+.content-tree-icon {
+  opacity: 0;
+  margin-left: 4px;
+
+  path {
+    transform: scale(0.05);
+  }
+
+  &.show {
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 1150px) {
   .content-tree {
     .question-list {
       .question-list-header {
@@ -119,11 +172,22 @@
     }
 
     .preview-question {
-      grid-template-columns: 24px auto;
+      grid-template-columns: auto 8px 52px;
     }
 
     .type {
       display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .content-tree {
+    .create-question-button,
+    .create-folder-button {
+      &:before {
+        content: '+ ';
+      }
     }
   }
 }

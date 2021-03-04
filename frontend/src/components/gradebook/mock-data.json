@@ -64,6 +64,7 @@
   "overallSessions": [
     {
       "name": "Session 1",
+      "id": 0,
       "average": 5,
       "total": 5,
       "questions": {
@@ -81,6 +82,7 @@
     },
     {
       "name": "Session 2",
+      "id": 1,
       "average": 5,
       "total": 5,
       "questions": {
@@ -92,6 +94,7 @@
     },
     {
       "name": "Session 3",
+      "id": 2,
       "average": 5,
       "total": 5,
       "questions": {

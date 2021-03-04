@@ -52,14 +52,16 @@ const init = {
       folder: "Chapter 3",
       questions: [
         {
-          title: "Photosynthesis 3a",
+          title:
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long because i need this to get to three lines to test the ellipses?",
           question: "Im out of questions smh",
           type: "Mult Choice",
           choices: ["RIP", "LMAO", "BLOCC"],
           correct: 1,
         },
         {
-          title: "Photosynthesis 3b",
+          title:
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long because i need this to get to three lines to test the ellipses?",
           question:
             "Who was the first president of the United States and also what would you do if you met him and also this is really long because i need this to get to three lines to test the ellipses?",
           type: "Mult Choice",
@@ -96,7 +98,6 @@ const init = {
   poll: [],
   editPreviewQuestion: false,
   openCreator: false,
-  isPreviewTab: true,
 };
 const store = React.createContext(init);
 const { Provider } = store;
@@ -119,10 +120,6 @@ const StateProvider = ({ children }) => {
         return { ...state, openCreator: true };
       case "close-creator":
         return { ...state, openCreator: false };
-      case "open-preview-tab":
-        return { ...state, isPreviewTab: true };
-      case "close-preview-tab":
-        return { ...state, isPreviewTab: false };
       default:
         throw new Error("Base reducer: this action type was not defined");
     }

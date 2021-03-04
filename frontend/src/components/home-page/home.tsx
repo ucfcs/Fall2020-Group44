@@ -18,21 +18,7 @@ const Body = (): ReactElement => {
       <div className="body">
         <ContentTree />
         <div className="content-page">
-          <div className="tab-header">
-            <button
-              className={state.isPreviewTab ? "active" : ""}
-              onClick={() => dispatch({ type: "open-preview-tab" })}
-            >
-              Question Preview
-            </button>
-            <button
-              className={state.isPreviewTab ? "" : "active"}
-              onClick={() => dispatch({ type: "close-preview-tab" })}
-            >
-              Selected List
-            </button>
-          </div>
-          {state.isPreviewTab ? <QuestionPreview /> : <SelectedList />}
+          <QuestionPreview />
         </div>
       </div>
     </>

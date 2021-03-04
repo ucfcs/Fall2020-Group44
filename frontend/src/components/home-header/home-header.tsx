@@ -26,12 +26,6 @@ const HomeHeader = (): ReactElement => {
           </li>
         </ul>
       </nav>
-      <button
-        className="create-button"
-        onClick={() => dispatch({ type: "open-creator" })}
-      >
-        Create Question
-      </button>
     </header>
   );
 };

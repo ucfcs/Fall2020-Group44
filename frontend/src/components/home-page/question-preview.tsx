@@ -21,15 +21,6 @@ const QuestionPreview = (): ReactElement => {
     setShowCorrectPreviewResponse(!showCorrectPreviewResponse);
   };
 
-  const toggleEditQuestion = () => {
-    dispatch({ type: "edit-preview-question" });
-    dispatch({ type: "open-creator" });
-  };
-
-  const deleteQuestion = () => {
-    console.log("deleteQuestion");
-  };
-
   const previewQuestion =
     state.questions[state.previewFolder].questions[state.previewQuestion];
 
@@ -45,7 +36,7 @@ const QuestionPreview = (): ReactElement => {
             className="show-correct-response"
             onClick={toggleShowCorrectResponse}
           >
-            {showCorrectPreviewResponse ? "Hide" : "Show"} Correct Response{" "}
+            {showCorrectPreviewResponse ? "Hide" : "Show"} Correct Answers{" "}
           </button>
           <button className="see-responses" onClick={toggleShowResponse}>
             {showPreviewResponse ? "Hide" : "Show"} Responses
@@ -62,18 +53,7 @@ const QuestionPreview = (): ReactElement => {
         </div>
       </div>
       <div className="option-buttons">
-        <button
-          className="present-button"
-          onClick={() => dispatch({ type: "close-preview-tab" })}
-        >
-          &#9658;&nbsp;Present
-        </button>
-        <button className="edit-button" onClick={toggleEditQuestion}>
-          Edit
-        </button>
-        <button className="delete-button" onClick={deleteQuestion}>
-          Delete
-        </button>
+        <button className="present-button">&#9658;&nbsp;Present</button>
       </div>
     </div>
   ) : (

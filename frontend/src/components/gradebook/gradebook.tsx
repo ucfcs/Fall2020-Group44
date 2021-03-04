@@ -1,4 +1,5 @@
 import React, { useState, ReactElement, SyntheticEvent } from "react";
+import { Link } from "react-router-dom";
 import Student from "./student";
 import { StudentInfo, Session } from "../../types";
 
@@ -138,12 +139,12 @@ const Gradebook = (): ReactElement => {
                       <th key={sIndex} className="session-name">
                         <div>
                           <span>{session.name} </span>
-                          <span
+                          <Link
                             className="expand"
-                            onClick={() => expandSession(sIndex)}
+                            to={`/gradebook/${session.id}`}
                           >
                             Expand&nbsp;&gt;
-                          </span>
+                          </Link>
                         </div>
                         <div className="date">{session.date}</div>
                       </th>
