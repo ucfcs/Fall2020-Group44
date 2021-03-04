@@ -34,9 +34,9 @@ const Question = (props: QuestionProps): ReactElement => {
                     : incorrectClassBackground
                 }`}
               >
-                <p className="answer-letter">
-                  {String.fromCharCode(65 + index)}
-                </p>
+                <div className="answer-letter">
+                  <p>{String.fromCharCode(65 + index)}</p>
+                </div>
 
                 <div className="answer-info">
                   <p className="answer-text">{answer}</p>
@@ -52,7 +52,9 @@ const Question = (props: QuestionProps): ReactElement => {
                         }`}
                       />
 
-                      <p>{percentages[index]}%</p>
+                      <div className="percentage">
+                        <p>{percentages[index]}%</p>
+                      </div>
                     </>
                   ) : null}
                 </div>

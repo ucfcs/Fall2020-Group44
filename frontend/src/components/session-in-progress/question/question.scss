@@ -4,12 +4,7 @@
   h2 {
     font-size: 32px;
     text-align: center;
-  }
-
-  p,
-  label {
-    margin: 0;
-    padding: 1rem;
+    margin: 2.5rem auto 1.5rem;
   }
 
   .closed-warning {
@@ -17,12 +12,6 @@
     font-size: 40px;
     font-weight: bold;
     color: #ffc904;
-  }
-
-  .always-displayed {
-    width: 100%;
-    display: flex;
-    align-items: center;
   }
 
   .answers {
@@ -35,22 +24,38 @@
     width: 60%;
   }
 
+  .percentage {
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+
+    p {
+      margin: 0;
+    }
+  }
+
   .answer-letter {
     border-right: 2px solid #cccccc;
     background-color: white;
+    height: 100%;
+    padding: 0 1rem;
+    display: flex;
+    align-items: center;
+
+    p {
+      margin: 0;
+    }
   }
 
   .answer-info {
-    margin: 0 1rem;
+    padding: 0 1rem;
     display: flex;
     justify-content: space-between;
-    flex: 1 0 auto;
+    flex: 1 1 auto;
     position: relative;
   }
 
   .answer {
-    min-width: max-content;
-    width: 100%;
     display: flex;
     justify-content: space-between;
     margin-bottom: 1.5rem;
@@ -65,6 +70,7 @@
 
   .always-displayed {
     display: flex;
+    align-items: center;
     border: 2px solid #cccccc;
 
     // total - size of icons and padding - border
@@ -74,13 +80,14 @@
   .answer-text {
     position: relative;
     z-index: 3;
+    box-sizing: border-box;
   }
 
   .correct-bar {
     background-color: #ffc904;
     position: absolute;
     height: 100%;
-    left: -1rem;
+    left: 0;
     z-index: 2;
   }
 
