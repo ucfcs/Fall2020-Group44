@@ -31,10 +31,10 @@ const Creator = (): ReactElement => {
   };
 
   return (
-    <div className="create-question-module">
+    <form className="create-question-module" onSubmit={saveQuestion}>
       <div className="creator-header">
         <button className="exit" onClick={closePreviewQuestion}>
-          X
+          ×
         </button>
         <span className="header-title">Create Question</span>
         <div className="header-tabs">
@@ -61,14 +61,18 @@ const Creator = (): ReactElement => {
         />
       )}
       <div className="buttons">
-        <button className="cancel-button" onClick={closePreviewQuestion}>
+        <button
+          type="reset"
+          className="cancel-button"
+          onClick={closePreviewQuestion}
+        >
           Cancel
         </button>
-        <button className="save-button" onClick={saveQuestion}>
+        <button type="submit" className="save-button">
           Save
         </button>
       </div>
-    </div>
+    </form>
   );
 };
 

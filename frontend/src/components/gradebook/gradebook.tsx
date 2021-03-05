@@ -1,4 +1,5 @@
 import React, { useState, ReactElement, SyntheticEvent } from "react";
+import { Link } from "react-router-dom";
 import Student from "./student";
 import { StudentInfo, Session } from "../../types";
 
@@ -10,23 +11,14 @@ import HomeHeader from "../home-header/home-header";
 const RED = 0.5;
 const YELLOW = 0.75;
 
-function useForceUpdate() {
-  const [value, setValue] = useState(0); // integer state
-  return () => setValue((value) => value + 1); // update the state to force render
-}
-
 const Gradebook = (): ReactElement => {
-  const forceUpdate = useForceUpdate();
-
   const overallSessions = data.overallSessions;
   const classAverage: number = data.classAverage;
   const overallTotal = data.classTotal;
 
   const [activeSearch, setActiveSearch] = useState(false);
   const [students, setStudents] = useState(data.students);
-  const [isExpanded, setIsExpanded] = useState(
-    new Array(overallSessions.length).fill(false)
-  );
+  const [sessionExpanded, setSessionExpanded] = useState(-1);
 
   const focus = () => {
     setActiveSearch(true);
@@ -55,54 +47,28 @@ const Gradebook = (): ReactElement => {
   };
 
   const expandSession = (session: number) => {
-    isExpanded[session] = !isExpanded[session];
-    setIsExpanded(isExpanded);
-    forceUpdate();
+    setSessionExpanded(session);
   };
 
   const exportToCanvas = () => {
     console.log("Uhhhhh yeah export to canvas I guess");
   };
 
-  const createQuestionHeaders = (sIndex: number) => {
-    return isExpanded[sIndex]
-      ? overallSessions[sIndex].questions.title.map((question, qIndex) => (
-          <th key={sIndex + "-" + qIndex + "question"} className="expanded">
-            <div>{overallSessions[sIndex].name}</div>
-            <div className="question-name">{qIndex + 1 + ": " + question}</div>
-          </th>
-        ))
-      : "";
-  };
-
-  const createQuestionAverages = (sIndex: number) => {
-    return isExpanded[sIndex]
-      ? overallSessions[sIndex].questions.average.map((average, qIndex) => (
-          <th
-            key={sIndex + "-" + qIndex + "average"}
-            className="expanded align-right"
-          >
-            <div>
-              {average.toFixed(2)}/
-              {overallSessions[sIndex].questions.total[qIndex].toFixed(2)}
-            </div>
-            <div className="bar">
-              <div
-                className="bar-value"
-                style={{
-                  width:
-                    (average /
-                      overallSessions[sIndex].questions.total[qIndex]) *
-                      100 +
-                    "%",
-                  backgroundColor: getBackgroundColor(
-                    average / overallSessions[sIndex].questions.total[qIndex]
-                  ),
-                }}
-              ></div>
-            </div>{" "}
-          </th>
-        ))
+  const createQuestionHeaders = () => {
+    return sessionExpanded !== -1
+      ? overallSessions[sessionExpanded].questions.title.map(
+          (question, qIndex) => (
+            <th
+              key={sessionExpanded + "-" + qIndex + "question"}
+              className="expanded"
+            >
+              <div>{overallSessions[sessionExpanded].name}</div>
+              <div className="question-name">
+                {qIndex + 1 + ": " + question}
+              </div>
+            </th>
+          )
+        )
       : "";
   };
 
@@ -127,8 +93,24 @@ const Gradebook = (): ReactElement => {
               onChange={searchStudent}
             />
           </div>
-
-          <button onClick={exportToCanvas}>Export to Canvas</button>
+          {sessionExpanded !== -1 ? (
+            <div className="session-info-wrapper">
+              <div className="session-info-name">
+                {overallSessions[sessionExpanded].name}
+              </div>
+              <button
+                className="close-expand-button"
+                onClick={() => setSessionExpanded(-1)}
+              >
+                Back
+              </button>
+            </div>
+          ) : (
+            ""
+          )}
+          <button className="export-button" onClick={exportToCanvas}>
+            Export to Canvas
+          </button>
         </div>
 
         <div className="table-wrapper">
@@ -136,60 +118,116 @@ const Gradebook = (): ReactElement => {
             <thead>
               <tr>
                 <th>Student</th>
-                <th>Totals</th>
-                {overallSessions.map((session: Session, sIndex: number) => [
-                  <th key={sIndex} className="session-name">
-                    <div>
-                      <span>{session.name} </span>
-                      <span
-                        className="expand"
-                        onClick={() => expandSession(sIndex)}
+
+                {sessionExpanded !== -1 ? (
+                  overallSessions[sessionExpanded].questions.title.map(
+                    (question, qIndex) => (
+                      <th
+                        key={sessionExpanded + "-" + qIndex + "question"}
+                        className="expanded"
                       >
-                        {isExpanded[sIndex] ? "Close <" : "Expand >"}
-                      </span>
-                    </div>
-                    <div className="date">{session.date}</div>
-                  </th>,
-                  createQuestionHeaders(sIndex),
-                ])}
+                        <div className="question-name">
+                          {qIndex + 1 + ": " + question}
+                        </div>
+                      </th>
+                    )
+                  )
+                ) : (
+                  <>
+                    <th>Totals</th>
+                    {overallSessions.map((session: Session, sIndex: number) => (
+                      <th key={sIndex} className="session-name">
+                        <div>
+                          <span>{session.name} </span>
+                          <Link
+                            className="expand"
+                            to={`/gradebook/${session.id}`}
+                          >
+                            Expand&nbsp;&gt;
+                          </Link>
+                        </div>
+                        <div className="date">{session.date}</div>
+                      </th>
+                    ))}
+                  </>
+                )}
               </tr>
               <tr>
                 <th>Class Average</th>
-                <th className="align-right">
-                  <div>
-                    {classAverage.toFixed(2)}/{overallTotal.toFixed(2)}
-                  </div>
-                  <div className="bar">
-                    <div
-                      className="bar-value"
-                      style={{
-                        width: (classAverage / overallTotal) * 100 + "%",
-                        backgroundColor: getBackgroundColor(
-                          classAverage / overallTotal
-                        ),
-                      }}
-                    ></div>
-                  </div>
-                </th>
-                {overallSessions.map((session: Session, sIndex: number) => [
-                  <td key={sIndex} className="align-right">
-                    <div>
-                      {session.average.toFixed(2)}/{session.total.toFixed(2)}
-                    </div>
-                    <div className="bar">
-                      <div
-                        className="bar-value"
-                        style={{
-                          width: (session.average / session.total) * 100 + "%",
-                          backgroundColor: getBackgroundColor(
-                            session.average / session.total
-                          ),
-                        }}
-                      ></div>
-                    </div>
-                  </td>,
-                  createQuestionAverages(sIndex),
-                ])}
+                {sessionExpanded !== -1 ? (
+                  overallSessions[sessionExpanded].questions.average.map(
+                    (average, qIndex) => (
+                      <th
+                        key={sessionExpanded + "-" + qIndex + "average"}
+                        className="expanded align-right"
+                      >
+                        <div>
+                          {average.toFixed(2)}/
+                          {overallSessions[sessionExpanded].questions.total[
+                            qIndex
+                          ].toFixed(2)}
+                        </div>
+                        <div className="bar">
+                          <div
+                            className="bar-value"
+                            style={{
+                              width:
+                                (average /
+                                  overallSessions[sessionExpanded].questions
+                                    .total[qIndex]) *
+                                  100 +
+                                "%",
+                              backgroundColor: getBackgroundColor(
+                                average /
+                                  overallSessions[sessionExpanded].questions
+                                    .total[qIndex]
+                              ),
+                            }}
+                          ></div>
+                        </div>{" "}
+                      </th>
+                    )
+                  )
+                ) : (
+                  <>
+                    <th className="align-right">
+                      <div>
+                        {classAverage.toFixed(2)}/{overallTotal.toFixed(2)}
+                      </div>
+                      <div className="bar">
+                        <div
+                          className="bar-value"
+                          style={{
+                            width: (classAverage / overallTotal) * 100 + "%",
+                            backgroundColor: getBackgroundColor(
+                              classAverage / overallTotal
+                            ),
+                          }}
+                        ></div>
+                      </div>
+                    </th>
+                    {overallSessions.map((session: Session, sIndex: number) => (
+                      <td key={sIndex} className="align-right">
+                        <div>
+                          {session.average.toFixed(2)}/
+                          {session.total.toFixed(2)}
+                        </div>
+                        <div className="bar">
+                          <div
+                            className="bar-value"
+                            style={{
+                              width:
+                                (session.average / session.total) * 100 + "%",
+                              backgroundColor: getBackgroundColor(
+                                session.average / session.total
+                              ),
+                            }}
+                          ></div>
+                        </div>
+                      </td>
+                    ))}
+                  </>
+                )}
               </tr>
             </thead>
             <tbody>
@@ -197,7 +235,7 @@ const Gradebook = (): ReactElement => {
                 <Student
                   key={index}
                   student={student}
-                  isExpanded={isExpanded}
+                  sessionExpanded={sessionExpanded}
                 />
               ))}
             </tbody>

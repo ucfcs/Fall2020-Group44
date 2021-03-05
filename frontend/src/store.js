@@ -9,15 +9,14 @@ const init = {
       folder: "Chapter 1",
       questions: [
         {
-          title: "What’s my middle name",
+          title: "Photosynthesis 1a",
           question: "What’s my middle name",
           type: "Mult Choice",
           choices: ["Joe", "Mama", "xXxDarkRevenge69xXx"],
           correct: 0,
         },
         {
-          title:
-            "Who was the first president of the United States and also what would you do if you met him and also this is really long?",
+          title: "Photosynthesis 1b",
           question: "Where is the capital of Florida",
           type: "Mult Choice",
           choices: ["Washington DC", "Paris", "Egypt"],
@@ -29,14 +28,14 @@ const init = {
       folder: "Chapter 2",
       questions: [
         {
-          title: "Where is the capital of Florida",
+          title: "Photosynthesis 2a",
           question: "Where is the capital of Florida",
           type: "Mult Choice",
           choices: ["Washington DC", "Paris", "Egypt"],
           correct: 1,
         },
         {
-          title: "Who was the first President",
+          title: "Photosynthesis 2b",
           question: "Who was the first President",
           type: "Mult Choice",
           choices: [
@@ -53,17 +52,18 @@ const init = {
       folder: "Chapter 3",
       questions: [
         {
-          title: "Im out of questions snh",
-          question: "Im out of questions snh",
+          title:
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long because i need this to get to three lines to test the ellipses?",
+          question: "Im out of questions smh",
           type: "Mult Choice",
           choices: ["RIP", "LMAO", "BLOCC"],
           correct: 1,
         },
         {
           title:
-            "Who was the first president of the United States and also what would you do if you met him and also this is really long?",
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long because i need this to get to three lines to test the ellipses?",
           question:
-            "Who was the first president of the United States and also what would you do if you met him and also this is really long?",
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long because i need this to get to three lines to test the ellipses?",
           type: "Mult Choice",
           choices: ["Washington DC", "Paris", "Egypt"],
           correct: 1,
@@ -74,14 +74,14 @@ const init = {
       folder: "Chapter 4",
       questions: [
         {
-          title: "Where is the capital of Florida",
+          title: "Photosynthesis 4a",
           question: "Where is the capital of Florida",
           type: "Mult Choice",
           choices: ["Washington DC", "Paris", "Egypt"],
           correct: 1,
         },
         {
-          title: "Who was the first President",
+          title: "Photosynthesis 4b",
           question: "Who was the first President",
           type: "Mult Choice",
           choices: [
@@ -98,7 +98,6 @@ const init = {
   poll: [],
   editPreviewQuestion: false,
   openCreator: false,
-  isPreviewTab: true,
 };
 const store = React.createContext(init);
 const { Provider } = store;
@@ -121,10 +120,6 @@ const StateProvider = ({ children }) => {
         return { ...state, openCreator: true };
       case "close-creator":
         return { ...state, openCreator: false };
-      case "open-preview-tab":
-        return { ...state, isPreviewTab: true };
-      case "close-preview-tab":
-        return { ...state, isPreviewTab: false };
       default:
         throw new Error("Base reducer: this action type was not defined");
     }

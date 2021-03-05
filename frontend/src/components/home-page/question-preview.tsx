@@ -26,31 +26,38 @@ const QuestionPreview = (): ReactElement => {
 
   return previewQuestion ? (
     <div className="question-preview">
-      <span className="question">{previewQuestion.question}</span>
-      <div className="response-buttons">
-        <button
-          className="show-correct-response"
-          onClick={toggleShowCorrectResponse}
-        >
-          {showCorrectPreviewResponse ? "Hide" : "Show"} Correct Response{" "}
-          <span>&#10003;</span>
-        </button>
-        <button className="see-responses" onClick={toggleShowResponse}>
-          {showPreviewResponse ? "Hide" : "Show"} Responses
-        </button>
+      <div className="question-preview__info">
+        <div className="question-preview__title">{previewQuestion.title}</div>
+        <div className="question-preview__question">
+          {previewQuestion.question}
+        </div>
+        <div className="response-buttons">
+          <button
+            className="show-correct-response"
+            onClick={toggleShowCorrectResponse}
+          >
+            {showCorrectPreviewResponse ? "Hide" : "Show"} Correct Answers{" "}
+          </button>
+          <button className="see-responses" onClick={toggleShowResponse}>
+            {showPreviewResponse ? "Hide" : "Show"} Responses
+          </button>
+        </div>
+        <div className="answer-choice-wrapper">
+          <MultipleChoice
+            answers={previewQuestion.choices}
+            correct={previewQuestion.correct}
+            responses={["20%", "30%", "50%"]}
+            showPreviewResponse={showPreviewResponse}
+            showCorrectPreviewResponse={showCorrectPreviewResponse}
+          />
+        </div>
       </div>
-      <div className="answer-choice-wrapper">
-        <MultipleChoice
-          answers={previewQuestion.choices}
-          correct={previewQuestion.correct}
-          responses={["20%", "30%", "50%"]}
-          showPreviewResponse={showPreviewResponse}
-          showCorrectPreviewResponse={showCorrectPreviewResponse}
-        />
+      <div className="option-buttons">
+        <button className="present-button">&#9658;&nbsp;Present</button>
       </div>
     </div>
   ) : (
-    <div></div>
+    <></>
   );
 };
 

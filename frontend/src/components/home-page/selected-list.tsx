@@ -1,4 +1,5 @@
 import React, { useState, useContext, ReactElement } from "react";
+import { Link } from "react-router-dom";
 import "./selected-list.scss";
 import { store } from "../../store";
 
@@ -16,13 +17,18 @@ const SelectedList = (): ReactElement => {
   const state = global.state;
 
   return (
-    <div className="selected-list__wrapper">
+    <div className="selected-list">
       <div className="selected-list__questions">
         {state.poll.map((question: PollQuestion, index: number) => (
-          <div key={index} className="selected-list__question">
-            {index + 1 + ". " + question.title}
-          </div>
+          <p key={index} className="selected-list__question">
+            {index + 1 + ". " + question.title + " - " + question.question}
+          </p>
         ))}
+      </div>
+      <div className="option-buttons">
+        <button className="present-button">
+          <Link to="/poll/present">&#9658;&nbsp;Present</Link>
+        </button>
       </div>
     </div>
   );

@@ -63,6 +63,7 @@ const AnswerChoice = ({
       <div className="answer-text">
         <input
           type="text"
+          required
           placeholder="Response..."
           defaultValue={answer}
           onChange={(e) => handleAnswerChange(e, index)}
@@ -71,11 +72,11 @@ const AnswerChoice = ({
       <div className="correct-checkbox">
         <input
           type="checkbox"
-          id="correct-answer"
+          id={"correct-answer-" + index}
           defaultChecked={correct}
           onChange={() => handleCorrectChange(index)}
         />
-        <label>Correct Answer</label>
+        <label htmlFor={"correct-answer-" + index}>Correct Answer</label>
       </div>
       <div className="delete-answer">
         <button onClick={() => handleAnswerDelete(index)}>X</button>
@@ -104,7 +105,9 @@ const MultipleChoice = ({
 
   return (
     <div className="answer-choices">
-      <span className="answer-choice-header">Answers:</span>
+      <span className="answer-choice-header">
+        <span className="red">*</span> Answers:
+      </span>
       {answerChoices.map((answer, index) => (
         <AnswerChoice
           key={index}
