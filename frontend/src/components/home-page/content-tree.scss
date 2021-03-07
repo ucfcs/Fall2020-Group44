@@ -135,7 +135,7 @@
 
   .folder-item {
     display: grid;
-    grid-template-columns: auto 52px;
+    grid-template-columns: 24px 24px auto 52px;
 
     &:hover {
       .content-tree-icon {
@@ -160,6 +160,12 @@
 
   &.show {
     opacity: 1;
+  }
+}
+
+.folder-icon {
+  path {
+    transform: scale(0.032);
   }
 }
 
