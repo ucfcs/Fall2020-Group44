@@ -2,6 +2,7 @@ import React, { useState, useContext, ReactElement } from "react";
 import "./question-preview.scss";
 import { store } from "../../store";
 import MultipleChoice from "./question-types/multiple-choice";
+import { Link } from "react-router-dom";
 
 const QuestionPreview = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -53,7 +54,9 @@ const QuestionPreview = (): ReactElement => {
         </div>
       </div>
       <div className="option-buttons">
-        <button className="present-button">&#9658;&nbsp;Present</button>
+        <Link to="/poll/present">
+          <button className="present-button">&#9658;&nbsp;Present</button>
+        </Link>
       </div>
     </div>
   ) : (
