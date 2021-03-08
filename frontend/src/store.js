@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useReducer } from "react";
 
+const closedQuestions = new Set();
+
 const init = {
   previewFolder: 0,
   previewQuestion: 0,
@@ -98,6 +100,9 @@ const init = {
   poll: [],
   editPreviewQuestion: false,
   openCreator: false,
+  questionProgress: 0,
+  questionNumber: 0,
+  closedQuestions: closedQuestions,
 };
 const store = React.createContext(init);
 const { Provider } = store;
@@ -120,6 +125,17 @@ const StateProvider = ({ children }) => {
         return { ...state, openCreator: true };
       case "close-creator":
         return { ...state, openCreator: false };
+      case "update-question-progress":
+        return { ...state, questionProgress: action.payload };
+      case "update-question-number":
+        return { ...state, questionNumber: action.payload };
+      case "close-question":
+        return {
+          ...state,
+          closedQuestions: new Set([...state.closedQuestions, action.payload]),
+        };
+      case "open-questions":
+        return { ...state, closedQuestions: new Set([]) };
       default:
         throw new Error("Base reducer: this action type was not defined");
     }

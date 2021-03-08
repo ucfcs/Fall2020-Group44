@@ -23,4 +23,5 @@ export interface StudentInfo {
 export interface QuestionInfo {
   text: string;
   answers: string[];
+  correctIndex: number;
 }
