@@ -1,8 +1,14 @@
 .content-tree {
-  width: 32rem;
+  width: 40rem;
   height: calc(100vh - 8rem);
   border-right: 1px solid #cccccc;
   overflow-y: auto;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
 
   .tree-options {
     display: flex;
@@ -40,14 +46,13 @@
 
   .question-list {
     width: 100%;
+    padding-bottom: 1rem;
 
     .question-list-header {
       height: 5%;
-      justify-content: space-between;
       align-items: center;
       display: grid;
-      padding: 0 16px 0 24px;
-      grid-template-columns: 48% 24px 30% 52px;
+      grid-template-columns: auto 24px 30% 52px;
 
       span {
         text-align: center;
@@ -61,9 +66,6 @@
     font-weight: 500;
     cursor: pointer;
     user-select: none;
-    display: grid;
-    grid-template-columns: auto;
-
 
     input {
       margin-right: 8px;
@@ -78,7 +80,7 @@
     width: calc(100% - 24px);
     padding: 4px 0 4px 24px;
     display: grid;
-    grid-template-columns: 51% 8px 30% 52px;
+    grid-template-columns: auto 8px 30% 52px;
     cursor: pointer;
 
     &:hover {
@@ -87,6 +89,17 @@
       .content-tree-icon {
         opacity: 1;
       }
+    }
+  }
+
+  .rogue-question {
+    width: calc(100% - 12px);
+    padding: 4px 0 4px 12px;
+
+    &:first-child {
+      border-top: 1px solid gray;
+      margin-top: 1rem;
+      padding-top: 1rem;
     }
   }
 
@@ -135,6 +148,7 @@
 
   .folder-item {
     display: grid;
+
     grid-template-columns: 24px 24px auto 52px;
 
     &:hover {

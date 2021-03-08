@@ -1,7 +1,7 @@
 .creator-body {
   font-size: 1rem;
   overflow-y: scroll;
-  max-height: 400px;
+  max-height: calc(100vh - 11rem);
   display: flex;
   flex-direction: column;
 
