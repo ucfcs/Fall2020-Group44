@@ -6,6 +6,7 @@ interface Question {
 
 export interface Session {
   name: string;
+  id: number;
   average: number;
   total: number;
   date: string;

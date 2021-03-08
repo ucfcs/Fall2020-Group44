@@ -11,14 +11,14 @@ const init = {
       folder: "Chapter 1",
       questions: [
         {
-          title: "What’s my middle name",
+          title: "Photosynthesis 1a",
           question: "What’s my middle name",
           type: "Mult Choice",
           choices: ["Joe", "Mama", "xXxDarkRevenge69xXx"],
           correct: 0,
         },
         {
-          title: "Where is the capital of Florida",
+          title: "Photosynthesis 1b",
           question: "Where is the capital of Florida",
           type: "Mult Choice",
           choices: ["Washington DC", "Paris", "Egypt"],
@@ -30,14 +30,60 @@ const init = {
       folder: "Chapter 2",
       questions: [
         {
-          title: "Where is the capital of Florida",
+          title: "Photosynthesis 2a",
           question: "Where is the capital of Florida",
           type: "Mult Choice",
           choices: ["Washington DC", "Paris", "Egypt"],
           correct: 1,
         },
         {
-          title: "Who was the first President",
+          title: "Photosynthesis 2b",
+          question: "Who was the first President",
+          type: "Mult Choice",
+          choices: [
+            "Joe Mama",
+            "Abraham Lincoln",
+            "George Washington",
+            "Thomas Jefferson",
+          ],
+          correct: 2,
+        },
+      ],
+    },
+    {
+      folder: "Chapter 3",
+      questions: [
+        {
+          title:
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long because i need this to get to three lines to test the ellipses?",
+          question: "Im out of questions smh",
+          type: "Mult Choice",
+          choices: ["RIP", "LMAO", "BLOCC"],
+          correct: 1,
+        },
+        {
+          title:
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long because i need this to get to three lines to test the ellipses?",
+          question:
+            "Who was the first president of the United States and also what would you do if you met him and also this is really long because i need this to get to three lines to test the ellipses?",
+          type: "Mult Choice",
+          choices: ["Washington DC", "Paris", "Egypt"],
+          correct: 1,
+        },
+      ],
+    },
+    {
+      folder: "Chapter 4",
+      questions: [
+        {
+          title: "Photosynthesis 4a",
+          question: "Where is the capital of Florida",
+          type: "Mult Choice",
+          choices: ["Washington DC", "Paris", "Egypt"],
+          correct: 1,
+        },
+        {
+          title: "Photosynthesis 4b",
           question: "Who was the first President",
           type: "Mult Choice",
           choices: [
@@ -51,7 +97,7 @@ const init = {
       ],
     },
   ],
-  poll: 1,
+  poll: [],
   editPreviewQuestion: false,
   openCreator: false,
   questionProgress: 0,

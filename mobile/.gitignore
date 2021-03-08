@@ -63,3 +63,6 @@ buck-out/
 /ios/Pods/
 
 .env
+.DS_Store
+node
+.env.json

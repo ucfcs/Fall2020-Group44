@@ -5,12 +5,12 @@
 
   .answer-choice-header {
     color: #717171;
-    margin-bottom: 2vh;
+    margin-bottom: 1rem;
   }
 
   .answer-choice {
-    margin-bottom: 2vh;
-    height: 10vh;
+    margin-bottom: 1rem;
+    height: 4rem;
     width: 100%;
     border: 1px solid #d1d1d1;
     display: flex;
@@ -37,11 +37,10 @@
       width: 65%;
 
       input {
-        font-size: 0.9vw;
-        color: #717171;
+        font-size: 1rem;
         width: 100%;
         border: none;
-        padding: 0.25vw;
+        padding: 0.125rem;
         border-bottom: 1px solid #717171;
       }
     }
@@ -51,11 +50,12 @@
       display: flex;
 
       input {
+        align-self: center;
         border: none;
       }
 
       label {
-        font-size: 0.7vw;
+        font-size: 1rem;
         color: #717171;
       }
     }
@@ -70,7 +70,7 @@
         border: none;
         color: #717171;
         font-weight: bold;
-        font-size: 1vw;
+        font-size: 1rem;
       }
     }
   }
@@ -83,7 +83,7 @@
       display: flex;
       align-items: center;
       justify-content: space-around;
-      font-size: 1vw;
+      font-size: 1rem;
       width: 25%;
       color: #ffc904;
     }

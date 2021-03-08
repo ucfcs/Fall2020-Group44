@@ -9,3 +9,5 @@ jspm_packages
 .env.development
 .env.production
 dist
+docker
+.eslintcache

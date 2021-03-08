@@ -1,0 +1,21 @@
+.selected-list {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  width: 100%;
+
+  &__questions {
+    max-width: 40rem;
+    min-width: 16rem;
+    width: 100%;
+    margin: 3rem 1rem 0 1rem;
+  }
+
+  &__question {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+}

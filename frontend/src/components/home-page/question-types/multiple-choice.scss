@@ -5,9 +5,9 @@
   .answer-choice {
     position: relative;
     border: 1px solid #cccccc;
-    height: 7vh;
-    width: 80%;
-    margin-bottom: 2vh;
+    height: 3rem;
+    width: 100%;
+    margin-bottom: 1rem;
 
     .letter {
       //TODO: figure out centering
@@ -42,6 +42,14 @@
       position: absolute;
       height: 100%;
       width: 100%;
+
+      .answer-body {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+      }
     }
 
     .answer-text {
@@ -74,19 +82,26 @@
     padding-left: 8px;
   }
 
+  .response-bar {
+    height: 100%;
+    position: absolute;
+  }
+
   .correct {
     .response-bar {
-      position: absolute;
       background-color: #00ff0036;
-      height: 100%;
     }
   }
 
   .incorrect {
     .response-bar {
-      position: absolute;
       background-color: #ff0f0f3f;
-      height: 100%;
+    }
+  }
+
+  .neutral {
+    .response-bar {
+      background-color: #ffc904;
     }
   }
 }

@@ -3,28 +3,34 @@ import { StudentInfo } from "../../types";
 
 interface Props {
   student: StudentInfo;
-  isExpanded: boolean[];
+  sessionExpanded: number;
 }
 
-const Student = ({ student, isExpanded }: Props): ReactElement => {
+const Student = ({ student, sessionExpanded }: Props): ReactElement => {
   return (
     <tr className="student">
       <td>{student.name}</td>
 
-      <td className="align-right">{student.total.toFixed(2)}</td>
+      {sessionExpanded !== -1 ? (
+        student.questions[sessionExpanded].map((question, qIndex) => (
+          <td
+            key={sessionExpanded + "-" + qIndex}
+            className="expanded align-right"
+          >
+            {question.toFixed(2)}
+          </td>
+        ))
+      ) : (
+        <>
+          <td className="align-right">{student.total.toFixed(2)}</td>
 
-      {student.sessions.map((session, sIndex) => [
-        <td key={sIndex} className="align-right">
-          {session.toFixed(2)}
-        </td>,
-        isExpanded[sIndex]
-          ? student.questions[sIndex].map((question, qIndex) => (
-              <td key={sIndex + "-" + qIndex} className="expanded align-right">
-                {question.toFixed(2)}
-              </td>
-            ))
-          : "",
-      ])}
+          {student.sessions.map((session, sIndex) => (
+            <td key={sIndex} className="align-right">
+              {session.toFixed(2)}
+            </td>
+          ))}
+        </>
+      )}
     </tr>
   );
 };
