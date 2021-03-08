@@ -64,7 +64,6 @@
     display: grid;
     grid-template-columns: auto;
 
-
     input {
       margin-right: 8px;
     }
@@ -129,7 +128,7 @@
     cursor: pointer;
 
     &:before {
-      content: 'Create ';
+      content: "Create ";
     }
   }
 
@@ -186,7 +185,7 @@
     .create-question-button,
     .create-folder-button {
       &:before {
-        content: '+ ';
+        content: "+ ";
       }
     }
   }

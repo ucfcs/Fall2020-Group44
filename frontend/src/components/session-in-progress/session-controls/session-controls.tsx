@@ -5,6 +5,7 @@ import { store } from "../../../store";
 import "./session-controls.scss";
 
 const SessionControls = (props: SessionControlsProps): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
   const state = global.state;

@@ -11,6 +11,7 @@ import Present from "./components/present-poll/present";
 import Creator from "./components/creator-module/creator";
 
 function App(): ReactElement {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const state = global.state;
 

@@ -24,7 +24,6 @@ const GradebookSession = (props: Prop): ReactElement => {
 
   const [activeSearch, setActiveSearch] = useState(false);
   const [students, setStudents] = useState(data.students);
-  const [sessionExpanded, setSessionExpanded] = useState(-1);
 
   const focus = () => {
     setActiveSearch(true);
@@ -98,10 +97,7 @@ const GradebookSession = (props: Prop): ReactElement => {
 
                 {overallSessions[props.match.params.id].questions.title.map(
                   (question, qIndex) => (
-                    <th
-                      key={sessionExpanded + "-" + qIndex + "question"}
-                      className="expanded"
-                    >
+                    <th key={qIndex + "question"} className="expanded">
                       <div className="question-name">
                         {qIndex + 1 + ": " + question}
                       </div>
@@ -114,7 +110,7 @@ const GradebookSession = (props: Prop): ReactElement => {
                 {overallSessions[props.match.params.id].questions.average.map(
                   (average, qIndex) => (
                     <th
-                      key={sessionExpanded + "-" + qIndex + "average"}
+                      key={qIndex + "average"}
                       className="expanded align-right"
                     >
                       <div>

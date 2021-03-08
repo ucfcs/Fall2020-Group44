@@ -1,4 +1,4 @@
-import React, { useState, useContext, ReactElement } from "react";
+import React, { useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import "./selected-list.scss";
 import { store } from "../../store";
@@ -12,8 +12,8 @@ interface PollQuestion {
 }
 
 const SelectedList = (): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
-  const dispatch = global.dispatch;
   const state = global.state;
 
   return (

@@ -1,16 +1,10 @@
-import React, { ReactElement, useState, useContext } from "react";
-import { store } from "../../store";
+import React, { ReactElement } from "react";
 import ContentTree from "./content-tree";
 import QuestionPreview from "./question-preview";
-import SelectedList from "./selected-list";
 import "./home.scss";
 import HomeHeader from "../home-header/home-header";
 
 const Body = (): ReactElement => {
-  const global = useContext(store) as any;
-  const dispatch = global.dispatch;
-  const state = global.state;
-
   return (
     <>
       <HomeHeader />

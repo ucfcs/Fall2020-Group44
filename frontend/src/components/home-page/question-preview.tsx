@@ -4,8 +4,8 @@ import { store } from "../../store";
 import MultipleChoice from "./question-types/multiple-choice";
 
 const QuestionPreview = (): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
-  const dispatch = global.dispatch;
   const state = global.state;
 
   const [showPreviewResponse, setShowPreviewResponse] = useState(false);

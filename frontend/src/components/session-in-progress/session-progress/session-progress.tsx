@@ -7,6 +7,7 @@ import data from "./mock-data.json";
 import { store } from "../../../store";
 
 const SessionProgress = (): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
   const state = global.state;
