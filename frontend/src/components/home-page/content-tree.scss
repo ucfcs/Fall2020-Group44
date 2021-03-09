@@ -1,8 +1,8 @@
 .content-tree {
-  width: 40rem;
+  position: relative;
+  max-width: 40%;
   height: calc(100vh - 8rem);
   border-right: 1px solid #cccccc;
-  overflow-y: auto;
 
   ul {
     list-style-type: none;
@@ -46,7 +46,8 @@
 
   .question-list {
     width: 100%;
-    padding-bottom: 1rem;
+    overflow: auto;
+    height: calc(100vh - 17rem);
 
     .question-list-header {
       height: 5%;
@@ -103,6 +104,11 @@
     }
   }
 
+  .rogue-question-separator {
+    border: 1px solid black;
+    margin: 1rem 0;
+  }
+
   .selected {
     background: #ffc904;
 
@@ -156,6 +162,22 @@
         opacity: 1;
       }
     }
+  }
+
+  .present-button {
+    position: relative;
+    left: 50%;
+    top: 1rem;
+    padding: 0.5rem 1rem;
+    transform: translateX(-50%);
+    background-color: #ffc904;
+    border: 0.125rem solid #ffc904;
+    color: black;
+    border-radius: 0.5rem;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.5rem;
+    cursor: pointer;
   }
 }
 

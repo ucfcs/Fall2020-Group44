@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { store } from "./store";
 
 import Home from "./components/home-page/home";
+import QuestionSelect from "./components/home-page/question-select";
 import Gradebook from "./components/gradebook/gradebook";
 import GradebookSession from "./components/gradebook/session";
 import PollInProgress from "./components/poll-in-progress/poll-in-progress";
@@ -37,6 +38,7 @@ function App(): ReactElement {
       </Switch>
 
       {state.openCreator ? <Creator /> : null}
+      {state.openQuestionSelect ? <QuestionSelect /> : null}
     </Router>
   );
 }

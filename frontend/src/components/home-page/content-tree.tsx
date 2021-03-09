@@ -5,8 +5,6 @@ import React, {
   ReactElement,
   MouseEvent,
   SyntheticEvent,
-  FocusEvent,
-  KeyboardEvent,
 } from "react";
 import {
   DragDropContext,
@@ -25,14 +23,6 @@ interface Folder {
 interface Question {
   title: string;
   type: string;
-}
-
-interface PollQuestion {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
 }
 
 const ContentTree = (): ReactElement => {
@@ -54,20 +44,6 @@ const ContentTree = (): ReactElement => {
   // Array of booleans indicating whether each folder is collapsed
   const [folderCollapse, setFolderCollapse] = useState(
     new Array(questions.length).fill(false)
-  );
-
-  const folderCheckboxRefs: HTMLInputElement[] = [];
-
-  // an object containing refs of the checkbox of each question
-  // key = index of the folders
-  // data = arrays of checkbox refs from the questions in the folder
-  const questionCheckboxRefs: { [key: number]: HTMLInputElement[] } = {};
-
-  // organizing the questions to be presented in a session.
-  // key = folder index
-  // data = array of question indices
-  const [sessionQuestions, setSessionQuestions] = useState(
-    {} as { [key: string]: number[] }
   );
 
   const handleUpdatePreviewQuestion = (folder: number, question: number) => {
@@ -106,79 +82,6 @@ const ContentTree = (): ReactElement => {
       }
     });
     setQuestions(newFolders);
-  };
-
-  const selectQuestionsForPoll = (
-    event: SyntheticEvent,
-    isFolder: boolean,
-    folder: number,
-    question = -1
-  ) => {
-    event.stopPropagation();
-
-    // if checking a checkbox
-    if ((event.target as HTMLInputElement).checked) {
-      // if it's a folder's checkbox
-      if (isFolder) {
-        // check all the questions in the folder
-        questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
-          checkbox.checked = true;
-        });
-        // push entire folder to session
-        sessionQuestions[folder] = [
-          ...Array(state.questions[folder].questions.length).keys(),
-        ];
-      }
-      // if it's a single question
-      else {
-        // see if all the questions in the folder are checked.
-        let isAllChecked = true;
-        questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
-          if (!checkbox.checked) isAllChecked = false;
-        });
-        // check the folder's checkbox if so
-        if (isAllChecked) {
-          folderCheckboxRefs[folder].checked = true;
-        }
-        // push question and sort the question order within the folder
-        if (!sessionQuestions[folder]) sessionQuestions[folder] = [];
-        sessionQuestions[folder].push(question);
-        sessionQuestions[folder].sort((a: number, b: number) => a - b);
-      }
-    }
-    // if unchecking a checkbox
-    else {
-      // folder
-      if (isFolder) {
-        // uncheck all the questions in the folder
-        questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
-          checkbox.checked = false;
-        });
-        // delete all the questions in the folder from the session
-        sessionQuestions[folder] = [];
-      }
-      // question
-      else {
-        // uncheck the question
-        folderCheckboxRefs[folder].checked = false;
-        // delete question from session.
-        sessionQuestions[folder] = sessionQuestions[folder].filter(
-          (q: number) => {
-            return q !== question;
-          }
-        );
-      }
-      setSessionQuestions(sessionQuestions);
-    }
-
-    // Update the poll with the questions in sessionQuestions
-    const newPoll: PollQuestion[] = [];
-    Object.keys(sessionQuestions).forEach((f: string) => {
-      sessionQuestions[f].forEach((q: number) => {
-        newPoll.push(state.questions[f].questions[q]);
-      });
-    });
-    dispatch({ type: "update-session-questions", payload: newPoll });
   };
 
   const addFolder = () => {
@@ -441,6 +344,7 @@ const ContentTree = (): ReactElement => {
                       </Draggable>
                     ) : (
                       <Droppable
+                        key={fIndex}
                         droppableId={"rogue" + fIndex}
                         type={`droppableSubItem`}
                       >
@@ -523,6 +427,12 @@ const ContentTree = (): ReactElement => {
           </DragDropContext>
         </div>
       </div>
+      <button
+        className="present-button"
+        onClick={() => dispatch({ type: "open-question-select" })}
+      >
+        &#9658;&nbsp;Present
+      </button>
     </div>
   );
 };

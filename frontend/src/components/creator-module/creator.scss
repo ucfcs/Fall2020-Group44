@@ -51,7 +51,9 @@
       display: flex;
       justify-content: space-around;
 
-      button {
+      .tab-buttons {
+        cursor: pointer;
+        text-align: center;
         background: none;
         border: none;
         font-size: 1rem;

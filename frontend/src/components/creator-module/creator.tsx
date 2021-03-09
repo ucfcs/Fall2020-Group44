@@ -38,18 +38,18 @@ const Creator = (): ReactElement => {
         </button>
         <span className="header-title">Create Question</span>
         <div className="header-tabs">
-          <button
-            className={`edit-tab ${isPreview ? "" : "selected"}`}
+          <div
+            className={`tab-buttons edit-tab ${isPreview ? "" : "selected"}`}
             onClick={() => setIsPreview(false)}
           >
             Edit
-          </button>
-          <button
-            className={`preview-tab ${isPreview ? "selected" : ""}`}
+          </div>
+          <div
+            className={`tab-buttons preview-tab ${isPreview ? "selected" : ""}`}
             onClick={() => setIsPreview(true)}
           >
             Preview
-          </button>
+          </div>
         </div>
       </div>
       {isPreview ? (
