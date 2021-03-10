@@ -130,6 +130,7 @@ const ContentTree = (): ReactElement => {
         const [srcFolder] = newQuestions.splice(result.source.index, 1);
         newQuestions.splice(result.destination.index, 0, srcFolder);
       } else {
+        console.log(result);
         const srcFolder = result.source.droppableId.split("folder")[1];
         const destFolder = result.destination.droppableId.split("folder")[1];
         const [srcQuestion] = newQuestions[srcFolder].questions.splice(
@@ -142,7 +143,6 @@ const ContentTree = (): ReactElement => {
           srcQuestion
         );
       }
-      dispatch({ type: "update-session-questions", payload: newQuestions });
     }
   };
 
@@ -361,7 +361,7 @@ const ContentTree = (): ReactElement => {
                     ) : (
                       <Droppable
                         key={fIndex}
-                        droppableId={"rogue" + fIndex}
+                        droppableId={"folder" + fIndex}
                         type={`droppableSubItem`}
                       >
                         {(provided) => (
@@ -369,8 +369,8 @@ const ContentTree = (): ReactElement => {
                             <div className="rogue-question-separator"></div>
                             {folder.questions.map((question, qIndex) => (
                               <Draggable
-                                key={"rogue-" + qIndex}
-                                draggableId={"rogue-" + qIndex}
+                                key={qIndex}
+                                draggableId={fIndex + "-" + qIndex}
                                 index={qIndex}
                               >
                                 {(provided) => (

@@ -54,7 +54,7 @@ const QuestionSelect = (): ReactElement => {
 
   const closeQuestionSelect = () => {
     dispatch({ type: "close-question-select" });
-    dispatch({ type: "update-session-questions", payload: {} });
+    dispatch({ type: "update-session-questions", payload: [] });
     console.log("closeQuestionSelect");
   };
 
@@ -84,7 +84,23 @@ const QuestionSelect = (): ReactElement => {
           0,
           srcQuestion
         );
-        // sessionQuestions[srcFolder][result.source.index] =
+        // wow this is infuriating
+        // const newSessionQuestions = sessionQuestions;
+        // if (newSessionQuestions[destFolder]) {
+        //   newSessionQuestions[destFolder].forEach((question, index) => {
+        //     if (result.destination && question >= result.destination.index) {
+        //       newSessionQuestions[destFolder][index]++;
+        //     }
+        //   });
+        // }
+        // if (newSessionQuestions[srcFolder]) {
+        //   newSessionQuestions[srcFolder].forEach((question, index) => {
+        //     if (question >= result.source.index) {
+        //       newSessionQuestions[srcFolder][index]--;
+        //     }
+        //   });
+        // }
+        // setSessionQuestions(newSessionQuestions);
       }
     }
   };
@@ -398,7 +414,7 @@ const QuestionSelect = (): ReactElement => {
                           ) : (
                             <Droppable
                               key={fIndex}
-                              droppableId={"rogue" + fIndex}
+                              droppableId={"folder" + fIndex}
                               type={`droppableSubItem`}
                             >
                               {(provided) => (
@@ -406,8 +422,8 @@ const QuestionSelect = (): ReactElement => {
                                   <div className="rogue-question-separator"></div>
                                   {folder.questions.map((question, qIndex) => (
                                     <Draggable
-                                      key={"rogue-" + qIndex}
-                                      draggableId={"rogue-" + qIndex}
+                                      key={qIndex}
+                                      draggableId={fIndex + "-" + qIndex}
                                       index={qIndex}
                                     >
                                       {(provided) => (
