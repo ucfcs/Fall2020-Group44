@@ -14,7 +14,38 @@ const init = {
           title: "Photosynthesis 1a",
           question: "What’s my middle name",
           type: "Mult Choice",
-          choices: ["Joe", "Mama", "xXxDarkRevenge69xXx"],
+          choices: [
+            "Joe",
+            "Mama",
+            "xXxDarkRevenge69xXx",
+            "Joe",
+            "Mama",
+            "xXxDarkRevenge69xXx",
+            "Joe",
+            "Mama",
+            "xXxDarkRevenge69xXx",
+            "Joe",
+            "Mama",
+            "xXxDarkRevenge69xXx",
+            "Joe",
+            "Mama",
+            "xXxDarkRevenge69xXx",
+            "Joe",
+            "Mama",
+            "xXxDarkRevenge69xXx",
+            "Joe",
+            "Mama",
+            "xXxDarkRevenge69xXx",
+            "Joe",
+            "Mama",
+            "xXxDarkRevenge69xXx",
+            "Joe",
+            "Mama",
+            "xXxDarkRevenge69xXx",
+            "Joe",
+            "Mama",
+            "xXxDarkRevenge69xXx",
+          ],
           correct: 0,
         },
         {
@@ -96,10 +127,35 @@ const init = {
         },
       ],
     },
+    {
+      folder: null,
+      questions: [
+        {
+          title: "Photosynthesis lmao1",
+          question: "Where is the capital of Florida",
+          type: "Mult Choice",
+          choices: ["Washington DC", "Paris", "Egypt"],
+          correct: 1,
+        },
+        {
+          title: "Photosynthesis lmao2",
+          question: "Who was the first President",
+          type: "Mult Choice",
+          choices: [
+            "Joe Mama",
+            "Abraham Lincoln",
+            "George Washington",
+            "Thomas Jefferson",
+          ],
+          correct: 2,
+        },
+      ],
+    },
   ],
   poll: [],
   editPreviewQuestion: false,
   openCreator: false,
+  openQuestionSelect: false,
   questionProgress: 0,
   questionNumber: 0,
   closedQuestions: closedQuestions,
@@ -125,6 +181,10 @@ const StateProvider = ({ children }) => {
         return { ...state, openCreator: true };
       case "close-creator":
         return { ...state, openCreator: false };
+      case "open-question-select":
+        return { ...state, openQuestionSelect: true };
+      case "close-question-select":
+        return { ...state, openQuestionSelect: false };
       case "update-question-progress":
         return { ...state, questionProgress: action.payload };
       case "update-question-number":

@@ -1,8 +1,14 @@
 .content-tree {
-  width: 32rem;
+  position: relative;
+  max-width: 40%;
   height: calc(100vh - 8rem);
   border-right: 1px solid #cccccc;
-  overflow-y: auto;
+
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
 
   .tree-options {
     display: flex;
@@ -40,14 +46,14 @@
 
   .question-list {
     width: 100%;
+    overflow: auto;
+    height: calc(100vh - 17rem);
 
     .question-list-header {
       height: 5%;
-      justify-content: space-between;
       align-items: center;
       display: grid;
-      padding: 0 16px 0 24px;
-      grid-template-columns: 48% 24px 30% 52px;
+      grid-template-columns: auto 24px 30% 52px;
 
       span {
         text-align: center;
@@ -61,8 +67,6 @@
     font-weight: 500;
     cursor: pointer;
     user-select: none;
-    display: grid;
-    grid-template-columns: auto;
 
     input {
       margin-right: 8px;
@@ -77,7 +81,7 @@
     width: calc(100% - 24px);
     padding: 4px 0 4px 24px;
     display: grid;
-    grid-template-columns: 51% 8px 30% 52px;
+    grid-template-columns: auto 8px 30% 52px;
     cursor: pointer;
 
     &:hover {
@@ -87,6 +91,22 @@
         opacity: 1;
       }
     }
+  }
+
+  .rogue-question {
+    width: calc(100% - 12px);
+    padding: 4px 0 4px 12px;
+
+    &:first-child {
+      border-top: 1px solid gray;
+      margin-top: 1rem;
+      padding-top: 1rem;
+    }
+  }
+
+  .rogue-question-separator {
+    border: 1px solid black;
+    margin: 1rem 0;
   }
 
   .selected {
@@ -134,13 +154,30 @@
 
   .folder-item {
     display: grid;
-    grid-template-columns: auto 52px;
+
+    grid-template-columns: 24px 24px auto 52px;
 
     &:hover {
       .content-tree-icon {
         opacity: 1;
       }
     }
+  }
+
+  .present-button {
+    position: relative;
+    left: 50%;
+    top: 1rem;
+    padding: 0.5rem 1rem;
+    transform: translateX(-50%);
+    background-color: #ffc904;
+    border: 0.125rem solid #ffc904;
+    color: black;
+    border-radius: 0.5rem;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1.5rem;
+    cursor: pointer;
   }
 }
 
@@ -159,6 +196,12 @@
 
   &.show {
     opacity: 1;
+  }
+}
+
+.folder-icon {
+  path {
+    transform: scale(0.032);
   }
 }
 
