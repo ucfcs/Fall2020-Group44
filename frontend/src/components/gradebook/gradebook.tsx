@@ -46,30 +46,8 @@ const Gradebook = (): ReactElement => {
     else return "#00CA51";
   };
 
-  const expandSession = (session: number) => {
-    setSessionExpanded(session);
-  };
-
   const exportToCanvas = () => {
     console.log("Uhhhhh yeah export to canvas I guess");
-  };
-
-  const createQuestionHeaders = () => {
-    return sessionExpanded !== -1
-      ? overallSessions[sessionExpanded].questions.title.map(
-          (question, qIndex) => (
-            <th
-              key={sessionExpanded + "-" + qIndex + "question"}
-              className="expanded"
-            >
-              <div>{overallSessions[sessionExpanded].name}</div>
-              <div className="question-name">
-                {qIndex + 1 + ": " + question}
-              </div>
-            </th>
-          )
-        )
-      : "";
   };
 
   return (

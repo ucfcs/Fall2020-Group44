@@ -1,19 +1,10 @@
-import { Connection } from './dbconnections';
-import {
-	APIGatewayEvent,
-	APIGatewayProxyEvent,
-	Context,
-	ProxyResult,
-} from 'aws-lambda';
-import { ConnectionTimedOutError } from 'sequelize/types';
+import { Connection } from '../../util/websocket';
+import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 
 let connection: Connection;
 let courseId: string | null;
 
-export const handler = async (
-	event?: APIGatewayEvent,
-	content?: Context
-): Promise<ProxyResult> => {
+export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	if (!connection) {
 		connection = new Connection();
 		connection.init(event);

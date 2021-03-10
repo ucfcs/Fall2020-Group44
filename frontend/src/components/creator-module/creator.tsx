@@ -1,5 +1,4 @@
 import React, { useState, useContext, ReactElement } from "react";
-import { Link } from "react-router-dom";
 import "./creator.scss";
 import { store } from "../../store";
 import CreatorEdit from "./creator-edit/creator-edit";
@@ -8,6 +7,7 @@ import CreatorPreview from "./creator-preview/creator-preview";
 //todo: create question props
 
 const Creator = (): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
 

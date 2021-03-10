@@ -1,0 +1,15 @@
+.session-in-progress {
+  height: 100vh;
+  display: grid;
+  grid-template: repeat(12, 1fr) / repeat(12, 1fr);
+  column-gap: 0;
+  row-gap: 0;
+
+  .content {
+    grid-column: 3 / span 10;
+    grid-row: 3 / span 10;
+    justify-self: center;
+    width: 100%;
+    height: min-content;
+  }
+}

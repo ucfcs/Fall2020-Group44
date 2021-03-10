@@ -1,0 +1,27 @@
+.sidebar {
+  grid-row: 2 / span 11;
+  grid-column: 1 / span 2;
+
+  border-right: 2px solid #737373;
+  font-size: 24px;
+
+  ol {
+    list-style: none;
+    padding: 0;
+  }
+
+  button {
+    border: none;
+    background: none;
+    font-size: inherit;
+    padding: 1rem 2rem;
+    color: #737373;
+
+    &.active {
+      padding-left: 1.5rem;
+      font-weight: bold;
+      color: black;
+      border-left: 0.5rem solid #ffc904;
+    }
+  }
+}
