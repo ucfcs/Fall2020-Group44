@@ -6,9 +6,13 @@ import "./home-header.scss";
 const HomeHeader = (): ReactElement => {
   return (
     <header>
-      <h1 className="course-code">
-        <Link to="/">CAP1000</Link>
-      </h1>
+      <Link to="/">
+        <img
+          alt="UCF React Logo"
+          className="logo"
+          src="/img/UCFReactLogoBlackBackground.png"
+        />
+      </Link>
       <nav>
         <ul>
           <li>

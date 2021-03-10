@@ -18,9 +18,13 @@ const SessionHeader = (): ReactElement => {
 
   return (
     <div className="session-header">
-      <h1 onClick={clearSession}>
-        <Link to="/">CAP1000</Link>
-      </h1>
+      <Link to="/">
+        <img
+          alt="UCF React Logo"
+          src="/img/UCFReactLogoBlackBackground.png"
+          onClick={clearSession}
+        />
+      </Link>
       <Link onClick={clearSession} className="exit-button" to="/">
         EXIT
       </Link>
