@@ -1,10 +1,5 @@
-import { Connection } from './dbconnections';
-import {
-	APIGatewayEvent,
-	APIGatewayProxyEvent,
-	Context,
-	ProxyResult,
-} from 'aws-lambda';
+import { Connection } from '../../util/websocket';
+import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 
 interface QuestionObject {
 	title: string;
@@ -18,10 +13,7 @@ let connection: Connection;
 let room: string;
 let question: QuestionObject;
 
-export const handler = async (
-	event?: APIGatewayEvent,
-	content?: Context
-): Promise<ProxyResult> => {
+export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	// initialize connection to redis/apigateway
 	if (!connection) {
 		connection = new Connection();

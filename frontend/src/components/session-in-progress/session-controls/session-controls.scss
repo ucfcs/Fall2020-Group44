@@ -1,0 +1,45 @@
+.session-controls {
+  display: flex;
+  justify-content: space-between;
+
+  // total - size of icons and padding - border
+  width: calc(100% - 3rem);
+
+  margin-right: calc(3rem);
+
+  button {
+    cursor: pointer;
+  }
+
+  .control-button {
+    font-size: 24px;
+    border: none;
+  }
+
+  .skip-button {
+    background: none;
+  }
+
+  .next-button {
+    background-color: #ffc904;
+  }
+
+  .next-button,
+  .skip-button,
+  .close-button {
+    padding: 0.1em 1em;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+  }
+
+  .back-button {
+    background: none;
+    border: none;
+    padding: 0;
+  }
+
+  .link-button {
+    text-decoration: none;
+    color: black;
+  }
+}

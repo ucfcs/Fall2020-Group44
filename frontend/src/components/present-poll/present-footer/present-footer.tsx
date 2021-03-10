@@ -25,11 +25,13 @@ interface PollQuestion {
 }
 
 function useForceUpdate() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [value, setValue] = useState(0); // integer state
   return () => setValue((value) => value + 1); // update the state to force render
 }
 
 const PresentFooter = (): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const state = global.state;
   const dispatch = global.dispatch;

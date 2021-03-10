@@ -1,14 +1,9 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement } from "react";
 import { Link, NavLink } from "react-router-dom";
-
-import { store } from "../../store";
 
 import "./home-header.scss";
 
 const HomeHeader = (): ReactElement => {
-  const global = useContext(store) as any;
-  const dispatch = global.dispatch;
-
   return (
     <header>
       <h1 className="course-code">

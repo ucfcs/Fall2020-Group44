@@ -4,6 +4,7 @@ import { store } from "../../../store";
 import "./present-preview.scss";
 
 const PresentPreview = (): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const state = global.state;
 
