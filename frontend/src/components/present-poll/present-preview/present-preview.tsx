@@ -11,7 +11,11 @@ const PresentPreview = (): ReactElement => {
   return (
     <div className="present-preview">
       <div className="preview-left">
-        <img className="present-preview-logo" src="/img/logo.svg" />
+        <img
+          alt="UCF React Logo"
+          className="present-preview-logo"
+          src="/img/logo.svg"
+        />
         <h2>{"Let's Begin!"}</h2>
         <button className="start-button">
           <Link to="/poll/display">Start Session &gt;</Link>
@@ -21,6 +25,7 @@ const PresentPreview = (): ReactElement => {
         </p>
       </div>
       <div className="preview-right">
+        {/* TODO: implement number connected */}
         <p className="num-connected">{87}</p>
         <p className="connected-label">Students Connected</p>
       </div>

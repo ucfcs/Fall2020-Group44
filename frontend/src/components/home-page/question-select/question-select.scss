@@ -127,7 +127,6 @@
     scrollbar-width: none;
   }
 
-
   .question-list {
     width: 100%;
     overflow: auto;
@@ -147,7 +146,6 @@
   }
 
   //
-
 
   .folder {
     margin: 4px 0 4px 8px;
@@ -193,7 +191,7 @@
 
   .rogue-question-separator {
     border: 1px solid black;
-    margin: 1rem 0 ;
+    margin: 1rem 0;
   }
 
   .selected {
@@ -235,7 +233,7 @@
     cursor: pointer;
 
     &:before {
-      content: 'Create ';
+      content: "Create ";
     }
   }
 

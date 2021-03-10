@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
 
 export const Login: FunctionComponent = () => {
 	const [isReadingAuthLink, setIsReadingAuthLink] = useState(false);
-	const { state } = useContext(AppContext);
+	const { state, dispatch } = useContext(AppContext);
 	const handlePress = useCallback(async () => {
 		// Checking if the link is supported for links with custom URL scheme.
 		const supported = await Linking.canOpenURL(state.url);
@@ -91,6 +91,7 @@ export const Login: FunctionComponent = () => {
 
 			// make call to server for user info
 			// then save it to the app state context
+			dispatch({ type: 'AUTHENTICATED' });
 		});
 
 		// on unmount remove all listeners

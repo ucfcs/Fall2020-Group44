@@ -7,7 +7,11 @@ const HomeHeader = (): ReactElement => {
   return (
     <header>
       <Link to="/">
-        <img className="logo" src="/img/UCFReactLogoBlackBackground.png" />
+        <img
+          alt="UCF React Logo"
+          className="logo"
+          src="/img/UCFReactLogoBlackBackground.png"
+        />
       </Link>
       <nav>
         <ul>

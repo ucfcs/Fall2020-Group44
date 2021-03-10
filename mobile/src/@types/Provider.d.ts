@@ -23,6 +23,7 @@ type Phase = 'isolated' | 'connected' | 'authenticated';
 
 type Action =
 	| { type: 'CONNECT' }
+	| { type: 'AUTHENTICATED' }
 	| { type: 'SET_URL'; payload: string }
 	| { type: 'SET_PHASE'; payload: Phase }
 	| { type: 'SET_NAME'; payload: string }

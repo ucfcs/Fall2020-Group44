@@ -43,6 +43,8 @@ function reducer(state: AppState, action: Action): AppState {
 		case 'SET_URL':
 			state.url = action.payload;
 			break;
+		case 'AUTHENTICATED':
+			state.phase = 'authenticated';
 	}
 
 	return Object.assign({}, state);

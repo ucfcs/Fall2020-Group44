@@ -11,7 +11,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { Link } from "react-router-dom";
-import { store } from "../../store";
+import { store } from "../../../store";
 import "./question-select.scss";
 
 interface Folder {
@@ -33,6 +33,7 @@ interface PollQuestion {
 }
 
 const QuestionSelect = (): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const state = global.state;
   const dispatch = global.dispatch;

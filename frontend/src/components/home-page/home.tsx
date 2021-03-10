@@ -1,8 +1,8 @@
 import React, { ReactElement } from "react";
-import ContentTree from "./content-tree";
-import QuestionPreview from "./question-preview";
+import ContentTree from "./content-tree/content-tree";
 import "./home.scss";
 import HomeHeader from "../home-header/home-header";
+import QuestionPreview from "./question-preview/question-preview";
 
 const Body = (): ReactElement => {
   return (
