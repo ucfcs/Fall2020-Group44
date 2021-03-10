@@ -10,20 +10,20 @@ const PresentPreview = (): ReactElement => {
 
   return (
     <div className="present-preview">
-      <img className="present-preview-logo" src="/img/logo.svg" />
-      <h2>{state.poll[0] ? state.poll[0].title : ""}</h2>
-      <button className="start-button">
-        <Link to="/poll/display">Start Poll &gt;</Link>
-      </button>
-      <button
-        className="skip-button"
-        onClick={() => console.log("to be removed????")}
-      >
-        {"Skip to Next Poll >>"}
-      </button>
-      <p className="helper-text">
-        Click Start Poll to begin collecting responses
-      </p>
+      <div className="preview-left">
+        <img className="present-preview-logo" src="/img/logo.svg" />
+        <h2>{"Let's Begin!"}</h2>
+        <button className="start-button">
+          <Link to="/poll/display">Start Session &gt;</Link>
+        </button>
+        <p className="helper-text">
+          Click Start Session to begin collecting responses
+        </p>
+      </div>
+      <div className="preview-right">
+        <p className="num-connected">{87}</p>
+        <p className="connected-label">Students Connected</p>
+      </div>
     </div>
   );
 };
