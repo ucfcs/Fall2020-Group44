@@ -122,11 +122,27 @@ const ContentTree = (): ReactElement => {
 
   const handleDragEnd = (result: DropResult) => {
     if (result.destination) {
-      // const newQuestions: PollQuestion[] = questions;
-      // const [srcQuestion] = questions.splice(result.source.index, 1);
-      // newQuestions.splice(result.destination.index, 0, srcQuestion);
-      // dispatch({ type: "update-session-questions", payload: newQuestions });
-      // setQuestions(newQuestions);
+      const newQuestions = state.questions;
+      if (
+        result.source.droppableId === "folders" &&
+        result.destination.droppableId === "folders"
+      ) {
+        const [srcFolder] = newQuestions.splice(result.source.index, 1);
+        newQuestions.splice(result.destination.index, 0, srcFolder);
+      } else {
+        const srcFolder = result.source.droppableId.split("folder")[1];
+        const destFolder = result.destination.droppableId.split("folder")[1];
+        const [srcQuestion] = newQuestions[srcFolder].questions.splice(
+          result.source.index,
+          1
+        );
+        newQuestions[destFolder].questions.splice(
+          result.destination.index,
+          0,
+          srcQuestion
+        );
+      }
+      dispatch({ type: "update-session-questions", payload: newQuestions });
     }
   };
 

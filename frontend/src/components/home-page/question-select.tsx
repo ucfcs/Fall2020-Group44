@@ -4,14 +4,15 @@ import React, {
   ReactElement,
   SyntheticEvent,
 } from "react";
-import "./question-select.scss";
-import { store } from "../../store";
 import {
   DragDropContext,
   Droppable,
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
+import { Link } from "react-router-dom";
+import { store } from "../../store";
+import "./question-select.scss";
 
 interface Folder {
   folder: string;
@@ -53,6 +54,7 @@ const QuestionSelect = (): ReactElement => {
 
   const closeQuestionSelect = () => {
     dispatch({ type: "close-question-select" });
+    dispatch({ type: "update-session-questions", payload: {} });
     console.log("closeQuestionSelect");
   };
 
@@ -61,13 +63,38 @@ const QuestionSelect = (): ReactElement => {
     console.log("presentQuestions");
   };
 
-  const handleDragEnd = (result: DropResult) => {
+  const handleEditDragEnd = (result: DropResult) => {
     if (result.destination) {
-      // const newQuestions: PollQuestion[] = questions;
-      // const [srcQuestion] = questions.splice(result.source.index, 1);
-      // newQuestions.splice(result.destination.index, 0, srcQuestion);
-      // dispatch({ type: "update-session-questions", payload: newQuestions });
-      // setQuestions(newQuestions);
+      const newQuestions = state.questions;
+      if (
+        result.source.droppableId === "folders" &&
+        result.destination.droppableId === "folders"
+      ) {
+        const [srcFolder] = newQuestions.splice(result.source.index, 1);
+        newQuestions.splice(result.destination.index, 0, srcFolder);
+      } else {
+        const srcFolder = result.source.droppableId.split("folder")[1];
+        const destFolder = result.destination.droppableId.split("folder")[1];
+        const [srcQuestion] = newQuestions[srcFolder].questions.splice(
+          result.source.index,
+          1
+        );
+        newQuestions[destFolder].questions.splice(
+          result.destination.index,
+          0,
+          srcQuestion
+        );
+        // sessionQuestions[srcFolder][result.source.index] =
+      }
+    }
+  };
+
+  const handlePreviewDragEnd = (result: DropResult) => {
+    if (result.destination) {
+      const newQuestions: PollQuestion[] = state.poll;
+      const [srcQuestion] = newQuestions.splice(result.source.index, 1);
+      newQuestions.splice(result.destination.index, 0, srcQuestion);
+      dispatch({ type: "update-session-questions", payload: newQuestions });
     }
   };
 
@@ -88,7 +115,7 @@ const QuestionSelect = (): ReactElement => {
           checkbox.checked = true;
           // console.log(checkbox.parentElement);
           if (checkbox.parentElement) {
-            checkbox.parentElement.style.background = "#ffc904";
+            checkbox.parentElement.classList.add("selected");
           }
         });
         // push entire folder to session
@@ -100,7 +127,7 @@ const QuestionSelect = (): ReactElement => {
       else {
         const parentEl = questionCheckboxRefs[folder][question].parentElement;
         if (parentEl) {
-          parentEl.style.background = "#ffc904";
+          parentEl.classList.add("selected");
         }
         // see if all the questions in the folder are checked.
         let isAllChecked = true;
@@ -125,7 +152,7 @@ const QuestionSelect = (): ReactElement => {
         questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
           checkbox.checked = false;
           if (checkbox.parentElement) {
-            checkbox.parentElement.style.background = "transparent";
+            checkbox.parentElement.classList.remove("selected");
           }
         });
         // delete all the questions in the folder from the session
@@ -135,7 +162,7 @@ const QuestionSelect = (): ReactElement => {
       else {
         const parentEl = questionCheckboxRefs[folder][question].parentElement;
         if (parentEl) {
-          parentEl.style.background = "transparent";
+          parentEl.classList.remove("selected");
         }
         // uncheck the folder
         if (folderCheckboxRefs[folder]) {
@@ -162,7 +189,7 @@ const QuestionSelect = (): ReactElement => {
   };
 
   return (
-    <form className="question-select-module" onSubmit={presentQuestions}>
+    <div className="question-select-module">
       <div className="creator-header">
         <button type="reset" className="exit" onClick={closeQuestionSelect}>
           ×
@@ -186,7 +213,41 @@ const QuestionSelect = (): ReactElement => {
       <div className="question-select-body">
         <div className="question-details">
           {isPreview ? (
-            ""
+            <div className="selected-list__wrapper">
+              <DragDropContext onDragEnd={handlePreviewDragEnd}>
+                <Droppable droppableId="questions">
+                  {(provided) => (
+                    <div
+                      {...provided.droppableProps}
+                      className="selected-list__questions"
+                      ref={provided.innerRef}
+                    >
+                      {state.poll.map(
+                        (question: PollQuestion, index: number) => (
+                          <Draggable
+                            key={index}
+                            draggableId={index + ""}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className="selected-list__question"
+                              >
+                                {index + 1 + ". " + question.title}
+                              </div>
+                            )}
+                          </Draggable>
+                        )
+                      )}
+                      {provided.placeholder}
+                    </div>
+                  )}
+                </Droppable>
+              </DragDropContext>
+            </div>
           ) : (
             <div className="question-list">
               <div className="question-list-header">
@@ -195,7 +256,7 @@ const QuestionSelect = (): ReactElement => {
                 <span className="type">Type</span>
               </div>
               <div className="question-list-body">
-                <DragDropContext onDragEnd={handleDragEnd}>
+                <DragDropContext onDragEnd={handleEditDragEnd}>
                   <Droppable droppableId="folders" type="droppableItem">
                     {(provided) => (
                       <div ref={provided.innerRef}>
@@ -267,7 +328,16 @@ const QuestionSelect = (): ReactElement => {
                                                     ref={provided.innerRef}
                                                     {...provided.draggableProps}
                                                     {...provided.dragHandleProps}
-                                                    className={`preview-question `}
+                                                    className={`preview-question ${
+                                                      sessionQuestions[
+                                                        fIndex
+                                                      ] &&
+                                                      sessionQuestions[
+                                                        fIndex
+                                                      ].includes(qIndex)
+                                                        ? "selected"
+                                                        : ""
+                                                    }`}
                                                   >
                                                     <input
                                                       ref={(
@@ -288,6 +358,14 @@ const QuestionSelect = (): ReactElement => {
                                                       }}
                                                       id={fIndex + "-" + qIndex}
                                                       type="checkbox"
+                                                      defaultChecked={
+                                                        sessionQuestions[
+                                                          fIndex
+                                                        ] &&
+                                                        sessionQuestions[
+                                                          fIndex
+                                                        ].includes(qIndex)
+                                                      }
                                                       onClick={(e) =>
                                                         selectQuestionsForPoll(
                                                           e,
@@ -338,30 +416,39 @@ const QuestionSelect = (): ReactElement => {
                                           ref={provided.innerRef}
                                           {...provided.draggableProps}
                                           {...provided.dragHandleProps}
-                                          className={`preview-question rogue-question`}
+                                          className={`preview-question rogue-question ${
+                                            sessionQuestions[fIndex] &&
+                                            sessionQuestions[fIndex].includes(
+                                              qIndex
+                                            )
+                                              ? "selected"
+                                              : ""
+                                          }`}
                                         >
                                           <input
                                             id={"rogue-" + qIndex}
                                             type="checkbox"
                                             ref={(e: HTMLInputElement) => {
                                               // if folder doesn't exist, init it to an array
-                                              if (
-                                                !questionCheckboxRefs[
-                                                  state.questions.length - 1
-                                                ]
-                                              )
+                                              if (!questionCheckboxRefs[fIndex])
                                                 questionCheckboxRefs[
-                                                  state.questions.length - 1
+                                                  fIndex
                                                 ] = [];
-                                              questionCheckboxRefs[
-                                                state.questions.length - 1
-                                              ][qIndex] = e;
+                                              questionCheckboxRefs[fIndex][
+                                                qIndex
+                                              ] = e;
                                             }}
+                                            defaultChecked={
+                                              sessionQuestions[fIndex] &&
+                                              sessionQuestions[fIndex].includes(
+                                                qIndex
+                                              )
+                                            }
                                             onClick={(e) =>
                                               selectQuestionsForPoll(
                                                 e,
                                                 false,
-                                                state.questions.length - 1,
+                                                fIndex,
                                                 qIndex
                                               )
                                             }
@@ -402,11 +489,15 @@ const QuestionSelect = (): ReactElement => {
         >
           Cancel
         </button>
-        <button type="submit" className="save-button">
-          Present
+        <button
+          type="submit"
+          className="save-button"
+          onClick={presentQuestions}
+        >
+          <Link to="/poll/present">Present</Link>
         </button>
       </div>
-    </form>
+    </div>
   );
 };
 
