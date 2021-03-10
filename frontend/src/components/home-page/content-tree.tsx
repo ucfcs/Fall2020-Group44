@@ -143,7 +143,6 @@ const ContentTree = (): ReactElement => {
           srcQuestion
         );
       }
-      dispatch({ type: "update-session-questions", payload: newQuestions });
     }
   };
 
@@ -362,7 +361,7 @@ const ContentTree = (): ReactElement => {
                     ) : (
                       <Droppable
                         key={fIndex}
-                        droppableId={"rogue" + fIndex}
+                        droppableId={"folder" + fIndex}
                         type={`droppableSubItem`}
                       >
                         {(provided) => (
@@ -370,8 +369,8 @@ const ContentTree = (): ReactElement => {
                             <div className="rogue-question-separator"></div>
                             {folder.questions.map((question, qIndex) => (
                               <Draggable
-                                key={"rogue-" + qIndex}
-                                draggableId={"rogue-" + qIndex}
+                                key={qIndex}
+                                draggableId={fIndex + "-" + qIndex}
                                 index={qIndex}
                               >
                                 {(provided) => (
