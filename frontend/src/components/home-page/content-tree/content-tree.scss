@@ -47,6 +47,9 @@
     width: 100%;
     overflow: auto;
     height: calc(100vh - 17rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 
     .question-list-header {
       height: 5%;
@@ -170,11 +173,9 @@
   }
 
   .present-button {
-    position: relative;
-    left: 50%;
-    top: -3rem;
+    align-self: center;
+    margin-bottom: 1rem;
     padding: 0.5rem 1rem;
-    transform: translateX(-50%);
     background-color: #ffc904;
     border: 0.125rem solid #ffc904;
     color: black;
