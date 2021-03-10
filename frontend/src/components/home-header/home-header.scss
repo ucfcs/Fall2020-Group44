@@ -6,18 +6,13 @@ header {
   font-family: helvetica;
   background-color: black;
 
-  .course-code {
+  .logo {
     position: absolute;
     left: 0;
     top: 0;
     margin: 1rem 3rem;
     overflow: hidden;
-    font-size: 3rem;
-
-    a {
-      color: #ffc904;
-      text-decoration: none;
-    }
+    height: 3rem;
   }
 
   nav {
