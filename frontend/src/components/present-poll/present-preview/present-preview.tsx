@@ -12,7 +12,7 @@ const PresentPreview = (): ReactElement => {
     <div className="present-preview">
       <div className="preview-left">
         <img
-          alt="UCF React Logo"
+          alt="Responses Logo"
           className="present-preview-logo"
           src="/img/logo.svg"
         />

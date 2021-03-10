@@ -20,6 +20,7 @@ const SessionHeader = (): ReactElement => {
     <div className="session-header">
       <Link to="/">
         <img
+          alt="UCF React Logo"
           src="/img/UCFReactLogoBlackBackground.png"
           onClick={clearSession}
         />
