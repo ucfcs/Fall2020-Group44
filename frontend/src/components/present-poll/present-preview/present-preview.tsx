@@ -13,16 +13,10 @@ const PresentPreview = (): ReactElement => {
       <img className="present-preview-logo" src="/img/logo.svg" />
       <h2>{state.poll[0] ? state.poll[0].title : ""}</h2>
       <button className="start-button">
-        <Link to="/poll/display">Start Poll &gt;</Link>
-      </button>
-      <button
-        className="skip-button"
-        onClick={() => console.log("to be removed????")}
-      >
-        {"Skip to Next Poll >>"}
+        <Link to="/poll/display">Start Session</Link>
       </button>
       <p className="helper-text">
-        Click Start Poll to begin collecting responses
+        Click Start Session to begin collecting responses
       </p>
     </div>
   );

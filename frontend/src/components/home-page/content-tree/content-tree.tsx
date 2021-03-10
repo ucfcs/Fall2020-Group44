@@ -12,7 +12,7 @@ import {
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
-import { store } from "../../store";
+import { store } from "../../../store";
 import "./content-tree.scss";
 
 interface Folder {
@@ -171,7 +171,7 @@ const ContentTree = (): ReactElement => {
       </div>
       <div className="question-list">
         <div className="question-list-header">
-          <span>Title</span>
+          <span className="title">Title</span>
           <span></span>
           <span className="type">Type</span>
         </div>

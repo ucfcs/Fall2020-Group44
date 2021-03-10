@@ -11,7 +11,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { Link } from "react-router-dom";
-import { store } from "../../store";
+import { store } from "../../../store";
 import "./question-select.scss";
 
 interface Folder {

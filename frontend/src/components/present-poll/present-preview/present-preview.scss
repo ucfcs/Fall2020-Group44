@@ -16,15 +16,11 @@
     border: none;
     background: #ffc904;
     color: black;
-    font-size: 1.75vw;
+    font-size: 48px;
     font-weight: bold;
+    padding: 1rem 2rem;
     border-radius: 8px;
-    height: 5vh;
-    width: 12vw;
-    margin-bottom: 1vh;
     box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.25);
-    text-align: left;
-    padding-left: 1vw;
 
     a {
       color: black;
@@ -32,21 +28,8 @@
     }
   }
 
-  .skip-button {
-    border: none;
-    background: white;
-    color: black;
-    font-size: 1.75vw;
-    border-radius: 8px;
-    height: 5vh;
-    width: 20vw;
-    margin: 1vh 0vw;
-    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.25);
-    text-align: left;
-    padding-left: 1vw;
-  }
-
   .helper-text {
     color: #aaaaaa;
+    font-size: 20px;
   }
 }

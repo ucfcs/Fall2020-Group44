@@ -16,32 +16,30 @@
     align-items: center;
     justify-content: space-evenly;
     width: 100%;
-    margin: 8px 0;
+    margin: 1rem 0;
 
     .input-box {
       left: 0;
       border-radius: 8px;
       border-width: 1px;
-      height: 1.5rem;
-      width: 80%;
+      width: 70%;
       color: black;
-      font-size: 1rem;
       border-color: #aaaaaa;
       text-decoration: none;
+      font-size: 1.25rem;
+      padding: 0.5rem 1rem;
     }
 
     .filter-button {
-      margin-left: 1rem;
       color: #ffc904;
       background: black;
       font-weight: bold;
       font-family: helvetica;
-      height: 1.5rem;
-      width: 4rem;
       border: none;
       border-radius: 5px;
-      font-size: 1rem;
-      box-shadow: -4px 4px 5px rgba(0, 0, 0, 0.25);
+      font-size: 1.25rem;
+      padding: 0.5rem 1rem;
+      box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
     }
   }
 
@@ -57,8 +55,12 @@
       grid-template-columns: auto 24px 30% 52px;
 
       span {
-        text-align: center;
         color: #777777;
+        font-size: 1.25rem;
+      }
+
+      .title {
+        margin-left: 2rem;
       }
     }
   }
@@ -145,8 +147,10 @@
     border-radius: 0.5rem;
     text-align: center;
     text-decoration: none;
-    font-size: 1rem;
+    font-size: 1.25rem;
     cursor: pointer;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
+    padding: 0.5rem 1rem;
 
     &:before {
       content: "Create ";
@@ -168,7 +172,7 @@
   .present-button {
     position: relative;
     left: 50%;
-    top: 1rem;
+    top: -3rem;
     padding: 0.5rem 1rem;
     transform: translateX(-50%);
     background-color: #ffc904;
@@ -179,6 +183,7 @@
     text-decoration: none;
     font-size: 1.5rem;
     cursor: pointer;
+    box-shadow: 0 3px 4px rgba(0, 0, 0, 0.4);
   }
 }
 

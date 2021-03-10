@@ -1,7 +1,7 @@
 import React, { useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
 import "./selected-list.scss";
-import { store } from "../../store";
+import { store } from "../../../store";
 
 interface PollQuestion {
   title: string;
