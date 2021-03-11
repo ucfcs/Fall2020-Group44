@@ -58,8 +58,9 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
           </span>
         </div>
         <div className="question-info">
-          <span>Title:</span>
+          <label htmlFor="question-title">Title:</label>
           <input
+            id="question-title"
             type="text"
             tabIndex={0}
             className="question-title-input"
@@ -69,10 +70,11 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
           />
         </div>
         <div className="question-info">
-          <span>
+          <label htmlFor="question-text">
             <span className="red">*</span> Question:
-          </span>
+          </label>
           <input
+            id="question-text"
             type="text"
             required
             tabIndex={1}
@@ -83,9 +85,9 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
           />
         </div>
         <div className="question-info">
-          <span>
+          <label htmlFor="folder-select">
             <span className="red"></span> Folder:
-          </span>
+          </label>
           <select
             className="folder-select"
             name="folder-select"

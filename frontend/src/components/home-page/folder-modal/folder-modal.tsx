@@ -60,13 +60,18 @@ const FolderModal = (): ReactElement => {
       </div>
       <div className="question-select-body">
         <div className="question-details">
-          <input
-            className="folder-name"
-            type="text"
-            onChange={(e) => {
-              setNewFolder(e.target.value);
-            }}
-          />
+          <div className="folder-info">
+            <label htmlFor="folder-name">Folder Name: </label>
+            <input
+              id="folder-name"
+              className="folder-name"
+              type="text"
+              placeholder="eg: Chapter 5"
+              onChange={(e) => {
+                setNewFolder(e.target.value);
+              }}
+            />
+          </div>
         </div>
       </div>
 
@@ -79,7 +84,7 @@ const FolderModal = (): ReactElement => {
           Cancel
         </button>
         <button type="submit" className="save-button">
-          Confirm
+          Create
         </button>
       </div>
     </form>
