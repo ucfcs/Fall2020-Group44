@@ -10,6 +10,7 @@ import GradebookSession from "./components/gradebook/session";
 import Present from "./components/present-poll/present";
 import Creator from "./components/creator-module/creator";
 import QuestionSelect from "./components/home-page/question-select/question-select";
+import ExportModal from "./components/export-modal/export-modal";
 
 function App(): ReactElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -40,6 +41,7 @@ function App(): ReactElement {
 
       {state.openCreator ? <Creator /> : null}
       {state.openQuestionSelect ? <QuestionSelect /> : null}
+      {state.openExportModal ? <ExportModal /> : null}
     </Router>
   );
 }
