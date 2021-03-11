@@ -85,15 +85,6 @@ const ContentTree = (): ReactElement => {
     setQuestions(newFolders);
   };
 
-  const addFolder = () => {
-    const newQuestions = questions;
-    questions.push({
-      folder: "",
-      questions: [],
-    });
-    dispatch({ type: "update-session-questions", payload: newQuestions });
-  };
-
   const setFolderName = (e: SyntheticEvent, folder: number) => {
     const newQuestions = questions;
     questions[folder].folder = (e.target as HTMLInputElement).value;
@@ -165,7 +156,10 @@ const ContentTree = (): ReactElement => {
         >
           Question
         </button>
-        <button className="create-folder-button" onClick={addFolder}>
+        <button
+          className="create-folder-button"
+          onClick={() => dispatch({ type: "open-folder" })}
+        >
           Folder
         </button>
       </div>

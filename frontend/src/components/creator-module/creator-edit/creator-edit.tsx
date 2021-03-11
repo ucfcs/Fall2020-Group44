@@ -18,6 +18,11 @@ interface Question {
   correct: number;
 }
 
+interface Folder {
+  folder: string;
+  questions: Question[];
+}
+
 const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
@@ -52,18 +57,18 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             fields)
           </span>
         </div>
-        <div className="question-title">
+        <div className="question-info">
           <span>Title:</span>
           <input
             type="text"
             tabIndex={0}
             className="question-title-input"
-            placeholder="eg: Question 1 Title"
+            placeholder="eg: US History 1a"
             defaultValue={previewQuestion.title}
             onChange={handleTitleChange}
           />
         </div>
-        <div className="question-text">
+        <div className="question-info">
           <span>
             <span className="red">*</span> Question:
           </span>
@@ -77,19 +82,21 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             onChange={handleQuestionChange}
           />
         </div>
-        <div className="question-text">
+        <div className="question-info">
           <span>
-            <span className="red">*</span> Question:
+            <span className="red"></span> Folder:
           </span>
-          <input
-            type="text"
-            required
-            tabIndex={1}
-            className="question-text-input"
-            placeholder="eg: Who was the first President of the United States?"
-            defaultValue={previewQuestion.question}
-            onChange={handleQuestionChange}
-          />
+          <select
+            className="folder-select"
+            name="folder-select"
+            id="folder-select"
+          >
+            {state.questions.map((folder: Folder, fIndex: number) => (
+              <option key={fIndex} value={fIndex} selected={!folder.folder}>
+                {folder.folder || "--None--"}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="question-answers">
           <MultipleChoice

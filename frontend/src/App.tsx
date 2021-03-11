@@ -10,6 +10,7 @@ import GradebookSession from "./components/gradebook/session";
 import Present from "./components/present-poll/present";
 import Creator from "./components/creator-module/creator";
 import QuestionSelect from "./components/home-page/question-select/question-select";
+import FolderModal from "./components/home-page/folder-modal/folder-modal";
 
 function App(): ReactElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,6 +40,7 @@ function App(): ReactElement {
       </Switch>
 
       {state.openCreator ? <Creator /> : null}
+      {state.openFolderCreator ? <FolderModal /> : null}
       {state.openQuestionSelect ? <QuestionSelect /> : null}
     </Router>
   );

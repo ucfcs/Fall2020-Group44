@@ -20,7 +20,7 @@
       font-size: 1.5rem;
     }
 
-    .question-title {
+    .question-info {
       display: flex;
       border-bottom: 1px solid #717171;
       padding: 0.25rem 1rem;
@@ -41,28 +41,13 @@
       p {
         margin: 0;
       }
-    }
 
-    .question-text {
-      margin: 1rem 0;
-      border-bottom: 1px solid #717171;
-      padding: 0.25rem 1rem;
-      color: #717171;
-      display: flex;
-
-      input {
+      select {
         border: none;
         width: 80%;
         margin-left: 1rem;
-        font-size: 1.25rem
-      }
-
-      span {
-        width: 7rem;
-      }
-
-      p {
-        margin: 0;
+        font-size: 1.25rem;
+        background: transparent;
       }
     }
   }
