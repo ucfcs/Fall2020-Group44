@@ -146,6 +146,10 @@ const ContentTree = (): ReactElement => {
     }
   };
 
+  const truncate = (str: string) => {
+    return str.length > 50 ? str.substr(0, 48) + "..." : str;
+  };
+
   return (
     <div className="content-tree">
       <div className="tree-options">
@@ -322,7 +326,7 @@ const ContentTree = (): ReactElement => {
                                                 }
                                               >
                                                 <div className="title">
-                                                  {question.title}
+                                                  {truncate(question.title)}
                                                 </div>
                                                 <div></div>
                                                 <div className="type">
