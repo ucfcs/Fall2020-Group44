@@ -122,7 +122,7 @@ const MultipleChoice = ({
       <div className="add-answer">
         <div className="add-answer-button" onClick={onAddAnswer}>
           <span className="add-answer-icon">&#8853;&nbsp;</span>
-          <span>Add Answer Choice</span>
+          <span className="add-answer-text">Add Answer Choice</span>
         </div>
       </div>
     </div>

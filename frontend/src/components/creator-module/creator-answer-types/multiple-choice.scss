@@ -27,10 +27,9 @@
 
       p {
         margin: 0;
-        color: #ffc904;
+        color: black;
         font-weight: bold;
         text-align: center;
-        text-shadow: 1px 1px black;
       }
     }
 
@@ -64,6 +63,10 @@
         font-size: 1rem;
         color: #717171;
       }
+
+      &:hover {
+        background: whitesmoke;
+      }
     }
 
     .delete-answer {
@@ -79,6 +82,10 @@
         font-weight: bold;
         font-size: 1rem;
       }
+
+      &:hover {
+        background: whitesmoke;
+      }
     }
   }
 
@@ -91,8 +98,21 @@
       display: flex;
       align-items: center;
       font-size: 1.25rem;
-      color: #ffc904;
-      text-shadow: 1px 1px black;
+      color: black;
+
+      &:hover {
+        background: whitesmoke;
+      }
+    }
+
+    .add-answer-icon {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffc904
+    }
+
+    .add-answer-text {
+      // align-self: center;
     }
   }
 }

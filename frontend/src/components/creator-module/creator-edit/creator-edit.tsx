@@ -92,9 +92,10 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             className="folder-select"
             name="folder-select"
             id="folder-select"
+            defaultValue={-1}
           >
             {state.questions.map((folder: Folder, fIndex: number) => (
-              <option key={fIndex} value={fIndex} selected={!folder.folder}>
+              <option key={fIndex} value={folder.folder ? fIndex : -1}>
                 {folder.folder || "--None--"}
               </option>
             ))}
