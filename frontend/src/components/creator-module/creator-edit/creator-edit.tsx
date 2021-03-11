@@ -18,6 +18,11 @@ interface Question {
   correct: number;
 }
 
+interface Folder {
+  folder: string;
+  questions: Question[];
+}
+
 const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
@@ -48,26 +53,28 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
       <div className="question-details">
         <div className="question-details-header">
           <span>
-            Question Details ( <span className="red">*</span> indicates required
+            Question Details (<span className="red">*</span> indicates required
             fields)
           </span>
         </div>
-        <div className="question-title">
-          <span>Title:</span>
+        <div className="question-info">
+          <label htmlFor="question-title">Title:</label>
           <input
+            id="question-title"
             type="text"
             tabIndex={0}
             className="question-title-input"
-            placeholder="eg: Question 1 Title"
+            placeholder="eg: US History 1a"
             defaultValue={previewQuestion.title}
             onChange={handleTitleChange}
           />
         </div>
-        <div className="question-text">
-          <span>
+        <div className="question-info">
+          <label htmlFor="question-text">
             <span className="red">*</span> Question:
-          </span>
+          </label>
           <input
+            id="question-text"
             type="text"
             required
             tabIndex={1}
@@ -76,6 +83,23 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             defaultValue={previewQuestion.question}
             onChange={handleQuestionChange}
           />
+        </div>
+        <div className="question-info">
+          <label htmlFor="folder-select">
+            <span className="red"></span> Folder:
+          </label>
+          <select
+            className="folder-select"
+            name="folder-select"
+            id="folder-select"
+            defaultValue={-1}
+          >
+            {state.questions.map((folder: Folder, fIndex: number) => (
+              <option key={fIndex} value={folder.folder ? fIndex : -1}>
+                {folder.folder || "--None--"}
+              </option>
+            ))}
+          </select>
         </div>
         <div className="question-answers">
           <MultipleChoice

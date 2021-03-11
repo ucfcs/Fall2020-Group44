@@ -26,8 +26,11 @@ const Creator = (): ReactElement => {
   };
 
   const saveQuestion = () => {
+    if (!newQuestion.title) {
+      newQuestion.title = newQuestion.question;
+    }
     closePreviewQuestion();
-    console.log("saveQuestion");
+    console.log("saveQuestion", newQuestion);
   };
 
   return (
