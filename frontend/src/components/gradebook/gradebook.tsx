@@ -87,7 +87,7 @@ const Gradebook = (): ReactElement => {
             ""
           )}
           <button className="export-button" onClick={exportToCanvas}>
-            Export to Canvas
+            Export to Webcourses
           </button>
         </div>
 
