@@ -1,7 +1,7 @@
 .creator-body {
-  font-size: 1rem;
+  font-size: 1.25rem;
   overflow-y: scroll;
-  max-height: calc(100vh - 11rem);
+  max-height: calc(100vh - 14rem);
   display: flex;
   flex-direction: column;
 
@@ -17,6 +17,7 @@
     .question-details-header {
       margin-bottom: 1rem;
       font-weight: bold;
+      font-size: 1.5rem;
     }
 
     .question-title {
@@ -30,10 +31,11 @@
         border: none;
         width: 80%;
         margin-left: 1rem;
+        font-size: 1.25rem
       }
 
       span {
-        width: 15%;
+        width: 7rem;
       }
 
       p {
@@ -52,10 +54,11 @@
         border: none;
         width: 80%;
         margin-left: 1rem;
+        font-size: 1.25rem
       }
 
       span {
-        width: 15%;
+        width: 7rem;
       }
 
       p {
@@ -73,6 +76,7 @@
     .question-options-header {
       font-weight: bold;
       margin-bottom: 1rem;
+      font-size: 1.5rem;
     }
 
     .options-grading {
@@ -89,6 +93,7 @@
 
         span {
           padding: 0px 1rem;
+          font-size: 1.25rem;
         }
 
         input {
@@ -96,6 +101,7 @@
           border: none;
           border-bottom: 1px solid #717171;
           text-align: center;
+          font-size: 1.25rem;
         }
       }
     }

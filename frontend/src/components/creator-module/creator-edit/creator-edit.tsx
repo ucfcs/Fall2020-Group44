@@ -48,7 +48,7 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
       <div className="question-details">
         <div className="question-details-header">
           <span>
-            Question Details ( <span className="red">*</span> indicates required
+            Question Details (<span className="red">*</span> indicates required
             fields)
           </span>
         </div>
@@ -61,6 +61,20 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             placeholder="eg: Question 1 Title"
             defaultValue={previewQuestion.title}
             onChange={handleTitleChange}
+          />
+        </div>
+        <div className="question-text">
+          <span>
+            <span className="red">*</span> Question:
+          </span>
+          <input
+            type="text"
+            required
+            tabIndex={1}
+            className="question-text-input"
+            placeholder="eg: Who was the first President of the United States?"
+            defaultValue={previewQuestion.question}
+            onChange={handleQuestionChange}
           />
         </div>
         <div className="question-text">

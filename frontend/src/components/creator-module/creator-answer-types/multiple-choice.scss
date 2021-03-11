@@ -30,6 +30,7 @@
         color: #ffc904;
         font-weight: bold;
         text-align: center;
+        text-shadow: 1px 1px black;
       }
     }
 
@@ -50,17 +51,23 @@
       display: flex;
 
       input {
+        cursor: pointer;
+        transform: scale(1.5);
         align-self: center;
         border: none;
       }
 
       label {
+        cursor: pointer;
+        user-select: none;;
+        padding-left: 0.5rem;
         font-size: 1rem;
         color: #717171;
       }
     }
 
     .delete-answer {
+      cursor: pointer;
       width: 7%;
       display: flex;
       justify-content: center;
@@ -77,15 +84,15 @@
 
   .add-answer {
     .add-answer-button {
+      cursor: pointer;
       background: white;
       padding: 0 0;
       border: none;
       display: flex;
       align-items: center;
-      justify-content: space-around;
-      font-size: 1rem;
-      width: 25%;
+      font-size: 1.25rem;
       color: #ffc904;
+      text-shadow: 1px 1px black;
     }
   }
 }

@@ -268,7 +268,7 @@ const QuestionSelect = (): ReactElement => {
           ) : (
             <div className="question-list">
               <div className="question-list-header">
-                <span>Title</span>
+                <span className="title">Title</span>
                 <span></span>
                 <span className="type">Type</span>
               </div>
@@ -315,6 +315,7 @@ const QuestionSelect = (): ReactElement => {
                                                 )
                                               }
                                             />
+                                            <div></div>
                                             <svg
                                               className="folder-icon"
                                               xmlns="http://www.w3.org/2000/svg"
@@ -506,13 +507,15 @@ const QuestionSelect = (): ReactElement => {
         >
           Cancel
         </button>
-        <button
-          type="submit"
-          className="save-button"
-          onClick={presentQuestions}
-        >
-          <Link to="/poll/present">Present</Link>
-        </button>
+        <Link className="button-link" to="/poll/present">
+          <button
+            type="submit"
+            className="save-button"
+            onClick={presentQuestions}
+          >
+            Present
+          </button>
+        </Link>
       </div>
     </div>
   );
