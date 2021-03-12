@@ -134,6 +134,7 @@ const init = {
   poll: [],
   editPreviewQuestion: false,
   openCreator: false,
+  openFolderCreator: false,
   openQuestionSelect: false,
   questionProgress: 0,
   questionNumber: 0,
@@ -160,6 +161,10 @@ const StateProvider = ({ children }) => {
         return { ...state, openCreator: true };
       case "close-creator":
         return { ...state, openCreator: false };
+      case "open-folder":
+        return { ...state, openFolderCreator: true };
+      case "close-folder":
+        return { ...state, openFolderCreator: false };
       case "open-question-select":
         return { ...state, openQuestionSelect: true };
       case "close-question-select":
@@ -175,6 +180,8 @@ const StateProvider = ({ children }) => {
         };
       case "open-questions":
         return { ...state, closedQuestions: new Set([]) };
+      case "update-questions":
+        return { ...state, questions: action.payload };
       default:
         throw new Error("Base reducer: this action type was not defined");
     }
