@@ -7,20 +7,11 @@ import { User } from './User';
 import { UserMobileSetting } from './UserMobileSetting';
 import { UserWebSetting } from './UserWebSetting';
 
-Folder.hasMany(Collection, { foreignKey: 'folderId' });
-Collection.belongsTo(Folder, {
-	as: 'collections',
-	constraints: false,
-	foreignKey: 'folderId',
-});
-
-Collection.hasMany(Question, {
-	foreignKey: 'collectionId',
-});
-Question.belongsTo(Collection, {
+Folder.hasMany(Question, { foreignKey: 'folderId' });
+Question.belongsTo(Folder, {
 	as: 'questions',
 	constraints: false,
-	foreignKey: 'collectionId',
+	foreignKey: 'folderId',
 });
 
 Question.hasMany(QuestionOption, { foreignKey: 'questionId' });

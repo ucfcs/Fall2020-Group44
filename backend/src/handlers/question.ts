@@ -35,15 +35,15 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
 	const params = event.queryStringParameters;
 
-	if (!params?.collectionId) {
-		return responses.badRequest({ message: 'Missing collectionId parameter' });
+	if (!params?.folderId) {
+		return responses.badRequest({ message: 'Missing folderId parameter' });
 	}
 
 	try {
 		const result = await Question.create({
 			question: String(body.question),
-			collectionId: parseInt(params?.collectionId),
-			timeToAnswer: String(body?.timeToAnswer),
+			folderId: parseInt(params?.folderId),
+			timeToAnswer: null,
 		});
 
 		return responses.ok({

@@ -34,7 +34,7 @@ const init = async (): Promise<void> => {
 		});
 		await Question.create({
 			question: 'Q1',
-			collectionId: 1,
+			folderId: 1,
 			timeToAnswer: null,
 		});
 		await QuestionOption.create({
