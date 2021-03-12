@@ -24,14 +24,11 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
   const state = global.state;
 
   const handleTitleChange = (e: SyntheticEvent) => {
-    const newTitle = (e.target as HTMLInputElement).value;
-    if (newTitle.length < 120) {
-      const tempQuestion = {
-        ...newQuestion,
-        title: newTitle,
-      };
-      setNewQuestion(tempQuestion);
-    }
+    const tempQuestion = {
+      ...newQuestion,
+      title: (e.target as HTMLInputElement).value,
+    };
+    setNewQuestion(tempQuestion);
   };
 
   const handleQuestionChange = (e: SyntheticEvent) => {
@@ -60,10 +57,10 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
           <input
             type="text"
             tabIndex={0}
+            maxLength={120}
             className="question-title-input"
             placeholder="eg: Question 1 Title"
             defaultValue={previewQuestion.title}
-            value={newQuestion.title}
             onChange={handleTitleChange}
           />
         </div>
