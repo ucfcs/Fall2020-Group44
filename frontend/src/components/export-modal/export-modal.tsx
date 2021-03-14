@@ -5,6 +5,7 @@ import { store } from "../../store";
 import data from "./mock-data.json";
 
 import "./export-modal.scss";
+import SessionDropdown from "./session-dropdown/session-dropdown";
 
 const ExportModal = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,22 +34,23 @@ const ExportModal = (): ReactElement => {
 
       <div className="session-list">
         <div className="labels">
-          <p>Session</p>
+          <span>Session</span>
 
-          <p>Date</p>
+          <span className="points">Points</span>
+
+          <span className="date">Date</span>
         </div>
 
         {sessions.map(
           (session: Session, index: number): ReactElement => (
-            <div key={index} className="session-box">
-              <div>
-                <input id={`question-${index}`} type="checkbox" />
-
-                <label htmlFor={`question-${index}`}>{session.name}</label>
-              </div>
-
-              <p>{session.date}</p>
-            </div>
+            <SessionDropdown
+              key={index}
+              name={session.name}
+              date={session.date}
+              questionTitles={session.questions.title}
+              points={session.total}
+              index={index}
+            />
           )
         )}
       </div>

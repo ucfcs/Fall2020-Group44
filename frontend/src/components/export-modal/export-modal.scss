@@ -49,33 +49,25 @@
     padding: 2rem;
   }
 
-  .session-list {
-    p {
-      display: inline;
-      margin: 0;
-    }
-
-    div {
-      display: flex;
-      justify-content: space-between;
-    }
-  }
-
-  .session-box {
-    margin-bottom: 1rem;
-  }
-
   .labels {
     margin-bottom: 2rem;
     color: #666666;
     font-weight: bold;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    font-size: 1.25rem;
+  }
+
+  .points,
+  .date {
+    justify-self: end;
   }
 
   .metadata {
     input {
       border: none;
       border-bottom: 1px solid black;
-      font-size: 1rem;
+      font-size: 1.25rem;
     }
 
     label {
@@ -96,7 +88,7 @@
 
   .cancel,
   .export {
-    font-size: 1rem;
+    font-size: 1.25rem;
     font-weight: bold;
     border: none;
     margin: 1rem;
