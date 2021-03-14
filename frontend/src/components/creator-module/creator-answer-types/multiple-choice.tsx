@@ -79,7 +79,7 @@ const AnswerChoice = ({
         <label htmlFor={"correct-answer-" + index}>Correct Answer</label>
       </div>
       <div className="delete-answer">
-        <button onClick={() => handleAnswerDelete(index)}>X</button>
+        <div onClick={() => handleAnswerDelete(index)}>X</div>
       </div>
     </div>
   );
@@ -120,10 +120,10 @@ const MultipleChoice = ({
         />
       ))}
       <div className="add-answer">
-        <button className="add-answer-button" onClick={onAddAnswer}>
-          <span className="add-answer-icon">&#8853;</span>
-          <span>Add Answer Choice</span>
-        </button>
+        <div className="add-answer-button" onClick={onAddAnswer}>
+          <span className="add-answer-icon">&#8853;&nbsp;</span>
+          <span className="add-answer-text">Add Answer Choice</span>
+        </div>
       </div>
     </div>
   );

@@ -27,7 +27,7 @@
 
       p {
         margin: 0;
-        color: #ffc904;
+        color: black;
         font-weight: bold;
         text-align: center;
       }
@@ -50,17 +50,27 @@
       display: flex;
 
       input {
+        cursor: pointer;
+        transform: scale(1.5);
         align-self: center;
         border: none;
       }
 
       label {
+        cursor: pointer;
+        user-select: none;
+        padding-left: 0.5rem;
         font-size: 1rem;
         color: #717171;
+      }
+
+      &:hover {
+        background: whitesmoke;
       }
     }
 
     .delete-answer {
+      cursor: pointer;
       width: 7%;
       display: flex;
       justify-content: center;
@@ -72,19 +82,32 @@
         font-weight: bold;
         font-size: 1rem;
       }
+
+      &:hover {
+        background: whitesmoke;
+      }
     }
   }
 
   .add-answer {
     .add-answer-button {
+      cursor: pointer;
       background: white;
       padding: 0 0;
       border: none;
       display: flex;
       align-items: center;
-      justify-content: space-around;
-      font-size: 1rem;
-      width: 25%;
+      font-size: 1.25rem;
+      color: black;
+
+      &:hover {
+        background: whitesmoke;
+      }
+    }
+
+    .add-answer-icon {
+      font-size: 2rem;
+      font-weight: bold;
       color: #ffc904;
     }
   }
