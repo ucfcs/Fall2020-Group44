@@ -2,24 +2,6 @@ import React, { useState, useContext, ReactElement, FormEvent } from "react";
 import { store } from "../../../store";
 import "./folder-modal.scss";
 
-interface Folder {
-  folder: string;
-  questions: Question[];
-}
-
-interface Question {
-  title: string;
-  type: string;
-}
-
-interface PollQuestion {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-}
-
 const FolderModal = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
