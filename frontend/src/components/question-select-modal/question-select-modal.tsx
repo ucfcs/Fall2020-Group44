@@ -57,12 +57,10 @@ const QuestionSelect = (): ReactElement => {
   const closeQuestionSelect = () => {
     dispatch({ type: "close-question-select" });
     dispatch({ type: "update-session-questions", payload: [] });
-    console.log("closeQuestionSelect");
   };
 
   const presentQuestions = () => {
     dispatch({ type: "close-question-select" });
-    console.log("presentQuestions");
   };
 
   const handlePreviewDragEnd = (result: DropResult) => {
@@ -89,7 +87,6 @@ const QuestionSelect = (): ReactElement => {
         // check all the questions in the folder
         questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
           checkbox.checked = true;
-          // console.log(checkbox.parentElement);
           if (checkbox.parentElement) {
             checkbox.parentElement.classList.add("selected");
           }

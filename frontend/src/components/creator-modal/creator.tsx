@@ -31,7 +31,6 @@ const Creator = (): ReactElement => {
       newQuestion.title = newQuestion.question;
     }
     closePreviewQuestion();
-    console.log("saveQuestion", newQuestion);
   };
 
   return (

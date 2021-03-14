@@ -13,7 +13,6 @@ const FolderModal = (): ReactElement => {
 
   const closeFolderModal = () => {
     dispatch({ type: "close-folder" });
-    console.log("closeFolderModal");
   };
 
   const handleFolderCreation = (e: FormEvent) => {
@@ -28,7 +27,6 @@ const FolderModal = (): ReactElement => {
         questions: [],
       }
     );
-    console.log(newQuestions);
     dispatch({ type: "update-questions", payload: newQuestions });
     closeFolderModal();
   };

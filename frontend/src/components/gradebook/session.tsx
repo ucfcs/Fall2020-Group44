@@ -51,8 +51,8 @@ const GradebookSession = (props: Prop): ReactElement => {
     else return "#00CA51";
   };
 
-  const exportToCanvas = () => {
-    console.log("Uhhhhh yeah export to canvas I guess");
+  const exportToCanvas = (): void => {
+    return;
   };
 
   return (
