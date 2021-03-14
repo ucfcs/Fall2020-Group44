@@ -4,6 +4,7 @@ import "./session-dropdown.scss";
 
 const SessionDropdown = (props: Props): ReactElement => {
   const [isOpen, setOpen] = useState(false);
+  const [isSelected, setIsSelected] = useState(props.preSelected);
 
   const iconClass = isOpen ? "open" : "closed";
 
@@ -12,10 +13,19 @@ const SessionDropdown = (props: Props): ReactElement => {
     setOpen(!isOpen);
   };
 
+  const handleSelect = (event: SyntheticEvent): void => {
+    setIsSelected((event.target as HTMLInputElement).checked);
+  };
+
   return (
     <div className="session-dropdown">
       <div className="left-side">
-        <input id={`question-${props.index}`} type="checkbox" />
+        <input
+          id={`question-${props.index}`}
+          type="checkbox"
+          checked={isSelected}
+          onChange={handleSelect}
+        />
 
         <div>
           <button className="dropdown" onClick={handleDropdown}>
@@ -61,6 +71,7 @@ interface Props {
   questionTitles: string[];
   points: number;
   index: number;
+  preSelected: boolean;
 }
 
 export default SessionDropdown;

@@ -1,4 +1,5 @@
 import React, { ReactElement, useContext } from "react";
+import { useLocation } from "react-router-dom";
 import { Session } from "../../types";
 import { store } from "../../store";
 
@@ -11,6 +12,16 @@ const ExportModal = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
+
+  const location = useLocation();
+  const path: string = location.pathname;
+  let id: number;
+
+  // if the path is /gradebook/:id get the id
+  if (path.match(/\/gradebook\/\d+/)) {
+    const splitUp: string[] = path.split("/");
+    id = parseInt(splitUp[2]);
+  }
 
   const sessions: Session[] = data.overallSessions;
 
@@ -42,16 +53,34 @@ const ExportModal = (): ReactElement => {
         </div>
 
         {sessions.map(
-          (session: Session, index: number): ReactElement => (
-            <SessionDropdown
-              key={index}
-              name={session.name}
-              date={session.date}
-              questionTitles={session.questions.title}
-              points={session.total}
-              index={index}
-            />
-          )
+          (session: Session, index: number): ReactElement => {
+            console.log(`id: ${id} session id: ${session.id}`);
+            if (id !== undefined && id === session.id) {
+              return (
+                <SessionDropdown
+                  key={index}
+                  name={session.name}
+                  date={session.date}
+                  questionTitles={session.questions.title}
+                  points={session.total}
+                  index={index}
+                  preSelected={true}
+                />
+              );
+            }
+
+            return (
+              <SessionDropdown
+                key={index}
+                name={session.name}
+                date={session.date}
+                questionTitles={session.questions.title}
+                points={session.total}
+                index={index}
+                preSelected={false}
+              />
+            );
+          }
         )}
       </div>
 
