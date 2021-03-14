@@ -15,7 +15,10 @@ Question.belongsTo(Folder, {
 });
 
 Question.hasMany(QuestionOption, { foreignKey: 'questionId' });
-QuestionOption.belongsTo(Question, { foreignKey: 'questionId' });
+QuestionOption.belongsTo(Question, {
+	as: 'QuestionOptions',
+	foreignKey: 'questionId',
+});
 
 Question.hasMany(QuestionUserResponse, { foreignKey: 'questionId' });
 QuestionUserResponse.belongsTo(Question, { foreignKey: 'questionId' });

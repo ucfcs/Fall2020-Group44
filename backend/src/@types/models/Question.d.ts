@@ -11,4 +11,5 @@ interface QuestionCreationAttributes {
 	folderId: FolderId;
 	question: string;
 	timeToAnswer: string | null;
+	QuestionOptions: Array<QuestionOption>;
 }

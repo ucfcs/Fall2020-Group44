@@ -40,11 +40,22 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 
 	try {
-		const result = await Question.create({
-			question: String(body.question),
-			folderId: parseInt(params?.folderId),
-			timeToAnswer: null,
-		});
+		const result = await Question.create(
+			{
+				question: String(body.question),
+				folderId: parseInt(params?.folderId),
+				timeToAnswer: null,
+				QuestionOptions: body.questionOptions,
+			},
+			{
+				include: [
+					{
+						model: QuestionOption,
+						as: 'QuestionOptions',
+					},
+				],
+			}
+		);
 
 		return responses.ok({
 			message: 'Success',
@@ -52,7 +63,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		});
 	} catch (error) {
 		return responses.badRequest({
-			message: error.name || 'Fail to create',
+			message: error || 'Fail to create',
 		});
 	}
 };
