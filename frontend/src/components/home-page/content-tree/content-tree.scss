@@ -133,9 +133,17 @@
     display: none;
   }
 
+  .title {
+    height: 20px;
+  }
+
   .title,
   .type {
     overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;
     font-size: 1.25rem;
   }
 
