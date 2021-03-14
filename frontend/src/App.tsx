@@ -9,7 +9,7 @@ import SessionInProgress from "./components/session-in-progress/session-in-progr
 import GradebookSession from "./components/gradebook/session";
 import Present from "./components/present-session/present";
 import Creator from "./components/creator-modal/creator";
-import QuestionSelect from "./components/question-select-modal/question-select";
+import QuestionSelect from "./components/question-select-modal/question-select-modal";
 import ExportModal from "./components/export-modal/export-modal";
 import FolderModal from "./components/folder-modal/folder-modal";
 

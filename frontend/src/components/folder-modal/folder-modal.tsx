@@ -1,5 +1,6 @@
 import React, { useState, useContext, ReactElement, FormEvent } from "react";
 import { store } from "../../store";
+import Modal from "../modal/modal";
 import "./folder-modal.scss";
 
 const FolderModal = (): ReactElement => {
@@ -33,43 +34,45 @@ const FolderModal = (): ReactElement => {
   };
 
   return (
-    <form className="folder-module" onSubmit={handleFolderCreation}>
-      <div className="creator-header">
-        <button type="reset" className="exit" onClick={closeFolderModal}>
-          ×
-        </button>
-        <span className="header-title">Create Folder</span>
-      </div>
-      <div className="question-select-body">
-        <div className="question-details">
-          <div className="folder-info">
-            <label htmlFor="folder-name">Folder Name: </label>
-            <input
-              id="folder-name"
-              className="folder-name"
-              type="text"
-              placeholder="eg: Chapter 5"
-              onChange={(e) => {
-                setNewFolder(e.target.value);
-              }}
-            />
+    <Modal>
+      <form className="folder-module" onSubmit={handleFolderCreation}>
+        <div className="creator-header">
+          <button type="reset" className="exit" onClick={closeFolderModal}>
+            ×
+          </button>
+          <span className="header-title">Create Folder</span>
+        </div>
+        <div className="question-select-body">
+          <div className="question-details">
+            <div className="folder-info">
+              <label htmlFor="folder-name">Folder Name: </label>
+              <input
+                id="folder-name"
+                className="folder-name"
+                type="text"
+                placeholder="eg: Chapter 5"
+                onChange={(e) => {
+                  setNewFolder(e.target.value);
+                }}
+              />
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="buttons">
-        <button
-          type="reset"
-          className="cancel-button"
-          onClick={closeFolderModal}
-        >
-          Cancel
-        </button>
-        <button type="submit" className="save-button">
-          Create
-        </button>
-      </div>
-    </form>
+        <div className="buttons">
+          <button
+            type="reset"
+            className="cancel-button"
+            onClick={closeFolderModal}
+          >
+            Cancel
+          </button>
+          <button type="submit" className="save-button">
+            Create
+          </button>
+        </div>
+      </form>
+    </Modal>
   );
 };
 
