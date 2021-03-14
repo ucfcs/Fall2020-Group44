@@ -1,5 +1,5 @@
 import React, { useState, useContext, ReactElement, FormEvent } from "react";
-import { store } from "../../../store";
+import { store } from "../../store";
 import "./folder-modal.scss";
 
 const FolderModal = (): ReactElement => {
