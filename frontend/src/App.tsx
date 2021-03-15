@@ -10,6 +10,7 @@ import GradebookSession from "./components/gradebook/session";
 import Present from "./components/present-poll/present";
 import Creator from "./components/creator-module/creator";
 import QuestionSelect from "./components/home-page/question-select/question-select";
+import ExportModal from "./components/export-modal/export-modal";
 import FolderModal from "./components/home-page/folder-modal/folder-modal";
 
 function App(): ReactElement {
@@ -42,6 +43,7 @@ function App(): ReactElement {
       {state.openCreator ? <Creator /> : null}
       {state.openFolderCreator ? <FolderModal /> : null}
       {state.openQuestionSelect ? <QuestionSelect /> : null}
+      {state.openExportModal ? <ExportModal /> : null}
     </Router>
   );
 }
