@@ -19,7 +19,7 @@ export const Course: ModelDefined<
 		type: DataTypes.INTEGER,
 		allowNull: false,
 	},
-	cancasCourseId: {
+	canvasCourseId: {
 		type: DataTypes.STRING,
 		allowNull: true,
 	},
