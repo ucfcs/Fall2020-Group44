@@ -15,7 +15,6 @@ const Question = (props: QuestionProps): ReactElement => {
 
   if (props.showPercentages) {
     // This will become api call
-    console.log("Show percentages");
     percentages = data.percentages;
   }
 

@@ -96,8 +96,8 @@ const ContentTree = (): ReactElement => {
     dispatch({ type: "open-creator" });
   };
 
-  const deleteQuestion = () => {
-    console.log("deleteQuestion");
+  const deleteQuestion = (): void => {
+    return;
   };
 
   const editFolder = (e: MouseEvent, folder: number) => {
@@ -109,7 +109,6 @@ const ContentTree = (): ReactElement => {
 
   const deleteFolder = (e: MouseEvent, folder: number) => {
     e.stopPropagation();
-    console.log("deleteFolder", folder);
   };
 
   const handleDragEnd = (result: DropResult) => {

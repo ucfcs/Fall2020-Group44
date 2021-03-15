@@ -61,7 +61,7 @@ const GradebookSession = (props: Prop): ReactElement => {
     else return "#00CA51";
   };
 
-  const exportToCanvas = () => {
+  const exportToCanvas = (): void => {
     dispatch({ type: "open-export-modal" });
   };
 
