@@ -72,4 +72,40 @@ const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-export { create, remove };
+const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const params = JSON.parse(event.body || '{}');
+
+	if (
+		!params.questionId ||
+		!params.userId ||
+		!params.questionOptionId ||
+		!params.sessionId
+	) {
+		return responses.badRequest({
+			message:
+				'Missing parameter: questionId, userId, sessionId, and questionOptionId all required',
+		});
+	}
+
+	try {
+		await QuestionUserResponse.update(
+			{ questionOptionId: parseInt(params.questionOptionId) },
+			{
+				where: {
+					questionId: params.questionId,
+					userId: params.userId,
+					sessionId: params.sessionId,
+				},
+			}
+		);
+		return responses.ok({
+			message: 'Success',
+		});
+	} catch (error) {
+		return responses.badRequest({
+			message: error.name || 'Fail to update',
+		});
+	}
+};
+
+export { create, remove, update };

@@ -406,6 +406,7 @@ export class Connection {
 
 	/******************************************************
 	 * submit a users response, then notify the professor
+	 * if it is not an updated response
 	 *
 	 * params
 	 * - courseId, questionId, questionOptionId, userId
@@ -416,12 +417,14 @@ export class Connection {
 		courseId: string,
 		questionId: string,
 		questionOptionId: string,
-		userId: string
+		userId: string,
+		sessionId: string
 	): Promise<APIGatewayProxyResult> {
 		const params = {
 			questionId: questionId,
 			questionOptionId: questionOptionId,
 			userId: userId,
+			sessionId: sessionId,
 		};
 
 		const endpoint =

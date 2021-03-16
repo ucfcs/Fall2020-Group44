@@ -156,6 +156,12 @@ functions:
       - http:
           method: delete
           path: /api/v1/question_user_response
+  updateQuestionUserResponse:
+    handler: src/handlers/question_user_response.update
+    events:
+      - http:
+          method: put
+          path: /api/v1/question_user_response
 
   #
   # Auth
