@@ -108,4 +108,34 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-export { create, remove, update };
+const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const params = event.queryStringParameters;
+
+	if (!params?.questionId || !params?.userId || !params?.sessionId) {
+		return responses.badRequest({
+			message:
+				'Missing parameter: questionId, userId, and sessionId all required',
+		});
+	}
+
+	try {
+		const result = await QuestionUserResponse.findOne({
+			where: {
+				questionId: params.questionId,
+				userId: params.userId,
+				sessionId: params.sessionId,
+			},
+		});
+
+		return responses.ok({
+			messgae: 'Success',
+			response: result,
+		});
+	} catch (error) {
+		return responses.badRequest({
+			message: error || 'Fail to query',
+		});
+	}
+};
+
+export { create, remove, update, get };

@@ -432,7 +432,7 @@ export class Connection {
 
 		try {
 			// POST student response to DB
-			const response = await fetch(
+			const postResponse = await fetch(
 				`${endpoint}/dev/api/v1/question_user_response`,
 				{
 					method: 'POST',
@@ -443,16 +443,41 @@ export class Connection {
 				}
 			);
 
-			const { data, error } = await response.json();
-			if (response.ok) {
-				console.log(data);
-			} else {
-				console.log(error);
-				throw error;
-			}
+			// convert post response to json
+			const postJson = await postResponse.json();
 
-			//publish to professor that a student submitted
-			await this.sendToProfessor(courseId, 'studentSubmitted');
+			// successfully inserted new response
+			if (!postJson.error) {
+				//publish to professor that a student submitted a NEW response
+				await this.sendToProfessor(courseId, 'studentSubmitted');
+			} else {
+				// if we get a uniqueconstraint error, it's because
+				// the user is trying to change their response to the same question
+				if (postJson.error.name == 'SequelizeUniqueConstraintError') {
+					// so instead we do an UPDATE request
+					const updateResponse = await fetch(
+						`${endpoint}/dev/api/v1/question_user_response`,
+						{
+							method: 'PUT',
+							headers: {
+								'content-type': 'application/json',
+							},
+							body: JSON.stringify(params),
+						}
+					);
+
+					// convert the update response to json, make sure it worked
+					const updateJson = await updateResponse.json();
+					if (updateJson.error) {
+						// console.log(updateJson);
+						throw updateJson.error;
+					}
+					// if there is somehow a different post error
+					// besides uniqueconstraint
+				} else {
+					throw postJson.error;
+				}
+			}
 
 			return {
 				statusCode: 200,

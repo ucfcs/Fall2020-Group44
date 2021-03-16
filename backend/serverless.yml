@@ -162,6 +162,12 @@ functions:
       - http:
           method: put
           path: /api/v1/question_user_response
+  getQuestionUserResponse:
+    handler: src/handlers/question_user_response.get
+    events:
+      - http:
+          method: get
+          path: /api/v1/question_user_response
 
   #
   # Auth
