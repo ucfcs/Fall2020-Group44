@@ -42,6 +42,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	try {
 		const result = await Question.create(
 			{
+				title: String(body.title),
 				question: String(body.question),
 				folderId: parseInt(params?.folderId),
 				QuestionOptions: body.questionOptions,

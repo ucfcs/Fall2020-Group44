@@ -15,6 +15,10 @@ export const Question: ModelDefined<
 		type: DataTypes.INTEGER,
 		allowNull: true,
 	},
+	title: {
+		type: DataTypes.STRING,
+		allowNull: true,
+	},
 	question: {
 		type: DataTypes.STRING,
 		allowNull: false,
