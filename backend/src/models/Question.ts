@@ -19,8 +19,4 @@ export const Question: ModelDefined<
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
-	timeToAnswer: {
-		type: DataTypes.DATE,
-		allowNull: true,
-	},
 });

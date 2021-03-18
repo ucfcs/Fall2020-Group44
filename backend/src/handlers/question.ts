@@ -44,7 +44,6 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			{
 				question: String(body.question),
 				folderId: parseInt(params?.folderId),
-				timeToAnswer: null,
 				QuestionOptions: body.questionOptions,
 			},
 			{
