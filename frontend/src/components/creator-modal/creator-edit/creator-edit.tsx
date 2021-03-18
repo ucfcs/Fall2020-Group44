@@ -5,24 +5,6 @@ import "./creator-edit.scss";
 
 //TODO: create question props
 
-interface Prop {
-  newQuestion: Question;
-  setNewQuestion: (arg0: Question) => void;
-}
-
-interface Question {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-}
-
-interface Folder {
-  folder: string;
-  questions: Question[];
-}
-
 const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
@@ -59,6 +41,7 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
         </div>
         <div className="question-info">
           <label htmlFor="question-title">Title:</label>
+
           <input
             id="question-title"
             type="text"
@@ -70,10 +53,12 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             onChange={handleTitleChange}
           />
         </div>
+
         <div className="question-info">
           <label htmlFor="question-text">
             <span className="red">*</span> Question:
           </label>
+
           <input
             id="question-text"
             type="text"
@@ -85,10 +70,12 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             onChange={handleQuestionChange}
           />
         </div>
+
         <div className="question-info">
           <label htmlFor="folder-select">
             <span className="red"></span> Folder:
           </label>
+
           <select
             className="folder-select"
             name="folder-select"
@@ -102,6 +89,7 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             ))}
           </select>
         </div>
+
         <div className="question-answers">
           <MultipleChoice
             answers={previewQuestion.choices}
@@ -111,10 +99,12 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
           />
         </div>
       </div>
+
       <div className="question-options">
         <div className="question-options-header">
           <p>Question Options</p>
         </div>
+
         <div className="options-grading">
           <div className="participation">
             <span>Participation Points:</span>
@@ -127,8 +117,10 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
               min="0.0"
             />
           </div>
+
           <div className="correctness">
             <span>Correctness Points:</span>
+
             <input
               type="number"
               tabIndex={2}
@@ -143,5 +135,23 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
     </div>
   );
 };
+
+interface Prop {
+  newQuestion: Question;
+  setNewQuestion: (arg0: Question) => void;
+}
+
+interface Question {
+  title: string;
+  question: string;
+  type: string;
+  choices: string[];
+  correct: number;
+}
+
+interface Folder {
+  folder: string;
+  questions: Question[];
+}
 
 export default CreatorEdit;
