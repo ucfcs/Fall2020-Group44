@@ -7,24 +7,18 @@ import { User } from './User';
 import { UserMobileSetting } from './UserMobileSetting';
 import { UserWebSetting } from './UserWebSetting';
 
-Folder.hasMany(Collection, { foreignKey: 'folderId' });
-Collection.belongsTo(Folder, {
-	as: 'collections',
+Folder.hasMany(Question, { foreignKey: 'folderId' });
+Question.belongsTo(Folder, {
+	as: 'questions',
 	constraints: false,
 	foreignKey: 'folderId',
 });
 
-Collection.hasMany(Question, {
-	foreignKey: 'collectionId',
-});
-Question.belongsTo(Collection, {
-	as: 'questions',
-	constraints: false,
-	foreignKey: 'collectionId',
-});
-
 Question.hasMany(QuestionOption, { foreignKey: 'questionId' });
-QuestionOption.belongsTo(Question, { foreignKey: 'questionId' });
+QuestionOption.belongsTo(Question, {
+	as: 'QuestionOptions',
+	foreignKey: 'questionId',
+});
 
 Question.hasMany(QuestionUserResponse, { foreignKey: 'questionId' });
 QuestionUserResponse.belongsTo(Question, { foreignKey: 'questionId' });

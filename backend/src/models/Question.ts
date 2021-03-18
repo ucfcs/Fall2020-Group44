@@ -11,16 +11,12 @@ export const Question: ModelDefined<
 		primaryKey: true,
 		autoIncrement: true,
 	},
-	collectionId: {
+	folderId: {
 		type: DataTypes.INTEGER,
-		allowNull: false,
+		allowNull: true,
 	},
 	question: {
 		type: DataTypes.STRING,
 		allowNull: false,
-	},
-	timeToAnswer: {
-		type: DataTypes.DATE,
-		allowNull: true,
 	},
 });

@@ -35,16 +35,26 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
 	const params = event.queryStringParameters;
 
-	if (!params?.collectionId) {
-		return responses.badRequest({ message: 'Missing collectionId parameter' });
+	if (!params?.folderId) {
+		return responses.badRequest({ message: 'Missing folderId parameter' });
 	}
 
 	try {
-		const result = await Question.create({
-			question: String(body.question),
-			collectionId: parseInt(params?.collectionId),
-			timeToAnswer: String(body?.timeToAnswer),
-		});
+		const result = await Question.create(
+			{
+				question: String(body.question),
+				folderId: parseInt(params?.folderId),
+				QuestionOptions: body.questionOptions,
+			},
+			{
+				include: [
+					{
+						model: QuestionOption,
+						as: 'QuestionOptions',
+					},
+				],
+			}
+		);
 
 		return responses.ok({
 			message: 'Success',
@@ -52,7 +62,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		});
 	} catch (error) {
 		return responses.badRequest({
-			message: error.name || 'Fail to create',
+			message: error || 'Fail to create',
 		});
 	}
 };

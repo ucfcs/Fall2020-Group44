@@ -1,5 +1,5 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Folder } from '../models/Folder';
+import { Folder, Question, QuestionOption } from '../models';
 
 const mockUserid = 1;
 
@@ -21,6 +21,10 @@ const getFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			where: {
 				userId: mockUserid,
 				courseId: params?.courseId,
+			},
+			include: {
+				model: Question,
+				include: [QuestionOption],
 			},
 		});
 
