@@ -35,8 +35,8 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
 	const params = event.queryStringParameters;
 
-	if (!params?.folderId) {
-		return responses.badRequest({ message: 'Missing folderId parameter' });
+	if (!params?.courseId) {
+		return responses.badRequest({ message: 'Missing courseId parameter' });
 	}
 
 	try {
@@ -44,7 +44,8 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			{
 				title: String(body.title),
 				question: String(body.question),
-				folderId: parseInt(params?.folderId),
+				folderId: Number(params?.folderId) || null,
+				courseId: String(params.courseId),
 				QuestionOptions: body.questionOptions,
 			},
 			{
