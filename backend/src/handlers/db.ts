@@ -33,6 +33,7 @@ const init = async (): Promise<void> => {
 			publishedAt: null,
 		});
 		await Question.create({
+			title: 'Q1',
 			question: 'Q1',
 			folderId: 1,
 			QuestionOptions: [],
