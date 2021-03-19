@@ -5,10 +5,12 @@ interface QuestionUserResponseAttributes {
 	questionId: QuestionId;
 	questionOptionId: QuestionOptionId;
 	userId: UserId;
+	sessionId: SessionId;
 }
 
 interface QuestionUserResponseCreationAttributes {
 	questionId: QuestionId;
 	questionOptionId: QuestionOptionId;
 	userId: UserId;
+	sessionId: SessionId;
 }
