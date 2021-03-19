@@ -63,6 +63,7 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             id="question-title"
             type="text"
             tabIndex={0}
+            maxLength={120}
             className="question-title-input"
             placeholder="eg: US History 1a"
             defaultValue={previewQuestion.title}

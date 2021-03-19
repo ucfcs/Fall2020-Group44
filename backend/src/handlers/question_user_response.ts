@@ -6,10 +6,15 @@ import responses from '../util/api/responses';
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = JSON.parse(event.body || '{}');
 
-	if (!params.questionId || !params.userId || !params.questionOptionId) {
+	if (
+		!params.questionId ||
+		!params.userId ||
+		!params.questionOptionId ||
+		!params.sessionId
+	) {
 		return responses.badRequest({
 			message:
-				'Missing parameter: questionId, userId, questionOptionId all required',
+				'Missing parameter: questionId, userId, sessionId, and questionOptionId all required',
 		});
 	}
 
@@ -17,6 +22,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		const result = await QuestionUserResponse.create({
 			questionId: parseInt(params.questionId),
 			userId: parseInt(params.userId),
+			sessionId: parseInt(params.sessionId),
 			questionOptionId: parseInt(params.questionOptionId),
 		});
 
@@ -36,15 +42,19 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
-	if (!params?.questionId || !params?.userId) {
+	if (!params?.questionId || !params?.userId || !params?.sessionId) {
 		return responses.badRequest({
-			message: 'Missing parameter: questionId and userId required',
+			message: 'Missing parameter: questionId, userId, and sessionId required',
 		});
 	}
 
 	try {
 		await QuestionUserResponse.destroy({
-			where: { questionId: params?.questionId, userId: params?.userId },
+			where: {
+				questionId: params?.questionId,
+				userId: params?.userId,
+				sessionId: params?.sessionId,
+			},
 		});
 		return {
 			statusCode: 200,

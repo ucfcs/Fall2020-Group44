@@ -139,6 +139,7 @@ const init = {
   questionProgress: 0,
   questionNumber: 0,
   closedQuestions: closedQuestions,
+  openExportModal: false,
 };
 const store = React.createContext(init);
 const { Provider } = store;
@@ -180,6 +181,10 @@ const StateProvider = ({ children }) => {
         };
       case "open-questions":
         return { ...state, closedQuestions: new Set([]) };
+      case "open-export-modal":
+        return { ...state, openExportModal: true };
+      case "close-export-modal":
+        return { ...state, openExportModal: false };
       case "update-questions":
         return { ...state, questions: action.payload };
       default:

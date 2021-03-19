@@ -7,10 +7,11 @@ import Home from "./components/home-page/home";
 import Gradebook from "./components/gradebook/gradebook";
 import SessionInProgress from "./components/session-in-progress/session-in-progress";
 import GradebookSession from "./components/gradebook/session";
-import Present from "./components/present-poll/present";
-import Creator from "./components/creator-module/creator";
-import QuestionSelect from "./components/home-page/question-select/question-select";
-import FolderModal from "./components/home-page/folder-modal/folder-modal";
+import Present from "./components/present-session/present";
+import Creator from "./components/creator-modal/creator";
+import QuestionSelect from "./components/question-select-modal/question-select-modal";
+import ExportModal from "./components/export-modal/export-modal";
+import FolderModal from "./components/folder-modal/folder-modal";
 
 function App(): ReactElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,6 +43,7 @@ function App(): ReactElement {
       {state.openCreator ? <Creator /> : null}
       {state.openFolderCreator ? <FolderModal /> : null}
       {state.openQuestionSelect ? <QuestionSelect /> : null}
+      {state.openExportModal ? <ExportModal /> : null}
     </Router>
   );
 }

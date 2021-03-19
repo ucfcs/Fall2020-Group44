@@ -40,9 +40,11 @@ const init = async (): Promise<void> => {
 			publishedAt: null,
 		});
 		await Question.create({
+			title: 'Q1',
 			question: 'Q1',
-			collectionId: 1,
-			timeToAnswer: null,
+			folderId: 1,
+			courseId: '1',
+			QuestionOptions: [],
 		});
 		await QuestionOption.create({
 			text: 'Option 1',

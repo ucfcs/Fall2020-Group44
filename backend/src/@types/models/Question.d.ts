@@ -2,13 +2,16 @@ type QuestionId = number;
 
 interface QuestionAttributes {
 	id: QuestionId;
-	collectionId: CollectionId;
+	folderId: FolderId;
+	courseId: CourseId;
+	title: string;
 	question: string;
-	timeToAnswer: string;
 }
 
 interface QuestionCreationAttributes {
-	collectionId: CollectionId;
+	folderId: FolderId | null;
+	courseId: CourseId;
 	question: string;
-	timeToAnswer: string | null;
+	title: string;
+	QuestionOptions: Array<QuestionOption>;
 }
