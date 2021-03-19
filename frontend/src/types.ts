@@ -1,7 +1,12 @@
-interface Question {
-  title: string[];
-  average: number[];
-  total: number[];
+export interface Question {
+  title: string;
+  question: string;
+  type: string;
+  choices: string[];
+  correct: number;
+  folderId: number | null;
+  average?: number;
+  total?: number;
 }
 
 export interface Session {

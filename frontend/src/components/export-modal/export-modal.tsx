@@ -1,6 +1,5 @@
 import React, { ReactElement, useContext } from "react";
 import { useLocation } from "react-router-dom";
-import { Session } from "../../types";
 import { store } from "../../store";
 
 import data from "./mock-data.json";
@@ -24,7 +23,8 @@ const ExportModal = (): ReactElement => {
     id = parseInt(splitUp[2]);
   }
 
-  const sessions: Session[] = data.overallSessions;
+  const sessions = data.overallSessions;
+  console.log(sessions);
 
   const cancel = (): void => {
     dispatch({ type: "close-export-modal" });
@@ -55,7 +55,7 @@ const ExportModal = (): ReactElement => {
           </div>
 
           {sessions.map(
-            (session: Session, index: number): ReactElement => {
+            (session, index: number): ReactElement => {
               console.log(`id: ${id} session id: ${session.id}`);
               if (id !== undefined && id === session.id) {
                 return (
@@ -63,7 +63,7 @@ const ExportModal = (): ReactElement => {
                     key={index}
                     name={session.name}
                     date={session.date}
-                    questionTitles={session.questions.title}
+                    questions={session.questions}
                     points={session.total}
                     index={index}
                     preSelected={true}
@@ -76,7 +76,7 @@ const ExportModal = (): ReactElement => {
                   key={index}
                   name={session.name}
                   date={session.date}
-                  questionTitles={session.questions.title}
+                  questions={session.questions}
                   points={session.total}
                   index={index}
                   preSelected={false}
