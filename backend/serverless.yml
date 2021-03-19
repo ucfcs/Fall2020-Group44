@@ -45,6 +45,14 @@ functions:
   dbDrop:
     handler: src/handlers/db.drop
 
+  # Course endpoints
+  getCourse:
+    handler: src/handlers/course.getCourse
+    events:
+      - http:
+          method: get
+          path: /api/v1/course
+
   # Folder endpoints
   getFolder:
     handler: src/handlers/folder.getFolder
