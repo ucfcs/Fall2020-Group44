@@ -1,5 +1,5 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Course, Folder, Question, QuestionOption } from '../models';
+import { Folder, Question, QuestionOption } from '../models';
 import responses from '../util/api/responses';
 
 // GET /api/v1/course
@@ -13,12 +13,7 @@ const getCourse = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 
 	try {
-		const [course, folders, questions] = await Promise.all([
-			Course.findOne({
-				where: {
-					id: params?.courseId,
-				},
-			}),
+		const [folders, questions] = await Promise.all([
 			Folder.findAll({
 				where: {
 					courseId: params.courseId,
@@ -38,7 +33,8 @@ const getCourse = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		]);
 
 		return responses.ok({
-			data: { ...course?.get(), folders, questions },
+			folders,
+			questions,
 		});
 	} catch (error) {
 		return responses.badRequest({

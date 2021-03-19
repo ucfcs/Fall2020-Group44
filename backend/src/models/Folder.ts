@@ -22,7 +22,7 @@ export const Folder: ModelDefined<
 			allowNull: false,
 		},
 		courseId: {
-			type: DataTypes.INTEGER,
+			type: DataTypes.STRING,
 			allowNull: false,
 		},
 	},

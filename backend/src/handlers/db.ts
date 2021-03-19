@@ -1,5 +1,4 @@
 import {
-	Course,
 	Folder,
 	Collection,
 	QuestionOption,
@@ -12,7 +11,6 @@ import {
 
 const init = async (): Promise<void> => {
 	try {
-		await Course.sync({ alter: true });
 		await User.sync({ alter: true });
 		await Folder.sync({ alter: true });
 		await Collection.sync({ alter: true });
@@ -25,11 +23,6 @@ const init = async (): Promise<void> => {
 		await User.create({
 			canvasId: 1,
 			fullName: 'Mock',
-		});
-		await Course.create({
-			name: 'DEV',
-			userId: 1,
-			canvasCourseId: '1',
 		});
 		await Folder.create({ name: 'Folder 1', userId: 1, courseId: '1' });
 		await Collection.create({

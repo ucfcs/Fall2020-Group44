@@ -1,4 +1,3 @@
-import { Course } from './Course';
 import { Folder } from './Folder';
 import { Collection } from './Collection';
 import { QuestionOption } from './QuestionOption';
@@ -7,13 +6,6 @@ import { QuestionUserResponse } from './QuestionUserResponse';
 import { User } from './User';
 import { UserMobileSetting } from './UserMobileSetting';
 import { UserWebSetting } from './UserWebSetting';
-
-Course.hasMany(Folder, { foreignKey: 'courseId' });
-Folder.belongsTo(Course, {
-	as: 'folders',
-	constraints: false,
-	foreignKey: 'courseId',
-});
 
 Folder.hasMany(Question, { foreignKey: 'folderId' });
 Question.belongsTo(Folder, {
@@ -48,7 +40,6 @@ User.hasOne(UserMobileSetting, { foreignKey: 'userId' });
 UserMobileSetting.belongsTo(User, { foreignKey: 'userId' });
 
 export {
-	Course,
 	Folder,
 	Collection,
 	QuestionOption,
