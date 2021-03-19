@@ -24,7 +24,6 @@ const ExportModal = (): ReactElement => {
   }
 
   const sessions = data.overallSessions;
-  console.log(sessions);
 
   const cancel = (): void => {
     dispatch({ type: "close-export-modal" });
@@ -56,7 +55,6 @@ const ExportModal = (): ReactElement => {
 
           {sessions.map(
             (session, index: number): ReactElement => {
-              console.log(`id: ${id} session id: ${session.id}`);
               if (id !== undefined && id === session.id) {
                 return (
                   <SessionDropdown
