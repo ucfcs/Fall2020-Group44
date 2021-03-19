@@ -4,6 +4,8 @@ import { store } from "../../store";
 import CreatorEdit from "./creator-edit/creator-edit";
 import CreatorPreview from "./creator-preview/creator-preview";
 import Modal from "../modal/modal";
+import { postData, putData } from "../../util/api";
+import { Question } from "../../types";
 
 //todo: create question props
 
@@ -11,25 +13,44 @@ const Creator = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
+  const state = global.state;
+
+  const url = `${process.env.REACT_APP_REST_URL}/dev/api/v1/question`;
 
   const [isPreview, setIsPreview] = useState(false);
-  const [newQuestion, setNewQuestion] = useState({
+  const [questionInfo, setQuestionInfo] = useState({
     title: "",
     question: "",
     type: "Mult Choice",
     choices: ["", ""],
     correct: -1,
+    folderId: null,
   });
 
-  const closePreviewQuestion = () => {
+  const closePreviewQuestion = (): void => {
     dispatch({ type: "close-preview-question" });
     dispatch({ type: "close-creator" });
   };
 
   const saveQuestion = () => {
-    if (!newQuestion.title) {
-      newQuestion.title = newQuestion.question;
+    if (!questionInfo.title) {
+      setQuestionInfo({ ...questionInfo, title: questionInfo.question });
     }
+
+    if (state.editPreviewQuestion) {
+      try {
+        putData(url, questionInfo);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      try {
+        postData(url, questionInfo);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
     closePreviewQuestion();
   };
 
@@ -59,11 +80,11 @@ const Creator = (): ReactElement => {
           </div>
         </div>
         {isPreview ? (
-          <CreatorPreview newQuestion={newQuestion} />
+          <CreatorPreview question={questionInfo as Question} />
         ) : (
           <CreatorEdit
-            newQuestion={newQuestion}
-            setNewQuestion={setNewQuestion}
+            question={questionInfo as Question}
+            setQuestionInfo={setQuestionInfo as (arg0: Question) => void}
           />
         )}
         <div className="buttons">

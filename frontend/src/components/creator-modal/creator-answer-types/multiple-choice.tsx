@@ -4,55 +4,32 @@ import React, {
   SyntheticEvent,
   ReactElement,
 } from "react";
+import { Question } from "../../../types";
 import "./multiple-choice.scss";
-
-type Props = {
-  answers: string[];
-  correct: number;
-  newQuestion: Question;
-  setNewQuestion: (arg0: Question) => void;
-};
-
-interface Question {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-}
-
-type SingleAnswerChoiceProps = {
-  answer: string;
-  letter: string;
-  index: number;
-  correct: boolean;
-  newQuestion: Question;
-  setNewQuestion: (arg0: Question) => void;
-};
 
 const AnswerChoice = ({
   answer,
   letter,
   index,
   correct,
-  newQuestion,
-  setNewQuestion,
+  question,
+  setQuestionInfo,
 }: SingleAnswerChoiceProps) => {
   const handleAnswerChange = (e: SyntheticEvent, index: number) => {
-    const tempQuestion = newQuestion;
+    const tempQuestion = question;
     tempQuestion.choices[index] = (e.target as HTMLInputElement).value;
-    setNewQuestion(tempQuestion);
+    setQuestionInfo(tempQuestion);
   };
 
   const handleCorrectChange = (index: number) => {
-    const tempQuestion = { ...newQuestion, correct: index };
-    setNewQuestion(tempQuestion);
+    const tempQuestion = { ...question, correct: index };
+    setQuestionInfo(tempQuestion);
   };
 
   const handleAnswerDelete = (index: number) => {
-    const tempQuestion = newQuestion;
-    tempQuestion.choices = newQuestion.choices.filter((_, i) => i === index);
-    setNewQuestion(tempQuestion);
+    const tempQuestion = question;
+    tempQuestion.choices = question.choices.filter((_, i) => i === index);
+    setQuestionInfo(tempQuestion);
   };
 
   return (
@@ -88,8 +65,8 @@ const AnswerChoice = ({
 const MultipleChoice = ({
   answers,
   correct,
-  newQuestion,
-  setNewQuestion,
+  question,
+  setQuestionInfo,
 }: Props): ReactElement => {
   const [answerChoices, setAnswerChoices] = useState(["", ""]);
 
@@ -108,6 +85,7 @@ const MultipleChoice = ({
       <span className="answer-choice-header">
         <span className="red">*</span> Answers:
       </span>
+
       {answerChoices.map((answer, index) => (
         <AnswerChoice
           key={index}
@@ -115,18 +93,36 @@ const MultipleChoice = ({
           answer={answer}
           letter={String.fromCharCode(65 + index)}
           correct={correct === index}
-          newQuestion={newQuestion}
-          setNewQuestion={setNewQuestion}
+          question={question}
+          setQuestionInfo={setQuestionInfo}
         />
       ))}
+
       <div className="add-answer">
         <div className="add-answer-button" onClick={onAddAnswer}>
           <span className="add-answer-icon">&#8853;&nbsp;</span>
+
           <span className="add-answer-text">Add Answer Choice</span>
         </div>
       </div>
     </div>
   );
+};
+
+type Props = {
+  answers: string[];
+  correct: number;
+  question: Question;
+  setQuestionInfo: (arg0: Question) => void;
+};
+
+type SingleAnswerChoiceProps = {
+  answer: string;
+  letter: string;
+  index: number;
+  correct: boolean;
+  question: Question;
+  setQuestionInfo: (arg0: Question) => void;
 };
 
 export default MultipleChoice;
