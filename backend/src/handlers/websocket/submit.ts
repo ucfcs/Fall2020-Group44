@@ -27,7 +27,7 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		if (!courseId || !questionId || !questionOptionId || !userId || !sessionId)
 			throw 'all of courseId, questionId, questionOptionId, sessionId, and userId required';
 
-		return await connection.sumbitResponse(
+		return await connection.submitResponse(
 			courseId,
 			questionId,
 			questionOptionId,
