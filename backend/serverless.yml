@@ -91,19 +91,19 @@ functions:
     events:
       - http:
           method: post
-          path: /api/v1/collection
+          path: /api/v1/courses/{courseId}/collection
   updateCollection:
     handler: src/handlers/collection.update
     events:
       - http:
           method: put
-          path: /api/v1/collection
+          path: /api/v1/collection/{collectionId}
   deleteCollection:
     handler: src/handlers/collection.remove
     events:
       - http:
           method: delete
-          path: /api/v1/collection
+          path: /api/v1/collection/{collectionId}
 
   # Question endpoints
   getQuestion:

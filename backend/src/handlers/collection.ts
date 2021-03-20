@@ -38,22 +38,18 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 // POST /api/v1/collection
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const params = event.queryStringParameters;
+	const courseId = event.pathParameters?.courseId;
 
-	if (!params?.folderId) {
-		return responses.badRequest({ message: 'Missing folderId parameter' });
-	}
-	if (!params?.courseId) {
-		return responses.badRequest({ message: 'Missing courseId parameter' });
+	if (!courseId) {
+		return responses.badRequest({ message: 'Missing courseId path parameter' });
 	}
 
 	try {
 		const result = await Collection.create({
 			name: String(body.name),
-			folderId: parseInt(params?.folderId),
-			courseId: params?.courseId,
+			courseId: courseId,
 			userId: mockUserid,
-			publishedAt: null,
+			questions: body.questions,
 		});
 
 		return responses.ok({
@@ -70,16 +66,18 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 // PUT /api/v1/collection
 const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const params = event.queryStringParameters;
+	const collectionId = event.pathParameters?.collectionId;
 
-	if (!params?.collectionId) {
-		return responses.badRequest({ message: 'Missing collectionId parameter' });
+	if (!collectionId) {
+		return responses.badRequest({
+			message: 'Missing collectionId path parameter',
+		});
 	}
 
 	try {
 		await Collection.update(
-			{ name: String(body.name) },
-			{ where: { id: params?.collectionId } }
+			{ name: String(body.name), questions: body.questions },
+			{ where: { id: collectionId } }
 		);
 		return responses.badRequest({
 			message: 'Success',
@@ -93,14 +91,16 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 // DELETE /api/v1/collection
 const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event.queryStringParameters;
+	const collectionId = event.pathParameters?.collectionId;
 
-	if (!params?.collectionId) {
-		return responses.badRequest({ message: 'Missing collectionId parameter' });
+	if (!collectionId) {
+		return responses.badRequest({
+			message: 'Missing collectionId path parameter',
+		});
 	}
 
 	try {
-		await Collection.destroy({ where: { id: params?.collectionId } });
+		await Collection.destroy({ where: { id: collectionId } });
 		return {
 			statusCode: 200,
 			body: JSON.stringify({

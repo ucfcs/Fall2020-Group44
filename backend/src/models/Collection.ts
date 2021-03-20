@@ -13,10 +13,6 @@ export const Collection: ModelDefined<
 			primaryKey: true,
 			autoIncrement: true,
 		},
-		folderId: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-		},
 		name: {
 			type: DataTypes.STRING,
 			allowNull: false,
@@ -38,7 +34,7 @@ export const Collection: ModelDefined<
 		indexes: [
 			{
 				unique: true,
-				fields: ['name', 'userId', 'folderId'],
+				fields: ['name', 'courseId'],
 			},
 		],
 	}
