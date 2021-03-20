@@ -4,11 +4,11 @@ interface FolderAttributes {
 	id: FolderId;
 	name: string;
 	userId: UserId;
-	courseId: string;
+	courseId: CourseId;
 }
 
 interface FolderCreationAttributes {
 	name: string;
 	userId: UserId;
-	courseId: string;
+	courseId: CourseId;
 }
