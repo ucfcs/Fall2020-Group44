@@ -111,25 +111,25 @@ functions:
     events:
       - http:
           method: get
-          path: /api/v1/question
+          path: /api/v1/question/{questionId}
   createQuestion:
     handler: src/handlers/question.create
     events:
       - http:
           method: post
-          path: /api/v1/question
+          path: /api/v1/courses/{courseId}/question
   updateQuestion:
     handler: src/handlers/question.update
     events:
       - http:
           method: put
-          path: /api/v1/question
+          path: /api/v1/question/{questionId}
   deleteQuestion:
     handler: src/handlers/question.remove
     events:
       - http:
           method: delete
-          path: /api/v1/question
+          path: /api/v1/question/{questionId}
 
   # Question Option endpoints
   createQuestionOption:
