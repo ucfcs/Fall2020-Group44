@@ -23,7 +23,8 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		});
 
 		return responses.ok({
-			question,
+			message: 'Success',
+			data: question,
 		});
 	} catch (error) {
 		return responses.badRequest({
@@ -78,11 +79,7 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 
 	try {
-		await Question.update(
-			//TODO: what if you want to update the title or question options
-			{ question: String(body.question || '') },
-			{ where: { id: questionId } }
-		);
+		await Question.update(body, { where: { id: questionId } });
 		return responses.ok({
 			message: 'Success',
 		});
@@ -92,7 +89,7 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		});
 	}
 
-	// here update each question option?
+	// TODO: here update each question option?
 };
 
 // DELETE /api/v1/question
