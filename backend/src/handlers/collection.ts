@@ -6,16 +6,18 @@ const mockUserid = 1;
 
 // GET /api/v1/collection
 const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event.queryStringParameters;
+	const collectionId = event.pathParameters?.collectionId;
 
-	if (!params?.collectionId) {
-		return responses.badRequest({ message: 'Missing collectionId parameter' });
+	if (!collectionId) {
+		return responses.badRequest({
+			message: 'Missing collectionId path parameter',
+		});
 	}
 
 	try {
 		const collection = await Collection.findOne({
 			where: {
-				id: params?.collectionId,
+				id: collectionId,
 				userId: mockUserid,
 			},
 			include: {

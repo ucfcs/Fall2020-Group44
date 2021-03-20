@@ -85,7 +85,7 @@ functions:
     events:
       - http:
           method: get
-          path: /api/v1/collection
+          path: /api/v1/collection/{collectionId}
   createCollection:
     handler: src/handlers/collection.create
     events:
