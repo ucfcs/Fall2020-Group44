@@ -6,7 +6,7 @@ let courseId: string;
 let questionId: string;
 let questionOptionId: string;
 let userId: string;
-let sessionId: string;
+let collectionId: string;
 
 export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	// initialize connection to redis/apigateway
@@ -22,17 +22,23 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		questionId = params?.questionId;
 		questionOptionId = params?.questionOptionId;
 		userId = params?.userId;
-		sessionId = params?.sessionId;
+		collectionId = params?.collectionId;
 
-		if (!courseId || !questionId || !questionOptionId || !userId || !sessionId)
-			throw 'all of courseId, questionId, questionOptionId, sessionId, and userId required';
+		if (
+			!courseId ||
+			!questionId ||
+			!questionOptionId ||
+			!userId ||
+			!collectionId
+		)
+			throw 'all of courseId, questionId, questionOptionId, collectionId, and userId required';
 
 		return await connection.submitResponse(
 			courseId,
 			questionId,
 			questionOptionId,
 			userId,
-			sessionId
+			collectionId
 		);
 	} catch (error) {
 		console.log(error);

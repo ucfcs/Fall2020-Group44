@@ -10,11 +10,11 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		!params.questionId ||
 		!params.userId ||
 		!params.questionOptionId ||
-		!params.sessionId
+		!params.collectionId
 	) {
 		return responses.badRequest({
 			message:
-				'Missing parameter: questionId, userId, sessionId, and questionOptionId all required',
+				'Missing parameter: questionId, userId, collectionId, and questionOptionId all required',
 		});
 	}
 
@@ -22,7 +22,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		const result = await QuestionUserResponse.create({
 			questionId: parseInt(params.questionId),
 			userId: parseInt(params.userId),
-			sessionId: parseInt(params.sessionId),
+			collectionId: parseInt(params.collectionId),
 			questionOptionId: parseInt(params.questionOptionId),
 		});
 
@@ -42,9 +42,9 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
-	if (!params?.questionId || !params?.userId || !params?.sessionId) {
+	if (!params?.questionId || !params?.userId || !params?.collectionId) {
 		return responses.badRequest({
-			message: 'Missing parameter: questionId, userId, and sessionId required',
+			message: 'Missing parameter: questionId, userId, and collectionId required',
 		});
 	}
 
@@ -53,7 +53,7 @@ const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			where: {
 				questionId: params?.questionId,
 				userId: params?.userId,
-				sessionId: params?.sessionId,
+				collectionId: params?.collectionId,
 			},
 		});
 		return {
@@ -79,11 +79,11 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		!params.questionId ||
 		!params.userId ||
 		!params.questionOptionId ||
-		!params.sessionId
+		!params.collectionId
 	) {
 		return responses.badRequest({
 			message:
-				'Missing parameter: questionId, userId, sessionId, and questionOptionId all required',
+				'Missing parameter: questionId, userId, collectionId, and questionOptionId all required',
 		});
 	}
 
@@ -94,7 +94,7 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 				where: {
 					questionId: params.questionId,
 					userId: params.userId,
-					sessionId: params.sessionId,
+					collectionId: params.collectionId,
 				},
 			}
 		);
@@ -111,10 +111,10 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const params = event.queryStringParameters;
 
-	if (!params?.questionId || !params?.userId || !params?.sessionId) {
+	if (!params?.questionId || !params?.userId || !params?.collectionId) {
 		return responses.badRequest({
 			message:
-				'Missing parameter: questionId, userId, and sessionId all required',
+				'Missing parameter: questionId, userId, and collectionId all required',
 		});
 	}
 
@@ -123,7 +123,7 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			where: {
 				questionId: params.questionId,
 				userId: params.userId,
-				sessionId: params.sessionId,
+				collectionId: params.collectionId,
 			},
 		});
 
