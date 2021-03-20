@@ -26,7 +26,7 @@ export const Folder: ModelDefined<
 		indexes: [
 			{
 				unique: true,
-				fields: ['name', 'userId', 'courseId'],
+				fields: ['name', 'courseId'],
 			},
 		],
 	}
