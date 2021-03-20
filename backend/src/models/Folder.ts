@@ -17,10 +17,6 @@ export const Folder: ModelDefined<
 			type: DataTypes.STRING,
 			allowNull: false,
 		},
-		userId: {
-			type: DataTypes.INTEGER,
-			allowNull: false,
-		},
 		courseId: {
 			type: DataTypes.STRING,
 			allowNull: false,

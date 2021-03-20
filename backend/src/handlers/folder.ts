@@ -5,20 +5,13 @@ import responses from '../util/api/responses';
 const mockUserid = 1;
 
 // GET /api/v1/folder
-const getFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event.queryStringParameters;
-
-	if (!params?.courseId) {
-		responses.badRequest({
-			message: 'Missing parameter: courseId',
-		});
-	}
+const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const folderId = event.pathParameters?.folderId;
 
 	try {
 		const result = await Folder.findOne({
 			where: {
-				userId: mockUserid,
-				courseId: params?.courseId,
+				id: folderId,
 			},
 			include: {
 				model: Question,
@@ -37,12 +30,12 @@ const getFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // POST /api/v1/folder
-const newFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const params = event.queryStringParameters;
+	const courseId = event.pathParameters?.courseId;
 
 	// eslint-disable-next-line no-constant-condition
-	if (!params?.courseId) {
+	if (!courseId) {
 		return responses.badRequest({
 			message: 'Missing parameters',
 		});
@@ -51,8 +44,7 @@ const newFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	try {
 		const result = await Folder.create({
 			name: body?.name as string,
-			userId: mockUserid,
-			courseId: params?.courseId as string,
+			courseId: courseId as string,
 		});
 
 		return responses.ok({
@@ -66,11 +58,11 @@ const newFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // PUT /api/v1/folder
-const updateFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const params = event.queryStringParameters;
+	const folderId = event.pathParameters?.folderId;
 
-	if (!params?.folderId) {
+	if (!folderId) {
 		return responses.badRequest({
 			message: 'Missing parameter: folderId',
 		});
@@ -79,7 +71,7 @@ const updateFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	try {
 		await Folder.update(
 			{ name: body.name as string },
-			{ where: { id: params.folderId } }
+			{ where: { id: folderId } }
 		);
 		return responses.ok({
 			message: 'Success',
@@ -92,17 +84,17 @@ const updateFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 // DELETE /api/v1/folder
-const deleteFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event.queryStringParameters;
+const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	const folderId = event.pathParameters?.folderId;
 
-	if (!params?.folderId) {
+	if (!folderId) {
 		return responses.badRequest({
 			message: 'Missing parameter: folderId',
 		});
 	}
 
 	try {
-		await Folder.destroy({ where: { id: params.folderId } });
+		await Folder.destroy({ where: { id: folderId } });
 		return responses.ok({
 			message: 'Success',
 		});
@@ -113,4 +105,4 @@ const deleteFolder = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-export { getFolder, newFolder, updateFolder, deleteFolder };
+export { get, create, update, remove };
