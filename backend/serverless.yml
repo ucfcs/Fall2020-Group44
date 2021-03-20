@@ -51,7 +51,7 @@ functions:
     events:
       - http:
           method: get
-          path: /api/v1/course
+          path: /api/v1/courses/{courseId}
 
   # Folder endpoints
   getFolder:
