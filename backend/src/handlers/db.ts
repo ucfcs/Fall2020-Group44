@@ -24,13 +24,12 @@ const init = async (): Promise<void> => {
 			canvasId: 1,
 			fullName: 'Mock',
 		});
-		await Folder.create({ name: 'Folder 1', userId: 1, courseId: '1' });
+		await Folder.create({ name: 'Folder 1', courseId: '1' });
 		await Collection.create({
 			name: 'Collection 1',
 			userId: 1,
-			folderId: 1,
 			courseId: '1',
-			publishedAt: null,
+			questions: [],
 		});
 		await Question.create({
 			title: 'Q1',

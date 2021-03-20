@@ -2,8 +2,6 @@ import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 import { Folder, Question, QuestionOption } from '../models';
 import responses from '../util/api/responses';
 
-const mockUserid = 1;
-
 // GET /api/v1/folder
 const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const folderId = event.pathParameters?.folderId;
