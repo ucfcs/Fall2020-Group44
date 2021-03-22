@@ -22,8 +22,10 @@ const Creator = (): ReactElement => {
     title: "",
     question: "",
     type: "Mult Choice",
-    choices: ["", ""],
-    correct: -1,
+    questionOptions: [
+      { text: "", isAnswer: false },
+      { text: "", isAnswer: false },
+    ],
     folderId: null,
   });
 
@@ -39,13 +41,13 @@ const Creator = (): ReactElement => {
 
     if (state.editPreviewQuestion) {
       try {
-        putData(url, questionInfo);
+        putData(url, { ...questionInfo, courseId: state.courseId });
       } catch (error) {
         console.log(error);
       }
     } else {
       try {
-        postData(url, questionInfo);
+        postData(url, { ...questionInfo, courseId: state.courseId });
       } catch (error) {
         console.log(error);
       }

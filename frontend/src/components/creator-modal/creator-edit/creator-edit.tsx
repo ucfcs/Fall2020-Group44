@@ -1,5 +1,5 @@
 import React, { useContext, SyntheticEvent, ReactElement } from "react";
-import MultipleChoice from "../creator-answer-types/multiple-choice";
+import MultipleChoice from "../multiple-choice/multiple-choice";
 import { store } from "../../../store";
 import "./creator-edit.scss";
 import { Question } from "../../../types";
@@ -113,8 +113,7 @@ const CreatorEdit = ({ question, setQuestionInfo }: Prop): ReactElement => {
 
         <div className="question-answers">
           <MultipleChoice
-            answers={previewQuestion.choices}
-            correct={previewQuestion.correct}
+            answers={previewQuestion.questionOptions}
             question={question}
             setQuestionInfo={setQuestionInfo}
           />
