@@ -6,6 +6,7 @@ const closedQuestions = new Set();
 const init = {
   previewFolder: 0,
   previewQuestion: 0,
+  courseId: 0,
   questions: [
     {
       folder: "Chapter 1",
