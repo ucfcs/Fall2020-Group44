@@ -11,8 +11,12 @@
           "title": "question 1",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 1,
           "total": 5
@@ -21,8 +25,12 @@
           "title": "question 2",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 3,
           "total": 5
@@ -31,8 +39,12 @@
           "title": "question 3",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 3,
           "total": 5
@@ -41,8 +53,12 @@
           "title": "question 4",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 4,
           "total": 5
@@ -51,8 +67,12 @@
           "title": "question 5",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 5,
           "total": 5
@@ -70,8 +90,12 @@
           "title": "question 1",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 1,
           "total": 5
@@ -80,8 +104,12 @@
           "title": "question 2",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 3,
           "total": 5
@@ -99,8 +127,12 @@
           "title": "question 1",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 1,
           "total": 5
@@ -109,8 +141,12 @@
           "title": "question 2",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 3,
           "total": 5
@@ -119,8 +155,12 @@
           "title": "question 3",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 3,
           "total": 5
@@ -129,8 +169,12 @@
           "title": "question 4",
           "question": "",
           "type": "",
-          "choices": [""],
-          "correct": 0,
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
           "folderId": null,
           "average": 4,
           "total": 5
