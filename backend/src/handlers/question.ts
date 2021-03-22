@@ -33,19 +33,14 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 // POST /api/v1/question
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const params = event.queryStringParameters;
-
-	if (!params?.courseId) {
-		return responses.badRequest({ message: 'Missing courseId parameter' });
-	}
 
 	try {
 		const result = await Question.create(
 			{
 				title: String(body.title),
 				question: String(body.question),
-				folderId: Number(params?.folderId) || null,
-				courseId: String(params.courseId),
+				folderId: Number(body.folderId) || null,
+				courseId: String(body.courseId),
 				QuestionOptions: body.questionOptions,
 			},
 			{
