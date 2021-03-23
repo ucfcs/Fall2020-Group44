@@ -1,10 +1,10 @@
 import { DataTypes, ModelDefined } from 'sequelize';
 import sequelize from '../config/database';
 
-export const UserMobileSetting: ModelDefined<
-	UserMobileSettingAttributes,
-	UserMobileSettingCreationAttributes
-> = sequelize.define('UserMobileSetting', {
+export const UserSetting: ModelDefined<
+	UserSettingAttributes,
+	UserSettingCreationAttributes
+> = sequelize.define('UserSetting', {
 	id: {
 		type: DataTypes.INTEGER,
 		allowNull: false,
@@ -14,5 +14,9 @@ export const UserMobileSetting: ModelDefined<
 	document: {
 		type: DataTypes.STRING,
 		allowNull: true,
+	},
+	platform: {
+		type: DataTypes.STRING,
+		allowNull: false,
 	},
 });

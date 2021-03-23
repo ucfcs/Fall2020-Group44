@@ -15,7 +15,6 @@ npm i
 
 ### Initialize Database
 
-
 ```
 npm run db:rebuild
 ```
