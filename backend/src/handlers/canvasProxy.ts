@@ -1,8 +1,8 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import fetch from 'node-fetch';
 
-import responses from '../util/api/responses';
 import { verifyAuthentication } from '../util/auth';
+import responses from '../util/api/responses';
 
 export const handler: APIGatewayProxyHandler = async (event) => {
 	// decode the jwt token
