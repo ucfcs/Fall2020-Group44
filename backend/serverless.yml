@@ -145,25 +145,25 @@ functions:
     events:
       - http:
           method: post
-          path: /api/v1/question_user_response
+          path: /api/v1/question/{questionId}/response
   deleteQuestionUserResponse:
     handler: src/handlers/question_user_response.remove
     events:
       - http:
           method: delete
-          path: /api/v1/question_user_response
+          path: /api/v1/question/{questionId}/response
   updateQuestionUserResponse:
     handler: src/handlers/question_user_response.update
     events:
       - http:
           method: put
-          path: /api/v1/question_user_response
+          path: /api/v1/question/{questionId}/response
   getQuestionUserResponse:
     handler: src/handlers/question_user_response.get
     events:
       - http:
           method: get
-          path: /api/v1/question_user_response
+          path: /api/v1/question/{questionId}/response
 
   #
   # Auth
