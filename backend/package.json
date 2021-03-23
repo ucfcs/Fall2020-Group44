@@ -8,6 +8,8 @@
 		"db:build": "serverless invoke local --function dbInit",
 		"db:drop": "serverless invoke local --function dbDrop",
 		"db:rebuild": "npm run db:drop && npm run db:build",
+		"dynamo:build": "serverless invoke local --function dynamoInit",
+		"dynamo:drop": "serverless invoke local --function dynamoDrop",
 		"dev": "serverless offline --httpPort 5000",
 		"deploy": "serverless deploy --stage production"
 	},

@@ -44,6 +44,10 @@ functions:
     handler: src/handlers/db.init
   dbDrop:
     handler: src/handlers/db.drop
+  dynamoInit:
+    handler: src/handlers/dynamo.init
+  dynamoDrop:
+    handler: src/handlers/dynamo.drop
 
   # Course endpoints
   getCourse:
