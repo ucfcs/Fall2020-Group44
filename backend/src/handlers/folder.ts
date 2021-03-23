@@ -30,19 +30,18 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 // POST /api/v1/folder
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const courseId = event.pathParameters?.courseId;
 
 	// eslint-disable-next-line no-constant-condition
-	if (!courseId) {
+	if (!body.courseId || !body.name) {
 		return responses.badRequest({
-			message: 'Missing parameters',
+			message: 'Missing parameters. courseId and name required',
 		});
 	}
 
 	try {
 		const result = await Folder.create({
-			name: body?.name as string,
-			courseId: courseId as string,
+			name: body.name as string,
+			courseId: body.courseId as string,
 		});
 
 		return responses.ok({

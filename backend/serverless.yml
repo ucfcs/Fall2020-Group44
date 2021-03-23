@@ -65,7 +65,7 @@ functions:
     events:
       - http:
           method: post
-          path: /api/v1/courses/{courseId}/folder
+          path: /api/v1/folder
   updateFolder:
     handler: src/handlers/folder.update
     events:
@@ -91,7 +91,7 @@ functions:
     events:
       - http:
           method: post
-          path: /api/v1/courses/{courseId}/collection
+          path: /api/v1/collection
   updateCollection:
     handler: src/handlers/collection.update
     events:
@@ -117,7 +117,7 @@ functions:
     events:
       - http:
           method: post
-          path: /api/v1/courses/{courseId}/question
+          path: /api/v1/question
   updateQuestion:
     handler: src/handlers/question.update
     events:

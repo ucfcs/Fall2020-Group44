@@ -37,7 +37,18 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
 	const params = event.queryStringParameters;
-	const courseId = event.pathParameters?.courseId;
+
+	if (
+		!body.title ||
+		!body.question ||
+		!body.questionOptions ||
+		!body.courseId
+	) {
+		return responses.badRequest({
+			message:
+				'Missing paramter. title, question, questionOptions, courseId all required.',
+		});
+	}
 
 	try {
 		const result = await Question.create(
@@ -45,7 +56,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 				title: String(body.title),
 				question: String(body.question),
 				folderId: Number(params?.folderId) || null,
-				courseId: String(courseId),
+				courseId: String(body.courseId),
 				QuestionOptions: body.questionOptions,
 			},
 			{

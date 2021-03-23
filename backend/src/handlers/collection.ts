@@ -38,16 +38,17 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 // POST /api/v1/collection
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const courseId = event.pathParameters?.courseId;
 
-	if (!courseId) {
-		return responses.badRequest({ message: 'Missing courseId path parameter' });
+	if (!body.courseId || !body.questions) {
+		return responses.badRequest({
+			message: 'Missing parameter. courseId and questions required',
+		});
 	}
 
 	try {
 		const result = await Collection.create({
 			name: String(body.name),
-			courseId: courseId,
+			courseId: body.courseId,
 			userId: mockUserid,
 			questions: body.questions,
 		});
