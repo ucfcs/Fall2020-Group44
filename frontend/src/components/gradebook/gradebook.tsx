@@ -1,4 +1,9 @@
-import React, { useState, ReactElement, SyntheticEvent } from "react";
+import React, {
+  useState,
+  ReactElement,
+  SyntheticEvent,
+  useContext,
+} from "react";
 import { Link } from "react-router-dom";
 import Student from "./student";
 import { StudentInfo, Session } from "../../types";
@@ -7,11 +12,16 @@ import "./gradebook.scss";
 
 import data from "./mock-data.json";
 import HomeHeader from "../home-header/home-header";
+import { store } from "../../store";
 
 const RED = 0.5;
 const YELLOW = 0.75;
 
 const Gradebook = (): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const global = useContext(store) as any;
+  const dispatch = global.dispatch;
+
   const overallSessions = data.overallSessions;
   const classAverage: number = data.classAverage;
   const overallTotal = data.classTotal;
@@ -47,7 +57,7 @@ const Gradebook = (): ReactElement => {
   };
 
   const exportToCanvas = () => {
-    console.log("Uhhhhh yeah export to canvas I guess");
+    dispatch({ type: "open-export-modal" });
   };
 
   return (
@@ -87,7 +97,7 @@ const Gradebook = (): ReactElement => {
             ""
           )}
           <button className="export-button" onClick={exportToCanvas}>
-            Export to Canvas
+            Export to Webcourses
           </button>
         </div>
 

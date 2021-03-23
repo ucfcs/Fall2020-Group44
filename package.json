@@ -1,0 +1,22 @@
+{
+  "name": "ucf-react",
+  "version": "1.0.0",
+  "description": "## Prerequisites",
+  "main": "index.js",
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm start",
+    "dev": "concurrently \"npm run backend\" \"npm run frontend\"",
+    "postinstall": "(cd backend && npm install) && (cd frontend && npm install)",
+    "db:rebuild": "cd backend && docker-compose up -d && npm run db:rebuild"
+  },
+  "repository": {
+    "type": "git",
+    "url": "null"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "concurrently": "^6.0.0"
+  }
+}

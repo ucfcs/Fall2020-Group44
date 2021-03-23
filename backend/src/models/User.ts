@@ -15,10 +15,6 @@ export const User: ModelDefined<
 		type: DataTypes.INTEGER,
 		allowNull: false,
 	},
-	fullName: {
-		type: DataTypes.STRING,
-		allowNull: true,
-	},
 	token: {
 		type: DataTypes.STRING,
 		allowNull: true,

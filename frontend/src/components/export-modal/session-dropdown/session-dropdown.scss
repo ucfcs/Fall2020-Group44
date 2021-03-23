@@ -1,0 +1,59 @@
+.session-dropdown {
+  margin-bottom: 1rem;
+  font-size: 1.25rem;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  .left-side {
+    display: flex;
+  }
+
+  button {
+    width: 1.25rem;
+    height: 1.25rem;
+    padding: 0;
+    margin: 0 0.5rem;
+    background: none;
+    border: none;
+  }
+
+  input {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0;
+  }
+
+  .open {
+    height: auto;
+    width: 1.25rem;
+  }
+
+  .closed {
+    height: 1.25rem;
+    width: auto;
+  }
+
+  ol {
+    margin: 0;
+    margin-left: 1rem;
+  }
+
+  li {
+    margin-top: 0.5rem;
+    color: #666666;
+  }
+
+  .points,
+  .date {
+    justify-self: end;
+  }
+
+  input,
+  label,
+  span {
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

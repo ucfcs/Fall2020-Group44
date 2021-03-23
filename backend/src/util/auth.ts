@@ -1,6 +1,6 @@
-import jwt from 'jsonwebtoken';
-
+import { APIGatewayProxyEventHeaders } from 'aws-lambda';
 import { User } from '../models/User';
+import { decode, encode } from './token';
 
 /**
  * Here well run through some logic to figure out
@@ -10,9 +10,8 @@ import { User } from '../models/User';
  */
 export async function userAuthFlowGetToken(
 	userId: UserId,
-	fullName?: string,
-	token?: string,
-	refreshToken?: string
+	token: string,
+	refreshToken: string
 ): Promise<string> {
 	try {
 		// does row exist with the give UserId
@@ -23,20 +22,52 @@ export async function userAuthFlowGetToken(
 			// create a row
 			const status = await User.create({
 				canvasId: userId,
-				fullName,
 				token,
 				refreshToken,
 			});
 
 			user = status.get({ clone: true });
 		} else {
+			// update the row
+			await User.update(
+				{
+					token,
+					refreshToken,
+				},
+				{ where: { id: userId }, limit: 1 }
+			);
+
 			user = row.get({ clone: true });
+			user.token = token;
+			user.refreshToken = refreshToken;
 		}
 
 		// build JWT
-		return jwt.sign(user, 'cZL}5*^dVA_Kby-_'); // TODO: fix later
+		return encode(user);
 	} catch (error) {
 		console.error(error);
 		return '';
+	}
+}
+
+export function verifyAuthentication(
+	headers: APIGatewayProxyEventHeaders
+): UserAttributes | null {
+	const bearer = headers['Authorization'];
+
+	if (!bearer) {
+		return null;
+	}
+
+	const token = bearer.substr(7);
+
+	if (!token) {
+		return null;
+	}
+
+	try {
+		return decode<UserAttributes>(token);
+	} catch (error) {
+		return null;
 	}
 }
