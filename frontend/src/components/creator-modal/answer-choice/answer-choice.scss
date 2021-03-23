@@ -1,0 +1,71 @@
+.answer-choice {
+  margin-bottom: 1rem;
+  height: 4rem;
+  width: 100%;
+  border: 1px solid #d1d1d1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  .letter {
+    height: 100%;
+    width: 5%;
+    border-right: 1px solid #d1d1d1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    p {
+      margin: 0;
+      color: black;
+      font-weight: bold;
+      text-align: center;
+    }
+  }
+
+  .answer-text {
+    width: 65%;
+
+    input {
+      font-size: 1rem;
+      width: 100%;
+      border: none;
+      padding: 0.125rem;
+      border-bottom: 1px solid #717171;
+    }
+  }
+
+  .correct-checkbox {
+    width: 15%;
+    display: flex;
+
+    input {
+      cursor: pointer;
+      transform: scale(1.5);
+      align-self: center;
+      border: none;
+    }
+
+    label {
+      cursor: pointer;
+      user-select: none;
+      padding-left: 0.5rem;
+      font-size: 1rem;
+      color: #717171;
+    }
+
+    &:hover {
+      background: whitesmoke;
+    }
+  }
+
+  .delete-answer {
+    cursor: pointer;
+    width: 7%;
+    background: none;
+    border: none;
+    color: #717171;
+    font-weight: bold;
+    font-size: 1rem;
+  }
+}

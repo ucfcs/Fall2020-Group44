@@ -1,30 +1,56 @@
-import React, { ReactElement, SyntheticEvent } from "react";
+import React, { ReactElement, SyntheticEvent, useContext } from "react";
+import { store } from "../../../store";
 import { Question, QuestionOption } from "../../../types";
+
+import "./answer-choice.scss";
 
 const AnswerChoice = ({
   answer,
   letter,
   index,
-  question,
-  setQuestionInfo,
 }: SingleAnswerChoiceProps): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const global = useContext(store) as any;
+  const state = global.state;
+  const dispatch = global.dispatch;
+
+  const question: Question = state.currentQuestionInfo;
+
   const handleAnswerChange = (e: SyntheticEvent, index: number) => {
     const tempQuestion = question;
+
     tempQuestion.questionOptions[index][
       "text"
     ] = (e.target as HTMLInputElement).value;
-    setQuestionInfo(tempQuestion);
+
+    dispatch({
+      type: "set-current-question-info",
+      payload: tempQuestion,
+    });
   };
 
-  const handleCorrectChange = (index: number) => {
+  const handleCorrectChange = (event: SyntheticEvent, index: number) => {
     const tempQuestion = { ...question, correct: index };
-    setQuestionInfo(tempQuestion);
+
+    tempQuestion.questionOptions[index][
+      "isAnswer"
+    ] = (event.target as HTMLInputElement).checked;
+
+    dispatch({
+      type: "set-current-question-info",
+      payload: tempQuestion,
+    });
   };
 
   const handleAnswerDelete = (index: number) => {
     const tempQuestion = question;
     tempQuestion.questionOptions.splice(index, 1);
-    setQuestionInfo(tempQuestion);
+    console.log(tempQuestion);
+
+    dispatch({
+      type: "set-current-question-info",
+      payload: tempQuestion,
+    });
   };
 
   return (
@@ -47,16 +73,25 @@ const AnswerChoice = ({
         <input
           type="checkbox"
           id={"correct-answer-" + index}
-          defaultChecked={answer.isAnswer}
-          onChange={() => handleCorrectChange(index)}
+          checked={answer.isAnswer}
+          onChange={(event: SyntheticEvent) =>
+            handleCorrectChange(event, index)
+          }
         />
 
         <label htmlFor={"correct-answer-" + index}>Correct Answer</label>
       </div>
 
-      <div className="delete-answer">
+      <button
+        className="delete-answer"
+        onClick={() => handleAnswerDelete(index)}
+      >
+        X
+      </button>
+
+      {/* <div className="delete-answer">
         <div onClick={() => handleAnswerDelete(index)}>X</div>
-      </div>
+      </div> */}
     </div>
   );
 };
@@ -65,8 +100,6 @@ type SingleAnswerChoiceProps = {
   answer: QuestionOption;
   letter: string;
   index: number;
-  question: Question;
-  setQuestionInfo: (arg0: Question) => void;
 };
 
 export default AnswerChoice;

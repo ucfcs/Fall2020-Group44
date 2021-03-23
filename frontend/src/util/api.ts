@@ -11,6 +11,7 @@ export async function postData(url = "", data = {}): Promise<Response> {
 }
 
 export async function putData(url = "", data = {}): Promise<Response> {
+  console.log(data);
   const response = await fetch(url, {
     method: "PUT",
     headers: {

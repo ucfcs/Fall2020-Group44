@@ -6,17 +6,24 @@ import { Question } from "../../../types";
 
 //TODO: create question props
 
-const CreatorEdit = ({ question, setQuestionInfo }: Prop): ReactElement => {
+const CreatorEdit = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const state = global.state;
+  const dispatch = global.dispatch;
+
+  const question: Question = state.currentQuestionInfo;
 
   const handleTitleChange = (event: SyntheticEvent): void => {
     const tempQuestion = {
       ...question,
       title: (event.target as HTMLInputElement).value,
     };
-    setQuestionInfo(tempQuestion);
+
+    dispatch({
+      type: "set-current-question-info",
+      payload: tempQuestion,
+    });
   };
 
   const handleQuestionChange = (event: SyntheticEvent): void => {
@@ -24,7 +31,11 @@ const CreatorEdit = ({ question, setQuestionInfo }: Prop): ReactElement => {
       ...question,
       question: (event.target as HTMLInputElement).value,
     };
-    setQuestionInfo(tempQuestion);
+
+    dispatch({
+      type: "set-current-question-info",
+      payload: tempQuestion,
+    });
   };
 
   const handleFolderChange = (event: SyntheticEvent): void => {
@@ -42,7 +53,10 @@ const CreatorEdit = ({ question, setQuestionInfo }: Prop): ReactElement => {
       folderId: folderId,
     };
 
-    setQuestionInfo(tempQuestion);
+    dispatch({
+      type: "set-current-question-info",
+      payload: tempQuestion,
+    });
   };
 
   const previewQuestion = state.editPreviewQuestion
@@ -112,11 +126,7 @@ const CreatorEdit = ({ question, setQuestionInfo }: Prop): ReactElement => {
         </div>
 
         <div className="question-answers">
-          <MultipleChoice
-            answers={previewQuestion.questionOptions}
-            question={question}
-            setQuestionInfo={setQuestionInfo}
-          />
+          <MultipleChoice />
         </div>
       </div>
 
@@ -156,11 +166,6 @@ const CreatorEdit = ({ question, setQuestionInfo }: Prop): ReactElement => {
     </div>
   );
 };
-
-interface Prop {
-  question: Question;
-  setQuestionInfo: (arg0: Question) => void;
-}
 
 interface Folder {
   folder: string;

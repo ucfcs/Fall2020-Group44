@@ -1,4 +1,9 @@
-import React, { useState, useContext, ReactElement } from "react";
+import React, {
+  useState,
+  useContext,
+  ReactElement,
+  useLayoutEffect,
+} from "react";
 import "./creator.scss";
 import { store } from "../../store";
 import CreatorEdit from "./creator-edit/creator-edit";
@@ -17,39 +22,58 @@ const Creator = (): ReactElement => {
 
   const url = `${process.env.REACT_APP_REST_URL}/dev/api/v1/question`;
 
+  const [firstLoad, setFirstLoad] = useState(true);
+  useLayoutEffect((): void => {
+    if (firstLoad) {
+      if (state.editPreviewQuestion) {
+        dispatch({
+          type: "set-current-question-info",
+          payload:
+            state.questions[state.previewFolder].questions[
+              state.previewQuestion
+            ],
+        });
+      }
+
+      setFirstLoad(false);
+    }
+  }, [state.editPreviewQuestion]);
+
   const [isPreview, setIsPreview] = useState(false);
-  const [questionInfo, setQuestionInfo] = useState({
-    title: "",
-    question: "",
-    type: "Mult Choice",
-    questionOptions: [
-      { text: "", isAnswer: false },
-      { text: "", isAnswer: false },
-    ],
-    folderId: null,
-  });
+  const questionInfo: Question = state.currentQuestionInfo;
 
   const closePreviewQuestion = (): void => {
     dispatch({ type: "close-preview-question" });
     dispatch({ type: "close-creator" });
+    dispatch({ type: "reset-current-question-info" });
   };
 
   const saveQuestion = () => {
     if (!questionInfo.title) {
-      setQuestionInfo({ ...questionInfo, title: questionInfo.question });
+      dispatch({
+        type: "set-current-question-info",
+        payload: { ...questionInfo, title: questionInfo.question },
+      });
     }
 
     if (state.editPreviewQuestion) {
       try {
-        putData(url, { ...questionInfo, courseId: state.courseId });
+        putData(url, {
+          ...questionInfo,
+          courseId: state.courseId,
+          questionId:
+            state.questions[state.previewFolder].questions[
+              state.previewQuestion
+            ]["id"],
+        });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     } else {
       try {
         postData(url, { ...questionInfo, courseId: state.courseId });
       } catch (error) {
-        console.log(error);
+        console.error(error);
       }
     }
 
@@ -81,14 +105,7 @@ const Creator = (): ReactElement => {
             </div>
           </div>
         </div>
-        {isPreview ? (
-          <CreatorPreview question={questionInfo as Question} />
-        ) : (
-          <CreatorEdit
-            question={questionInfo as Question}
-            setQuestionInfo={setQuestionInfo as (arg0: Question) => void}
-          />
-        )}
+        {isPreview ? <CreatorPreview /> : <CreatorEdit />}
         <div className="buttons">
           <button
             type="reset"

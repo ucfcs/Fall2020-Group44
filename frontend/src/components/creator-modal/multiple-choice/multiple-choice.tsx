@@ -1,29 +1,27 @@
-import React, { useState, useEffect, ReactElement } from "react";
-import { Question, QuestionOption } from "../../../types";
+import React, { ReactElement, useContext } from "react";
+import { Question } from "../../../types";
 import AnswerChoice from "../answer-choice/answer-choice";
+import { store } from "../../../store";
 import "./multiple-choice.scss";
 
-const MultipleChoice = ({
-  answers,
-  question,
-  setQuestionInfo,
-}: Props): ReactElement => {
-  const [answerChoices, setAnswerChoices] = useState([
-    { text: "", isAnswer: false },
-    { text: "", isAnswer: false },
-  ]);
+const MultipleChoice = (): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const global = useContext(store) as any;
+  const state = global.state;
+  const dispatch = global.dispatch;
 
-  useEffect(() => {
-    if (answers.length > 0) {
-      setAnswerChoices(answers);
-    }
-  }, [answers]);
+  const question: Question = state.currentQuestionInfo;
 
-  const onAddAnswer = () => {
-    setAnswerChoices((oldAnswerChoices) => [
-      ...oldAnswerChoices,
-      { text: "", isAnswer: false },
-    ]);
+  const addAnswer = (): void => {
+    const blankAnswer = { text: "", isAnswer: false };
+    const answers = [...question.questionOptions];
+
+    answers.push(blankAnswer);
+
+    dispatch({
+      type: "set-current-question-info",
+      payload: { ...question, questionOptions: answers },
+    });
   };
 
   return (
@@ -32,19 +30,17 @@ const MultipleChoice = ({
         <span className="red">*</span> Answers:
       </span>
 
-      {answerChoices.map((answer, index) => (
+      {question.questionOptions.map((answer, index) => (
         <AnswerChoice
           key={index}
           index={index}
           answer={answer}
           letter={String.fromCharCode(65 + index)}
-          question={question}
-          setQuestionInfo={setQuestionInfo}
         />
       ))}
 
       <div className="add-answer">
-        <div className="add-answer-button" onClick={onAddAnswer}>
+        <div className="add-answer-button" onClick={addAnswer}>
           <span className="add-answer-icon">&#8853;&nbsp;</span>
 
           <span className="add-answer-text">Add Answer Choice</span>
@@ -52,12 +48,6 @@ const MultipleChoice = ({
       </div>
     </div>
   );
-};
-
-type Props = {
-  answers: QuestionOption[];
-  question: Question;
-  setQuestionInfo: (arg0: Question) => void;
 };
 
 export default MultipleChoice;

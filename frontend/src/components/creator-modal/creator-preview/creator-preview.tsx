@@ -8,10 +8,12 @@ import "./creator-preview.scss";
 
 //TODO: add props for question
 
-const CreatorPreview = ({ question }: Prop): ReactElement => {
+const CreatorPreview = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const state = global.state;
+
+  const question: Question = state.currentQuestionInfo;
 
   const previewQuestion = state.editPreviewQuestion
     ? state.questions[state.previewFolder].questions[state.previewQuestion]
@@ -31,9 +33,5 @@ const CreatorPreview = ({ question }: Prop): ReactElement => {
     </div>
   );
 };
-
-interface Prop {
-  question: Question;
-}
 
 export default CreatorPreview;
