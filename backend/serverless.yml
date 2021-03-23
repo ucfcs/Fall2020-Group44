@@ -79,31 +79,20 @@ functions:
           method: delete
           path: /api/v1/folder
 
-  # Collection endpoints
-  getCollection:
-    handler: src/handlers/collection.get
+  # Session endpoints
+  getSession:
+    handler: src/handlers/session.get
     events:
       - http:
           method: get
-          path: /api/v1/collection
-  createCollection:
-    handler: src/handlers/collection.create
+          path: /api/v1/course/{courseId}/session/{sessionId}
+  createSession:
+    handler: src/handlers/session.create
     events:
       - http:
           method: post
-          path: /api/v1/collection
-  updateCollection:
-    handler: src/handlers/collection.update
-    events:
-      - http:
-          method: put
-          path: /api/v1/collection
-  deleteCollection:
-    handler: src/handlers/collection.remove
-    events:
-      - http:
-          method: delete
-          path: /api/v1/collection
+          path: /api/v1/course/{courseId}/session
+
 
   # Question endpoints
   getQuestion:
