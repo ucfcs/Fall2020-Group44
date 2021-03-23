@@ -67,16 +67,11 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 // PUT /api/v1/question
 const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const params = event.queryStringParameters;
-
-	if (!params?.questionId) {
-		return responses.badRequest({ message: 'Missing questionId parameter' });
-	}
 
 	try {
 		await Question.update(
 			{ question: String(body.question || '') },
-			{ where: { id: params?.questionId } }
+			{ where: { id: body.questionId } }
 		);
 		return responses.ok({
 			message: 'Success',
