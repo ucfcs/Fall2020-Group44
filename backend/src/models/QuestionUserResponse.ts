@@ -21,7 +21,7 @@ export const QuestionUserResponse: ModelDefined<
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		collectionId: {
+		sessionId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
@@ -34,7 +34,7 @@ export const QuestionUserResponse: ModelDefined<
 		indexes: [
 			{
 				unique: true,
-				fields: ['userId', 'questionId', 'collectionId'],
+				fields: ['userId', 'questionId', 'sessionId'],
 			},
 		],
 	}

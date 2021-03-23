@@ -2,13 +2,13 @@ type QuestionOptionId = number;
 
 interface QuestionlOptionAttributes {
 	id: QuestionOptionId;
-	questionId: CollectionId;
+	questionId: QuestionId;
 	text: string;
 	isAnswer: boolean;
 }
 
 interface QuestionOptionCreationAttributes {
-	questionId: CollectionId;
+	questionId: QuestionId;
 	text: string;
 	isAnswer: boolean;
 }

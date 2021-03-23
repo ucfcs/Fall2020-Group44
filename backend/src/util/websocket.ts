@@ -418,14 +418,14 @@ export class Connection {
 		questionId: string,
 		questionOptionId: string,
 		userId: string,
-		collectionId: string
+		sessionId: string
 	): Promise<APIGatewayProxyResult> {
 		try {
 			// attempt to create response in db
 			const result = await QuestionUserResponse.create({
 				questionId: parseInt(questionId),
 				userId: parseInt(userId),
-				collectionId: parseInt(collectionId),
+				sessionId: parseInt(sessionId),
 				questionOptionId: parseInt(questionOptionId),
 			});
 
@@ -455,7 +455,7 @@ export class Connection {
 							where: {
 								questionId: questionId,
 								userId: userId,
-								collectionId: collectionId,
+								sessionId: sessionId,
 							},
 						}
 					);
