@@ -18,6 +18,7 @@ import { save } from '../services/store';
 import { WHITE } from '../libs/colors';
 import { Button } from './Button';
 import { AppContext } from './Provider';
+import { Icon } from './Icon';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
 	logoBox: {
 		width: '100%',
 		height: 320,
+		marginBottom: 32,
 	},
 	overlay: {
 		position: 'absolute',
@@ -117,7 +119,9 @@ export const Login: FunctionComponent = () => {
 		<>
 			<SafeAreaView style={styles.safeArea}>
 				<View style={styles.container}>
-					<View style={styles.logoBox} />
+					<View style={styles.logoBox}>
+						<Icon type='logo' />
+					</View>
 					<Button text='Sign In' type='primary' onPress={handlePress} />
 				</View>
 			</SafeAreaView>
