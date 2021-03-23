@@ -1,5 +1,9 @@
 # Mobile
 
+## Prerequisite
+
+[Running on Device](https://reactnative.dev/docs/running-on-device)
+
 ## Run instructions for iOS:
 
     •  npx react-native run-ios
@@ -22,12 +26,13 @@
 - [Android Studio](https://developer.android.com/studio)
 - [XCode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
 
-## Kenny Notes
+## Environment Variable File
 
-joseperez407@knights.ucf.edu aaZZ1111!
+Create a `.env.json` file in the root folder for mobile and provide the
+following content. An object with one property, `BACKEND_URL`.
 
-./ngrok http 3000 -host-header="localhost:3000"
-
-canvas: http://44.192.33.110 backend: https://2d8ae81dc8c7.ngrok.io
-
-http://44.192.33.110/login/oauth2/auth?client_id=10000000000001&response_type=code&redirect_uri=http://localhost:3000/dev/api/v1/oauth/mobile/redirect
+```.env.json
+{
+    "BACKEND_URL": "https://df1da6f61a00.ngrok.io"
+}
+```
