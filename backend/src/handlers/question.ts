@@ -36,17 +36,18 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 // POST /api/v1/question
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const params = event.queryStringParameters;
 
 	if (
 		!body.title ||
 		!body.question ||
 		!body.questionOptions ||
-		!body.courseId
+		body.courseId == null ||
+		body.folderId === undefined
 	) {
+
 		return responses.badRequest({
 			message:
-				'Missing paramter. title, question, questionOptions, courseId all required.',
+				'Missing paramter. title, question, questionOptions, courseId, folderId all required.',
 		});
 	}
 
@@ -55,7 +56,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			{
 				title: String(body.title),
 				question: String(body.question),
-				folderId: Number(params?.folderId) || null,
+				folderId: Number(body.folderId) || null,
 				courseId: String(body.courseId),
 				QuestionOptions: body.questionOptions,
 			},
@@ -85,8 +86,21 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
 	const questionId = event.pathParameters?.questionId;
 
-	if (!questionId) {
+	if (questionId == null) {
 		return responses.badRequest({ message: 'Missing questionId parameter' });
+	}
+
+	if (
+		!body.title ||
+		!body.question ||
+		!body.questionOptions ||
+		body.courseId == null ||
+		body.folderId === undefined
+	) {
+		return responses.badRequest({
+			message:
+				'Missing paramter. title, question, questionOptions, courseId, folderId all required.',
+		});
 	}
 
 	try {

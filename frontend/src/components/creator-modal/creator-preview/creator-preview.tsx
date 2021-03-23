@@ -1,5 +1,6 @@
 import React, { ReactElement, useContext } from "react";
 import { store } from "../../../store";
+import { Question } from "../../../types";
 
 import "./creator-preview.scss";
 
@@ -7,26 +8,16 @@ import "./creator-preview.scss";
 
 //TODO: add props for question
 
-interface Prop {
-  newQuestion: Question;
-}
-
-interface Question {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-}
-
-const CreatorPreview = ({ newQuestion }: Prop): ReactElement => {
+const CreatorPreview = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const state = global.state;
 
+  const question: Question = state.currentQuestionInfo;
+
   const previewQuestion = state.editPreviewQuestion
     ? state.questions[state.previewFolder].questions[state.previewQuestion]
-    : newQuestion;
+    : question;
 
   return (
     <div className="creator-preview">
@@ -35,6 +26,7 @@ const CreatorPreview = ({ newQuestion }: Prop): ReactElement => {
       {previewQuestion.choices.map((answer: string, index: number) => (
         <div key={index} className="answer">
           <div className="answer-letter">{String.fromCharCode(65 + index)}</div>
+
           <div className="answer-text">{answer}</div>
         </div>
       ))}

@@ -5,42 +5,181 @@
       "id": 0,
       "average": 5,
       "total": 5,
-      "questions": {
-        "title": [
-          "question 1",
-          "question 2",
-          "question 3",
-          "question 4",
-          "question 5"
-        ],
-        "average": [1, 2, 3, 4, 5],
-        "total": [5, 5, 5, 5, 5]
-      },
-      "date": "Jan 23"
+      "date": "Jan 23",
+      "questions": [
+        {
+          "title": "question 1",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 1,
+          "total": 5
+        },
+        {
+          "title": "question 2",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 3,
+          "total": 5
+        },
+        {
+          "title": "question 3",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 3,
+          "total": 5
+        },
+        {
+          "title": "question 4",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 4,
+          "total": 5
+        },
+        {
+          "title": "question 5",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 5,
+          "total": 5
+        }
+      ]
     },
     {
       "name": "Session 2",
-      "id": 1,
+      "id": 0,
       "average": 5,
       "total": 5,
-      "questions": {
-        "title": ["question 1", "question 2", "question 3"],
-        "average": [1, 2, 3],
-        "total": [5, 5, 5]
-      },
-      "date": "Jan 25"
+      "date": "Jan 23",
+      "questions": [
+        {
+          "title": "question 1",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 1,
+          "total": 5
+        },
+        {
+          "title": "question 2",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 3,
+          "total": 5
+        }
+      ]
     },
     {
       "name": "Session 3",
-      "id": 2,
+      "id": 0,
       "average": 5,
       "total": 5,
-      "questions": {
-        "title": ["question 1", "question 2", "question 3", "question 4"],
-        "average": [1, 2, 3, 4],
-        "total": [5, 5, 5, 5]
-      },
-      "date": "Jan 27"
+      "date": "Jan 23",
+      "questions": [
+        {
+          "title": "question 1",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 1,
+          "total": 5
+        },
+        {
+          "title": "question 2",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 3,
+          "total": 5
+        },
+        {
+          "title": "question 3",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 3,
+          "total": 5
+        },
+        {
+          "title": "question 4",
+          "question": "",
+          "type": "",
+          "questionOptions": [
+            {
+              "text": "",
+              "isAnswer": true
+            }
+          ],
+          "folderId": null,
+          "average": 4,
+          "total": 5
+        }
+      ]
     }
   ]
 }

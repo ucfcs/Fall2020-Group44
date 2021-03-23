@@ -1,52 +1,67 @@
 import React, { useContext, SyntheticEvent, ReactElement } from "react";
-import MultipleChoice from "../creator-answer-types/multiple-choice";
+import MultipleChoice from "../multiple-choice/multiple-choice";
 import { store } from "../../../store";
 import "./creator-edit.scss";
+import { Question } from "../../../types";
 
 //TODO: create question props
 
-interface Prop {
-  newQuestion: Question;
-  setNewQuestion: (arg0: Question) => void;
-}
-
-interface Question {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-}
-
-interface Folder {
-  folder: string;
-  questions: Question[];
-}
-
-const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
+const CreatorEdit = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const state = global.state;
+  const dispatch = global.dispatch;
 
-  const handleTitleChange = (e: SyntheticEvent) => {
+  const question: Question = state.currentQuestionInfo;
+
+  const handleTitleChange = (event: SyntheticEvent): void => {
     const tempQuestion = {
-      ...newQuestion,
-      title: (e.target as HTMLInputElement).value,
+      ...question,
+      title: (event.target as HTMLInputElement).value,
     };
-    setNewQuestion(tempQuestion);
+
+    dispatch({
+      type: "set-current-question-info",
+      payload: tempQuestion,
+    });
   };
 
-  const handleQuestionChange = (e: SyntheticEvent) => {
+  const handleQuestionChange = (event: SyntheticEvent): void => {
     const tempQuestion = {
-      ...newQuestion,
-      question: (e.target as HTMLInputElement).value,
+      ...question,
+      question: (event.target as HTMLInputElement).value,
     };
-    setNewQuestion(tempQuestion);
+
+    dispatch({
+      type: "set-current-question-info",
+      payload: tempQuestion,
+    });
+  };
+
+  const handleFolderChange = (event: SyntheticEvent): void => {
+    const value: number = parseInt((event.target as HTMLInputElement).value);
+    let folderId: number | null;
+
+    if (value === -1) {
+      folderId = null;
+    } else {
+      folderId = state.questions[value].folder.id;
+    }
+
+    const tempQuestion = {
+      ...question,
+      folderId: folderId,
+    };
+
+    dispatch({
+      type: "set-current-question-info",
+      payload: tempQuestion,
+    });
   };
 
   const previewQuestion = state.editPreviewQuestion
     ? state.questions[state.previewFolder].questions[state.previewQuestion]
-    : newQuestion;
+    : question;
 
   return (
     <div className="creator-body">
@@ -57,8 +72,10 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             fields)
           </span>
         </div>
+
         <div className="question-info">
           <label htmlFor="question-title">Title:</label>
+
           <input
             id="question-title"
             type="text"
@@ -70,10 +87,12 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             onChange={handleTitleChange}
           />
         </div>
+
         <div className="question-info">
           <label htmlFor="question-text">
             <span className="red">*</span> Question:
           </label>
+
           <input
             id="question-text"
             type="text"
@@ -85,15 +104,18 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             onChange={handleQuestionChange}
           />
         </div>
+
         <div className="question-info">
           <label htmlFor="folder-select">
             <span className="red"></span> Folder:
           </label>
+
           <select
             className="folder-select"
             name="folder-select"
             id="folder-select"
             defaultValue={-1}
+            onChange={handleFolderChange}
           >
             {state.questions.map((folder: Folder, fIndex: number) => (
               <option key={fIndex} value={folder.folder ? fIndex : -1}>
@@ -102,22 +124,21 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
             ))}
           </select>
         </div>
+
         <div className="question-answers">
-          <MultipleChoice
-            answers={previewQuestion.choices}
-            correct={previewQuestion.correct}
-            newQuestion={newQuestion}
-            setNewQuestion={setNewQuestion}
-          />
+          <MultipleChoice />
         </div>
       </div>
+
       <div className="question-options">
         <div className="question-options-header">
           <p>Question Options</p>
         </div>
+
         <div className="options-grading">
           <div className="participation">
             <span>Participation Points:</span>
+
             <input
               type="number"
               tabIndex={2}
@@ -127,8 +148,10 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
               min="0.0"
             />
           </div>
+
           <div className="correctness">
             <span>Correctness Points:</span>
+
             <input
               type="number"
               tabIndex={2}
@@ -143,5 +166,11 @@ const CreatorEdit = ({ newQuestion, setNewQuestion }: Prop): ReactElement => {
     </div>
   );
 };
+
+interface Folder {
+  folder: string;
+  id: number;
+  questions: Question[];
+}
 
 export default CreatorEdit;

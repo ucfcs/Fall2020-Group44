@@ -6,7 +6,7 @@ import React, {
 } from "react";
 import { Link } from "react-router-dom";
 import Student from "./student";
-import { StudentInfo, Session } from "../../types";
+import { StudentInfo } from "../../types";
 
 import "./gradebook.scss";
 
@@ -123,7 +123,7 @@ const Gradebook = (): ReactElement => {
                 ) : (
                   <>
                     <th>Totals</th>
-                    {overallSessions.map((session: Session, sIndex: number) => (
+                    {overallSessions.map((session, sIndex: number) => (
                       <th key={sIndex} className="session-name">
                         <div>
                           <span>{session.name} </span>
@@ -194,7 +194,7 @@ const Gradebook = (): ReactElement => {
                         ></div>
                       </div>
                     </th>
-                    {overallSessions.map((session: Session, sIndex: number) => (
+                    {overallSessions.map((session, sIndex: number) => (
                       <td key={sIndex} className="align-right">
                         <div>
                           {session.average.toFixed(2)}/

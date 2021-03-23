@@ -1,7 +1,19 @@
-interface Question {
-  title: string[];
-  average: number[];
-  total: number[];
+export interface Question {
+  title: string;
+  question: string;
+  type: string;
+  questionOptions: QuestionOption[];
+  folderId: number | null;
+  average?: number;
+  total?: number;
+}
+
+// this is poorly named, but it is done to match the backend
+// a QuestionOption is an answer. isAnswer determines if the answer is
+// correct.
+export interface QuestionOption {
+  text: string;
+  isAnswer: boolean;
 }
 
 export interface Session {

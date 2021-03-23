@@ -3,30 +3,66 @@ import React, { useReducer } from "react";
 
 const closedQuestions = new Set();
 
+const baseQuestionInfo = {
+  title: "",
+  question: "",
+  type: "Mult Choice",
+  questionOptions: [
+    { text: "", isAnswer: false },
+    { text: "", isAnswer: false },
+  ],
+  folderId: null,
+};
+
 const init = {
   previewFolder: 0,
   previewQuestion: 0,
+  courseId: 0,
   questions: [
     {
       folder: "Chapter 1",
       questions: [
         {
+          id: 0,
           title: "Photosynthesis 1a",
           question: "What are the products of photosynthesis?",
           type: "Mult Choice",
-          choices: [
-            "Carbon dioxide and water",
-            "Glucose and oxygen",
-            "Lactic acid",
+          folderId: 0,
+          questionOptions: [
+            {
+              text: "Carbon dioxide and water",
+              isAnswer: false,
+            },
+            {
+              text: "Glucose and oxygen",
+              isAnswer: true,
+            },
+            {
+              text: "Lactic acid",
+              isAnswer: false,
+            },
           ],
-          correct: 1,
         },
         {
+          id: 0,
           title: "Photosynthesis 1b",
           question: "What colour is chlorophyll?",
           type: "Mult Choice",
-          choices: ["Black", "Blue", "Green"],
-          correct: 2,
+          folderId: 0,
+          questionOptions: [
+            {
+              text: "Black",
+              isAnswer: false,
+            },
+            {
+              text: "Blue",
+              isAnswer: false,
+            },
+            {
+              text: "Green",
+              isAnswer: true,
+            },
+          ],
         },
       ],
     },
@@ -34,26 +70,46 @@ const init = {
       folder: "Chapter 2",
       questions: [
         {
+          id: 0,
           title: "Photosynthesis 2a",
           question: "Where does photosynthesis take place?",
           type: "Mult Choice",
-          choices: [
-            "In the chloroplasts",
-            "In the cell wall",
-            "In the nucleus",
+          folderId: 0,
+          questionOptions: [
+            {
+              text: "In the chloroplasts",
+              isAnswer: true,
+            },
+            {
+              text: "In the cell wall",
+              isAnswer: false,
+            },
+            {
+              text: "In the nucleus",
+              isAnswer: false,
+            },
           ],
-          correct: 0,
         },
         {
+          id: 0,
           title: "Photosynthesis 2b",
           question: "What are the reactants of photosynthesis?",
           type: "Mult Choice",
-          choices: [
-            "Carbon dioxide and water",
-            "Carbon dioxide and oxygen",
-            "Glucose and oxygen",
+          folderId: 0,
+          questionOptions: [
+            {
+              text: "Carbon dioxide and water",
+              isAnswer: true,
+            },
+            {
+              text: "Carbon dioxide and oxygen",
+              isAnswer: false,
+            },
+            {
+              text: "Glucose and oxygen",
+              isAnswer: false,
+            },
           ],
-          correct: 0,
         },
       ],
     },
@@ -61,26 +117,46 @@ const init = {
       folder: "Chapter 3",
       questions: [
         {
+          id: 0,
           title: "Photosynthesis 3a",
           question: "When do plants respire?",
           type: "Mult Choice",
-          choices: [
-            "During the day only",
-            "During the day and night",
-            "During the night only",
+          folderId: 0,
+          questionOptions: [
+            {
+              text: "During the day only",
+              isAnswer: false,
+            },
+            {
+              text: "During the day and night",
+              isAnswer: true,
+            },
+            {
+              text: "During the night only",
+              isAnswer: false,
+            },
           ],
-          correct: 1,
         },
         {
+          id: 0,
           title: "Photosynthesis 3b",
           question: "When do plants photosynthesise?",
           type: "Mult Choice",
-          choices: [
-            "During the day and night",
-            "During the night only",
-            "During the day only",
+          folderId: 0,
+          questionOptions: [
+            {
+              text: "During the day and night",
+              isAnswer: false,
+            },
+            {
+              text: "During the night only",
+              isAnswer: false,
+            },
+            {
+              text: "During the day only",
+              isAnswer: true,
+            },
           ],
-          correct: 2,
         },
       ],
     },
@@ -88,18 +164,46 @@ const init = {
       folder: "Chapter 4",
       questions: [
         {
+          id: 0,
           title: "Photosynthesis 4a",
           question: "What are the cells near the top of leaves called?",
           type: "Mult Choice",
-          choices: ["Palisade cells", "Root hair cells", "Red blood cells"],
-          correct: 0,
+          folderId: 0,
+          questionOptions: [
+            {
+              text: "Palisade cells",
+              isAnswer: true,
+            },
+            {
+              text: "Root hair cells",
+              isAnswer: false,
+            },
+            {
+              text: "Red blood cells",
+              isAnswer: false,
+            },
+          ],
         },
         {
+          id: 0,
           title: "Photosynthesis 4b",
           question: "What does xylem carry?",
           type: "Mult Choice",
-          choices: ["Water", "Blood", "Carbohydrates"],
-          correct: 2,
+          folderId: 0,
+          questionOptions: [
+            {
+              text: "Water",
+              isAnswer: false,
+            },
+            {
+              text: "Blood",
+              isAnswer: false,
+            },
+            {
+              text: "Carbohydrates",
+              isAnswer: true,
+            },
+          ],
         },
       ],
     },
@@ -107,26 +211,46 @@ const init = {
       folder: null,
       questions: [
         {
+          id: 0,
           title: "Photosynthesis 1",
           question: "What do stomata do?",
           type: "Mult Choice",
-          choices: [
-            "Stop carbon dioxide diffusing into leaves",
-            "Allow oxygen to diffuse into leaves",
-            "Allow carbon dioxide to diffuse into leaves",
+          folderId: 0,
+          questionOptions: [
+            {
+              text: "Stop carbon dioxide diffusing into leaves",
+              isAnswer: false,
+            },
+            {
+              text: "Allow oxygen to diffuse into leaves",
+              isAnswer: false,
+            },
+            {
+              text: "Allow carbon dioxide to diffuse into leaves",
+              isAnswer: true,
+            },
           ],
-          correct: 2,
         },
         {
+          id: 0,
           title: "Photosynthesis 2",
           question: "How are root hair cells adapted?",
           type: "Mult Choice",
-          choices: [
-            "Huge surface area",
-            "Lots of chloroplasts",
-            "Have no cell wall",
+          folderId: 0,
+          questionOptions: [
+            {
+              text: "Huge surface area",
+              isAnswer: false,
+            },
+            {
+              text: "Lots of chloroplasts",
+              isAnswer: true,
+            },
+            {
+              text: "Have no cell wall",
+              isAnswer: false,
+            },
           ],
-          correct: 1,
         },
       ],
     },
@@ -140,6 +264,7 @@ const init = {
   questionNumber: 0,
   closedQuestions: closedQuestions,
   openExportModal: false,
+  currentQuestionInfo: baseQuestionInfo,
 };
 const store = React.createContext(init);
 const { Provider } = store;
@@ -187,6 +312,10 @@ const StateProvider = ({ children }) => {
         return { ...state, openExportModal: false };
       case "update-questions":
         return { ...state, questions: action.payload };
+      case "reset-current-question-info":
+        return { ...state, currentQuestionInfo: baseQuestionInfo };
+      case "set-current-question-info":
+        return { ...state, currentQuestionInfo: action.payload };
       default:
         throw new Error("Base reducer: this action type was not defined");
     }

@@ -1,0 +1,33 @@
+.answer-choices {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  .answer-choice-header {
+    color: #717171;
+    margin-bottom: 1rem;
+  }
+
+  .add-answer {
+    .add-answer-button {
+      cursor: pointer;
+      background: white;
+      padding: 0 0;
+      border: none;
+      display: flex;
+      align-items: center;
+      font-size: 1.25rem;
+      color: black;
+
+      &:hover {
+        background: whitesmoke;
+      }
+    }
+
+    .add-answer-icon {
+      font-size: 2rem;
+      font-weight: bold;
+      color: #ffc904;
+    }
+  }
+}

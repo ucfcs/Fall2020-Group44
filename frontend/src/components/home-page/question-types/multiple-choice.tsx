@@ -1,17 +1,9 @@
 import React, { ReactElement } from "react";
+import { QuestionOption } from "../../../types";
 import "./multiple-choice.scss";
-
-type Props = {
-  answers: string[];
-  correct: number;
-  responses: string[];
-  showPreviewResponse: boolean;
-  showCorrectPreviewResponse: boolean;
-};
 
 const MultipleChoice = ({
   answers,
-  correct,
   responses,
   showPreviewResponse,
   showCorrectPreviewResponse,
@@ -23,7 +15,7 @@ const MultipleChoice = ({
           key={index}
           className={`answer-choice ${
             showCorrectPreviewResponse
-              ? correct === index
+              ? answer.isAnswer
                 ? "correct"
                 : "incorrect"
               : "neutral"
@@ -33,6 +25,7 @@ const MultipleChoice = ({
             <div className="letter">
               <p>{String.fromCharCode(65 + index)}</p>
             </div>
+
             <div className="answer-body">
               <div
                 className="response-bar"
@@ -43,10 +36,12 @@ const MultipleChoice = ({
                     ? "100%"
                     : "",
                 }}
-              ></div>
+              />
+
               <div className="answer-text">
-                <span>{answer}</span>
+                <span>{answer.text}</span>
               </div>
+
               <div className="responses">
                 {showPreviewResponse ? responses[index] : ""}
               </div>
@@ -56,6 +51,13 @@ const MultipleChoice = ({
       ))}
     </div>
   );
+};
+
+type Props = {
+  answers: QuestionOption[];
+  responses: string[];
+  showPreviewResponse: boolean;
+  showCorrectPreviewResponse: boolean;
 };
 
 export default MultipleChoice;
