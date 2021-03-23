@@ -49,7 +49,7 @@ const PollRouter: FunctionComponent<
 				name='Home'
 				component={Home}
 				options={{
-					title: 'Polls',
+					title: 'Sessions',
 					headerLeft: headerLeftController.bind(this, navigation),
 					...options,
 				}}
@@ -158,7 +158,7 @@ export const Router: FunctionComponent = () => {
 				<Drawer.Screen
 					name='Polls'
 					component={PollRouter}
-					options={{ drawerLabel: 'Polls' }}
+					options={{ drawerLabel: 'Questions Sessions' }}
 				/>
 				<Drawer.Screen
 					name='Settings'

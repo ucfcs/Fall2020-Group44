@@ -57,8 +57,8 @@ export const Home: FunctionComponent<
 					<View style={styles.emptyPic}>
 						<Icon type='hand' />
 					</View>
-					<Text style={styles.header}>No polls currently open</Text>
-					<Text style={styles.p}>Check back again when a poll is open.</Text>
+					<Text style={styles.header}>No sessions currently</Text>
+					<Text style={styles.p}>Sessions will appear here when available.</Text>
 				</View>
 			</SafeAreaView>
 		);
