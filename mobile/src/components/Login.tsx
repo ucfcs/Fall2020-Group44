@@ -1,6 +1,5 @@
 import React, {
 	useEffect,
-	useCallback,
 	FunctionComponent,
 	useState,
 	useContext,
@@ -14,6 +13,8 @@ import {
 	ActivityIndicator,
 } from 'react-native';
 
+import { oauthMobileURL } from '../services/oauth';
+import { save } from '../services/store';
 import { GOLD } from '../libs/colors';
 import { Button } from './Button';
 import { AppContext } from './Provider';
@@ -48,28 +49,35 @@ const styles = StyleSheet.create({
 
 export const Login: FunctionComponent = () => {
 	const [isReadingAuthLink, setIsReadingAuthLink] = useState(false);
-	const { state, dispatch } = useContext(AppContext);
-	const handlePress = useCallback(async () => {
-		// Checking if the link is supported for links with custom URL scheme.
-		const supported = await Linking.canOpenURL(state.url);
+	const { dispatch } = useContext(AppContext);
 
-		if (supported) {
-			// Opening the link with some app, if the URL scheme is "http" the web link should be opened
-			// by some browser in the mobile
-			await Linking.openURL(state.url);
-		} else {
-			console.error(state.url);
+	const handlePress = async () => {
+		try {
+			setIsReadingAuthLink(true);
+
+			// Checking if the link is supported for links with custom URL scheme.
+			const { url } = await oauthMobileURL();
+			const supported = await Linking.canOpenURL(url);
+
+			if (supported) {
+				// Opening the link with some app, if the URL scheme is "http" the web link should be opened
+				// by some browser in the mobile
+				await Linking.openURL(url);
+			} else {
+				console.error(url);
+			}
+		} catch (error) {
+			console.error(error);
+			Alert.alert('Error in auth', 'Server is down');
+			setIsReadingAuthLink(false);
 		}
-	}, [state.url]);
+	};
 
 	useEffect(() => {
 		Linking.addEventListener('url', async (event) => {
+			// get url from event of deep linking
 			const { url } = event;
 
-			// assume this run is good
-			setIsReadingAuthLink(true);
-
-			// make sure its set
 			if (!url) {
 				setIsReadingAuthLink(false);
 				Alert.alert('Error in auth', 'Error in auth stage 1');
@@ -77,21 +85,28 @@ export const Login: FunctionComponent = () => {
 			}
 
 			// param section
-			const temp1 = url.split('?')[1];
+			const temp = url.split('?')[1];
 
-			if (!temp1) {
+			if (!temp) {
 				setIsReadingAuthLink(false);
 				Alert.alert('Error in auth', 'Error in auth stage 2');
 				return;
 			}
 
 			// get value after the ket "token="
-			const token = temp1.split('=')[1];
-			console.log('jwt =', token);
+			const token = temp.split('=')[1];
 
-			// make call to server for user info
-			// then save it to the app state context
-			dispatch({ type: 'AUTHENTICATED' });
+			if (!token) {
+				setIsReadingAuthLink(false);
+				Alert.alert('Error in auth', 'Error in auth stage 3');
+				return;
+			}
+
+			// store token in the local storage
+			await save(token);
+
+			// move back to splash to run through the init protocals
+			dispatch({ type: 'SET_PHASE', payload: 'initializing' });
 		});
 
 		// on unmount remove all listeners
