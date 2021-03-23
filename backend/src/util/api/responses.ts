@@ -44,6 +44,24 @@ export default {
 		};
 	},
 	/**
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/401
+	 */
+	unauthorized(data?: unknown): APIGatewayProxyResult {
+		if (!data) {
+			data = { message: 'Missing bearer token!' };
+		}
+
+		return {
+			headers: {
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Origin': '*',
+			},
+			statusCode: 401,
+			body: JSON.stringify(data || {}),
+		};
+	},
+	/**
 	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/500
 	 */
 	internalServerError(data?: unknown): APIGatewayProxyResult {

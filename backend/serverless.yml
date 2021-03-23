@@ -184,12 +184,31 @@ functions:
           method: get
           path: api/v1/auth/mobile/url
           cors: true
+  mobileAuthRevoke:
+    handler: src/handlers/auth/mobile.revoke
+    timeout: 10
+    events:
+      - http:
+          method: delete
+          path: api/v1/auth/mobile/revoke
+          cors: true
   ltiLaunch:
     handler: src/handlers/auth/lti.launch
     timeout: 10
     events:
       - http:
           path: /api/v1/auth/lti
+          method: post
+          cors: true
+
+  #
+  # Canvas Proxy
+  #
+  canvasProxy:
+    handler: src/handlers/canvasProxy.handler
+    events:
+      - http:
+          path: /api/v1/proxy/canvas
           method: post
           cors: true
 

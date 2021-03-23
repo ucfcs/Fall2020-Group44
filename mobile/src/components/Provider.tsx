@@ -7,13 +7,15 @@ const intialState: AppState = {
 	//
 	settings: {},
 	//
-	phase: 'isolated',
+	phase: 'initializing',
 	ws: null,
-	url: '',
 };
 
 function reducer(state: AppState, action: Action): AppState {
 	switch (action.type) {
+		//
+		// MACRO'S
+		//
 		case 'CONNECT':
 			const ws = new WebSocket('http://localhost:3001');
 
@@ -38,13 +40,22 @@ function reducer(state: AppState, action: Action): AppState {
 			};
 
 			state.ws = ws;
-			state.phase = 'connected';
 			break;
-		case 'SET_URL':
-			state.url = action.payload;
+		//
+		// SETTER'S
+		//
+		case 'SET_NAME':
+			state.name = action.payload;
 			break;
-		case 'AUTHENTICATED':
-			state.phase = 'authenticated';
+		case 'SET_EMAIL':
+			state.email = action.payload;
+			break;
+		case 'SET_PHASE':
+			state.phase = action.payload;
+			break;
+		case 'SET_TOKEN':
+			state.token = action.payload;
+			break;
 	}
 
 	return Object.assign({}, state);
