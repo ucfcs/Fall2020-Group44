@@ -53,10 +53,8 @@ export const Splash: FunctionComponent = () => {
 				try {
 					const { settings } = await getUserSetting(token);
 
-					console.log(settings);
-
 					// make sure its not null
-					if (settings) {
+					if (settings && settings.document) {
 						dispatch({
 							type: 'SET_SETTING',
 							payload: JSON.parse(settings.document),
