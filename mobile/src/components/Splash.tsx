@@ -23,8 +23,6 @@ export const Splash: FunctionComponent = () => {
 			// first lets try to see if theres a token in the local storage
 			const token = await load();
 
-			console.log('stored token =', token);
-
 			if (!token) {
 				// token was not found in local storage so well need
 				// to ask if the user wants to login

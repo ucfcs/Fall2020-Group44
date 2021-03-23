@@ -15,14 +15,14 @@ import {
 
 import { oauthMobileURL } from '../services/oauth';
 import { save } from '../services/store';
-import { GOLD } from '../libs/colors';
+import { WHITE } from '../libs/colors';
 import { Button } from './Button';
 import { AppContext } from './Provider';
 
 const styles = StyleSheet.create({
 	safeArea: {
 		flex: 1,
-		backgroundColor: GOLD,
+		backgroundColor: WHITE,
 	},
 	container: {
 		flex: 1,
@@ -118,7 +118,7 @@ export const Login: FunctionComponent = () => {
 			<SafeAreaView style={styles.safeArea}>
 				<View style={styles.container}>
 					<View style={styles.logoBox} />
-					<Button text='Sign In' type='secondary' onPress={handlePress} />
+					<Button text='Sign In' type='primary' onPress={handlePress} />
 				</View>
 			</SafeAreaView>
 			{isReadingAuthLink && (

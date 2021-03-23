@@ -20,10 +20,6 @@ const init = async (): Promise<void> => {
 		await UserMobileSetting.sync({ alter: true });
 		await UserWebSetting.sync({ alter: true });
 
-		await User.create({
-			canvasId: 1,
-			fullName: 'Mock',
-		});
 		await Folder.create({ name: 'Folder 1', userId: 1, courseId: '1' });
 		await Collection.create({
 			name: 'Collection 1',

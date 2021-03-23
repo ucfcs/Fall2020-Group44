@@ -2,7 +2,8 @@
 
 ## Prerequisite
 
-[Running on Device](https://reactnative.dev/docs/running-on-device)
+- [Running on Device](https://reactnative.dev/docs/running-on-device)
+- Setup ngrok as a proxy for the backend and add that url to the `.env.json`
 
 ## Run instructions for iOS:
 
