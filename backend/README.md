@@ -34,7 +34,7 @@ NODE_ENV=development
 MYSQL_HOST=localhost
 MYSQL_DATABASE=ucfpoll
 MYSQL_USER=root
-MYSQL_PASSWORD=root
+MYSQL_ROOT_PASSWORD=root
 
 CANVAS_URL=http://example.com
 CANVAS_ID=101
