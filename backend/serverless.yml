@@ -212,6 +212,24 @@ functions:
           method: post
           cors: true
 
+  #
+  # User Settings
+  #
+  getUserSetting:
+    handler: src/handlers/user.getUserSetting
+    events:
+      - http:
+          path: /api/v1/user/setting
+          method: get
+          cors: true
+  setUserSetting:
+    handler: src/handlers/user.setUserSetting
+    events:
+      - http:
+          path: /api/v1/user/setting
+          method: put
+          cors: true
+
   # websocket endpoints
   connect:
     handler: src/handlers/websocket/connect.handler
