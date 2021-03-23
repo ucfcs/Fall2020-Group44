@@ -4,7 +4,7 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { GOLD } from '../libs/colors';
 import { AppContext } from './Provider';
 import { load } from '../services/store';
-import { canvasSelf } from '../services/backend';
+import { canvasSelf, getUserSetting } from '../services/backend';
 
 const styles = StyleSheet.create({
 	container: {
@@ -28,27 +28,47 @@ export const Splash: FunctionComponent = () => {
 				// to ask if the user wants to login
 				dispatch({ type: 'SET_PHASE', payload: 'authentication' });
 			} else {
-				// the token was found and well want todo a few things
+				// 1. save the token
+				dispatch({ type: 'SET_TOKEN', payload: token });
 
-				// 1. connect to the WS server
+				// 2. connect to the WS server
 				dispatch({ type: 'CONNECT' });
 
-				// 2. get user info from canvas
-				const res = await canvasSelf(token, {
-					url: '/api/v1/users/self',
-					method: 'GET',
-				});
-				const data = await res.json();
+				// 3. get user info from canvas
+				try {
+					const data = await canvasSelf(token, {
+						url: '/api/v1/users/self',
+						method: 'GET',
+					});
 
-				if (res.status !== 200) {
+					dispatch({ type: 'SET_NAME', payload: data.payload.name });
+					dispatch({ type: 'SET_EMAIL', payload: data.payload.email });
+				} catch (error) {
+					console.error(error);
 					dispatch({ type: 'SET_PHASE', payload: 'authentication' });
 					return;
 				}
 
-				// 3. route users to the main app views
-				dispatch({ type: 'SET_TOKEN', payload: token });
-				dispatch({ type: 'SET_NAME', payload: data.payload.name });
-				dispatch({ type: 'SET_EMAIL', payload: data.payload.email });
+				// 4. get user settings data
+				try {
+					const { settings } = await getUserSetting(token);
+
+					console.log(settings);
+
+					// make sure its not null
+					if (settings) {
+						dispatch({
+							type: 'SET_SETTING',
+							payload: JSON.parse(settings.document),
+						});
+					}
+				} catch (error) {
+					console.error(error);
+					dispatch({ type: 'SET_PHASE', payload: 'authentication' });
+					return;
+				}
+
+				// 5. route users to the main app views
 				dispatch({ type: 'SET_PHASE', payload: 'connection' });
 			}
 		})();
