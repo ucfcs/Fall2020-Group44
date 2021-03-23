@@ -5,8 +5,7 @@ import {
 	Question,
 	QuestionUserResponse,
 	User,
-	UserMobileSetting,
-	UserWebSetting,
+	UserSetting,
 } from '../models';
 
 const init = async (): Promise<void> => {
@@ -17,8 +16,7 @@ const init = async (): Promise<void> => {
 		await Question.sync({ alter: true });
 		await QuestionOption.sync({ alter: true });
 		await QuestionUserResponse.sync({ alter: true });
-		await UserMobileSetting.sync({ alter: true });
-		await UserWebSetting.sync({ alter: true });
+		await UserSetting.sync({ alter: true });
 
 		await Folder.create({ name: 'Folder 1', userId: 1, courseId: '1' });
 		await Collection.create({
@@ -51,8 +49,7 @@ const init = async (): Promise<void> => {
 
 const drop = async (): Promise<void> => {
 	try {
-		await UserWebSetting.drop();
-		await UserMobileSetting.drop();
+		await UserSetting.drop();
 		await QuestionUserResponse.drop();
 		await QuestionOption.drop();
 		await Question.drop();
