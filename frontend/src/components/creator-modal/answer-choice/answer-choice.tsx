@@ -45,7 +45,6 @@ const AnswerChoice = ({
   const handleAnswerDelete = (index: number) => {
     const tempQuestion = question;
     tempQuestion.questionOptions.splice(index, 1);
-    console.log(tempQuestion);
 
     dispatch({
       type: "set-current-question-info",

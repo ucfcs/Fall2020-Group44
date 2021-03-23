@@ -27,6 +27,7 @@ const init = {
           title: "Photosynthesis 1a",
           question: "What are the products of photosynthesis?",
           type: "Mult Choice",
+          folderId: 0,
           questionOptions: [
             {
               text: "Carbon dioxide and water",
@@ -47,6 +48,7 @@ const init = {
           title: "Photosynthesis 1b",
           question: "What colour is chlorophyll?",
           type: "Mult Choice",
+          folderId: 0,
           questionOptions: [
             {
               text: "Black",
@@ -72,6 +74,7 @@ const init = {
           title: "Photosynthesis 2a",
           question: "Where does photosynthesis take place?",
           type: "Mult Choice",
+          folderId: 0,
           questionOptions: [
             {
               text: "In the chloroplasts",
@@ -92,6 +95,7 @@ const init = {
           title: "Photosynthesis 2b",
           question: "What are the reactants of photosynthesis?",
           type: "Mult Choice",
+          folderId: 0,
           questionOptions: [
             {
               text: "Carbon dioxide and water",
@@ -117,6 +121,7 @@ const init = {
           title: "Photosynthesis 3a",
           question: "When do plants respire?",
           type: "Mult Choice",
+          folderId: 0,
           questionOptions: [
             {
               text: "During the day only",
@@ -137,6 +142,7 @@ const init = {
           title: "Photosynthesis 3b",
           question: "When do plants photosynthesise?",
           type: "Mult Choice",
+          folderId: 0,
           questionOptions: [
             {
               text: "During the day and night",
@@ -162,6 +168,7 @@ const init = {
           title: "Photosynthesis 4a",
           question: "What are the cells near the top of leaves called?",
           type: "Mult Choice",
+          folderId: 0,
           questionOptions: [
             {
               text: "Palisade cells",
@@ -182,6 +189,7 @@ const init = {
           title: "Photosynthesis 4b",
           question: "What does xylem carry?",
           type: "Mult Choice",
+          folderId: 0,
           questionOptions: [
             {
               text: "Water",
@@ -207,6 +215,7 @@ const init = {
           title: "Photosynthesis 1",
           question: "What do stomata do?",
           type: "Mult Choice",
+          folderId: 0,
           questionOptions: [
             {
               text: "Stop carbon dioxide diffusing into leaves",
@@ -227,6 +236,7 @@ const init = {
           title: "Photosynthesis 2",
           question: "How are root hair cells adapted?",
           type: "Mult Choice",
+          folderId: 0,
           questionOptions: [
             {
               text: "Huge surface area",

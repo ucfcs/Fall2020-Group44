@@ -49,29 +49,29 @@ const Creator = (): ReactElement => {
   };
 
   const saveQuestion = () => {
-    if (!questionInfo.title) {
-      dispatch({
-        type: "set-current-question-info",
-        payload: { ...questionInfo, title: questionInfo.question },
-      });
+    const info = { ...questionInfo };
+
+    if (!info.title) {
+      info.title = info.question;
     }
 
     if (state.editPreviewQuestion) {
+      const id =
+        state.questions[state.previewFolder].questions[state.previewQuestion][
+          "id"
+        ];
+
       try {
-        putData(url, {
-          ...questionInfo,
+        putData(`${url}/${id}`, {
+          ...info,
           courseId: state.courseId,
-          questionId:
-            state.questions[state.previewFolder].questions[
-              state.previewQuestion
-            ]["id"],
         });
       } catch (error) {
         console.error(error);
       }
     } else {
       try {
-        postData(url, { ...questionInfo, courseId: state.courseId });
+        postData(url, { ...info, courseId: state.courseId });
       } catch (error) {
         console.error(error);
       }
