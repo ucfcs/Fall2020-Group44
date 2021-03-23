@@ -1,5 +1,6 @@
 import { Folder } from './Folder';
-import { Collection } from './Collection';
+import { Session } from './Session';
+import { Session_Question } from './SessionQuestion';
 import { QuestionOption } from './QuestionOption';
 import { Question } from './Question';
 import { QuestionUserResponse } from './QuestionUserResponse';
@@ -12,6 +13,15 @@ Question.belongsTo(Folder, {
 	as: 'questions',
 	constraints: false,
 	foreignKey: 'folderId',
+});
+
+Question.belongsToMany(Session, {
+	through: Session_Question,
+	foreignKey: 'questionId',
+});
+Session.belongsToMany(Question, {
+	through: Session_Question,
+	foreignKey: 'sessionId',
 });
 
 Question.hasMany(QuestionOption, { foreignKey: 'questionId' });
@@ -41,7 +51,8 @@ UserMobileSetting.belongsTo(User, { foreignKey: 'userId' });
 
 export {
 	Folder,
-	Collection,
+	Session,
+	Session_Question,
 	QuestionOption,
 	Question,
 	QuestionUserResponse,
