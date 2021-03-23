@@ -4,6 +4,7 @@ import { StackScreenProps } from '@react-navigation/stack';
 
 import { Button } from './Button';
 import { BLACK, GRAY_2 } from '../libs/colors';
+import { Icon } from './Icon';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -53,7 +54,9 @@ export const Home: FunctionComponent<
 		return (
 			<SafeAreaView style={styles.safeArea}>
 				<View style={styles.container}>
-					<View style={styles.emptyPic} />
+					<View style={styles.emptyPic}>
+						<Icon type='hand' />
+					</View>
 					<Text style={styles.header}>No polls currently open</Text>
 					<Text style={styles.p}>Check back again when a poll is open.</Text>
 				</View>

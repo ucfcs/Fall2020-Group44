@@ -1,3 +1,3 @@
 interface IconProps {
-	type: 'burger';
+	type: 'burger' | 'logo' | 'hand';
 }
