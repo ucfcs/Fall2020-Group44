@@ -20,7 +20,7 @@ const init = async (): Promise<void> => {
 		await QuestionUserResponse.sync({ alter: true });
 		await UserSetting.sync({ alter: true });
 
-		await Folder.create({ name: 'Folder 1', userId: 1, courseId: '1' });
+		await Folder.create({ name: 'Folder 1', courseId: '1' });
 		await Session.create({
 			name: 'Session 1',
 			userId: 1,

@@ -33,12 +33,12 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
 
-	const courseId = event.pathParameters?.courseId;
+	const courseId = body.courseId;
 	const questions = body.questions;
 
-	if (!questions) {
+	if (!questions || !body) {
 		return responses.badRequest({
-			message: 'questions cannot be empty',
+			message: 'Missing paramters. courseId and questions all required',
 		});
 	}
 

@@ -4,9 +4,9 @@ import responses from '../util/api/responses';
 
 // GET /api/v1/course
 const getCourse = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event.queryStringParameters;
+	const courseId = event.pathParameters?.courseId;
 
-	if (!params?.courseId) {
+	if (!courseId) {
 		return responses.badRequest({
 			message: 'Missing parameter: courseId',
 		});
@@ -16,7 +16,7 @@ const getCourse = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		const [folders, questions] = await Promise.all([
 			Folder.findAll({
 				where: {
-					courseId: params.courseId,
+					courseId: courseId,
 				},
 				include: {
 					model: Question,
@@ -25,7 +25,7 @@ const getCourse = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			}),
 			Question.findAll({
 				where: {
-					courseId: params.courseId,
+					courseId: courseId,
 					folderId: null,
 				},
 				include: [QuestionOption],
