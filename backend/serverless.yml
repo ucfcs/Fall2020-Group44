@@ -51,59 +51,47 @@ functions:
     events:
       - http:
           method: get
-          path: /api/v1/course
+          path: /api/v1/courses/{courseId}
 
   # Folder endpoints
   getFolder:
-    handler: src/handlers/folder.getFolder
+    handler: src/handlers/folder.get
     events:
       - http:
           method: get
-          path: /api/v1/folder
+          path: /api/v1/folder/{folderId}
   newFolder:
-    handler: src/handlers/folder.newFolder
+    handler: src/handlers/folder.create
     events:
       - http:
           method: post
           path: /api/v1/folder
   updateFolder:
-    handler: src/handlers/folder.updateFolder
+    handler: src/handlers/folder.update
     events:
       - http:
           method: put
-          path: /api/v1/folder
+          path: /api/v1/folder/{folderId}
   deleteFolder:
-    handler: src/handlers/folder.deleteFolder
+    handler: src/handlers/folder.remove
     events:
       - http:
           method: delete
-          path: /api/v1/folder
+          path: /api/v1/folder/{folderId}
 
-  # Collection endpoints
-  getCollection:
-    handler: src/handlers/collection.get
+  # Session endpoints
+  getSession:
+    handler: src/handlers/session.get
     events:
       - http:
           method: get
-          path: /api/v1/collection
-  createCollection:
-    handler: src/handlers/collection.create
+          path: /api/v1/session/{sessionId}
+  createSession:
+    handler: src/handlers/session.create
     events:
       - http:
           method: post
-          path: /api/v1/collection
-  updateCollection:
-    handler: src/handlers/collection.update
-    events:
-      - http:
-          method: put
-          path: /api/v1/collection
-  deleteCollection:
-    handler: src/handlers/collection.remove
-    events:
-      - http:
-          method: delete
-          path: /api/v1/collection
+          path: /api/v1/session
 
   # Question endpoints
   getQuestion:
@@ -111,7 +99,7 @@ functions:
     events:
       - http:
           method: get
-          path: /api/v1/question
+          path: /api/v1/question/{questionId}
   createQuestion:
     handler: src/handlers/question.create
     events:
@@ -123,13 +111,13 @@ functions:
     events:
       - http:
           method: put
-          path: /api/v1/question
+          path: /api/v1/question/{questionId}
   deleteQuestion:
     handler: src/handlers/question.remove
     events:
       - http:
           method: delete
-          path: /api/v1/question
+          path: /api/v1/question/{questionId}
 
   # Question Option endpoints
   createQuestionOption:
@@ -137,19 +125,19 @@ functions:
     events:
       - http:
           method: post
-          path: /api/v1/question_option
+          path: /api/v1/question/{questionId}/option
   updateQuestionOption:
     handler: src/handlers/question_option.update
     events:
       - http:
           method: put
-          path: /api/v1/question_option
+          path: /api/v1/question/{questionId}/option/{optionId}
   deleteQuestionOption:
     handler: src/handlers/question_option.remove
     events:
       - http:
           method: delete
-          path: /api/v1/question_option
+          path: /api/v1/question/{questionId}/option/{optionId}
 
   # Question User Response endpoints
   createQuestionUserResponse:
@@ -157,13 +145,25 @@ functions:
     events:
       - http:
           method: post
-          path: /api/v1/question_user_response
+          path: /api/v1/question/{questionId}/response
   deleteQuestionUserResponse:
     handler: src/handlers/question_user_response.remove
     events:
       - http:
           method: delete
-          path: /api/v1/question_user_response
+          path: /api/v1/question/{questionId}/response
+  updateQuestionUserResponse:
+    handler: src/handlers/question_user_response.update
+    events:
+      - http:
+          method: put
+          path: /api/v1/question/{questionId}/response
+  getQuestionUserResponse:
+    handler: src/handlers/question_user_response.get
+    events:
+      - http:
+          method: get
+          path: /api/v1/question/{questionId}/response
 
   #
   # Auth
@@ -184,6 +184,14 @@ functions:
           method: get
           path: api/v1/auth/mobile/url
           cors: true
+  mobileAuthRevoke:
+    handler: src/handlers/auth/mobile.revoke
+    timeout: 10
+    events:
+      - http:
+          method: delete
+          path: api/v1/auth/mobile/revoke
+          cors: true
   ltiLaunch:
     handler: src/handlers/auth/lti.launch
     timeout: 10
@@ -191,6 +199,35 @@ functions:
       - http:
           path: /api/v1/auth/lti
           method: post
+          cors: true
+
+  #
+  # Canvas Proxy
+  #
+  canvasProxy:
+    handler: src/handlers/canvasProxy.handler
+    events:
+      - http:
+          path: /api/v1/proxy/canvas
+          method: post
+          cors: true
+
+  #
+  # User Settings
+  #
+  getUserSetting:
+    handler: src/handlers/user.getUserSetting
+    events:
+      - http:
+          path: /api/v1/user/setting
+          method: get
+          cors: true
+  setUserSetting:
+    handler: src/handlers/user.setUserSetting
+    events:
+      - http:
+          path: /api/v1/user/setting
+          method: put
           cors: true
 
   # websocket endpoints

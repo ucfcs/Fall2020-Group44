@@ -5,17 +5,19 @@ import responses from '../util/api/responses';
 // POST /api/v1/question_option
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const params = event.queryStringParameters;
+	const questionId = event.pathParameters?.questionId;
 
-	if (!params?.questionId) {
-		return responses.badRequest({ message: 'Missing questionId parameter' });
+	if (!questionId) {
+		return responses.badRequest({
+			message: 'Missing questionId path parameter',
+		});
 	}
 
 	try {
 		const result = await QuestionOption.create({
 			text: String(body?.text),
 			isAnswer: body?.isAnswer == 'true',
-			questionId: parseInt(params?.questionId),
+			questionId: parseInt(questionId),
 		});
 
 		return responses.ok({
@@ -32,9 +34,9 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 // PUT /api/v1/question_option
 const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	const params = event.queryStringParameters;
+	const questionOptionId = event.pathParameters?.optionId;
 
-	if (!params?.questionOptionId) {
+	if (!questionOptionId) {
 		return responses.badRequest({
 			message: 'Missing questionOptionId parameter',
 		});
@@ -43,7 +45,7 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	try {
 		await QuestionOption.update(
 			{ text: String(body?.text), isAnswer: body?.isAnswer == 'true' },
-			{ where: { id: params?.questionOptionId } }
+			{ where: { id: questionOptionId } }
 		);
 		return responses.ok({
 			message: 'Success',
@@ -57,16 +59,16 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 // DELETE /api/v1/question_option
 const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	const params = event.queryStringParameters;
+	const questionOptionId = event.pathParameters?.optionId;
 
-	if (!params?.questionOptionId) {
+	if (!questionOptionId) {
 		return responses.badRequest({
 			message: 'Missing questionOptionId parameter',
 		});
 	}
 
 	try {
-		await QuestionOption.destroy({ where: { id: params?.questionOptionId } });
+		await QuestionOption.destroy({ where: { id: questionOptionId } });
 
 		return responses.ok({
 			message: 'Success',

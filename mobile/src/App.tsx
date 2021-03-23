@@ -11,16 +11,14 @@ const App: FunctionComponent = () => {
 		<Provider>
 			<StatusBar barStyle='dark-content' />
 			<AppContext.Consumer>
-				{({ state: { phase } }) => {
-					if (phase === 'isolated') {
-						return <Splash />;
-					} else {
-						if (phase === 'connected') {
+				{({ state }) => {
+					switch (state.phase) {
+						case 'initializing':
+							return <Splash />;
+						case 'authentication':
 							return <Login />;
-						}
-						if (phase === 'authenticated') {
+						case 'connection':
 							return <Router />;
-						}
 					}
 				}}
 			</AppContext.Consumer>

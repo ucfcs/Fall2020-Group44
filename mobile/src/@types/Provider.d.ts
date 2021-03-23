@@ -7,7 +7,6 @@ type AppState = {
 	//
 	phase: Phase;
 	ws: null | WebSocket;
-	url: string;
 };
 
 type AppContext = {
@@ -16,16 +15,16 @@ type AppContext = {
 };
 
 type Settings = {
-	[key: string]: string;
+	[key: string]: string | boolean | number;
 };
 
-type Phase = 'isolated' | 'connected' | 'authenticated';
+type Phase = 'initializing' | 'authentication' | 'connection';
 
 type Action =
 	| { type: 'CONNECT' }
-	| { type: 'AUTHENTICATED' }
-	| { type: 'SET_URL'; payload: string }
-	| { type: 'SET_PHASE'; payload: Phase }
 	| { type: 'SET_NAME'; payload: string }
 	| { type: 'SET_EMAIL'; payload: string }
-	| { type: 'SET_TOKEN'; payload: string };
+	| { type: 'SET_TOKEN'; payload: string }
+	| { type: 'SET_PHASE'; payload: Phase }
+	| { type: 'SET_SETTING'; payload: Settings }
+	| { type: 'SET_SETTING_PUSHNOTIFICATION' };

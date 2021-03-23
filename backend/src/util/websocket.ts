@@ -1,6 +1,6 @@
 import AWS from 'aws-sdk';
 import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
-import fetch from 'node-fetch';
+import { QuestionUserResponse } from '../models/QuestionUserResponse';
 
 export class Connection {
 	client?: AWS.DynamoDB.DocumentClient;
@@ -406,49 +406,31 @@ export class Connection {
 
 	/******************************************************
 	 * submit a users response, then notify the professor
+	 * if it is not an updated response
 	 *
 	 * params
 	 * - courseId, questionId, questionOptionId, userId
 	 * returns
 	 * - list of connection id's as an array of strings
 	 *****************************************************/
-	async sumbitResponse(
+	async submitResponse(
 		courseId: string,
 		questionId: string,
 		questionOptionId: string,
-		userId: string
+		userId: string,
+		sessionId: string
 	): Promise<APIGatewayProxyResult> {
-		const params = {
-			questionId: questionId,
-			questionOptionId: questionOptionId,
-			userId: userId,
-		};
-
-		const endpoint =
-			process.env.NODE_ENV == 'development' ? 'http://localhost:3000' : '';
-
 		try {
-			// POST student response to DB
-			const response = await fetch(
-				`${endpoint}/dev/api/v1/question_user_response`,
-				{
-					method: 'POST',
-					headers: {
-						'content-type': 'application/json',
-					},
-					body: JSON.stringify(params),
-				}
-			);
+			// attempt to create response in db
+			const result = await QuestionUserResponse.create({
+				questionId: parseInt(questionId),
+				userId: parseInt(userId),
+				sessionId: parseInt(sessionId),
+				questionOptionId: parseInt(questionOptionId),
+			});
 
-			const { data, error } = await response.json();
-			if (response.ok) {
-				console.log(data);
-			} else {
-				console.log(error);
-				throw error;
-			}
-
-			//publish to professor that a student submitted
+			console.log(result);
+			// if successful, tell the professor a NEW response was recorded
 			await this.sendToProfessor(courseId, 'studentSubmitted');
 
 			return {
@@ -458,11 +440,51 @@ export class Connection {
 				}),
 			};
 		} catch (error) {
+			// if this student already submitted for this question,
+			// i.e. record already exists in db
+			if (error.name == 'SequelizeUniqueConstraintError') {
+				// then we want to update an existing response,
+				// but not notify the professor
+				console.log('response already exists. updating...');
+				try {
+					await QuestionUserResponse.update(
+						{
+							questionOptionId: parseInt(questionOptionId),
+						},
+						{
+							where: {
+								questionId: questionId,
+								userId: userId,
+								sessionId: sessionId,
+							},
+						}
+					);
+
+					return {
+						statusCode: 200,
+						body: JSON.stringify({
+							message: 'successfully updated student response',
+						}),
+					};
+				} catch (error) {
+					console.log('error updating existing student response:');
+					console.log(error);
+					return {
+						statusCode: 400,
+						body: JSON.stringify({
+							message: 'error updating existing student response',
+						}),
+					};
+				}
+			}
+
+			// different error besides unique constraint
+			console.log('error inserting new student response:');
 			console.log(error);
 			return {
 				statusCode: 400,
 				body: JSON.stringify({
-					message: 'error submitting student response',
+					message: 'error submitting new student response',
 				}),
 			};
 		}

@@ -1,10 +1,10 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import { oauthMobileURL } from '../services/oauth';
 import { GOLD } from '../libs/colors';
 import { AppContext } from './Provider';
+import { load } from '../services/store';
+import { canvasSelf, getUserSetting } from '../services/backend';
 
 const styles = StyleSheet.create({
 	container: {
@@ -21,23 +21,54 @@ export const Splash: FunctionComponent = () => {
 	useEffect(() => {
 		(async () => {
 			// first lets try to see if theres a token in the local storage
-			const rawUser = await AsyncStorage.getItem('user');
+			const token = await load();
 
-			// they have not successfully auth into the app
-			if (!rawUser) {
-				// therefore lets prep the app for canvas oauth
-				const { url } = await oauthMobileURL();
-				dispatch({ type: 'SET_URL', payload: url });
+			if (!token) {
+				// token was not found in local storage so well need
+				// to ask if the user wants to login
+				dispatch({ type: 'SET_PHASE', payload: 'authentication' });
 			} else {
-				// parse stored json and save it to app state
-				const user = JSON.parse(rawUser);
-				dispatch({ type: 'SET_NAME', payload: user.name });
-				dispatch({ type: 'SET_EMAIL', payload: user.email });
-				dispatch({ type: 'SET_TOKEN', payload: user.token });
-			}
+				// 1. save the token
+				dispatch({ type: 'SET_TOKEN', payload: token });
 
-			// always build connection to server
-			dispatch({ type: 'CONNECT' });
+				// 2. connect to the WS server
+				dispatch({ type: 'CONNECT' });
+
+				// 3. get user info from canvas
+				try {
+					const data = await canvasSelf(token, {
+						url: '/api/v1/users/self',
+						method: 'GET',
+					});
+
+					dispatch({ type: 'SET_NAME', payload: data.payload.name });
+					dispatch({ type: 'SET_EMAIL', payload: data.payload.email });
+				} catch (error) {
+					console.error(error);
+					dispatch({ type: 'SET_PHASE', payload: 'authentication' });
+					return;
+				}
+
+				// 4. get user settings data
+				try {
+					const { settings } = await getUserSetting(token);
+
+					// make sure its not null
+					if (settings && settings.document) {
+						dispatch({
+							type: 'SET_SETTING',
+							payload: JSON.parse(settings.document),
+						});
+					}
+				} catch (error) {
+					console.error(error);
+					dispatch({ type: 'SET_PHASE', payload: 'authentication' });
+					return;
+				}
+
+				// 5. route users to the main app views
+				dispatch({ type: 'SET_PHASE', payload: 'connection' });
+			}
 		})();
 	}, []);
 

@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useCallback, useContext } from 'react';
 import { View, TouchableOpacity, Text, ImageBackground } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import {
@@ -21,6 +21,9 @@ import { Home } from './Home';
 import { Polls } from './Polls';
 import { Settings } from './Settings';
 import { BLACK, GOLD, GRAY_2 } from '../libs/colors';
+import { flush } from '../services/store';
+import { AppContext } from './Provider';
+import { oauthMobileRevoke } from '../services/oauth';
 
 const Drawer = createDrawerNavigator<RootTree>();
 const PollStack = createStackNavigator<PollStackTree>();
@@ -87,6 +90,62 @@ const SettingsRouter: FunctionComponent<
 //
 
 export const Router: FunctionComponent = () => {
+	const { state, dispatch } = useContext(AppContext);
+	const drawerContent = useCallback(
+		(props: DrawerContentComponentProps<DrawerContentOptions>) => {
+			return (
+				<DrawerContentScrollView {...props}>
+					<View style={{ padding: 16 }}>
+						<View
+							style={{
+								width: 64,
+								height: 64,
+								borderRadius: 32,
+								backgroundColor: 'red',
+								overflow: 'hidden',
+								marginBottom: 8,
+							}}>
+							<ImageBackground
+								source={require('../assets/images/temp.png')}
+								style={{
+									width: 64,
+									height: 64,
+								}}
+							/>
+						</View>
+						<Text
+							style={{
+								fontSize: 18,
+								color: BLACK,
+								marginBottom: 4,
+							}}>
+							{state.name}
+						</Text>
+						<Text
+							style={{
+								fontSize: 14,
+								color: GRAY_2,
+							}}>
+							{state.email}
+						</Text>
+					</View>
+					<DrawerItemList {...props} />
+					<DrawerItem
+						label='Logout'
+						onPress={async () => {
+							oauthMobileRevoke(state.token);
+							await flush();
+							dispatch({ type: 'SET_TOKEN', payload: '' });
+							dispatch({ type: 'SET_PHASE', payload: 'initializing' });
+						}}
+						pressColor='#F00'
+					/>
+				</DrawerContentScrollView>
+			);
+		},
+		[state.name, state.email],
+	);
+
 	return (
 		<NavigationContainer>
 			<Drawer.Navigator
@@ -131,54 +190,5 @@ const headerLeftController = (
 			onPress={() => navigation.openDrawer()}>
 			<Icon type='burger' />
 		</TouchableOpacity>
-	);
-};
-
-const drawerContent = (
-	props: DrawerContentComponentProps<DrawerContentOptions>,
-) => {
-	return (
-		<DrawerContentScrollView {...props}>
-			<View style={{ padding: 16 }}>
-				<View
-					style={{
-						width: 64,
-						height: 64,
-						borderRadius: 32,
-						backgroundColor: 'red',
-						overflow: 'hidden',
-						marginBottom: 8,
-					}}>
-					<ImageBackground
-						source={require('../assets/images/temp.png')}
-						style={{
-							width: 64,
-							height: 64,
-						}}
-					/>
-				</View>
-				<Text
-					style={{
-						fontSize: 18,
-						color: BLACK,
-						marginBottom: 4,
-					}}>
-					Kenny G Perez
-				</Text>
-				<Text
-					style={{
-						fontSize: 14,
-						color: GRAY_2,
-					}}>
-					joseperez407@knights.ucf.edu
-				</Text>
-			</View>
-			<DrawerItemList {...props} />
-			<DrawerItem
-				label='Logout'
-				onPress={() => console.log('s')}
-				pressColor='#F00'
-			/>
-		</DrawerContentScrollView>
 	);
 };

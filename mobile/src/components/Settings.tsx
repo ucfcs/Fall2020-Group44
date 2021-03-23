@@ -1,8 +1,10 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useContext, useState } from 'react';
 import { StyleSheet, View, SafeAreaView, Text, Switch } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { GRAY_4 } from '../libs/colors';
+import { AppContext } from './Provider';
+import { setUserSetting } from '../services/backend';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -28,16 +30,45 @@ const styles = StyleSheet.create({
 export const Settings: FunctionComponent<
 	StackScreenProps<SettingsStackTree, 'Settings'>
 > = () => {
-	const [isEnabled, setIsEnabled] = useState(false);
-	const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+	const EMIT_DELAY_TIME = 250; // milliseconds
+	const { state, dispatch } = useContext(AppContext);
+	const [timeoutPtr, setTimeoutPtr] = useState<number>(0);
+
+	const sendUpdatedSettingsToDB = () => {
+		// update on the server
+		setUserSetting(state.token, state.settings);
+	};
+
+	const togglePushNotification = () => {
+		// update locally
+		dispatch({
+			type: 'SET_SETTING_PUSHNOTIFICATION',
+		});
+
+		// throttle emits
+		clearTimeout(timeoutPtr);
+		setTimeoutPtr(
+			(setTimeout(
+				sendUpdatedSettingsToDB,
+				EMIT_DELAY_TIME,
+			) as unknown) as number,
+		);
+	};
 
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
-				<View style={styles.field}>
-					<Text>Enable Push Notification</Text>
-					<Switch onValueChange={toggleSwitch} value={isEnabled} />
-				</View>
+				<AppContext.Consumer>
+					{({ state: { settings } }) => (
+						<View style={styles.field}>
+							<Text>Enable Push Notification</Text>
+							<Switch
+								onValueChange={togglePushNotification}
+								value={settings.enablePushNotification as boolean}
+							/>
+						</View>
+					)}
+				</AppContext.Consumer>
 			</View>
 		</SafeAreaView>
 	);
