@@ -1,4 +1,5 @@
 import { BACKEND_URL } from '../../.env.json';
+import { toJSON } from '../util';
 
 export function oauthMobileURL() {
 	return fetch(`${BACKEND_URL}/dev/api/v1/auth/mobile/url`).then(toJSON);
@@ -11,8 +12,4 @@ export function oauthMobileRevoke(token: string) {
 			Authorization: `Bearer ${token}`,
 		},
 	}).then(toJSON);
-}
-
-function toJSON(res: Response) {
-	return res.json();
 }
