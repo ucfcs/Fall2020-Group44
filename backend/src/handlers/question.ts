@@ -41,9 +41,10 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		!body.title ||
 		!body.question ||
 		!body.questionOptions ||
-		!body.courseId ||
-		!body.folderId
+		body.courseId == null ||
+		body.folderId === undefined
 	) {
+
 		return responses.badRequest({
 			message:
 				'Missing paramter. title, question, questionOptions, courseId, folderId all required.',
@@ -83,23 +84,27 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 // PUT /api/v1/question
 const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
+	const questionId = event.pathParameters?.questionId;
+
+	if (questionId == null) {
+		return responses.badRequest({ message: 'Missing questionId parameter' });
+	}
 
 	if (
 		!body.title ||
 		!body.question ||
 		!body.questionOptions ||
-		!body.courseId ||
-		!body.folderId ||
-		!body.questionId
+		body.courseId == null ||
+		body.folderId === undefined
 	) {
 		return responses.badRequest({
 			message:
-				'Missing paramter. title, question, questionOptions, courseId, folderId, questionId all required.',
+				'Missing paramter. title, question, questionOptions, courseId, folderId all required.',
 		});
 	}
 
 	try {
-		await Question.update(body, { where: { id: body.questionId } });
+		await Question.update(body, { where: { id: questionId } });
 		return responses.ok({
 			message: 'Success',
 		});
