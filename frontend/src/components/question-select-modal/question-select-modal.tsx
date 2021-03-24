@@ -20,6 +20,7 @@ const QuestionSelect = (): ReactElement => {
   const global = useContext(store) as any;
   const state = global.state;
   const dispatch = global.dispatch;
+
   const [isPreview, setIsPreview] = useState(false);
   const history = useHistory();
 
@@ -55,6 +56,7 @@ const QuestionSelect = (): ReactElement => {
         })
       );
 
+      dispatch({ type: "set-websocket", payload: websocket });
       dispatch({ type: "close-question-select" });
 
       history.push("/poll/present");
