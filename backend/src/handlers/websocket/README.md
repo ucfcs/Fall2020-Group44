@@ -1,3 +1,28 @@
+# Interacting with the websocket
+
+## Establish a connection
+`const ws = new Websocket(url);`
+
+## Send a message
+`ws.send(
+  JSON.stringify({
+    action: "routeName",
+    payload
+  })
+);`
+
+### Example: Student submit route
+`ws.send(
+  JSON.stringify({
+    action: "routeName",
+    optionId: "option",
+    ucfid: "ucfid"
+  })
+);`
+
+## Close Connection
+`ws.close()`
+
 # Websocket Routes
 
 ## Standard
