@@ -6,6 +6,8 @@ interface QuestionAttributes {
 	courseId: CourseId;
 	title: string;
 	question: string;
+	participationPoints: number;
+	correctnessPoints: number;
 }
 
 interface QuestionCreationAttributes {
@@ -13,5 +15,7 @@ interface QuestionCreationAttributes {
 	courseId: CourseId;
 	question: string;
 	title: string;
-	QuestionOptions: Array<QuestionOption>;
+	participationPoints?: number;
+	correctnessPoints?: number;
+	QuestionOptions?: Array<QuestionOption>;
 }

@@ -27,4 +27,14 @@ export const Question: ModelDefined<
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
+	participationPoints: {
+		type: DataTypes.DOUBLE,
+		allowNull: false,
+		defaultValue: 0.5,
+	},
+	correctnessPoints: {
+		type: DataTypes.DOUBLE,
+		allowNull: false,
+		defaultValue: 0.5,
+	},
 });
