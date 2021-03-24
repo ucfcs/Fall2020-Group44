@@ -43,6 +43,11 @@ Student request to join a specific room
 - **payload** `courseId: String`
 - **returns** success joining room
 
+### leave
+Student leaves a specific room
+- **payload** `courseId: String`
+- **returns** success leaving room
+
 ### submit
 Student submits response to a question
 - **payload** `optionId: Number, ucfid: String`
