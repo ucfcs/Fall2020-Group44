@@ -47,7 +47,7 @@ CANVAS_ID=101
 CANVAS_KEY=shhhh
 CANVAS_REDIRECT=http://somewhere.else
 
-TABLE_NAME=Collections
+TABLE_NAME=Connections
 ```
 
 ### Initialize Docker
