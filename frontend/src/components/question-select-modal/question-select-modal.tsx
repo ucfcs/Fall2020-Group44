@@ -51,7 +51,7 @@ const QuestionSelect = (): ReactElement => {
       websocket.send(
         JSON.stringify({
           action: "createRoom",
-          courseId: String(state.courseId),
+          courseId: state.courseId,
         })
       );
 
