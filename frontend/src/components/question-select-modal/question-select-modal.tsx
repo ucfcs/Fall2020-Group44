@@ -49,7 +49,10 @@ const QuestionSelect = (): ReactElement => {
 
     websocket.onopen = () => {
       websocket.send(
-        JSON.stringify({ action: "createRoom", courseId: state.courseId })
+        JSON.stringify({
+          action: "createRoom",
+          courseId: String(state.courseId),
+        })
       );
 
       dispatch({ type: "close-question-select" });
