@@ -10,7 +10,7 @@ import {
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import { store } from "../../store";
 import Modal from "../modal/modal";
 import "./question-select-modal.scss";
@@ -21,6 +21,9 @@ const QuestionSelect = (): ReactElement => {
   const state = global.state;
   const dispatch = global.dispatch;
   const [isPreview, setIsPreview] = useState(false);
+  const history = useHistory();
+
+  const url = `${process.env.REACT_APP_WEBSOCKET_URL}`;
 
   const folderCheckboxRefs: HTMLInputElement[] = [];
 
@@ -42,7 +45,17 @@ const QuestionSelect = (): ReactElement => {
   };
 
   const presentQuestions = () => {
-    dispatch({ type: "close-question-select" });
+    const websocket: WebSocket = new WebSocket(url);
+
+    websocket.onopen = () => {
+      websocket.send(
+        JSON.stringify({ action: "createRoom", courseId: state.courseId })
+      );
+
+      dispatch({ type: "close-question-select" });
+
+      history.push("/poll/present");
+    };
   };
 
   const handlePreviewDragEnd = (result: DropResult) => {
@@ -167,7 +180,7 @@ const QuestionSelect = (): ReactElement => {
       <div className="question-select-module">
         <div className="creator-header">
           <button type="reset" className="exit" onClick={closeQuestionSelect}>
-            ×
+            X
           </button>
 
           <span className="header-title">Select Questions to Present</span>
@@ -190,6 +203,7 @@ const QuestionSelect = (): ReactElement => {
             </div>
           </div>
         </div>
+
         <div className="question-select-body">
           <div className="question-details">
             {isPreview ? (
@@ -242,7 +256,7 @@ const QuestionSelect = (): ReactElement => {
                   <div>
                     {state.questions.map((folder: Folder, fIndex: number) =>
                       folder.folder !== null ? (
-                        <div>
+                        <div key={fIndex}>
                           <div key={fIndex}>
                             <div className={`folder`}>
                               <label
@@ -379,15 +393,13 @@ const QuestionSelect = (): ReactElement => {
             Cancel
           </button>
 
-          <Link className="button-link" to="/poll/present">
-            <button
-              type="submit"
-              className="save-button"
-              onClick={presentQuestions}
-            >
-              Present
-            </button>
-          </Link>
+          <button
+            type="submit"
+            className="save-button"
+            onClick={presentQuestions}
+          >
+            Present
+          </button>
         </div>
       </div>
     </Modal>
