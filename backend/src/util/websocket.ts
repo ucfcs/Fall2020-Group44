@@ -663,8 +663,6 @@ export class Connection {
 	): Promise<void> {
 		// first get all connections for the room
 		const connections = await this.getConnections(courseId);
-		console.log('connections:');
-		console.log(connections);
 
 		// loop thru each connection, publishing the message
 		// to them individually
