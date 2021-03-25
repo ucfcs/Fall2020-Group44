@@ -65,6 +65,15 @@ small and middle deployments, and you shouldn’t feel obligated to use this
 feature. However we understand that this tool wouldn’t be useful if you couldn’t
 customize it when you are ready for it.
 
+## Environment Variables
+
+Set these variables in a `.env` file in `/frontend`. Can be substitued for your remote URLs.
+
+```
+REACT_APP_REST_URL=http://localhost:5000
+REACT_APP_WEBSOCKET_URL=ws://localhost:3001
+```
+
 ## Learn More
 
 You can learn more in the
