@@ -8,14 +8,12 @@ import { store } from "../../store";
 const Present = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
-  const dispatch = global.dispatch;
   const state = global.state;
 
   if (state.websocket) {
-    console.log(state.websocket);
-    state.websocket.onmessage = (event: any) => {
+    state.websocket.onmessage = (event: MessageEvent) => {
       const message = JSON.parse(event.data);
-      console.log(message.action);
+
       switch (message.action) {
         case "studentConnected":
           setStudentsConnected(studentsConnected + 1);
