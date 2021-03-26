@@ -59,6 +59,26 @@ const CreatorEdit = (): ReactElement => {
     });
   };
 
+  const updateParticipation = (event: SyntheticEvent): void => {
+    const value = (event.target as HTMLInputElement).value;
+    const tempQuestion = {
+      ...question,
+      participationPoints: value,
+    };
+
+    dispatch({ type: "set-current-question-info", payload: tempQuestion });
+  };
+
+  const updateCorrectness = (event: SyntheticEvent): void => {
+    const value = (event.target as HTMLInputElement).value;
+    const tempQuestion = {
+      ...question,
+      correctnessPoints: value,
+    };
+
+    dispatch({ type: "set-current-question-info", payload: tempQuestion });
+  };
+
   const previewQuestion = state.editPreviewQuestion
     ? state.questions[state.previewFolder].questions[state.previewQuestion]
     : question;
@@ -137,26 +157,28 @@ const CreatorEdit = (): ReactElement => {
 
         <div className="options-grading">
           <div className="participation">
-            <span>Participation Points:</span>
+            <label htmlFor="participation-input">Participation Points:</label>
 
             <input
+              id="participation-input"
               type="number"
               tabIndex={2}
-              className="participation-input"
-              placeholder="0.5"
+              onChange={updateParticipation}
+              value={state.currentQuestionInfo.participationPoints}
               step="0.1"
               min="0.0"
             />
           </div>
 
           <div className="correctness">
-            <span>Correctness Points:</span>
+            <label htmlFor="correctness-input">Correctness Points:</label>
 
             <input
+              id="correctness-input"
               type="number"
               tabIndex={2}
-              className="correctness-input"
-              placeholder="0.5"
+              onChange={updateCorrectness}
+              value={state.currentQuestionInfo.correctnessPoints}
               step="0.1"
               min="0.0"
             />

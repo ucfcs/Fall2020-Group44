@@ -12,6 +12,8 @@ const baseQuestionInfo = {
     { text: "", isAnswer: false },
   ],
   folderId: null,
+  participationPoints: 0.5,
+  correctnessPoints: 0.5,
 };
 
 const init = {
@@ -28,6 +30,8 @@ const init = {
           question: "What are the products of photosynthesis?",
           type: "Mult Choice",
           folderId: 0,
+          participationPoints: 0.5,
+          correctnessPoints: 0.5,
           questionOptions: [
             {
               text: "Carbon dioxide and water",
@@ -49,6 +53,8 @@ const init = {
           question: "What colour is chlorophyll?",
           type: "Mult Choice",
           folderId: 0,
+          participationPoints: 0.5,
+          correctnessPoints: 0.5,
           questionOptions: [
             {
               text: "Black",
@@ -75,6 +81,8 @@ const init = {
           question: "Where does photosynthesis take place?",
           type: "Mult Choice",
           folderId: 0,
+          participationPoints: 0.5,
+          correctnessPoints: 0.5,
           questionOptions: [
             {
               text: "In the chloroplasts",
@@ -96,6 +104,8 @@ const init = {
           question: "What are the reactants of photosynthesis?",
           type: "Mult Choice",
           folderId: 0,
+          participationPoints: 0.5,
+          correctnessPoints: 0.5,
           questionOptions: [
             {
               text: "Carbon dioxide and water",
@@ -122,6 +132,8 @@ const init = {
           question: "When do plants respire?",
           type: "Mult Choice",
           folderId: 0,
+          participationPoints: 0.5,
+          correctnessPoints: 0.5,
           questionOptions: [
             {
               text: "During the day only",
@@ -143,6 +155,8 @@ const init = {
           question: "When do plants photosynthesise?",
           type: "Mult Choice",
           folderId: 0,
+          participationPoints: 0.5,
+          correctnessPoints: 0.5,
           questionOptions: [
             {
               text: "During the day and night",
@@ -169,6 +183,8 @@ const init = {
           question: "What are the cells near the top of leaves called?",
           type: "Mult Choice",
           folderId: 0,
+          participationPoints: 0.5,
+          correctnessPoints: 0.5,
           questionOptions: [
             {
               text: "Palisade cells",
@@ -190,6 +206,8 @@ const init = {
           question: "What does xylem carry?",
           type: "Mult Choice",
           folderId: 0,
+          participationPoints: 0.5,
+          correctnessPoints: 0.5,
           questionOptions: [
             {
               text: "Water",
@@ -216,6 +234,8 @@ const init = {
           question: "What do stomata do?",
           type: "Mult Choice",
           folderId: 0,
+          participationPoints: 0.5,
+          correctnessPoints: 0.5,
           questionOptions: [
             {
               text: "Stop carbon dioxide diffusing into leaves",
@@ -237,6 +257,8 @@ const init = {
           question: "How are root hair cells adapted?",
           type: "Mult Choice",
           folderId: 0,
+          participationPoints: 0.5,
+          correctnessPoints: 0.5,
           questionOptions: [
             {
               text: "Huge surface area",
