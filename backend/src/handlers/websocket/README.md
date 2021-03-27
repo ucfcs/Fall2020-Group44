@@ -10,7 +10,7 @@
 
 ### Example: Student submit route
 
-`ws.send( JSON.stringify({ action: "routeName", optionId: "option", ucfid: "ucfid" }) );`
+`ws.send( JSON.stringify({ action: "submit", optionId: "option", ucfid: "ucfid" }) );`
 
 ## Close Connection
 
@@ -32,7 +32,7 @@
 
 ## From Student
 
-### studentJoin
+### studentJoinRoom
 
 Student joins room for their course
 
@@ -53,9 +53,23 @@ Student submits response to a question
 - **payload** `optionId: Number, ucfid: String`
 - **returns** success submitting response
 
+### joinSession
+
+student joins the session, notifying professor
+
+- **payload** `courseId: String`
+- **returns** success joining session
+
+### leaveSession
+
+student leaves the session, notifying professor
+
+- **payload** `courseId: String`
+- **returns** success leaving session
+
 ## From Professor
 
-### professorJoin
+### professorJoinRoom
 
 Professor joins room for their course
 

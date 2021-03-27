@@ -285,6 +285,11 @@ functions:
     events:
       - websocket:
           route: joinSession
+  leaveSession:
+    handler: src/handlers/websocket/session.leave
+    events:
+      - websocket:
+          route: leaveSession
   submit:
     handler: src/handlers/websocket/submit.handler
     events:

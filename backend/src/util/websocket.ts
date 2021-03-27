@@ -589,6 +589,35 @@ export class Connection {
 	}
 
 	/******************************************************
+	 * student leaves a session by notifying the professor
+	 *
+	 * params
+	 * - courseId
+	 * returns
+	 * - success of notifying professor
+	 *****************************************************/
+	async leaveSession(courseId: string): Promise<APIGatewayProxyResult> {
+		try {
+			await this.sendToProfessor(courseId, 'studentLeft');
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: `successfully left session in room ${courseId}`,
+				}),
+			};
+		} catch (error) {
+			console.log(`student error leaving session in room ${courseId}`);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `error leaving session in room ${courseId}`,
+				}),
+			};
+		}
+	}
+
+	/******************************************************
 	 * submit a users response, then notify the professor
 	 * if it is not an updated response
 	 *

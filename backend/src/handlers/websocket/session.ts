@@ -88,4 +88,30 @@ const join = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-export { start, end, join };
+const leave = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	// initialize connection to dynamo/apigateway
+	if (!connection) {
+		connection = new Connection();
+		connection.init(event);
+	}
+
+	try {
+		const params = JSON.parse(event?.body || '{}');
+
+		// get params from payload
+		room = params?.courseId;
+		if (!room) throw 'courseId not provided in payload';
+
+		return await connection.leaveSession(room);
+	} catch (error) {
+		console.log(error);
+		return {
+			statusCode: 400,
+			body: JSON.stringify({
+				message: `error leaving session: ${error}`,
+			}),
+		};
+	}
+};
+
+export { start, end, join, leave };
