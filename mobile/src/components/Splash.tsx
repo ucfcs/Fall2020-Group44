@@ -4,7 +4,8 @@ import { ActivityIndicator, StyleSheet, View } from 'react-native';
 import { GOLD } from '../libs/colors';
 import { AppContext } from './Provider';
 import { load } from '../services/store';
-import { canvasSelf, getUserSetting } from '../services/backend';
+import { getCanvasSelf, getUserSetting } from '../services/backend';
+import * as ws from '../services/websocket';
 
 const styles = StyleSheet.create({
 	container: {
@@ -32,14 +33,11 @@ export const Splash: FunctionComponent = () => {
 				dispatch({ type: 'SET_TOKEN', payload: token });
 
 				// 2. connect to the WS server
-				dispatch({ type: 'CONNECT' });
+				ws.init();
 
 				// 3. get user info from canvas
 				try {
-					const data = await canvasSelf(token, {
-						url: '/api/v1/users/self',
-						method: 'GET',
-					});
+					const data = await getCanvasSelf(token);
 
 					dispatch({ type: 'SET_NAME', payload: data.payload.name });
 					dispatch({ type: 'SET_EMAIL', payload: data.payload.email });

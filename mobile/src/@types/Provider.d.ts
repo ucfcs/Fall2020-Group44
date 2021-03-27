@@ -6,7 +6,6 @@ type AppState = {
 	settings: Settings;
 	//
 	phase: Phase;
-	ws: null | WebSocket;
 };
 
 type AppContext = {
@@ -21,7 +20,6 @@ type Settings = {
 type Phase = 'initializing' | 'authentication' | 'connection';
 
 type Action =
-	| { type: 'CONNECT' }
 	| { type: 'SET_NAME'; payload: string }
 	| { type: 'SET_EMAIL'; payload: string }
 	| { type: 'SET_TOKEN'; payload: string }
