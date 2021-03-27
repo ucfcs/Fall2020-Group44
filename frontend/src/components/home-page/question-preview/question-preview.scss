@@ -6,6 +6,13 @@
   height: calc(100vh - 8rem);
   overflow-y: auto;
 
+  .folder-icon {
+    height: 18px;
+    width: auto;
+    padding-bottom: 4px;
+    padding-right: 4px;
+  }
+
   &__info {
     max-width: 40rem;
     min-width: 16rem;

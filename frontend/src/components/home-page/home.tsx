@@ -11,6 +11,7 @@ const Body = (): ReactElement => {
 
       <div className="body">
         <ContentTree />
+
         <div className="content-page">
           <QuestionPreview />
         </div>
