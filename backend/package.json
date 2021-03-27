@@ -4,10 +4,14 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"db:init": "serverless invoke local --function dbInit",
-		"db:drop": "serverless invoke local --function dbDrop",
 		"dev": "serverless offline --httpPort 5000",
-		"deploy": "serverless deploy --stage production"
+		"deploy": "serverless deploy --stage production",
+		"db:init": "serverless invoke local --function dbInit",
+		"db:mysql:init": "serverless invoke local --function dbInit --only-mysql",
+		"db:dynamo:init": "serverless invoke local --function dbInit --only-dynamo",
+		"db:drop": "serverless invoke local --function dbDrop",
+		"db:mysql:drop": "serverless invoke local --function dbDrop --only-mysql",
+		"db:dynamo:drop": "serverless invoke local --function dbDrop --only-dynamo"
 	},
 	"author": "",
 	"license": "ISC",
@@ -19,6 +23,7 @@
 		"@types/serverless": "^1.78.23",
 		"@typescript-eslint/eslint-plugin": "^4.19.0",
 		"@typescript-eslint/parser": "^4.19.0",
+		"colors": "^1.4.0",
 		"eslint": "^7.23.0",
 		"fork-ts-checker-webpack-plugin": "^6.2.0",
 		"prettier": "2.2.1",

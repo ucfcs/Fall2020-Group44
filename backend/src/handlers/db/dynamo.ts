@@ -1,4 +1,5 @@
 import dynamodb from '../../config/dynamo';
+import { LOG } from '../../util/logs';
 
 export async function init(): Promise<void> {
 	const params = {
@@ -39,6 +40,8 @@ export async function init(): Promise<void> {
 	};
 
 	await dynamodb.createTable(params).promise();
+
+	LOG('dynamo🍃 init successful'.green);
 }
 
 export async function drop(): Promise<void> {
@@ -47,4 +50,6 @@ export async function drop(): Promise<void> {
 	};
 
 	await dynamodb.deleteTable(params).promise();
+
+	LOG('dynamo🍃 drop successful'.green);
 }
