@@ -4,7 +4,7 @@ import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 let connection: Connection;
 let room: string;
 
-const studentHandler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+const student = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	// initialize connection to dynamodb/apigateway
 	if (!connection) {
 		connection = new Connection();
@@ -34,9 +34,7 @@ const studentHandler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-const professorHandler = async (
-	event: APIGatewayEvent
-): Promise<ProxyResult> => {
+const professor = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	// initialize connection to dynamodb/apigateway
 	if (!connection) {
 		connection = new Connection();
@@ -66,4 +64,4 @@ const professorHandler = async (
 	}
 };
 
-export { studentHandler, professorHandler };
+export { student, professor };

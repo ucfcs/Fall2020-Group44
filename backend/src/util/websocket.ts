@@ -560,6 +560,35 @@ export class Connection {
 	}
 
 	/******************************************************
+	 * student joins a session by notifying the professor
+	 *
+	 * params
+	 * - courseId
+	 * returns
+	 * - success of notifying professor
+	 *****************************************************/
+	async joinSession(courseId: string): Promise<APIGatewayProxyResult> {
+		try {
+			await this.sendToProfessor(courseId, 'studentJoined');
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: `successfully joined session in room ${courseId}`,
+				}),
+			};
+		} catch (error) {
+			console.log(`student unable to join session in room ${courseId}`);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `error joining session in room ${courseId}`,
+				}),
+			};
+		}
+	}
+
+	/******************************************************
 	 * submit a users response, then notify the professor
 	 * if it is not an updated response
 	 *

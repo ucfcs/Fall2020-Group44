@@ -245,16 +245,16 @@ functions:
     events:
       - websocket:
           route: $disconnect
-  studentJoin:
-    handler: src/handlers/websocket/join.studentHandler
+  studentJoinRoom:
+    handler: src/handlers/websocket/joinRoom.student
     events:
       - websocket:
-          route: studentJoin
-  professorJoin:
-    handler: src/handlers/websocket/join.professorHandler
+          route: studentJoinRoom
+  professorJoinRoom:
+    handler: src/handlers/websocket/joinRoom.professor
     events:
       - websocket:
-          route: professorJoin
+          route: professorJoinRoom
   leaveRoom:
     handler: src/handlers/websocket/leaveRoom.handler
     events:
@@ -280,6 +280,11 @@ functions:
     events:
       - websocket:
           route: endSession
+  joinSession:
+    handler: src/handlers/websocket/session.join
+    events:
+      - websocket:
+          route: joinSession
   submit:
     handler: src/handlers/websocket/submit.handler
     events:

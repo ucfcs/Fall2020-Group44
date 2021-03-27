@@ -7,7 +7,7 @@ let sessionId: number;
 let sessionName: string;
 
 const start = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	// initialize connection to redis/apigateway
+	// initialize connection to dynamo/apigateway
 	if (!connection) {
 		connection = new Connection();
 		connection.init(event);
@@ -37,7 +37,7 @@ const start = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 };
 
 const end = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	// initialize connection to redis/apigateway
+	// initialize connection to dynamo/apigateway
 	if (!connection) {
 		connection = new Connection();
 		connection.init(event);
@@ -62,4 +62,30 @@ const end = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-export { start, end };
+const join = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	// initialize connection to dynamo/apigateway
+	if (!connection) {
+		connection = new Connection();
+		connection.init(event);
+	}
+
+	try {
+		const params = JSON.parse(event?.body || '{}');
+
+		// get params from payload
+		room = params?.courseId;
+		if (!room) throw 'courseId not provided in payload';
+
+		return await connection.joinSession(room);
+	} catch (error) {
+		console.log(error);
+		return {
+			statusCode: 400,
+			body: JSON.stringify({
+				message: `error joining session: ${error}`,
+			}),
+		};
+	}
+};
+
+export { start, end, join };
