@@ -270,6 +270,11 @@ functions:
     events:
       - websocket:
           route: closeRoom
+  startSession:
+    handler: src/handlers/websocket/session.start
+    events:
+      - websocket:
+          route: startSession
   submit:
     handler: src/handlers/websocket/submit.handler
     events:

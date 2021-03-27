@@ -160,6 +160,10 @@ export class Connection {
 				professor: isProfessor ? connectionId : 'none',
 				connections: this.client?.createSet([connectionId]),
 				questionOpen: false,
+				session: {
+					id: 0,
+					name: 'none',
+				},
 			},
 			ConditionExpression: 'attribute_not_exists(courseId)',
 		};
@@ -435,6 +439,69 @@ export class Connection {
 					}),
 				};
 			}
+		}
+	}
+
+	/******************************************************
+	 * start a session by
+	 * - sending `startSession` to the students
+	 * - updating session params in dynamodb table
+	 *
+	 * params
+	 * - courseId, sessionName, sessionId
+	 * returns
+	 * - success of session start
+	 *****************************************************/
+	async startSession(
+		courseId: string,
+		sessionId: number,
+		sessionName: string
+	): Promise<APIGatewayProxyResult> {
+		const params = {
+			TableName: process.env.TABLE_NAME as string,
+			Key: {
+				courseId: courseId,
+			},
+			UpdateExpression: 'SET #s.#id = :id, #s.#name = :name',
+			ExpressionAttributeValues: {
+				':id': sessionId,
+				':name': sessionName,
+			},
+			ExpressionAttributeNames: {
+				'#s': 'session',
+				'#id': 'id',
+				'#name': 'name',
+			},
+			ConditionExpression: 'attribute_exists(courseId)',
+		};
+
+		try {
+			await this.client?.update(params).promise();
+
+			await this.publish(courseId, 'startSession', {
+				sessionName: sessionName,
+				sessionId: sessionId,
+			});
+
+			console.log(
+				`session ${sessionId}:${sessionName} started in room ${courseId}`
+			);
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: `successfully posted startSession to students of room ${courseId}`,
+				}),
+			};
+		} catch (error) {
+			console.log(`error starting session in room ${courseId}:`);
+			console.log(error);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `Error starting session in room ${courseId}`,
+				}),
+			};
 		}
 	}
 
