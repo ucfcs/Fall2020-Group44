@@ -22,7 +22,8 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		// it already exists
 		return await connection.createRoom(
 			room,
-			event?.requestContext.connectionId as string
+			event?.requestContext.connectionId as string,
+			true
 		);
 	} catch (error) {
 		console.log(error);

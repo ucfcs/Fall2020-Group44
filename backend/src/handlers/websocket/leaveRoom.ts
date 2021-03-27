@@ -18,7 +18,7 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		if (!room) throw 'courseId not provided in payload';
 
 		// if the room exists, remove this connectionID from the room
-		await connection.removeStudent(
+		await connection.leaveRoom(
 			room,
 			event?.requestContext.connectionId as string
 		);

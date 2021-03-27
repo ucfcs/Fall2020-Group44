@@ -245,16 +245,21 @@ functions:
     events:
       - websocket:
           route: $disconnect
-  join:
-    handler: src/handlers/websocket/join.handler
+  studentJoin:
+    handler: src/handlers/websocket/join.studentHandler
     events:
       - websocket:
-          route: join
-  leave:
-    handler: src/handlers/websocket/leave.handler
+          route: studentJoin
+  professorJoin:
+    handler: src/handlers/websocket/join.professorHandler
     events:
       - websocket:
-          route: leave
+          route: professorJoin
+  leaveRoom:
+    handler: src/handlers/websocket/leaveRoom.handler
+    events:
+      - websocket:
+          route: leaveRoom
   createRoom:
     handler: src/handlers/websocket/createRoom.handler
     events:

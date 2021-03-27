@@ -33,9 +33,10 @@ export class Connection {
 	 * returns
 	 * - success of dynamodb update
 	 *****************************************************/
-	async addStudent(
+	async joinRoom(
 		courseId: string,
-		connectionId: string
+		connectionId: string,
+		isProfessor: boolean
 	): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
@@ -50,14 +51,29 @@ export class Connection {
 		};
 
 		try {
-			// add student to the room
+			// add person to the room
 			await this.client?.update(params).promise();
-			console.log(
-				`DynamoDB student ${connectionId} added to room ${courseId}: `
-			);
+			console.log(`DynamoDB: ${connectionId} added to room ${courseId}: `);
 
-			// inform professor that student has connected
-			await this.sendToProfessor(courseId, 'studentConnected');
+			// if they are a professor, also set professor connectionId
+			if (isProfessor) {
+				const profParams = {
+					TableName: process.env.TABLE_NAME as string,
+					Key: {
+						courseId: courseId,
+					},
+					UpdateExpression: 'SET professor = :p',
+					ExpressionAttributeValues: {
+						':p': connectionId,
+					},
+					ConditionExpression: 'attribute_exists(courseId)',
+				};
+
+				await this.client?.update(profParams).promise();
+				console.log(
+					`DynamoDB: ${connectionId} set to professor in room ${courseId}`
+				);
+			}
 
 			return {
 				statusCode: 200,
@@ -66,22 +82,19 @@ export class Connection {
 				}),
 			};
 		} catch (error) {
-			console.log(`Error adding student ${connectionId} to room ${courseId}:`);
-			// specific error for room does not exist
+			console.log(
+				`DynamoDB: Error adding ${connectionId} to room ${courseId}:`
+			);
+			// specific error for room does not exist. create a new one
 			if (error.code == 'ConditionalCheckFailedException') {
-				console.log(`room ${courseId} does not exist`);
-				return {
-					statusCode: 402,
-					body: JSON.stringify({
-						message: 'RoomNotExistsException',
-					}),
-				};
+				console.log(`DynamoDB: room ${courseId} does not exist. creating now`);
+				return this.createRoom(courseId, connectionId, false);
 			}
 			console.log(error);
 			return {
 				statusCode: 400,
 				body: JSON.stringify({
-					message: `DynamoDB UPDATE error when adding student to room ${courseId}`,
+					message: `DynamoDB UPDATE error when adding ${connectionId} to room ${courseId}`,
 				}),
 			};
 		}
@@ -137,13 +150,14 @@ export class Connection {
 	 *****************************************************/
 	async createRoom(
 		courseId: string,
-		connectionId: string
+		connectionId: string,
+		isProfessor: boolean
 	): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Item: {
 				courseId: courseId,
-				professor: connectionId,
+				professor: isProfessor ? connectionId : 'none',
 				connections: this.client?.createSet([connectionId]),
 				questionOpen: false,
 			},
@@ -183,9 +197,7 @@ export class Connection {
 	}
 
 	/******************************************************
-	 * close the room in DynamoDB by
-	 * - publishing `endSession` to all connections
-	 * - deleting the room item from DynamoDB
+	 * close the room in DynamoDB by deleting the room item
 	 *
 	 * params
 	 * - courseId
@@ -205,9 +217,6 @@ export class Connection {
 			if ((await this.roomExists(courseId)) == 0) {
 				throw `room ${courseId} does not exist`;
 			}
-
-			// publish endSession to all students
-			await this.publish(courseId, 'endSession');
 
 			//delete the room from DynamoDB
 			await this.client?.delete(params).promise();
@@ -233,18 +242,17 @@ export class Connection {
 	}
 
 	/******************************************************
-	 * remove a student connectionId from the SET if
+	 * remove a connectionId from the SET if
 	 * their websocket connection has gone 'stale' i.e.
 	 * no longer connected
 	 *
-	 * inform the professor with message `studentDisconnected`
 	 *
 	 * params
-	 * - courseId, connectionId of student
+	 * - courseId, connectionId
 	 * returns
 	 * - success of DynamoDB connection set update
 	 *****************************************************/
-	async removeStudent(
+	async leaveRoom(
 		courseId: string,
 		connectionId: string
 	): Promise<APIGatewayProxyResult> {
@@ -257,13 +265,39 @@ export class Connection {
 			ExpressionAttributeValues: {
 				':c': this.client?.createSet([connectionId]),
 			},
+			ReturnValues: 'UPDATED_NEW',
 		};
 
-		//remove student connection from the room
-		await this.client?.update(params).promise();
+		try {
+			//remove connection from the room
+			const result = await this.client?.update(params).promise();
 
-		// inform the professor that a student disconnected
-		return await this.sendToProfessor(courseId, 'studentDisconnected');
+			//if the room is now empty, delete it
+			const updatedConnections = result?.Attributes?.connections.values;
+			if (!updatedConnections || updatedConnections.length == 0) {
+				return await this.closeRoom(courseId);
+			}
+
+			// should also probably set the professor to 'none' if the
+			// person that left was professor. however it doesn't affect
+			// anything if you leave the professor the same
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: 'left room successfully',
+				}),
+			};
+		} catch (error) {
+			console.log(`Error removing ${connectionId} from room ${courseId}`);
+			console.log(error);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `DynamoDB UPDATE error when removing ${connectionId} from room ${courseId}`,
+				}),
+			};
+		}
 	}
 
 	/******************************************************
@@ -684,9 +718,10 @@ export class Connection {
 					console.log(
 						`Found stale connection, deleting connectionId ${connectionId}`
 					);
-					await this.removeStudent(courseId, connectionId);
+					await this.leaveRoom(courseId, connectionId);
+				} else {
+					console.log(e);
 				}
-				console.log(e);
 			}
 		}
 	}

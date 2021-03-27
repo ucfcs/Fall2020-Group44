@@ -4,7 +4,7 @@ import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 let connection: Connection;
 let room: string;
 
-export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+const studentHandler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	// initialize connection to dynamodb/apigateway
 	if (!connection) {
 		connection = new Connection();
@@ -18,9 +18,10 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		if (!room) throw 'courseId not provided in payload';
 
 		// if the room exists, add this connectionID to the room
-		return await connection.addStudent(
+		return await connection.joinRoom(
 			room,
-			event?.requestContext.connectionId as string
+			event?.requestContext.connectionId as string,
+			false
 		);
 	} catch (error) {
 		console.log(error);
@@ -32,3 +33,37 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		};
 	}
 };
+
+const professorHandler = async (
+	event: APIGatewayEvent
+): Promise<ProxyResult> => {
+	// initialize connection to dynamodb/apigateway
+	if (!connection) {
+		connection = new Connection();
+		connection.init(event);
+	}
+
+	try {
+		const params = JSON.parse(event?.body || '{}');
+		// get room from payload
+		room = params?.courseId;
+		if (!room) throw 'courseId not provided in payload';
+
+		// if the room exists, add this connectionID to the room
+		return await connection.joinRoom(
+			room,
+			event?.requestContext.connectionId as string,
+			true
+		);
+	} catch (error) {
+		console.log(error);
+		return {
+			statusCode: 400,
+			body: JSON.stringify({
+				message: `error connecting to room: ${error}`,
+			}),
+		};
+	}
+};
+
+export { studentHandler, professorHandler };
