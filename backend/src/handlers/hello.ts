@@ -1,6 +1,6 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 
-import sequelize from '../config/database';
+import sequelize from '../config/mysql';
 import responses from '../util/api/responses';
 
 // declare lambda function
