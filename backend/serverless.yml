@@ -260,11 +260,6 @@ functions:
     events:
       - websocket:
           route: leaveRoom
-  createRoom:
-    handler: src/handlers/websocket/createRoom.handler
-    events:
-      - websocket:
-          route: createRoom
   closeRoom:
     handler: src/handlers/websocket/closeRoom.handler
     events:
