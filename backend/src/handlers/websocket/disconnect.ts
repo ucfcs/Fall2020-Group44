@@ -18,12 +18,8 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 		// if it was, close the room
 		if (courseId) {
-			console.log('a professor disconnected, closing the room');
+			console.log(`a professor disconnected, closing the room ${courseId}`);
 			await connection.closeRoom(courseId);
-
-			console.log(
-				`professor disconnected, successfully closed room ${courseId}`
-			);
 			return {
 				statusCode: 200,
 				body: JSON.stringify({

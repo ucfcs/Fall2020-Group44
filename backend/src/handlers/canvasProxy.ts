@@ -16,10 +16,15 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		return responses.badRequest({ message: 'Missing body' });
 	}
 
-	const body = JSON.parse(event.body);
+	const body: Body = JSON.parse(event.body);
 
 	if (!body || !body.method || !body.url) {
 		return responses.badRequest({ message: 'Missing body' });
+	}
+
+	// lets check if the url prop has params set
+	if (body.url.includes(':user_id')) {
+		body.url = body.url.replace(':user_id', user.canvasId.toString());
 	}
 
 	try {
@@ -38,3 +43,8 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		return responses.internalServerError();
 	}
 };
+
+interface Body {
+	method: string;
+	url: string;
+}

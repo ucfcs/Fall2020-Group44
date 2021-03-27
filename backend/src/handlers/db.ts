@@ -31,6 +31,8 @@ const init = async (): Promise<void> => {
 			question: 'Q1',
 			folderId: 1,
 			courseId: '1',
+			participationPoints: 0.5,
+			correctnessPoints: 0.5,
 			QuestionOptions: [],
 		});
 		await Question.create({
@@ -38,6 +40,8 @@ const init = async (): Promise<void> => {
 			question: 'Q2',
 			folderId: 1,
 			courseId: '1',
+			participationPoints: 0.5,
+			correctnessPoints: 0.5,
 			QuestionOptions: [],
 		});
 
