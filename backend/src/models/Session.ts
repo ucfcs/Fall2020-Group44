@@ -4,7 +4,7 @@ import sequelize from '../config/database';
 export const Session: ModelDefined<
 	SessionAttributes,
 	SessionCreationAttributes
-> = sequelize.define('session', {
+> = sequelize.define('Session', {
 	id: {
 		type: DataTypes.INTEGER,
 		allowNull: false,
