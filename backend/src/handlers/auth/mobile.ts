@@ -45,6 +45,7 @@ export const redirect: APIGatewayProxyHandler = async (event) => {
 			`ucf-react://authentication?token=${token}`
 		);
 	} catch (error) {
+		console.error(error);
 		return responses.internalServerError(error);
 	}
 };
