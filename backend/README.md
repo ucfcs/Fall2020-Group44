@@ -19,6 +19,12 @@ To create database tables and their relationship.
 npm run db:build
 ```
 
+### View Dynamo database
+
+```
+aws dynamodb --endpoint-url http://localhost:8000 scan --table-name Connections
+```
+
 ### Local Server
 
 #### Environment Variable
@@ -40,6 +46,8 @@ CANVAS_URL=http://example.com
 CANVAS_ID=101
 CANVAS_KEY=shhhh
 CANVAS_REDIRECT=http://somewhere.else
+
+TABLE_NAME=Connections
 ```
 
 ### Initialize Docker

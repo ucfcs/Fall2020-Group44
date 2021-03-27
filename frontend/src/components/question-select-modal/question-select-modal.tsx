@@ -10,35 +10,21 @@ import {
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router";
 import { store } from "../../store";
 import Modal from "../modal/modal";
 import "./question-select-modal.scss";
-
-interface Folder {
-  folder: string;
-  questions: Question[];
-}
-
-interface Question {
-  title: string;
-  type: string;
-}
-
-interface PollQuestion {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-}
 
 const QuestionSelect = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const state = global.state;
   const dispatch = global.dispatch;
+
   const [isPreview, setIsPreview] = useState(false);
+  const history = useHistory();
+
+  const url = `${process.env.REACT_APP_WEBSOCKET_URL}`;
 
   const folderCheckboxRefs: HTMLInputElement[] = [];
 
@@ -60,14 +46,30 @@ const QuestionSelect = (): ReactElement => {
   };
 
   const presentQuestions = () => {
-    dispatch({ type: "close-question-select" });
+    const websocket: WebSocket = new WebSocket(url);
+
+    websocket.onopen = () => {
+      websocket.send(
+        JSON.stringify({
+          action: "createRoom",
+          courseId: state.courseId,
+        })
+      );
+
+      dispatch({ type: "set-websocket", payload: websocket });
+      dispatch({ type: "close-question-select" });
+
+      history.push("/poll/present");
+    };
   };
 
   const handlePreviewDragEnd = (result: DropResult) => {
     if (result.destination) {
       const newQuestions: PollQuestion[] = state.poll;
       const [srcQuestion] = newQuestions.splice(result.source.index, 1);
+
       newQuestions.splice(result.destination.index, 0, srcQuestion);
+
       dispatch({ type: "update-session-questions", payload: newQuestions });
     }
   };
@@ -87,10 +89,12 @@ const QuestionSelect = (): ReactElement => {
         // check all the questions in the folder
         questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
           checkbox.checked = true;
+
           if (checkbox.parentElement) {
             checkbox.parentElement.classList.add("selected");
           }
         });
+
         // push entire folder to session
         sessionQuestions[folder] = [
           ...Array(state.questions[folder].questions.length).keys(),
@@ -99,20 +103,28 @@ const QuestionSelect = (): ReactElement => {
       // if it's a single question
       else {
         const parentEl = questionCheckboxRefs[folder][question].parentElement;
+
         if (parentEl) {
           parentEl.classList.add("selected");
         }
+
         // see if all the questions in the folder are checked.
         let isAllChecked = true;
+
         questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
           if (!checkbox.checked) isAllChecked = false;
         });
+
         // check the folder's checkbox if so
         if (isAllChecked && folderCheckboxRefs[folder]) {
           folderCheckboxRefs[folder].checked = true;
         }
+
         // push question and sort the question order within the folder
-        if (!sessionQuestions[folder]) sessionQuestions[folder] = [];
+        if (!sessionQuestions[folder]) {
+          sessionQuestions[folder] = [];
+        }
+
         sessionQuestions[folder].push(question);
         sessionQuestions[folder].sort((a: number, b: number) => a - b);
       }
@@ -128,19 +140,23 @@ const QuestionSelect = (): ReactElement => {
             checkbox.parentElement.classList.remove("selected");
           }
         });
+
         // delete all the questions in the folder from the session
         sessionQuestions[folder] = [];
       }
       // question
       else {
         const parentEl = questionCheckboxRefs[folder][question].parentElement;
+
         if (parentEl) {
           parentEl.classList.remove("selected");
         }
+
         // uncheck the folder
         if (folderCheckboxRefs[folder]) {
           folderCheckboxRefs[folder].checked = false;
         }
+
         // delete question from session.
         sessionQuestions[folder] = sessionQuestions[folder].filter(
           (q: number) => {
@@ -148,16 +164,19 @@ const QuestionSelect = (): ReactElement => {
           }
         );
       }
+
       setSessionQuestions(sessionQuestions);
     }
 
     // Update the poll with the questions in sessionQuestions
     const newPoll: PollQuestion[] = [];
+
     Object.keys(sessionQuestions).forEach((f: string) => {
       sessionQuestions[f].forEach((q: number) => {
         newPoll.push(state.questions[f].questions[q]);
       });
     });
+
     dispatch({ type: "update-session-questions", payload: newPoll });
   };
 
@@ -166,9 +185,11 @@ const QuestionSelect = (): ReactElement => {
       <div className="question-select-module">
         <div className="creator-header">
           <button type="reset" className="exit" onClick={closeQuestionSelect}>
-            ×
+            X
           </button>
+
           <span className="header-title">Select Questions to Present</span>
+
           <div className="header-tabs">
             <div
               className={`tab-buttons edit-tab ${isPreview ? "" : "selected"}`}
@@ -176,6 +197,7 @@ const QuestionSelect = (): ReactElement => {
             >
               Edit
             </div>
+
             <div
               className={`tab-buttons preview-tab ${
                 isPreview ? "selected" : ""
@@ -186,6 +208,7 @@ const QuestionSelect = (): ReactElement => {
             </div>
           </div>
         </div>
+
         <div className="question-select-body">
           <div className="question-details">
             {isPreview ? (
@@ -228,14 +251,17 @@ const QuestionSelect = (): ReactElement => {
               <div className="question-list">
                 <div className="question-list-header">
                   <span className="title">Title</span>
-                  <span></span>
+
+                  <span />
+
                   <span className="type">Type</span>
                 </div>
+
                 <div className="question-list-body">
                   <div>
                     {state.questions.map((folder: Folder, fIndex: number) =>
                       folder.folder !== null ? (
-                        <div>
+                        <div key={fIndex}>
                           <div key={fIndex}>
                             <div className={`folder`}>
                               <label
@@ -252,16 +278,15 @@ const QuestionSelect = (): ReactElement => {
                                     selectQuestionsForPoll(e, true, fIndex)
                                   }
                                 />
-                                <div></div>
-                                <svg
+
+                                <div />
+
+                                <img
+                                  src="/img/folder-icon.svg"
+                                  alt=""
                                   className="folder-icon"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  height="24"
-                                  viewBox="0 -1 24 24"
-                                  width="24"
-                                >
-                                  <path d="M448.916,118.259h-162.05c-6.578,0-13.003-2.701-17.44-7.292l-50.563-53.264c-12.154-12.115-28.783-18.443-45.625-18.346    H63.084C28.301,39.356,0,67.657,0,102.439v307.123c0,34.783,28.301,63.084,63.084,63.084h386.064h0.058    c34.764-0.154,62.949-28.59,62.794-63.277V181.342C512,146.559,483.699,118.259,448.916,118.259z M473.417,409.447    c0.058,13.504-10.88,24.558-24.307,24.616H63.084c-13.504,0-24.5-10.996-24.5-24.5V102.439c0-13.504,10.996-24.5,24.5-24.52    H173.74c0.212,0,0.424,0,0.637,0c6.443,0,12.694,2.566,16.899,6.733l50.293,53.013c11.806,12.192,28.32,19.176,45.297,19.176    h162.05c13.504,0,24.5,10.996,24.5,24.5V409.447z" />
-                                </svg>
+                                />
+
                                 <div>{folder.folder}</div>
                               </label>
                             </div>
@@ -299,8 +324,11 @@ const QuestionSelect = (): ReactElement => {
                                       )
                                     }
                                   />
+
                                   <div className="title">{question.title}</div>
-                                  <div></div>
+
+                                  <div />
+
                                   <div className="type">{question.type}</div>
                                 </label>
                               </div>
@@ -343,8 +371,11 @@ const QuestionSelect = (): ReactElement => {
                                   )
                                 }
                               />
+
                               <div className="title">{question.title}</div>
-                              <div></div>
+
+                              <div />
+
                               <div className="type">{question.type}</div>
                             </label>
                           ))}
@@ -366,19 +397,36 @@ const QuestionSelect = (): ReactElement => {
           >
             Cancel
           </button>
-          <Link className="button-link" to="/poll/present">
-            <button
-              type="submit"
-              className="save-button"
-              onClick={presentQuestions}
-            >
-              Present
-            </button>
-          </Link>
+
+          <button
+            type="submit"
+            className="save-button"
+            onClick={presentQuestions}
+          >
+            Present
+          </button>
         </div>
       </div>
     </Modal>
   );
 };
+
+interface Folder {
+  folder: string;
+  questions: Question[];
+}
+
+interface Question {
+  title: string;
+  type: string;
+}
+
+interface PollQuestion {
+  title: string;
+  question: string;
+  type: string;
+  choices: string[];
+  correct: number;
+}
 
 export default QuestionSelect;

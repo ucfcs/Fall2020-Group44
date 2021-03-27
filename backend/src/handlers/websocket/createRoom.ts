@@ -14,7 +14,9 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		const params = JSON.parse(event?.body || '{}');
 		// get room from payload
 		room = params?.courseId;
-		if (!room) throw 'courseId not provided in payload';
+		if (room == null) {
+			throw 'courseId not provided in payload';
+		}
 
 		// try to create the room, the function will check if
 		// it already exists

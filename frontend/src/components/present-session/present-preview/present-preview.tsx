@@ -2,7 +2,7 @@ import React, { ReactElement } from "react";
 import { Link } from "react-router-dom";
 import "./present-preview.scss";
 
-const PresentPreview = (): ReactElement => {
+const PresentPreview = (props: Props): ReactElement => {
   return (
     <div className="present-preview">
       <div className="preview-left">
@@ -20,12 +20,15 @@ const PresentPreview = (): ReactElement => {
         </p>
       </div>
       <div className="preview-right">
-        {/* TODO: implement number connected */}
-        <p className="num-connected">{87}</p>
+        <p className="num-connected">{props.studentsConnected}</p>
         <p className="connected-label">Students Connected</p>
       </div>
     </div>
   );
 };
+
+interface Props {
+  studentsConnected: number;
+}
 
 export default PresentPreview;

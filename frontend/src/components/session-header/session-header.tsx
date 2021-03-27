@@ -9,11 +9,23 @@ const SessionHeader = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
+  const state = global.state;
 
   const clearSession = (): void => {
     dispatch({ type: "update-question-number", payload: 0 });
     dispatch({ type: "update-question-progress", payload: RESPOND });
     dispatch({ type: "open-questions" });
+
+    if (state.websocket) {
+      state.websocket.send(
+        JSON.stringify({
+          action: "closeRoom",
+          courseId: state.courseId,
+        })
+      );
+
+      dispatch({ type: "set-websocket", payload: null });
+    }
   };
 
   return (

@@ -210,10 +210,10 @@ export class Connection {
 			await this.publish(courseId, 'endSession');
 
 			//delete the room from DynamoDB
-			const result = await this.client?.delete(params).promise();
-			console.log(result);
+			await this.client?.delete(params).promise();
 
 			// otherwise all was successful
+			console.log(`room ${courseId} closed successfully`);
 			return {
 				statusCode: 200,
 				body: JSON.stringify({
@@ -378,10 +378,6 @@ export class Connection {
 				}),
 			};
 		} catch (err) {
-			console.log(
-				`Error posting message to professor for room ${courseId}: ${err}`
-			);
-
 			// if for some reason the professor is no longer connected to the websocket, close the room
 			if (err.statusCode == 410) {
 				console.log(
@@ -394,13 +390,17 @@ export class Connection {
 						message: `The professor for room ${courseId} is no longer connected`,
 					}),
 				};
+			} else {
+				console.log(
+					`Error posting message to professor for room ${courseId}: ${err}`
+				);
+				return {
+					statusCode: 400,
+					body: JSON.stringify({
+						message: `Error posting message to professor for room ${courseId}`,
+					}),
+				};
 			}
-			return {
-				statusCode: 400,
-				body: JSON.stringify({
-					message: `Error posting message to professor for room ${courseId}`,
-				}),
-			};
 		}
 	}
 
@@ -663,8 +663,6 @@ export class Connection {
 	): Promise<void> {
 		// first get all connections for the room
 		const connections = await this.getConnections(courseId);
-		console.log('connections:');
-		console.log(connections);
 
 		// loop thru each connection, publishing the message
 		// to them individually

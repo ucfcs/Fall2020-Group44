@@ -260,6 +260,12 @@
     }
   }
 
+  .folder-icon {
+    height: 22px;
+    width: 22px;
+    margin-right: 4px;
+  }
+
   .selected-list {
     &__wrapper {
       width: calc(100% - 80px);
