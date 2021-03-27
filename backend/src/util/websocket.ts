@@ -88,7 +88,7 @@ export class Connection {
 			// specific error for room does not exist. create a new one
 			if (error.code == 'ConditionalCheckFailedException') {
 				console.log(`DynamoDB: room ${courseId} does not exist. creating now`);
-				return this.createRoom(courseId, connectionId, false);
+				return this.createRoom(courseId, connectionId, isProfessor);
 			}
 			console.log(error);
 			return {

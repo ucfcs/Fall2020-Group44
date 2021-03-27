@@ -15,7 +15,7 @@ const start = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 	try {
 		const params = JSON.parse(event?.body || '{}');
-		console.log(params);
+
 		// get params from payload
 		room = params?.courseId;
 		sessionId = parseInt(params?.sessionId);
