@@ -101,6 +101,57 @@ export class Connection {
 	}
 
 	/******************************************************
+	 * check if there is an open session when a student
+	 * joins the room. if so, send a startSession to
+	 * the student
+	 *
+	 * params
+	 * - courseId
+	 * returns
+	 * - success of check
+	 *****************************************************/
+	async checkOpenSession(
+		courseId: string,
+		connectionId: string
+	): Promise<APIGatewayProxyResult> {
+		const params = {
+			TableName: process.env.TABLE_NAME as string,
+			Key: {
+				courseId: courseId,
+			},
+			AttributesToGet: ['session'],
+		};
+
+		try {
+			const result = await this.client?.get(params).promise();
+
+			const session = result?.Item?.session;
+
+			if (session.id !== 0) {
+				this.publish(connectionId, 'startSession', session);
+			}
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: `successfully checked for open session in ${courseId}`,
+				}),
+			};
+		} catch (error) {
+			console.log(
+				`DynamoDB: error checking for open session in room ${courseId}`
+			);
+			console.log(error);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `DynamoDB error checking for open session in room ${courseId}`,
+				}),
+			};
+		}
+	}
+
+	/******************************************************
 	 * check if room key exists
 	 * params
 	 * - key: roomId == courseId
@@ -478,9 +529,9 @@ export class Connection {
 		try {
 			await this.client?.update(params).promise();
 
-			await this.publish(courseId, 'startSession', {
-				sessionName: sessionName,
-				sessionId: sessionId,
+			await this.publishAll(courseId, 'startSession', {
+				name: sessionName,
+				id: sessionId,
 			});
 
 			console.log(
@@ -537,7 +588,7 @@ export class Connection {
 		try {
 			await this.client?.update(params).promise();
 
-			await this.publish(courseId, 'endSession');
+			await this.publishAll(courseId, 'endSession');
 
 			console.log(`session ended in room ${courseId}`);
 
@@ -763,7 +814,7 @@ export class Connection {
 			await this.client?.update(params).promise();
 
 			// then publish the question to all students
-			await this.publish(courseId, 'startQuestion', question);
+			await this.publishAll(courseId, 'startQuestion', question);
 
 			console.log(`Question started in room ${courseId}: `);
 			return {
@@ -823,7 +874,7 @@ export class Connection {
 			await this.client?.update(params).promise();
 
 			// then publish endQuestion to all students
-			await this.publish(courseId, 'endQuestion');
+			await this.publishAll(courseId, 'endQuestion');
 
 			console.log(`Question ended in room ${courseId}: `);
 			return {
@@ -869,7 +920,7 @@ export class Connection {
 	 * returns
 	 * - n/a
 	 *****************************************************/
-	async publish(
+	async publishAll(
 		courseId: string,
 		action: string,
 		payload?: unknown
@@ -902,6 +953,40 @@ export class Connection {
 					console.log(e);
 				}
 			}
+		}
+	}
+
+	/******************************************************
+	 * Publish a message to a specific connection
+	 * {
+	 * 	action: an common action for the client to act on,
+	 *  payload: associated data if relevant to the action
+	 * }
+	 *
+	 * params
+	 * - connectionId, action, payload (optional)
+	 *
+	 * returns
+	 * - n/a
+	 *****************************************************/
+	async publish(
+		connectionId: string,
+		action: string,
+		payload?: unknown
+	): Promise<void> {
+		try {
+			await this.gateway
+				?.postToConnection({
+					ConnectionId: connectionId,
+					Data: JSON.stringify({
+						action: action,
+						payload: payload,
+					}),
+				})
+				.promise();
+		} catch (e) {
+			console.log(`error publishing to connection ${connectionId}`);
+			console.log(e);
 		}
 	}
 }

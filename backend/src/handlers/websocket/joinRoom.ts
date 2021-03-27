@@ -18,10 +18,16 @@ const student = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		if (!room) throw 'courseId not provided in payload';
 
 		// if the room exists, add this connectionID to the room
-		return await connection.joinRoom(
+		await connection.joinRoom(
 			room,
 			event?.requestContext.connectionId as string,
 			false
+		);
+
+		//check if there is an open session/question, and if so join it
+		return await connection.checkOpenSession(
+			room,
+			event?.requestContext.connectionId as string
 		);
 	} catch (error) {
 		console.log(error);
