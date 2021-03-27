@@ -490,7 +490,7 @@ export class Connection {
 			return {
 				statusCode: 200,
 				body: JSON.stringify({
-					message: `successfully posted startSession to students of room ${courseId}`,
+					message: `successfully started session in room ${courseId}`,
 				}),
 			};
 		} catch (error) {
@@ -500,6 +500,60 @@ export class Connection {
 				statusCode: 400,
 				body: JSON.stringify({
 					message: `Error starting session in room ${courseId}`,
+				}),
+			};
+		}
+	}
+
+	/******************************************************
+	 * end a session by
+	 * - sending `endSession` to the students
+	 * - updating session params in dynamodb table to default
+	 *
+	 * params
+	 * - courseId
+	 * returns
+	 * - success of session end
+	 *****************************************************/
+	async endSession(courseId: string): Promise<APIGatewayProxyResult> {
+		const params = {
+			TableName: process.env.TABLE_NAME as string,
+			Key: {
+				courseId: courseId,
+			},
+			UpdateExpression: 'SET #s.#id = :id, #s.#name = :name',
+			ExpressionAttributeValues: {
+				':id': 0,
+				':name': 'none',
+			},
+			ExpressionAttributeNames: {
+				'#s': 'session',
+				'#id': 'id',
+				'#name': 'name',
+			},
+			ConditionExpression: 'attribute_exists(courseId)',
+		};
+
+		try {
+			await this.client?.update(params).promise();
+
+			await this.publish(courseId, 'endSession');
+
+			console.log(`session ended in room ${courseId}`);
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: `successfully ended session in room ${courseId}`,
+				}),
+			};
+		} catch (error) {
+			console.log(`error ending session in room ${courseId}:`);
+			console.log(error);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `Error ending session in room ${courseId}`,
 				}),
 			};
 		}

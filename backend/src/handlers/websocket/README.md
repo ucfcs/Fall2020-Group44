@@ -68,7 +68,14 @@ Professor starts a session for students to join. This is handled
 automatically by the rest route POST /api/v1/session
 
 - **payload** `courseId: String, sessionId: Number, sessionName: String`
-- **returns** success starting question
+- **returns** success starting session
+
+### endSession
+
+Professor ends the session, notifying students
+
+- **payload** `courseId: String`
+- **returns** success ending session
 
 ### startQuestion
 

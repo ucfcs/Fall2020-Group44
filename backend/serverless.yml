@@ -275,6 +275,11 @@ functions:
     events:
       - websocket:
           route: startSession
+  endSession:
+    handler: src/handlers/websocket/session.end
+    events:
+      - websocket:
+          route: endSession
   submit:
     handler: src/handlers/websocket/submit.handler
     events:

@@ -36,4 +36,30 @@ const start = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-export { start };
+const end = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+	// initialize connection to redis/apigateway
+	if (!connection) {
+		connection = new Connection();
+		connection.init(event);
+	}
+
+	try {
+		const params = JSON.parse(event?.body || '{}');
+
+		// get params from payload
+		room = params?.courseId;
+		if (!room) throw 'courseId not provided in payload';
+
+		return await connection.endSession(room);
+	} catch (error) {
+		console.log(error);
+		return {
+			statusCode: 400,
+			body: JSON.stringify({
+				message: `error ending session: ${error}`,
+			}),
+		};
+	}
+};
+
+export { start, end };
