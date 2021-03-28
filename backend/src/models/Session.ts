@@ -1,10 +1,10 @@
 import { DataTypes, ModelDefined } from 'sequelize';
-import sequelize from '../config/database';
+import sequelize from '../config/mysql';
 
 export const Session: ModelDefined<
 	SessionAttributes,
 	SessionCreationAttributes
-> = sequelize.define('session', {
+> = sequelize.define('Session', {
 	id: {
 		type: DataTypes.INTEGER,
 		allowNull: false,

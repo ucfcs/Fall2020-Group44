@@ -42,12 +42,14 @@ MYSQL_DATABASE=ucfpoll
 MYSQL_USER=root
 MYSQL_ROOT_PASSWORD=root
 
+DYNAMO_HOST=http://localhost:8000
+DYNAMO_REGION=us-east-2
+DYNAMO_TABLE_NAME=Connections
+
 CANVAS_URL=http://example.com
 CANVAS_ID=101
 CANVAS_KEY=shhhh
 CANVAS_REDIRECT=http://somewhere.else
-
-TABLE_NAME=Connections
 ```
 
 ### Initialize Docker

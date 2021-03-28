@@ -34,6 +34,7 @@ following content. An object with one property, `BACKEND_URL`.
 
 ```.env.json
 {
-    "BACKEND_URL": "https://df1da6f61a00.ngrok.io"
+    "BACKEND_URL": "https://df1da6f61a00.ngrok.io",
+    "WS_SERVER_URL": "http://localhost:3001"
 }
 ```
