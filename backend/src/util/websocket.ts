@@ -33,9 +33,10 @@ export class Connection {
 	 * returns
 	 * - success of dynamodb update
 	 *****************************************************/
-	async addStudent(
+	async joinRoom(
 		courseId: string,
-		connectionId: string
+		connectionId: string,
+		isProfessor: boolean
 	): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
@@ -50,14 +51,29 @@ export class Connection {
 		};
 
 		try {
-			// add student to the room
+			// add person to the room
 			await this.client?.update(params).promise();
-			console.log(
-				`DynamoDB student ${connectionId} added to room ${courseId}: `
-			);
+			console.log(`DynamoDB: ${connectionId} added to room ${courseId}: `);
 
-			// inform professor that student has connected
-			await this.sendToProfessor(courseId, 'studentConnected');
+			// if they are a professor, also set professor connectionId
+			if (isProfessor) {
+				const profParams = {
+					TableName: process.env.TABLE_NAME as string,
+					Key: {
+						courseId: courseId,
+					},
+					UpdateExpression: 'SET professor = :p',
+					ExpressionAttributeValues: {
+						':p': connectionId,
+					},
+					ConditionExpression: 'attribute_exists(courseId)',
+				};
+
+				await this.client?.update(profParams).promise();
+				console.log(
+					`DynamoDB: ${connectionId} set to professor in room ${courseId}`
+				);
+			}
 
 			return {
 				statusCode: 200,
@@ -66,22 +82,70 @@ export class Connection {
 				}),
 			};
 		} catch (error) {
-			console.log(`Error adding student ${connectionId} to room ${courseId}:`);
-			// specific error for room does not exist
+			console.log(
+				`DynamoDB: Error adding ${connectionId} to room ${courseId}:`
+			);
+			// specific error for room does not exist. create a new one
 			if (error.code == 'ConditionalCheckFailedException') {
-				console.log(`room ${courseId} does not exist`);
-				return {
-					statusCode: 402,
-					body: JSON.stringify({
-						message: 'RoomNotExistsException',
-					}),
-				};
+				console.log(`DynamoDB: room ${courseId} does not exist. creating now`);
+				return this.createRoom(courseId, connectionId, isProfessor);
 			}
 			console.log(error);
 			return {
 				statusCode: 400,
 				body: JSON.stringify({
-					message: `DynamoDB UPDATE error when adding student to room ${courseId}`,
+					message: `DynamoDB UPDATE error when adding ${connectionId} to room ${courseId}`,
+				}),
+			};
+		}
+	}
+
+	/******************************************************
+	 * check if there is an open session when a student
+	 * joins the room. if so, send a startSession to
+	 * the student
+	 *
+	 * params
+	 * - courseId
+	 * returns
+	 * - success of check
+	 *****************************************************/
+	async checkOpenSession(
+		courseId: string,
+		connectionId: string
+	): Promise<APIGatewayProxyResult> {
+		const params = {
+			TableName: process.env.TABLE_NAME as string,
+			Key: {
+				courseId: courseId,
+			},
+			AttributesToGet: ['session'],
+		};
+
+		try {
+			const result = await this.client?.get(params).promise();
+
+			const session = result?.Item?.session;
+
+			if (session.id !== 0) {
+				this.publish(connectionId, 'startSession', session);
+			}
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: `successfully checked for open session in ${courseId}`,
+				}),
+			};
+		} catch (error) {
+			console.log(
+				`DynamoDB: error checking for open session in room ${courseId}`
+			);
+			console.log(error);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `DynamoDB error checking for open session in room ${courseId}`,
 				}),
 			};
 		}
@@ -137,15 +201,20 @@ export class Connection {
 	 *****************************************************/
 	async createRoom(
 		courseId: string,
-		connectionId: string
+		connectionId: string,
+		isProfessor: boolean
 	): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.TABLE_NAME as string,
 			Item: {
 				courseId: courseId,
-				professor: connectionId,
+				professor: isProfessor ? connectionId : 'none',
 				connections: this.client?.createSet([connectionId]),
 				questionOpen: false,
+				session: {
+					id: 0,
+					name: 'none',
+				},
 			},
 			ConditionExpression: 'attribute_not_exists(courseId)',
 		};
@@ -183,9 +252,7 @@ export class Connection {
 	}
 
 	/******************************************************
-	 * close the room in DynamoDB by
-	 * - publishing `endSession` to all connections
-	 * - deleting the room item from DynamoDB
+	 * close the room in DynamoDB by deleting the room item
 	 *
 	 * params
 	 * - courseId
@@ -205,9 +272,6 @@ export class Connection {
 			if ((await this.roomExists(courseId)) == 0) {
 				throw `room ${courseId} does not exist`;
 			}
-
-			// publish endSession to all students
-			await this.publish(courseId, 'endSession');
 
 			//delete the room from DynamoDB
 			await this.client?.delete(params).promise();
@@ -233,18 +297,17 @@ export class Connection {
 	}
 
 	/******************************************************
-	 * remove a student connectionId from the SET if
+	 * remove a connectionId from the SET if
 	 * their websocket connection has gone 'stale' i.e.
 	 * no longer connected
 	 *
-	 * inform the professor with message `studentDisconnected`
 	 *
 	 * params
-	 * - courseId, connectionId of student
+	 * - courseId, connectionId
 	 * returns
 	 * - success of DynamoDB connection set update
 	 *****************************************************/
-	async removeStudent(
+	async leaveRoom(
 		courseId: string,
 		connectionId: string
 	): Promise<APIGatewayProxyResult> {
@@ -257,13 +320,39 @@ export class Connection {
 			ExpressionAttributeValues: {
 				':c': this.client?.createSet([connectionId]),
 			},
+			ReturnValues: 'UPDATED_NEW',
 		};
 
-		//remove student connection from the room
-		await this.client?.update(params).promise();
+		try {
+			//remove connection from the room
+			const result = await this.client?.update(params).promise();
 
-		// inform the professor that a student disconnected
-		return await this.sendToProfessor(courseId, 'studentDisconnected');
+			//if the room is now empty, delete it
+			const updatedConnections = result?.Attributes?.connections.values;
+			if (!updatedConnections || updatedConnections.length == 0) {
+				return await this.closeRoom(courseId);
+			}
+
+			// should also probably set the professor to 'none' if the
+			// person that left was professor. however it doesn't affect
+			// anything if you leave the professor the same
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: 'left room successfully',
+				}),
+			};
+		} catch (error) {
+			console.log(`Error removing ${connectionId} from room ${courseId}`);
+			console.log(error);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `DynamoDB UPDATE error when removing ${connectionId} from room ${courseId}`,
+				}),
+			};
+		}
 	}
 
 	/******************************************************
@@ -401,6 +490,181 @@ export class Connection {
 					}),
 				};
 			}
+		}
+	}
+
+	/******************************************************
+	 * start a session by
+	 * - sending `startSession` to the students
+	 * - updating session params in dynamodb table
+	 *
+	 * params
+	 * - courseId, sessionName, sessionId
+	 * returns
+	 * - success of session start
+	 *****************************************************/
+	async startSession(
+		courseId: string,
+		sessionId: number,
+		sessionName: string
+	): Promise<APIGatewayProxyResult> {
+		const params = {
+			TableName: process.env.TABLE_NAME as string,
+			Key: {
+				courseId: courseId,
+			},
+			UpdateExpression: 'SET #s.#id = :id, #s.#name = :name',
+			ExpressionAttributeValues: {
+				':id': sessionId,
+				':name': sessionName,
+			},
+			ExpressionAttributeNames: {
+				'#s': 'session',
+				'#id': 'id',
+				'#name': 'name',
+			},
+			ConditionExpression: 'attribute_exists(courseId)',
+		};
+
+		try {
+			await this.client?.update(params).promise();
+
+			await this.publishAll(courseId, 'startSession', {
+				name: sessionName,
+				id: sessionId,
+			});
+
+			console.log(
+				`session ${sessionId}:${sessionName} started in room ${courseId}`
+			);
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: `successfully started session in room ${courseId}`,
+				}),
+			};
+		} catch (error) {
+			console.log(`error starting session in room ${courseId}:`);
+			console.log(error);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `Error starting session in room ${courseId}`,
+				}),
+			};
+		}
+	}
+
+	/******************************************************
+	 * end a session by
+	 * - sending `endSession` to the students
+	 * - updating session params in dynamodb table to default
+	 *
+	 * params
+	 * - courseId
+	 * returns
+	 * - success of session end
+	 *****************************************************/
+	async endSession(courseId: string): Promise<APIGatewayProxyResult> {
+		const params = {
+			TableName: process.env.TABLE_NAME as string,
+			Key: {
+				courseId: courseId,
+			},
+			UpdateExpression: 'SET #s.#id = :id, #s.#name = :name',
+			ExpressionAttributeValues: {
+				':id': 0,
+				':name': 'none',
+			},
+			ExpressionAttributeNames: {
+				'#s': 'session',
+				'#id': 'id',
+				'#name': 'name',
+			},
+			ConditionExpression: 'attribute_exists(courseId)',
+		};
+
+		try {
+			await this.client?.update(params).promise();
+
+			await this.publishAll(courseId, 'endSession');
+
+			console.log(`session ended in room ${courseId}`);
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: `successfully ended session in room ${courseId}`,
+				}),
+			};
+		} catch (error) {
+			console.log(`error ending session in room ${courseId}:`);
+			console.log(error);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `Error ending session in room ${courseId}`,
+				}),
+			};
+		}
+	}
+
+	/******************************************************
+	 * student joins a session by notifying the professor
+	 *
+	 * params
+	 * - courseId
+	 * returns
+	 * - success of notifying professor
+	 *****************************************************/
+	async joinSession(courseId: string): Promise<APIGatewayProxyResult> {
+		try {
+			await this.sendToProfessor(courseId, 'studentJoined');
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: `successfully joined session in room ${courseId}`,
+				}),
+			};
+		} catch (error) {
+			console.log(`student unable to join session in room ${courseId}`);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `error joining session in room ${courseId}`,
+				}),
+			};
+		}
+	}
+
+	/******************************************************
+	 * student leaves a session by notifying the professor
+	 *
+	 * params
+	 * - courseId
+	 * returns
+	 * - success of notifying professor
+	 *****************************************************/
+	async leaveSession(courseId: string): Promise<APIGatewayProxyResult> {
+		try {
+			await this.sendToProfessor(courseId, 'studentLeft');
+
+			return {
+				statusCode: 200,
+				body: JSON.stringify({
+					message: `successfully left session in room ${courseId}`,
+				}),
+			};
+		} catch (error) {
+			console.log(`student error leaving session in room ${courseId}`);
+			return {
+				statusCode: 400,
+				body: JSON.stringify({
+					message: `error leaving session in room ${courseId}`,
+				}),
+			};
 		}
 	}
 
@@ -550,7 +814,7 @@ export class Connection {
 			await this.client?.update(params).promise();
 
 			// then publish the question to all students
-			await this.publish(courseId, 'startQuestion', question);
+			await this.publishAll(courseId, 'startQuestion', question);
 
 			console.log(`Question started in room ${courseId}: `);
 			return {
@@ -610,7 +874,7 @@ export class Connection {
 			await this.client?.update(params).promise();
 
 			// then publish endQuestion to all students
-			await this.publish(courseId, 'endQuestion');
+			await this.publishAll(courseId, 'endQuestion');
 
 			console.log(`Question ended in room ${courseId}: `);
 			return {
@@ -656,7 +920,7 @@ export class Connection {
 	 * returns
 	 * - n/a
 	 *****************************************************/
-	async publish(
+	async publishAll(
 		courseId: string,
 		action: string,
 		payload?: unknown
@@ -684,10 +948,45 @@ export class Connection {
 					console.log(
 						`Found stale connection, deleting connectionId ${connectionId}`
 					);
-					await this.removeStudent(courseId, connectionId);
+					await this.leaveRoom(courseId, connectionId);
+				} else {
+					console.log(e);
 				}
-				console.log(e);
 			}
+		}
+	}
+
+	/******************************************************
+	 * Publish a message to a specific connection
+	 * {
+	 * 	action: an common action for the client to act on,
+	 *  payload: associated data if relevant to the action
+	 * }
+	 *
+	 * params
+	 * - connectionId, action, payload (optional)
+	 *
+	 * returns
+	 * - n/a
+	 *****************************************************/
+	async publish(
+		connectionId: string,
+		action: string,
+		payload?: unknown
+	): Promise<void> {
+		try {
+			await this.gateway
+				?.postToConnection({
+					ConnectionId: connectionId,
+					Data: JSON.stringify({
+						action: action,
+						payload: payload,
+					}),
+				})
+				.promise();
+		} catch (e) {
+			console.log(`error publishing to connection ${connectionId}`);
+			console.log(e);
 		}
 	}
 }

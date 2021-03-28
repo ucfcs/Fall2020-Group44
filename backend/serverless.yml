@@ -40,14 +40,12 @@ functions:
       - http:
           method: get
           path: hello
+
+  # script functions
   dbInit:
-    handler: src/handlers/db.init
+    handler: src/handlers/db/index.init
   dbDrop:
-    handler: src/handlers/db.drop
-  dynamoInit:
-    handler: src/handlers/dynamo.init
-  dynamoDrop:
-    handler: src/handlers/dynamo.drop
+    handler: src/handlers/db/index.drop
 
   # Course endpoints
   getCourse:
@@ -245,26 +243,46 @@ functions:
     events:
       - websocket:
           route: $disconnect
-  join:
-    handler: src/handlers/websocket/join.handler
+  studentJoinRoom:
+    handler: src/handlers/websocket/joinRoom.student
     events:
       - websocket:
-          route: join
-  leave:
-    handler: src/handlers/websocket/leave.handler
+          route: studentJoinRoom
+  professorJoinRoom:
+    handler: src/handlers/websocket/joinRoom.professor
     events:
       - websocket:
-          route: leave
-  createRoom:
-    handler: src/handlers/websocket/createRoom.handler
+          route: professorJoinRoom
+  leaveRoom:
+    handler: src/handlers/websocket/leaveRoom.handler
     events:
       - websocket:
-          route: createRoom
+          route: leaveRoom
   closeRoom:
     handler: src/handlers/websocket/closeRoom.handler
     events:
       - websocket:
           route: closeRoom
+  startSession:
+    handler: src/handlers/websocket/session.start
+    events:
+      - websocket:
+          route: startSession
+  endSession:
+    handler: src/handlers/websocket/session.end
+    events:
+      - websocket:
+          route: endSession
+  joinSession:
+    handler: src/handlers/websocket/session.join
+    events:
+      - websocket:
+          route: joinSession
+  leaveSession:
+    handler: src/handlers/websocket/session.leave
+    events:
+      - websocket:
+          route: leaveSession
   submit:
     handler: src/handlers/websocket/submit.handler
     events:

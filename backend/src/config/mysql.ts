@@ -7,5 +7,6 @@ export default new Sequelize(
 	{
 		host: process.env.MYSQL_HOST,
 		dialect: 'mysql',
+		logging: false,
 	}
 );

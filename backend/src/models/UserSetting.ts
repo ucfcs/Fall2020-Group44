@@ -1,5 +1,5 @@
 import { DataTypes, ModelDefined } from 'sequelize';
-import sequelize from '../config/database';
+import sequelize from '../config/mysql';
 
 export const UserSetting: ModelDefined<
 	UserSettingAttributes,
