@@ -1,35 +1,8 @@
-import { Connection } from '../../util/websocket';
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 
-let connection: Connection;
-let courseId: string | null;
-
 export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
-	if (!connection) {
-		connection = new Connection();
-		connection.init(event);
-	}
-
 	try {
-		// check if disconnected user was a professor:
-		courseId = await connection.isProfessor(
-			event?.requestContext.connectionId as string
-		);
-
-		// if it was, close the room
-		if (courseId) {
-			console.log(`a professor disconnected, closing the room ${courseId}`);
-			await connection.closeRoom(courseId);
-			return {
-				statusCode: 200,
-				body: JSON.stringify({
-					message: `professor disconnected, successfully closed room ${courseId}`,
-				}),
-			};
-		}
-
-		// otherwise it was just a student, nothing to do
-
+		// nothing to do here
 		return {
 			statusCode: 200,
 			body: JSON.stringify({
