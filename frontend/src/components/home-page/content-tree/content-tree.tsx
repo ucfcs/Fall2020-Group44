@@ -1,6 +1,5 @@
 import React, {
   useState,
-  useEffect,
   useContext,
   ReactElement,
   MouseEvent,
@@ -13,6 +12,8 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { store } from "../../../store";
+import { Folder, Question } from "../../../types";
+import { putData, sendDelete } from "../../../util/api";
 import "./content-tree.scss";
 
 const ContentTree = (): ReactElement => {
@@ -26,11 +27,10 @@ const ContentTree = (): ReactElement => {
     state.previewQuestion,
   ]);
 
-  const [questions, setQuestions] = useState(state.questions);
-
-  useEffect(() => {
-    setQuestions(state.questions);
-  }, [state.questions]);
+  const questions: Folder[] = state.questions;
+  const url = `${process.env.REACT_APP_REST_URL}/dev/api/v1`;
+  const folderUrl = `${url}/folder`;
+  const questionUrl = `${url}/question`;
 
   // Array of booleans indicating whether each folder is collapsed
   const [folderCollapse, setFolderCollapse] = useState(
@@ -39,10 +39,12 @@ const ContentTree = (): ReactElement => {
 
   const handleUpdatePreviewQuestion = (folder: number, question: number) => {
     setSelectedPreviewQuestion([folder, question]);
+
     dispatch({
       type: "update-preview-folder",
       payload: folder,
     });
+
     dispatch({
       type: "update-preview-question",
       payload: question,
@@ -55,30 +57,37 @@ const ContentTree = (): ReactElement => {
     setFolderCollapse(newFolderCollapse);
   };
 
-  const searchQuestions = (event: SyntheticEvent) => {
-    const newFolders: Folder[] = [];
-    state.questions.forEach((folder: Folder) => {
-      const newQuestions: Question[] = [];
-      folder.questions.forEach((question) => {
-        if (
-          question.title
-            .toLowerCase()
-            .includes((event.target as HTMLInputElement).value.toLowerCase())
-        ) {
-          newQuestions.push(question);
-        }
-      });
-      if (newQuestions.length) {
-        newFolders.push({ folder: folder.folder, questions: newQuestions });
-      }
-    });
-    setQuestions(newFolders);
-  };
+  // const searchQuestions = (event: SyntheticEvent) => {
+  //   const newFolders: Folder[] = [];
+
+  //   state.questions.forEach((folder: Folder) => {
+  //     const newQuestions: Question[] = [];
+
+  //     folder.Questions.forEach((question) => {
+  //       if (
+  //         question.title
+  //           .toLowerCase()
+  //           .includes((event.target as HTMLInputElement).value.toLowerCase())
+  //       ) {
+  //         newQuestions.push(question);
+  //       }
+  //     });
+
+  //     if (newQuestions.length) {
+  //       newFolders.push({ name: folder.name, Questions: newQuestions });
+  //     }
+  //   });
+
+  //   setQuestions(newFolders);
+  // };
 
   const setFolderName = (e: SyntheticEvent, folder: number) => {
-    const newQuestions = questions;
-    questions[folder].folder = (e.target as HTMLInputElement).value;
-    dispatch({ type: "update-session-questions", payload: newQuestions });
+    const value: string = (e.target as HTMLInputElement).value;
+    const oldFolder: Folder = questions[folder];
+
+    putData(`${folderUrl}/${oldFolder.id}`, { ...oldFolder, name: value });
+
+    dispatch({ type: "questions-need-update" });
   };
 
   const toggleEditQuestion = () => {
@@ -86,19 +95,44 @@ const ContentTree = (): ReactElement => {
     dispatch({ type: "open-creator" });
   };
 
-  const deleteQuestion = (): void => {
-    return;
+  const deleteQuestion = (
+    event: SyntheticEvent,
+    folderIndex: number,
+    questionIndex: number
+  ): void => {
+    event.preventDefault();
+
+    sendDelete(
+      `${questionUrl}/${questions[folderIndex]["Questions"][questionIndex]["id"]}`
+    )
+      .then(() => {
+        dispatch({ type: "questions-need-update" });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const editFolder = (e: MouseEvent, folder: number) => {
     e.stopPropagation();
+
     const newQuestions = questions;
-    questions[folder].folder = "";
+    questions[folder].name = "";
+
     dispatch({ type: "update-session-questions", payload: newQuestions });
   };
 
   const deleteFolder = (e: MouseEvent, folder: number) => {
-    e.stopPropagation();
+    e.preventDefault();
+
+    const oldFolder: Folder = questions[folder];
+    const id: number | undefined = oldFolder.id;
+
+    if (id !== undefined) {
+      sendDelete(`${folderUrl}/${id}`);
+
+      dispatch({ type: "questions-need-update" });
+    }
   };
 
   const handleDragEnd = (result: DropResult) => {
@@ -129,9 +163,11 @@ const ContentTree = (): ReactElement => {
     }
   };
 
+  console.log(questions);
+
   return (
     <div className="content-tree">
-      <div className="tree-options">
+      {/* <div className="tree-options">
         <input
           type="text"
           tabIndex={0}
@@ -141,7 +177,7 @@ const ContentTree = (): ReactElement => {
         />
 
         <button className="filter-button">Filter</button>
-      </div>
+      </div> */}
 
       <div className="create-buttons">
         <button
@@ -164,7 +200,7 @@ const ContentTree = (): ReactElement => {
           <div className="question-list-header">
             <span className="title">Title</span>
 
-            <span></span>
+            <span />
 
             <span className="type">Type</span>
           </div>
@@ -175,7 +211,7 @@ const ContentTree = (): ReactElement => {
                 {(provided) => (
                   <div ref={provided.innerRef}>
                     {questions.map((folder: Folder, fIndex: number) =>
-                      folder.folder !== null ? (
+                      folder.name !== null ? (
                         <Draggable
                           key={fIndex}
                           draggableId={fIndex + ""}
@@ -203,7 +239,7 @@ const ContentTree = (): ReactElement => {
                                         handleFolderCollapse(fIndex)
                                       }
                                     >
-                                      {folder.folder === "" ? (
+                                      {folder.name === "" ? (
                                         <input
                                           type="text"
                                           onBlur={(e) =>
@@ -242,7 +278,7 @@ const ContentTree = (): ReactElement => {
                                             alt=""
                                           />
 
-                                          <span>{folder.folder}</span>
+                                          <span>{folder.name}</span>
 
                                           <div className="content-tree-icons">
                                             <button
@@ -273,7 +309,7 @@ const ContentTree = (): ReactElement => {
                                         </div>
                                       )}
                                     </div>
-                                    {folder.questions.map(
+                                    {folder.Questions.map(
                                       (question, qIndex) => (
                                         <div key={fIndex + "-" + qIndex}>
                                           <Draggable
@@ -317,7 +353,9 @@ const ContentTree = (): ReactElement => {
 
                                                 <div className="content-tree-icons">
                                                   <button
-                                                    onClick={toggleEditQuestion}
+                                                    onClick={(e) => {
+                                                      toggleEditQuestion();
+                                                    }}
                                                   >
                                                     <img
                                                       className="content-tree-icon"
@@ -327,7 +365,13 @@ const ContentTree = (): ReactElement => {
                                                   </button>
 
                                                   <button
-                                                    onClick={deleteQuestion}
+                                                    onClick={(e) => {
+                                                      deleteQuestion(
+                                                        e,
+                                                        fIndex,
+                                                        qIndex
+                                                      );
+                                                    }}
                                                     className="delete-button"
                                                   >
                                                     <img
@@ -359,7 +403,7 @@ const ContentTree = (): ReactElement => {
                           {(provided) => (
                             <div ref={provided.innerRef} key={fIndex}>
                               <div className="rogue-question-separator"></div>
-                              {folder.questions.map((question, qIndex) => (
+                              {folder.Questions.map((question, qIndex) => (
                                 <Draggable
                                   key={qIndex}
                                   draggableId={fIndex + "-" + qIndex}
@@ -407,7 +451,9 @@ const ContentTree = (): ReactElement => {
                                         </button>
 
                                         <button
-                                          onClick={deleteQuestion}
+                                          onClick={(e) => {
+                                            deleteQuestion(e, fIndex, qIndex);
+                                          }}
                                           className="delete-button"
                                         >
                                           <img
@@ -445,15 +491,5 @@ const ContentTree = (): ReactElement => {
     </div>
   );
 };
-
-interface Folder {
-  folder: string;
-  questions: Question[];
-}
-
-interface Question {
-  title: string;
-  type: string;
-}
 
 export default ContentTree;

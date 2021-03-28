@@ -1,3 +1,9 @@
+export interface Folder {
+  Questions: Question[];
+  name: string;
+  id?: number;
+}
+
 export interface Question {
   title: string;
   question: string;
@@ -6,6 +12,7 @@ export interface Question {
   folderId: number | null;
   average?: number;
   total?: number;
+  id?: number;
 }
 
 // this is poorly named, but it is done to match the backend
