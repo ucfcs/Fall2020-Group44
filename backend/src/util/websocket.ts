@@ -119,7 +119,7 @@ export class Connection {
 			Key: {
 				courseId: courseId,
 			},
-			AttributesToGet: ['session'],
+			AttributesToGet: ['session', 'question'],
 		};
 
 		try {
@@ -129,6 +129,12 @@ export class Connection {
 
 			if (session.id !== 0) {
 				this.publish(connectionId, 'startSession', session);
+
+				// if open session, check for open question as well
+				const question = result?.Item?.question;
+				if (question) {
+					this.publish(connectionId, 'startQuestion', question);
+				}
 			}
 
 			return {
@@ -210,7 +216,7 @@ export class Connection {
 				courseId: courseId,
 				professor: isProfessor ? connectionId : 'none',
 				connections: this.client?.createSet([connectionId]),
-				questionOpen: false,
+				question: null,
 				session: {
 					id: 0,
 					name: 'none',
@@ -802,9 +808,9 @@ export class Connection {
 			Key: {
 				courseId: courseId,
 			},
-			UpdateExpression: 'SET questionOpen = :b',
+			UpdateExpression: 'SET question = :q',
 			ExpressionAttributeValues: {
-				':b': true,
+				':q': question,
 			},
 			ConditionExpression: 'attribute_exists(courseId)',
 		};
@@ -862,9 +868,9 @@ export class Connection {
 			Key: {
 				courseId: courseId,
 			},
-			UpdateExpression: 'SET questionOpen = :b',
+			UpdateExpression: 'SET question = :q',
 			ExpressionAttributeValues: {
-				':b': false,
+				':q': null,
 			},
 			ConditionExpression: 'attribute_exists(courseId)',
 		};
