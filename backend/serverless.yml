@@ -1,7 +1,4 @@
 service: backend
-# app and org for use with dashboard.serverless.com
-#app: your-app-name
-#org: your-org-name
 
 provider:
   name: aws
@@ -33,7 +30,9 @@ plugins:
   - serverless-offline
 
 functions:
+  #
   # local dev endpoints
+  #
   hello:
     handler: src/handlers/hello.world
     events:
@@ -41,13 +40,17 @@ functions:
           method: get
           path: hello
 
+  #
   # script functions
+  #
   dbInit:
     handler: src/handlers/db/index.init
   dbDrop:
     handler: src/handlers/db/index.drop
 
+  #
   # Course endpoints
+  #
   getCourse:
     handler: src/handlers/course.getCourse
     events:
@@ -55,7 +58,9 @@ functions:
           method: get
           path: /api/v1/courses/{courseId}
 
+  #
   # Folder endpoints
+  #
   getFolder:
     handler: src/handlers/folder.get
     events:
@@ -81,7 +86,9 @@ functions:
           method: delete
           path: /api/v1/folder/{folderId}
 
+  #
   # Session endpoints
+  #
   getSession:
     handler: src/handlers/session.get
     events:
@@ -95,7 +102,9 @@ functions:
           method: post
           path: /api/v1/session
 
+  #
   # Question endpoints
+  #
   getQuestion:
     handler: src/handlers/question.get
     events:
@@ -121,7 +130,9 @@ functions:
           method: delete
           path: /api/v1/question/{questionId}
 
+  #
   # Question Option endpoints
+  #
   createQuestionOption:
     handler: src/handlers/question_option.create
     events:
@@ -141,7 +152,9 @@ functions:
           method: delete
           path: /api/v1/question/{questionId}/option/{optionId}
 
+  #
   # Question User Response endpoints
+  #
   createQuestionUserResponse:
     handler: src/handlers/question_user_response.create
     events:
@@ -232,7 +245,9 @@ functions:
           method: put
           cors: true
 
+  #
   # websocket endpoints
+  #
   connect:
     handler: src/handlers/websocket/connect.handler
     events:

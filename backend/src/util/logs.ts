@@ -1,3 +1,5 @@
+import 'colors';
+
 export const LOG = (context: string): void =>
 	console.log('[LOG]'.blue, context);
 

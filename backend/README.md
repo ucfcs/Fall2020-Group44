@@ -45,6 +45,8 @@ MYSQL_ROOT_PASSWORD=root
 DYNAMO_HOST=http://localhost:8000
 DYNAMO_REGION=us-east-2
 DYNAMO_TABLE_NAME=Connections
+DYNAMO_ACCESS_KEY_ID=access-key-id-string
+DYNAMO_SECRET_ACCESS_KEY=secret-access-key-string
 
 CANVAS_URL=http://example.com
 CANVAS_ID=101

@@ -7,40 +7,14 @@ const intialState: AppState = {
 	//
 	settings: {},
 	//
+	session: null,
+	question: null,
+	//
 	phase: 'initializing',
-	ws: null,
 };
 
 function reducer(state: AppState, action: Action): AppState {
 	switch (action.type) {
-		//
-		// MACRO'S
-		//
-		case 'CONNECT':
-			const ws = new WebSocket('http://localhost:3001');
-
-			ws.onopen = () => {
-				// connection opened
-				ws.send('something'); // send a message
-			};
-
-			ws.onmessage = (e) => {
-				// a message was received
-				// console.log(e.data);
-			};
-
-			ws.onerror = (e) => {
-				// an error occurred
-				// console.log(e.message);
-			};
-
-			ws.onclose = (e) => {
-				// connection closed
-				// console.log(e.code, e.reason);
-			};
-
-			state.ws = ws;
-			break;
 		//
 		// SETTER'S
 		//
@@ -57,6 +31,7 @@ function reducer(state: AppState, action: Action): AppState {
 			console.log(action.payload);
 			state.token = action.payload;
 			break;
+		//
 		case 'SET_SETTING':
 			state.settings = action.payload;
 			break;
@@ -66,6 +41,9 @@ function reducer(state: AppState, action: Action): AppState {
 				? true
 				: false;
 			break;
+		//
+		case 'SET_SESSION':
+			state.session = action.payload;
 	}
 
 	return Object.assign({}, state);

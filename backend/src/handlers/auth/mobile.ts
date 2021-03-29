@@ -5,7 +5,7 @@ import responses from '../../util/api/responses';
 import { userAuthFlowGetToken, verifyAuthentication } from '../../util/auth';
 
 /**
- * @see http://localhost:3000/dev/api/v1/auth/mobile/redirect
+ * @see http://localhost:5000/dev/api/v1/auth/mobile/redirect
  */
 export const redirect: APIGatewayProxyHandler = async (event) => {
 	const { queryStringParameters } = event;
@@ -51,7 +51,7 @@ export const redirect: APIGatewayProxyHandler = async (event) => {
 };
 
 /**
- * @see http://localhost:3000/dev/api/v1/auth/mobile/url
+ * @see http://localhost:5000/dev/api/v1/auth/mobile/url
  */
 export const url: APIGatewayProxyHandler = async () => {
 	return responses.ok({
@@ -60,7 +60,7 @@ export const url: APIGatewayProxyHandler = async () => {
 };
 
 /**
- * @see
+ * @see http://localhost:5000/dev/api/v1/auth/mobile/revoke
  */
 export const revoke: APIGatewayProxyHandler = async (event) => {
 	const user = verifyAuthentication(event.headers);

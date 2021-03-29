@@ -17,10 +17,10 @@ export const User: ModelDefined<
 	},
 	token: {
 		type: DataTypes.STRING,
-		allowNull: true,
+		allowNull: false,
 	},
 	refreshToken: {
 		type: DataTypes.STRING,
-		allowNull: true,
+		allowNull: false,
 	},
 });
