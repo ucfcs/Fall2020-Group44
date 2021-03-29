@@ -90,9 +90,13 @@ const ContentTree = (): ReactElement => {
     const value: string = (e.target as HTMLInputElement).value;
     const oldFolder: Folder = questions[folder];
 
-    putData(`${folderUrl}/${oldFolder.id}`, { ...oldFolder, name: value });
-
-    dispatch({ type: "questions-need-update" });
+    putData(`${folderUrl}/${oldFolder.id}`, { ...oldFolder, name: value })
+      .then(() => {
+        dispatch({ type: "questions-need-update" });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   const toggleEditQuestion = () => {
@@ -262,18 +266,27 @@ const ContentTree = (): ReactElement => {
                                       }
                                     >
                                       {folder.name === "" ? (
-                                        <input
-                                          type="text"
-                                          onBlur={(e) =>
-                                            setFolderName(e, fIndex)
-                                          }
-                                          onClick={(e) => e.stopPropagation()}
-                                          onKeyPress={(e) => {
-                                            if (e.key === "Enter") {
-                                              setFolderName(e, fIndex);
+                                        <>
+                                          <label
+                                            htmlFor={`folder-name-${fIndex}`}
+                                            className="folder-name-label"
+                                          >
+                                            Name:{" "}
+                                          </label>
+                                          <input
+                                            type="text"
+                                            id={`folder-name-${fIndex}`}
+                                            defaultValue={
+                                              questions[fIndex].name
                                             }
-                                          }}
-                                        />
+                                            onKeyPress={(e) => {
+                                              if (e.key === "Enter") {
+                                                e.preventDefault();
+                                                setFolderName(e, fIndex);
+                                              }
+                                            }}
+                                          />{" "}
+                                        </>
                                       ) : (
                                         <div className="folder-item">
                                           <div className="dropdown">
