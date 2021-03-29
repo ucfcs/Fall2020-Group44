@@ -39,7 +39,7 @@ export class Connection {
 		isProfessor: boolean
 	): Promise<APIGatewayProxyResult> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -58,7 +58,7 @@ export class Connection {
 			// if they are a professor, also set professor connectionId
 			if (isProfessor) {
 				const profParams = {
-					TableName: process.env.TABLE_NAME as string,
+					TableName: process.env.DYNAMO_TABLE_NAME as string,
 					Key: {
 						courseId: courseId,
 					},
@@ -115,7 +115,7 @@ export class Connection {
 		connectionId: string
 	): Promise<APIGatewayProxyResult> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -166,7 +166,7 @@ export class Connection {
 	 *****************************************************/
 	async roomExists(courseId: string): Promise<1 | 0> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -211,7 +211,7 @@ export class Connection {
 		isProfessor: boolean
 	): Promise<APIGatewayProxyResult> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Item: {
 				courseId: courseId,
 				professor: isProfessor ? connectionId : 'none',
@@ -267,7 +267,7 @@ export class Connection {
 	 *****************************************************/
 	async closeRoom(courseId: string): Promise<APIGatewayProxyResult> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -318,7 +318,7 @@ export class Connection {
 		connectionId: string
 	): Promise<APIGatewayProxyResult> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -371,7 +371,7 @@ export class Connection {
 	 *****************************************************/
 	async isProfessor(connectionId: string): Promise<CourseId | null> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			IndexName: 'ProfessorIndex',
 			KeyConditionExpression: 'professor = :c',
 			ExpressionAttributeValues: {
@@ -404,7 +404,7 @@ export class Connection {
 	 *****************************************************/
 	async getProfessor(courseId: string): Promise<string | null> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -515,7 +515,7 @@ export class Connection {
 		sessionName: string
 	): Promise<APIGatewayProxyResult> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -574,7 +574,7 @@ export class Connection {
 	 *****************************************************/
 	async endSession(courseId: string): Promise<APIGatewayProxyResult> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -770,7 +770,7 @@ export class Connection {
 	 *****************************************************/
 	async getConnections(courseId: string): Promise<string[]> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -804,7 +804,7 @@ export class Connection {
 		question: unknown
 	): Promise<APIGatewayProxyResult> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -864,7 +864,7 @@ export class Connection {
 	 *****************************************************/
 	async endQuestion(courseId: string): Promise<APIGatewayProxyResult> {
 		const params = {
-			TableName: process.env.TABLE_NAME as string,
+			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
 				courseId: courseId,
 			},
@@ -926,7 +926,7 @@ export class Connection {
 	 * returns
 	 * - n/a
 	 *****************************************************/
-	async publishAll(
+	private async publishAll(
 		courseId: string,
 		action: string,
 		payload?: unknown
