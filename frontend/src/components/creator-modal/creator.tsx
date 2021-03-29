@@ -9,7 +9,7 @@ import { store } from "../../store";
 import CreatorEdit from "./creator-edit/creator-edit";
 import CreatorPreview from "./creator-preview/creator-preview";
 import Modal from "../modal/modal";
-import { postData, putData } from "../../util/api";
+import { catchError, createQuestion, updateQuestion } from "../../util/api";
 import { Question } from "../../types";
 
 //todo: create question props
@@ -19,8 +19,6 @@ const Creator = (): ReactElement => {
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
   const state = global.state;
-
-  const url = `${process.env.REACT_APP_REST_URL}/dev/api/v1/question`;
 
   const [firstLoad, setFirstLoad] = useState(true);
   useLayoutEffect((): void => {
@@ -56,7 +54,7 @@ const Creator = (): ReactElement => {
   };
 
   const saveQuestion = () => {
-    const info = { ...questionInfo };
+    const info: Question = { ...questionInfo };
 
     if (!info.title) {
       info.title = info.question;
@@ -68,23 +66,14 @@ const Creator = (): ReactElement => {
           "id"
         ];
 
-      try {
-        putData(`${url}/${id}`, {
-          ...info,
-          courseId: state.courseId,
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      updateQuestion(id, { ...info, courseId: state.courseId })
+        .then(closePreviewQuestion)
+        .catch(catchError);
     } else {
-      try {
-        postData(url, { ...info, courseId: state.courseId });
-      } catch (error) {
-        console.error(error);
-      }
+      createQuestion({ ...info, courseId: state.courseId })
+        .then(closePreviewQuestion)
+        .catch(catchError);
     }
-
-    closePreviewQuestion();
   };
 
   return (

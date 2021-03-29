@@ -1,6 +1,6 @@
 import React, { useState, useContext, ReactElement, FormEvent } from "react";
 import { store } from "../../store";
-import { postData } from "../../util/api";
+import { catchError, createFolder } from "../../util/api";
 import Modal from "../modal/modal";
 import "./folder-modal.scss";
 
@@ -9,8 +9,6 @@ const FolderModal = (): ReactElement => {
   const global = useContext(store) as any;
   const state = global.state;
   const dispatch = global.dispatch;
-
-  const url = `${process.env.REACT_APP_REST_URL}/dev/api/v1/folder`;
 
   const [newFolder, setNewFolder] = useState("");
 
@@ -21,18 +19,15 @@ const FolderModal = (): ReactElement => {
   const handleFolderCreation = (e: FormEvent) => {
     e.preventDefault();
 
-    postData(url, {
+    createFolder({
       courseId: state.courseId,
       name: newFolder,
     })
       .then(() => {
         dispatch({ type: "questions-need-update" });
+        closeFolderModal();
       })
-      .catch((error) => {
-        console.error(error);
-      });
-
-    closeFolderModal();
+      .catch(catchError);
   };
 
   return (

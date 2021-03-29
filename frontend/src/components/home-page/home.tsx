@@ -3,7 +3,7 @@ import ContentTree from "./content-tree/content-tree";
 import "./home.scss";
 import HomeHeader from "../home-header/home-header";
 import QuestionPreview from "./question-preview/question-preview";
-import { getFolders } from "../../util/api";
+import { catchError, getFolders } from "../../util/api";
 import { store } from "../../store";
 import { Folder, Question } from "../../types";
 
@@ -13,11 +13,9 @@ const Body = (): ReactElement => {
   const dispatch = global.dispatch;
   const state = global.state;
 
-  const url = `${process.env.REACT_APP_REST_URL}/dev/api/v1/courses`;
-
   useEffect(() => {
     if (state.updateQuestions) {
-      getFolders(url, state.courseId)
+      getFolders(state.courseId)
         .then((response) => {
           return response.json();
         })
@@ -30,13 +28,11 @@ const Body = (): ReactElement => {
             ],
           });
         })
-        .catch((error) => {
-          console.error(error);
-        });
+        .catch(catchError);
     }
 
     dispatch({ type: "questions-updated" });
-  }, [dispatch, state.courseId, state.updateQuestions, url]);
+  }, [dispatch, state.courseId, state.updateQuestions]);
 
   return (
     <>

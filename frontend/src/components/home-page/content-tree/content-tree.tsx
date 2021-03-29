@@ -13,7 +13,13 @@ import {
 } from "react-beautiful-dnd";
 import { store } from "../../../store";
 import { Folder, Question } from "../../../types";
-import { putData, sendDelete } from "../../../util/api";
+import {
+  catchError,
+  deleteFolder,
+  deleteQuestion,
+  updateFolder,
+  updateQuestion,
+} from "../../../util/api";
 import "./content-tree.scss";
 
 const ContentTree = (): ReactElement => {
@@ -28,9 +34,6 @@ const ContentTree = (): ReactElement => {
   ]);
 
   const questions: Folder[] = state.questions;
-  const url = `${process.env.REACT_APP_REST_URL}/dev/api/v1`;
-  const folderUrl = `${url}/folder`;
-  const questionUrl = `${url}/question`;
 
   // Array of booleans indicating whether each folder is collapsed
   const [folderCollapse, setFolderCollapse] = useState(
@@ -89,14 +92,15 @@ const ContentTree = (): ReactElement => {
   const setFolderName = (e: SyntheticEvent, folder: number) => {
     const value: string = (e.target as HTMLInputElement).value;
     const oldFolder: Folder = questions[folder];
+    const id: number | undefined = oldFolder.id;
 
-    putData(`${folderUrl}/${oldFolder.id}`, { ...oldFolder, name: value })
-      .then(() => {
-        dispatch({ type: "questions-need-update" });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    if (id !== undefined) {
+      updateFolder(id, { ...oldFolder, name: value })
+        .then(() => {
+          dispatch({ type: "questions-need-update" });
+        })
+        .catch(catchError);
+    }
   };
 
   const toggleEditQuestion = () => {
@@ -104,22 +108,24 @@ const ContentTree = (): ReactElement => {
     dispatch({ type: "open-creator" });
   };
 
-  const deleteQuestion = (
+  const deleteQuestionLocal = (
     event: SyntheticEvent,
     folderIndex: number,
     questionIndex: number
   ): void => {
     event.preventDefault();
+    const id: number | undefined =
+      questions[folderIndex].Questions[questionIndex].id;
 
-    sendDelete(
-      `${questionUrl}/${questions[folderIndex]["Questions"][questionIndex]["id"]}`
-    )
+    if (id === undefined) {
+      return;
+    }
+
+    deleteQuestion(id)
       .then(() => {
         dispatch({ type: "questions-need-update" });
       })
-      .catch((error) => {
-        console.error(error);
-      });
+      .catch(catchError);
   };
 
   const editFolder = (e: MouseEvent, folder: number) => {
@@ -131,16 +137,18 @@ const ContentTree = (): ReactElement => {
     dispatch({ type: "update-session-questions", payload: newQuestions });
   };
 
-  const deleteFolder = (e: MouseEvent, folder: number) => {
+  const deleteFolderLocal = (e: MouseEvent, folder: number) => {
     e.preventDefault();
 
     const oldFolder: Folder = questions[folder];
     const id: number | undefined = oldFolder.id;
 
     if (id !== undefined) {
-      sendDelete(`${folderUrl}/${id}`);
-
-      dispatch({ type: "questions-need-update" });
+      deleteFolder(id)
+        .then(() => {
+          dispatch({ type: "questions-need-update" });
+        })
+        .catch(catchError);
     }
   };
 
@@ -176,16 +184,18 @@ const ContentTree = (): ReactElement => {
           return;
         } else {
           // moves question between folders
-          putData(`${questionUrl}/${question.id}`, {
-            ...question,
-            folderId: destId,
-          })
-            .then(() => {
-              dispatch({ type: "questions-need-update" });
+          const questionId: number | undefined = question.id;
+
+          if (questionId !== undefined && destId !== undefined) {
+            updateQuestion(questionId, {
+              ...question,
+              folderId: destId,
             })
-            .catch((error) => {
-              console.error(error);
-            });
+              .then(() => {
+                dispatch({ type: "questions-need-update" });
+              })
+              .catch(catchError);
+          }
         }
       }
     }
@@ -331,7 +341,7 @@ const ContentTree = (): ReactElement => {
                                             <button
                                               className="delete-button"
                                               onClick={(e) => {
-                                                deleteFolder(e, fIndex);
+                                                deleteFolderLocal(e, fIndex);
                                               }}
                                             >
                                               <img
@@ -401,7 +411,7 @@ const ContentTree = (): ReactElement => {
 
                                                   <button
                                                     onClick={(e) => {
-                                                      deleteQuestion(
+                                                      deleteQuestionLocal(
                                                         e,
                                                         fIndex,
                                                         qIndex
@@ -487,7 +497,11 @@ const ContentTree = (): ReactElement => {
 
                                         <button
                                           onClick={(e) => {
-                                            deleteQuestion(e, fIndex, qIndex);
+                                            deleteQuestionLocal(
+                                              e,
+                                              fIndex,
+                                              qIndex
+                                            );
                                           }}
                                           className="delete-button"
                                         >
