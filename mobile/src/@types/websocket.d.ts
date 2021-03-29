@@ -44,9 +44,11 @@ type OnStartQuestionCallback = (data: {
 type OnEndQuestionCallback = () => void;
 
 //
-// handle inbound events callbacks
+// handle inbound
 //
-type Callback =
+type OnAction = 'startSession' | 'endSession' | 'startQuestion' | 'endQuestion';
+
+type OnCallback =
 	| OnStartSessionCallback
 	| OnEndSessionCallback
 	| OnStartQuestionCallback

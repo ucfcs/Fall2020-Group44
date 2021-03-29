@@ -2,7 +2,7 @@ import env from '../../.env.json';
 
 const memo: Memo = {
 	ws: null,
-	cb: new Map(),
+	cb: new Map<OnAction, OnCallback>(),
 };
 
 export function init() {
@@ -34,7 +34,7 @@ export function init() {
 	}
 }
 
-export function on(action: string, callback: Callback) {
+export function on(action: OnAction, callback: OnCallback) {
 	if (!memo.cb.has(action)) {
 		memo.cb.set(action, callback);
 	}

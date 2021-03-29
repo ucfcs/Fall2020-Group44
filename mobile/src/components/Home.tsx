@@ -87,6 +87,9 @@ export const Home: FunctionComponent<
 	useEffect(() => {
 		(async () => {
 			ws.on('startSession', startSessionCallback);
+			ws.on('endSession', console.log);
+			ws.on('startQuestion', console.log);
+			ws.on('endQuestion', console.log);
 
 			// HTTP - pull all currently enrolled courses
 			const { payload } = await getCanvasUserEnrollments(state.token);
