@@ -29,15 +29,22 @@ export const Splash: FunctionComponent = () => {
 				// to ask if the user wants to login
 				dispatch({ type: 'SET_PHASE', payload: 'authentication' });
 			} else {
-				// 1. save the token
+				// 1. save the token to short term memory
 				dispatch({ type: 'SET_TOKEN', payload: token });
 
 				// 2. connect to the WS server
 				ws.init();
 
-				// 3. get user info from canvas
+				// 3. get user info from canvas via backend proxy
 				try {
 					const data = await getCanvasSelf(token);
+
+					// if the token has expired this request will return a 401 error
+					// well restart the users flow
+					if ('errors' in data.payload && Array.isArray(data.payload.errors)) {
+						dispatch({ type: 'SET_PHASE', payload: 'authentication' });
+						return;
+					}
 
 					dispatch({ type: 'SET_NAME', payload: data.payload.name });
 					dispatch({ type: 'SET_EMAIL', payload: data.payload.email });
@@ -47,7 +54,7 @@ export const Splash: FunctionComponent = () => {
 					return;
 				}
 
-				// 4. get user settings data
+				// 4. get user settings data from backend
 				try {
 					const { settings } = await getUserSetting(token);
 

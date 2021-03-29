@@ -73,11 +73,10 @@ export const Home: FunctionComponent<
 	StackScreenProps<PollStackTree, 'Home'>
 > = ({ navigation }) => {
 	const { state } = useContext(AppContext);
-	const [name, setName] = useState('');
 	const [phase, setPhase] = useState<'loading' | 'empty' | 'full'>('loading');
 	const startSessionCallback = useCallback((data) => {
 		console.log(data);
-		setName(data.payload.name);
+
 		setPhase('full');
 	}, []);
 
@@ -92,8 +91,10 @@ export const Home: FunctionComponent<
 			// WS - use course unique id's as room keys to join
 			// joining also emits info about the currently active session
 			// loop through courses and join the WS rooms
-			for (const course of payload) {
-				ws.join(course.id.toString());
+			if (Array.isArray(payload)) {
+				for (const course of payload) {
+					ws.join(course.id.toString());
+				}
 			}
 
 			setPhase('empty');
@@ -108,33 +109,37 @@ export const Home: FunctionComponent<
 				</View>
 			</SafeAreaView>
 		);
-	}
-
-	if (phase === 'empty') {
+	} else {
 		return (
 			<SafeAreaView style={styles.safeArea}>
-				<View style={[styles.container, styles.containerEmpty]}>
-					<View style={styles.emptyPic}>
-						<Icon type='hand' />
-					</View>
-					<Text style={styles.header}>No sessions currently</Text>
-					<Text style={styles.p}>
-						Sessions will appear here when available.
-					</Text>
-				</View>
+				<AppContext.Consumer>
+					{({ state: { session } }) =>
+						session == null ? (
+							// render when no session is not found
+							<View style={[styles.container, styles.containerEmpty]}>
+								<View style={styles.emptyPic}>
+									<Icon type='hand' />
+								</View>
+								<Text style={styles.header}>No sessions currently</Text>
+								<Text style={styles.p}>
+									Sessions will appear here when available.
+								</Text>
+							</View>
+						) : (
+							// render when session is found
+							<View style={[styles.container, styles.containerNonEmpty]}>
+								<Text style={styles.header}>{session.name}</Text>
+								<Text style={[styles.p, styles.pGreen]}>
+									Questions Session In Progress
+								</Text>
+								<Button
+									text='Join'
+									onPress={() => navigation.push('Polls')}></Button>
+							</View>
+						)
+					}
+				</AppContext.Consumer>
 			</SafeAreaView>
 		);
 	}
-
-	return (
-		<SafeAreaView style={styles.safeArea}>
-			<View style={[styles.container, styles.containerNonEmpty]}>
-				<Text style={styles.header}>{name}</Text>
-				<Text style={[styles.p, styles.pGreen]}>
-					Questions Session In Progress
-				</Text>
-				<Button text='Join' onPress={() => navigation.push('Polls')}></Button>
-			</View>
-		</SafeAreaView>
-	);
 };
