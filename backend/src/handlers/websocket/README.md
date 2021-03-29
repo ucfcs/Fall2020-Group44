@@ -60,6 +60,8 @@ These messages are sent automatically from the client to server when establishin
 
 - **returns** success disconnecting
 
+---
+
 ## From Student
 
 Messages the student will send to the server
@@ -101,6 +103,8 @@ student leaves the session, notifying professor
 - **payload** `courseId: String`
 - **returns** success leaving session
 
+---
+
 ## To Student
 
 Messages the student will receive from the server, in the form
@@ -121,6 +125,8 @@ Messages the student will receive from the server, in the form
 ### endSession
 
 - **payload** `n/a`
+
+---
 
 ## From Professor
 
@@ -162,6 +168,8 @@ responses from being submitted.
 
 - **payload** `courseId: String`
 - **returns** success ending question
+
+---
 
 ## To Professor
 
