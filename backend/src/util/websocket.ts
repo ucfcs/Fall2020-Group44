@@ -1,21 +1,19 @@
 import AWS from 'aws-sdk';
 import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
+
+import dynamodb from '../config/dynamo';
 import { QuestionUserResponse } from '../models/QuestionUserResponse';
 
 export class Connection {
 	client?: AWS.DynamoDB.DocumentClient;
 	gateway?: AWS.ApiGatewayManagementApi;
 
-	init(event?: APIGatewayEvent): void {
+	public init(event?: APIGatewayEvent): void {
 		this.client = new AWS.DynamoDB.DocumentClient({
 			apiVersion: '2012-08-10',
-			region: 'localhost',
-			endpoint: 'http://localhost:8000',
-			// region: process.env.DYNAMO_REGION || '',
-			// credentials: {
-			// 	accessKeyId: process.env.DYNAMO_ACCESS_KEY_ID || '',
-			// 	secretAccessKey: process.env.DYNAMO_SECRET_ACCESS_KEY || ''
-			// }
+			endpoint: dynamodb.config.endpoint,
+			region: dynamodb.config.region,
+			credentials: dynamodb.config.credentials,
 		});
 
 		this.gateway = new AWS.ApiGatewayManagementApi({
@@ -38,7 +36,7 @@ export class Connection {
 	 * returns
 	 * - success of dynamodb update
 	 *****************************************************/
-	async joinRoom(
+	public async joinRoom(
 		courseId: string,
 		connectionId: string,
 		isProfessor: boolean
@@ -115,7 +113,7 @@ export class Connection {
 	 * returns
 	 * - success of check
 	 *****************************************************/
-	async checkOpenSession(
+	public async checkOpenSession(
 		courseId: string,
 		connectionId: string
 	): Promise<APIGatewayProxyResult> {
@@ -169,7 +167,7 @@ export class Connection {
 	 * returns
 	 * - 1 if room exists, 0 otherwise
 	 *****************************************************/
-	async roomExists(courseId: string): Promise<1 | 0> {
+	private async roomExists(courseId: string): Promise<1 | 0> {
 		const params = {
 			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
@@ -210,7 +208,7 @@ export class Connection {
 	 * returns
 	 * - success of DynamoDB PUT
 	 *****************************************************/
-	async createRoom(
+	private async createRoom(
 		courseId: string,
 		connectionId: string,
 		isProfessor: boolean
@@ -270,7 +268,7 @@ export class Connection {
 	 * returns
 	 * - success of DynamoDB delete
 	 *****************************************************/
-	async closeRoom(courseId: string): Promise<APIGatewayProxyResult> {
+	public async closeRoom(courseId: string): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
@@ -318,7 +316,7 @@ export class Connection {
 	 * returns
 	 * - success of DynamoDB connection set update
 	 *****************************************************/
-	async leaveRoom(
+	public async leaveRoom(
 		courseId: string,
 		connectionId: string
 	): Promise<APIGatewayProxyResult> {
@@ -374,7 +372,7 @@ export class Connection {
 	 * returns
 	 * - courseId if matching a professor, null otherwise
 	 *****************************************************/
-	async isProfessor(connectionId: string): Promise<CourseId | null> {
+	private async isProfessor(connectionId: string): Promise<CourseId | null> {
 		const params = {
 			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			IndexName: 'ProfessorIndex',
@@ -407,7 +405,7 @@ export class Connection {
 	 * returns
 	 * - connectionId of professor if successful
 	 *****************************************************/
-	async getProfessor(courseId: string): Promise<string | null> {
+	private async getProfessor(courseId: string): Promise<string | null> {
 		const params = {
 			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
@@ -442,7 +440,7 @@ export class Connection {
 	 * returns
 	 * - success of posting message
 	 *****************************************************/
-	async sendToProfessor(
+	private async sendToProfessor(
 		courseId: string,
 		action: string,
 		payload?: unknown
@@ -514,7 +512,7 @@ export class Connection {
 	 * returns
 	 * - success of session start
 	 *****************************************************/
-	async startSession(
+	public async startSession(
 		courseId: string,
 		sessionId: number,
 		sessionName: string
@@ -577,7 +575,7 @@ export class Connection {
 	 * returns
 	 * - success of session end
 	 *****************************************************/
-	async endSession(courseId: string): Promise<APIGatewayProxyResult> {
+	public async endSession(courseId: string): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
@@ -629,7 +627,7 @@ export class Connection {
 	 * returns
 	 * - success of notifying professor
 	 *****************************************************/
-	async joinSession(courseId: string): Promise<APIGatewayProxyResult> {
+	public async joinSession(courseId: string): Promise<APIGatewayProxyResult> {
 		try {
 			await this.sendToProfessor(courseId, 'studentJoined');
 
@@ -658,7 +656,7 @@ export class Connection {
 	 * returns
 	 * - success of notifying professor
 	 *****************************************************/
-	async leaveSession(courseId: string): Promise<APIGatewayProxyResult> {
+	public async leaveSession(courseId: string): Promise<APIGatewayProxyResult> {
 		try {
 			await this.sendToProfessor(courseId, 'studentLeft');
 
@@ -688,7 +686,7 @@ export class Connection {
 	 * returns
 	 * - list of connection id's as an array of strings
 	 *****************************************************/
-	async submitResponse(
+	public async submitResponse(
 		courseId: string,
 		questionId: string,
 		questionOptionId: string,
@@ -773,7 +771,7 @@ export class Connection {
 	 * returns
 	 * - list of connection id's as an array of strings
 	 *****************************************************/
-	async getConnections(courseId: string): Promise<string[]> {
+	private async getConnections(courseId: string): Promise<string[]> {
 		const params = {
 			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
@@ -804,7 +802,7 @@ export class Connection {
 	 * - success of both operations
 	 *****************************************************/
 	// TODO: i don't know what a question object looks like yet
-	async startQuestion(
+	public async startQuestion(
 		courseId: string,
 		question: unknown
 	): Promise<APIGatewayProxyResult> {
@@ -867,7 +865,7 @@ export class Connection {
 	 * returns
 	 * - success of both operations
 	 *****************************************************/
-	async endQuestion(courseId: string): Promise<APIGatewayProxyResult> {
+	public async endQuestion(courseId: string): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.DYNAMO_TABLE_NAME as string,
 			Key: {
@@ -980,7 +978,7 @@ export class Connection {
 	 * returns
 	 * - n/a
 	 *****************************************************/
-	async publish(
+	private async publish(
 		connectionId: string,
 		action: string,
 		payload?: unknown

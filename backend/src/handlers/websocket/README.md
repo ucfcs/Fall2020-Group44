@@ -139,6 +139,13 @@ Professor joins room for their course
 - **payload** `courseId: string`
 - **returns** success joining room
 
+### leaveRoom
+
+Student leaves a specific room
+
+- **payload** `courseId: String`
+- **returns** success leaving room
+
 ### startSession
 
 Professor starts a session for students to join. This is handled
