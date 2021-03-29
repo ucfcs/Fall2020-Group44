@@ -326,7 +326,7 @@ export class Connection {
 			ExpressionAttributeValues: {
 				':c': this.client?.createSet([connectionId]),
 			},
-			ReturnValues: 'UPDATED_NEW',
+			ReturnValues: 'ALL_NEW',
 		};
 
 		try {
@@ -334,14 +334,31 @@ export class Connection {
 			const result = await this.client?.update(params).promise();
 
 			//if the room is now empty, delete it
-			const updatedConnections = result?.Attributes?.connections.values;
+			const updatedConnections =
+				result?.Attributes?.connections?.values || null;
 			if (!updatedConnections || updatedConnections.length == 0) {
 				return await this.closeRoom(courseId);
 			}
 
-			// should also probably set the professor to 'none' if the
-			// person that left was professor. however it doesn't affect
-			// anything if you leave the professor the same
+			// if they are a professor, also remove professor connectionId
+			if (result?.Attributes?.professor == connectionId) {
+				const profParams = {
+					TableName: process.env.TABLE_NAME as string,
+					Key: {
+						courseId: courseId,
+					},
+					UpdateExpression: 'SET professor = :p',
+					ExpressionAttributeValues: {
+						':p': 'none',
+					},
+					ConditionExpression: 'attribute_exists(courseId)',
+				};
+
+				await this.client?.update(profParams).promise();
+				console.log(
+					`DynamoDB: ${connectionId} removed as professor in room ${courseId}`
+				);
+			}
 
 			return {
 				statusCode: 200,
