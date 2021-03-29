@@ -15,14 +15,11 @@ export function init() {
 			console.log('ws', 'open');
 		};
 
-		memo.ws.onmessage = (e) => {
-			console.log('ws msg', e.data);
-			// a message was received
-			const payload = JSON.parse(e.data);
-			const cb = memo.cb.get(payload.action);
-			if (cb) {
-				cb(payload);
-			}
+		memo.ws.onmessage = (event) => {
+			const data: any = JSON.parse(event.data);
+			const cb = memo.cb.get(data.action);
+			if (cb) cb(data);
+			console.log('ws msg', data);
 		};
 
 		memo.ws.onerror = (e) => {
@@ -37,7 +34,7 @@ export function init() {
 	}
 }
 
-export function on(action: string, callback: WebSocketMessageEventCallback) {
+export function on(action: string, callback: Callback) {
 	if (!memo.cb.has(action)) {
 		memo.cb.set(action, callback);
 	}
@@ -58,6 +55,6 @@ export function join(roomKey: string) {
 // Util
 //
 
-function format(payload: WSPayload): string {
+function format(payload: EmitPayload): string {
 	return JSON.stringify(payload);
 }

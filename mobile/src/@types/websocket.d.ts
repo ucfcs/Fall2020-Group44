@@ -1,11 +1,53 @@
 interface Memo {
 	ws: WebSocket | null;
-	cb: Map<string, WebSocketMessageEventCallback>;
+	cb: Map<string, Callback>;
 }
 
-type WSPayload = {
-	action: 'studentJoinRoom';
-	courseId: string;
-};
+type EmitPayload =
+	| {
+			action: 'studentJoinRoom';
+			courseId: string;
+	  }
+	| {
+			action: 'leaveRoom';
+			courseId: string;
+	  }
+	| {
+			action: 'submit';
+			courseId: string;
+			questionId: string;
+			optionId: string;
+			ucfid: string;
+			sessionId: string;
+	  }
+	| {
+			action: 'joinSession';
+			courseId: string;
+	  }
+	| {
+			action: 'leaveSession';
+			courseId: string;
+	  };
 
-type WebSocketMessageEventCallback = (event: WebSocketMessageEvent) => void;
+type OnStartSessionCallback = (data: {
+	action: 'startSession';
+	payload: { name: string; id: number };
+}) => void;
+
+type OnEndSessionCallback = () => void;
+
+type OnStartQuestionCallback = (data: {
+	action: 'startQuestion';
+	payload: { question: Question };
+}) => void;
+
+type OnEndQuestionCallback = () => void;
+
+//
+// handle inbound events callbacks
+//
+type Callback =
+	| OnStartSessionCallback
+	| OnEndSessionCallback
+	| OnStartQuestionCallback
+	| OnEndQuestionCallback;
