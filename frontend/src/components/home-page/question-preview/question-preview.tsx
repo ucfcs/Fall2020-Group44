@@ -13,18 +13,18 @@ const QuestionPreview = (): ReactElement => {
     false
   );
 
-  const toggleShowResponse = () => {
-    setShowPreviewResponse(!showPreviewResponse);
-  };
+  // const toggleShowResponse = () => {
+  //   setShowPreviewResponse(!showPreviewResponse);
+  // };
 
   const toggleShowCorrectResponse = () => {
     setShowCorrectPreviewResponse(!showCorrectPreviewResponse);
   };
 
   const previewQuestion =
-    state.questions[state.previewFolder].questions[state.previewQuestion];
+    state.questions[state.previewFolder]?.Questions[state.previewQuestion];
 
-  const previewFolder = state.questions[state.previewFolder].folder;
+  const previewFolder = state.questions[state.previewFolder]?.folder;
 
   return previewQuestion ? (
     <div className="question-preview">
@@ -48,9 +48,9 @@ const QuestionPreview = (): ReactElement => {
             {showCorrectPreviewResponse ? "Hide" : "Show"} Correct Answers{" "}
           </button>
 
-          <button className="see-responses" onClick={toggleShowResponse}>
+          {/* <button className="see-responses" onClick={toggleShowResponse}>
             {showPreviewResponse ? "Hide" : "Show"} Responses
-          </button>
+          </button> */}
         </div>
 
         <div className="answer-choice-wrapper">

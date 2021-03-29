@@ -37,17 +37,20 @@ const ContentTree = (): ReactElement => {
     new Array(questions.length).fill(false)
   );
 
-  const handleUpdatePreviewQuestion = (folder: number, question: number) => {
-    setSelectedPreviewQuestion([folder, question]);
+  const handleUpdatePreviewQuestion = (
+    folderIndex: number,
+    questionIndex: number
+  ) => {
+    setSelectedPreviewQuestion([folderIndex, questionIndex]);
 
     dispatch({
       type: "update-preview-folder",
-      payload: folder,
+      payload: folderIndex,
     });
 
     dispatch({
       type: "update-preview-question",
-      payload: question,
+      payload: questionIndex,
     });
   };
 
