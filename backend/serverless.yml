@@ -215,6 +215,32 @@ functions:
           path: /api/v1/auth/lti
           method: post
           cors: true
+ # Step 1: Login Initiation
+  login:
+    handler: src/handlers/auth/lti.login
+    timeout: 10
+    events:
+      - http:
+          path: /api/v1/auth/login
+          method: post
+          cors: true
+      - http:
+          path: /api/v1/auth/login
+          method: get
+          cors: true
+# Step 4: Resource Display
+  lti13:
+    handler: src/handlers/auth/lti.lti13
+    timeout: 10
+    events:
+      - http:
+          path: /api/v1/auth/lti13
+          method: post
+          cors: true
+      - http:
+          path: /api/v1/auth/lti13
+          method: get
+          cors: true
 
   #
   # Canvas Proxy
