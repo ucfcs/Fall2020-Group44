@@ -2,39 +2,49 @@
 
 ## Establish a connection
 
-`const ws = new Websocket(url);`
+```ts
+const ws = new Websocket(url);
+```
 
 ## Send a message
 
-`ws.send( JSON.stringify({ action: "routeName", param1: "x", param2: "y" }) );`
+```ts
+ws.send(JSON.stringify({ action: 'routeName', param1: 'x', param2: 'y' }));
+```
 
 ### Example: Student submit route
 
-`ws.send( JSON.stringify({ action: "submit", optionId: "option", ucfid: "ucfid" }) );`
+```ts
+ws.send(
+	JSON.stringify({ action: 'submit', optionId: 'option', ucfid: 'ucfid' })
+);
+```
 
 ## Recieving messages
 
-```
+```ts
 ws.onmessage = (event: MessageEvent) => {
-  const message = JSON.parse(event.data);
+	const message = JSON.parse(event.data);
 
-  switch (message.action) {
-    case "startQuestion":
-      setQuestion(message.payload.question);
-      break;
-    case "endQuestion":
-      setQuestion(null);
-      break;
-    case "endSession":
-      // go back to home screen
-      break;
-  }
+	switch (message.action) {
+		case 'startQuestion':
+			setQuestion(message.payload.question);
+			break;
+		case 'endQuestion':
+			setQuestion(null);
+			break;
+		case 'endSession':
+			// go back to home screen
+			break;
+	}
 };
 ```
 
 ## Close Connection
 
-`ws.close()`
+```ts
+ws.close();
+```
 
 # Websocket Routes
 
