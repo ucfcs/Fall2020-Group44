@@ -72,13 +72,16 @@ const styles = StyleSheet.create({
 export const Home: FunctionComponent<
 	StackScreenProps<PollStackTree, 'Home'>
 > = ({ navigation }) => {
-	const { state } = useContext(AppContext);
-	const [phase, setPhase] = useState<'loading' | 'empty' | 'full'>('loading');
-	const startSessionCallback = useCallback((data) => {
-		console.log(data);
-
-		setPhase('full');
-	}, []);
+	const { state, dispatch } = useContext(AppContext);
+	const [isLoading, setIsLoading] = useState(true);
+	const startSessionCallback = useCallback<OnStartSessionCallback>(
+		(data) =>
+			dispatch({
+				type: 'SET_SESSION',
+				payload: data.payload,
+			}),
+		[],
+	);
 
 	// onMount
 	useEffect(() => {
@@ -97,11 +100,11 @@ export const Home: FunctionComponent<
 				}
 			}
 
-			setPhase('empty');
+			setIsLoading(false);
 		})();
 	}, []);
 
-	if (phase === 'loading') {
+	if (isLoading) {
 		return (
 			<SafeAreaView style={styles.safeArea}>
 				<View style={styles.container}>
