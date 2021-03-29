@@ -20,10 +20,12 @@ function App(): ReactElement {
   const dispatch = global.dispatch;
 
   useEffect(() => {
+    //establish websocket connection
     const websocket: WebSocket = new WebSocket(
       `${process.env.REACT_APP_WEBSOCKET_URL}`
     );
 
+    //when established, join the room as the professor
     websocket.onopen = () => {
       websocket.send(
         JSON.stringify({
@@ -33,8 +35,10 @@ function App(): ReactElement {
       );
     };
 
+    //set the global websocket
     dispatch({ type: "set-websocket", payload: websocket });
 
+    // if the professor closes the window, remove them from the room
     window.onbeforeunload = () => {
       websocket.send(
         JSON.stringify({
@@ -43,6 +47,9 @@ function App(): ReactElement {
         })
       );
     };
+
+    // disable-scroll for app
+    document.body.style.overflow = "hidden";
   }, []);
 
   return (

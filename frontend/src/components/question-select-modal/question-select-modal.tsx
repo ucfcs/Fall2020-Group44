@@ -46,7 +46,7 @@ const QuestionSelect = (): ReactElement => {
   };
 
   const presentQuestions = () => {
-    //TODO: add websocket command here
+    //TODO: add REST call POST /api/v1/session
     dispatch({ type: "close-question-select" });
 
     history.push("/poll/present");
