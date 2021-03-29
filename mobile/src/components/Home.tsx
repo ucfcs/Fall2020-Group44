@@ -1,5 +1,6 @@
 import React, {
 	FunctionComponent,
+	useCallback,
 	useContext,
 	useEffect,
 	useState,
@@ -14,7 +15,7 @@ import {
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { Button } from './Button';
-import { BLACK, GRAY_2 } from '../libs/colors';
+import { BLACK, GRAY_2, GREEN } from '../libs/colors';
 import { Icon } from './Icon';
 import { AppContext } from './Provider';
 import { getCanvasUserEnrollments } from '../services/backend';
@@ -30,9 +31,13 @@ const styles = StyleSheet.create({
 		alignItems: 'center',
 		padding: 16,
 	},
+	containerEmpty: {
+		justifyContent: 'center',
+		paddingTop: 32,
+	},
 	containerNonEmpty: {
 		justifyContent: 'flex-start',
-		paddingTop: 32,
+		paddingTop: 128,
 	},
 	emptyPic: {
 		width: 128,
@@ -57,34 +62,45 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		marginBottom: 32,
 	},
+	pGreen: {
+		color: GREEN,
+		fontSize: 18,
+		fontWeight: '900',
+	},
 });
 
 export const Home: FunctionComponent<
 	StackScreenProps<PollStackTree, 'Home'>
 > = ({ navigation }) => {
 	const { state } = useContext(AppContext);
-	const [isLoading, setIsLoading] = useState(true);
-	const [isEmpty] = useState(true);
+	const [name, setName] = useState('');
+	const [phase, setPhase] = useState<'loading' | 'empty' | 'full'>('loading');
+	const startSessionCallback = useCallback((data) => {
+		console.log(data);
+		setName(data.payload.name);
+		setPhase('full');
+	}, []);
 
 	// onMount
 	useEffect(() => {
 		(async () => {
+			ws.on('startSession', startSessionCallback);
+
 			// HTTP - pull all currently enrolled courses
 			const { payload } = await getCanvasUserEnrollments(state.token);
 
 			// WS - use course unique id's as room keys to join
+			// joining also emits info about the currently active session
 			// loop through courses and join the WS rooms
 			for (const course of payload) {
 				ws.join(course.id.toString());
 			}
 
-			// HTTP - fetch most recent session
-
-			setIsLoading(false);
+			setPhase('empty');
 		})();
 	}, []);
 
-	if (isLoading) {
+	if (phase === 'loading') {
 		return (
 			<SafeAreaView style={styles.safeArea}>
 				<View style={styles.container}>
@@ -94,10 +110,10 @@ export const Home: FunctionComponent<
 		);
 	}
 
-	if (isEmpty) {
+	if (phase === 'empty') {
 		return (
 			<SafeAreaView style={styles.safeArea}>
-				<View style={styles.container}>
+				<View style={[styles.container, styles.containerEmpty]}>
 					<View style={styles.emptyPic}>
 						<Icon type='hand' />
 					</View>
@@ -113,8 +129,10 @@ export const Home: FunctionComponent<
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={[styles.container, styles.containerNonEmpty]}>
-				<Text style={styles.header}>Attendance</Text>
-				<Text style={styles.p}>History 101 - First week of school</Text>
+				<Text style={styles.header}>{name}</Text>
+				<Text style={[styles.p, styles.pGreen]}>
+					Questions Session In Progress
+				</Text>
 				<Button text='Join' onPress={() => navigation.push('Polls')}></Button>
 			</View>
 		</SafeAreaView>
