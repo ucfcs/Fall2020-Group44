@@ -72,35 +72,35 @@ Student joins room for their course.
 Also checks for an already open session/question.
 If there is, student will recieve `startSession` and `startQuestion` respectively.
 
-- **payload** `courseId: String`
+- **payload** `courseId: string`
 - **returns** success joining room
 
 ### leaveRoom
 
 Student leaves a specific room
 
-- **payload** `courseId: String`
+- **payload** `courseId: string`
 - **returns** success leaving room
 
 ### submit
 
 Student submits response to a question
 
-- **payload** `courseId: String, questionId: String, optionId: String, ucfid: String, sessionId: String`
+- **payload** `courseId: string, questionId: string, optionId: string, ucfid: string, sessionId: string`
 - **returns** success submitting response
 
 ### joinSession
 
 student joins the session, notifying professor
 
-- **payload** `courseId: String`
+- **payload** `courseId: string`
 - **returns** success joining session
 
 ### leaveSession
 
 student leaves the session, notifying professor
 
-- **payload** `courseId: String`
+- **payload** `courseId: string`
 - **returns** success leaving session
 
 ---
@@ -112,7 +112,7 @@ Messages the student will receive from the server, in the form
 
 ### startSession
 
-- **payload** `name: String, id:Number`
+- **payload** `name: string, id:Number`
 
 ### startQuestion
 
@@ -136,7 +136,7 @@ Messages the professor will send to the server
 
 Professor joins room for their course
 
-- **payload** `courseId: String`
+- **payload** `courseId: string`
 - **returns** success joining room
 
 ### startSession
@@ -144,21 +144,21 @@ Professor joins room for their course
 Professor starts a session for students to join. This is handled
 automatically by the rest route POST /api/v1/session
 
-- **payload** `courseId: String, sessionId: Number, sessionName: String`
+- **payload** `courseId: string, sessionId: Number, sessionName: string`
 - **returns** success starting session
 
 ### endSession
 
 Professor ends the session, notifying students
 
-- **payload** `courseId: String`
+- **payload** `courseId: string`
 - **returns** success ending session
 
 ### startQuestion
 
 Professor starts question for a room, allowing responses to be submitted
 
-- **payload** `courseId: String, question: QuestionObject`
+- **payload** `courseId: string, question: QuestionObject`
 - **returns** success starting question
 
 ### endQuestion
@@ -166,7 +166,7 @@ Professor starts question for a room, allowing responses to be submitted
 Professor ends question for a room, preventing further
 responses from being submitted.
 
-- **payload** `courseId: String`
+- **payload** `courseId: string`
 - **returns** success ending question
 
 ---
