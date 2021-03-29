@@ -53,7 +53,7 @@
     justify-content: space-between;
 
     .question-list-header {
-      height: 5%;
+      height: min-content;
       align-items: center;
       display: grid;
       grid-template-columns: auto 24px 30% 52px;

@@ -60,29 +60,31 @@ const ContentTree = (): ReactElement => {
     setFolderCollapse(newFolderCollapse);
   };
 
-  // const searchQuestions = (event: SyntheticEvent) => {
-  //   const newFolders: Folder[] = [];
+  const searchQuestions = (event: SyntheticEvent) => {
+    // needs to be updated to search using the backend in preparation for lazy loading
+    return;
+    // const newFolders: Folder[] = [];
 
-  //   state.questions.forEach((folder: Folder) => {
-  //     const newQuestions: Question[] = [];
+    // state.questions.forEach((folder: Folder) => {
+    //   const newQuestions: Question[] = [];
 
-  //     folder.Questions.forEach((question) => {
-  //       if (
-  //         question.title
-  //           .toLowerCase()
-  //           .includes((event.target as HTMLInputElement).value.toLowerCase())
-  //       ) {
-  //         newQuestions.push(question);
-  //       }
-  //     });
+    //   folder.Questions.forEach((question) => {
+    //     if (
+    //       question.title
+    //         .toLowerCase()
+    //         .includes((event.target as HTMLInputElement).value.toLowerCase())
+    //     ) {
+    //       newQuestions.push(question);
+    //     }
+    //   });
 
-  //     if (newQuestions.length) {
-  //       newFolders.push({ name: folder.name, Questions: newQuestions });
-  //     }
-  //   });
+    //   if (newQuestions.length) {
+    //     newFolders.push({ name: folder.name, Questions: newQuestions });
+    //   }
+    // });
 
-  //   setQuestions(newFolders);
-  // };
+    // setQuestions(newFolders);
+  };
 
   const setFolderName = (e: SyntheticEvent, folder: number) => {
     const value: string = (e.target as HTMLInputElement).value;
@@ -153,6 +155,9 @@ const ContentTree = (): ReactElement => {
         const srcFolder: number = parseInt(
           result.source.droppableId.split("folder")[1]
         );
+        const srcId: number = parseInt(
+          result.source.droppableId.split("folder")[1]
+        );
 
         const destFolder: number = parseInt(
           result.destination.droppableId.split("folder")[1]
@@ -162,23 +167,29 @@ const ContentTree = (): ReactElement => {
         const question: Question =
           questions[srcFolder].Questions[result.source.index];
 
-        putData(`${questionUrl}/${question.id}`, {
-          ...question,
-          folderId: destId,
-        })
-          .then(() => {
-            dispatch({ type: "questions-need-update" });
+        if (srcId === destId) {
+          // currently not supported by the backend, but will control reordering questions
+          return;
+        } else {
+          // moves question between folders
+          putData(`${questionUrl}/${question.id}`, {
+            ...question,
+            folderId: destId,
           })
-          .catch((error) => {
-            console.error(error);
-          });
+            .then(() => {
+              dispatch({ type: "questions-need-update" });
+            })
+            .catch((error) => {
+              console.error(error);
+            });
+        }
       }
     }
   };
 
   return (
     <div className="content-tree">
-      {/* <div className="tree-options">
+      <div className="tree-options">
         <input
           type="text"
           tabIndex={0}
@@ -188,7 +199,7 @@ const ContentTree = (): ReactElement => {
         />
 
         <button className="filter-button">Filter</button>
-      </div> */}
+      </div>
 
       <div className="create-buttons">
         <button
