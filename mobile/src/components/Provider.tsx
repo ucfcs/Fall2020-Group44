@@ -7,6 +7,9 @@ const intialState: AppState = {
 	//
 	settings: {},
 	//
+	session: null,
+	question: null,
+	//
 	phase: 'initializing',
 };
 
@@ -28,6 +31,7 @@ function reducer(state: AppState, action: Action): AppState {
 			console.log(action.payload);
 			state.token = action.payload;
 			break;
+		//
 		case 'SET_SETTING':
 			state.settings = action.payload;
 			break;
@@ -37,6 +41,9 @@ function reducer(state: AppState, action: Action): AppState {
 				? true
 				: false;
 			break;
+		//
+		case 'SET_SESSION':
+			state.session = action.payload;
 	}
 
 	return Object.assign({}, state);
