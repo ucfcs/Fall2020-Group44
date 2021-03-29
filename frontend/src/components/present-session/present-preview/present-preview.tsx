@@ -1,8 +1,18 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useContext } from "react";
 import { Link } from "react-router-dom";
 import "./present-preview.scss";
 
+import { store } from "../../../store";
+
 const PresentPreview = (props: Props): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const global = useContext(store) as any;
+  const dispatch = global.dispatch;
+
+  const setClassSize = () => {
+    dispatch({ type: "update-class-size", payload: props.studentsConnected });
+  };
+
   return (
     <div className="present-preview">
       <div className="preview-left">
@@ -12,7 +22,7 @@ const PresentPreview = (props: Props): ReactElement => {
           src="/img/logo.svg"
         />
         <h2>{"Let's Begin!"}</h2>
-        <button className="start-button">
+        <button onClick={setClassSize} className="start-button">
           <Link to="/poll/display">Start Session &gt;</Link>
         </button>
         <p className="helper-text">

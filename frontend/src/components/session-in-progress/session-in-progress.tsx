@@ -1,5 +1,5 @@
 import { QuestionInfo } from "../../types";
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement, useContext, useEffect } from "react";
 import SessionProgress from "./session-progress/session-progress";
 import Question from "./question/question";
 
@@ -21,6 +21,18 @@ const SessionInProgress = (): ReactElement => {
 
   const questions: QuestionInfo[] = data.questions;
   const currentQuestion = questions[questionNumber];
+
+  useEffect(() => {
+    if (state.websocket) {
+      state.websocket.send(
+        JSON.stringify({
+          action: "startQuestion",
+          courseId: state.courseId,
+          question: currentQuestion,
+        })
+      );
+    }
+  }, [currentQuestion]);
 
   const content = (): ReactElement => {
     switch (questionProgress) {

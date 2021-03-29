@@ -482,10 +482,6 @@ export class Connection {
 				})
 				.promise();
 
-			console.log(
-				`Successfully posted message to professor for room: ${courseId}`
-			);
-
 			return {
 				statusCode: 200,
 				body: JSON.stringify({
@@ -648,6 +644,7 @@ export class Connection {
 		try {
 			await this.sendToProfessor(courseId, 'studentJoined');
 
+			console.log(`student joined session in room ${courseId}`);
 			return {
 				statusCode: 200,
 				body: JSON.stringify({
@@ -710,6 +707,7 @@ export class Connection {
 		userId: string,
 		sessionId: string
 	): Promise<APIGatewayProxyResult> {
+		console.log('attempting to submit');
 		try {
 			// attempt to create response in db
 			const result = await QuestionUserResponse.create({
@@ -798,8 +796,6 @@ export class Connection {
 		};
 
 		const data = await this.client?.get(params).promise();
-
-		console.trace(data);
 
 		if (!data || !data.Item) {
 			return [];

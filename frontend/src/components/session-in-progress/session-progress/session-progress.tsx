@@ -1,9 +1,14 @@
-import React, { ReactElement, SyntheticEvent, useContext } from "react";
+import React, {
+  ReactElement,
+  SyntheticEvent,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 import { RESPOND, RESPONSES, CORRECT_RESPONSE } from "../../../constants";
 
 import "./session-progress.scss";
 
-import data from "./mock-data.json";
 import { store } from "../../../store";
 
 const SessionProgress = (): ReactElement => {
@@ -16,8 +21,32 @@ const SessionProgress = (): ReactElement => {
   const questionNumber = state.questionNumber;
   const isClosed = state.closedQuestions.has(questionNumber);
 
-  const classSize: number = data.classSize;
-  const responseCount: number = data.responseCount;
+  // response bar
+  const [classSize, setClassSize] = useState<number>(state.classSize);
+  const [responseCount, setResponseCount] = useState<number>(0);
+
+  //todo: response count needs to be reset for each quesiton, but
+  // probably also saved for already presented questions?
+
+  if (state.websocket) {
+    state.websocket.onmessage = (event: MessageEvent) => {
+      const message = JSON.parse(event.data);
+      console.log(message);
+
+      switch (message.action) {
+        case "studentSubmitted":
+          setResponseCount(responseCount + 1);
+          break;
+        case "studentLeft":
+          setClassSize(classSize - 1);
+          break;
+        case "studentJoined":
+          console.log("studentJoined");
+          setClassSize(classSize + 1);
+          break;
+      }
+    };
+  }
 
   const updateProgress = (event: SyntheticEvent): void => {
     let progress: number;
@@ -38,6 +67,14 @@ const SessionProgress = (): ReactElement => {
 
   const close = (): void => {
     if (!state.closedQuestions.has(questionNumber)) {
+      if (state.websocket) {
+        state.websocket.send(
+          JSON.stringify({
+            action: "endQuestion",
+            courseId: state.courseId,
+          })
+        );
+      }
       dispatch({ type: "close-question", payload: questionNumber });
     }
   };

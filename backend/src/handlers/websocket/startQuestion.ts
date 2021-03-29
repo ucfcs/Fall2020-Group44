@@ -22,7 +22,7 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 	try {
 		const params = JSON.parse(event?.body || '{}');
-		console.log(params);
+
 		// get room from payload
 		room = params?.courseId;
 		question = params?.question;

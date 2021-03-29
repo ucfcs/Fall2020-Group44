@@ -285,6 +285,7 @@ const init = {
   questionProgress: 0,
   questionNumber: 0,
   closedQuestions: closedQuestions,
+  classSize: 0,
   openExportModal: false,
   currentQuestionInfo: baseQuestionInfo,
   websocket: null,
@@ -322,6 +323,8 @@ const StateProvider = ({ children }) => {
         return { ...state, questionProgress: action.payload };
       case "update-question-number":
         return { ...state, questionNumber: action.payload };
+      case "update-class-size":
+        return { ...state, classSize: action.payload };
       case "close-question":
         return {
           ...state,
