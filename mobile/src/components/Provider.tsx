@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useReducer } from 'react';
-import env from '../../.env.json';
 
 const intialState: AppState = {
 	name: '',
