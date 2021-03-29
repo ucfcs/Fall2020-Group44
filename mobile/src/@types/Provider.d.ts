@@ -40,6 +40,6 @@ type Action =
 	| { type: 'SET_SETTING'; payload: Settings }
 	| { type: 'SET_SETTING_PUSHNOTIFICATION' }
 	//
-	| { type: 'SET_SESSION'; payload: Session }
+	| { type: 'SET_SESSION'; payload: Session | null }
 	//
 	| { type: 'END' };
