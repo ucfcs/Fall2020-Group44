@@ -45,15 +45,16 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 	try {
 		const data = await Session.create({
-			name: Date.now().toString(),
+			name: new Date().toDateString(),
 			courseId: courseId as string,
 			userId: mockUserid,
 		});
+		const sessionId = data.get().id;
 
 		await Session_Question.bulkCreate(
 			questions.map((questionId: number) => {
 				return {
-					sessionId: data.get().id,
+					sessionId,
 					questionId,
 				};
 			})
