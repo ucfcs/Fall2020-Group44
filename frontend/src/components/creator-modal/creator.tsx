@@ -37,7 +37,14 @@ const Creator = (): ReactElement => {
 
       setFirstLoad(false);
     }
-  }, [state.editPreviewQuestion]);
+  }, [
+    dispatch,
+    firstLoad,
+    state.editPreviewQuestion,
+    state.previewFolder,
+    state.previewQuestion,
+    state.questions,
+  ]);
 
   const [isPreview, setIsPreview] = useState(false);
   const questionInfo: Question = state.currentQuestionInfo;

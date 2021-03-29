@@ -36,7 +36,7 @@ const Body = (): ReactElement => {
     }
 
     dispatch({ type: "questions-updated" });
-  }, [state.updateQuestions]);
+  }, [dispatch, state.courseId, state.updateQuestions, url]);
 
   return (
     <>
