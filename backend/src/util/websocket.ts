@@ -11,6 +11,11 @@ export class Connection {
 			apiVersion: '2012-08-10',
 			region: 'localhost',
 			endpoint: 'http://localhost:8000',
+			// region: process.env.DYNAMO_REGION || '',
+			// credentials: {
+			// 	accessKeyId: process.env.DYNAMO_ACCESS_KEY_ID || '',
+			// 	secretAccessKey: process.env.DYNAMO_SECRET_ACCESS_KEY || ''
+			// }
 		});
 
 		this.gateway = new AWS.ApiGatewayManagementApi({
