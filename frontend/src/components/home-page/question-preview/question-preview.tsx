@@ -55,7 +55,7 @@ const QuestionPreview = (): ReactElement => {
 
         <div className="answer-choice-wrapper">
           <MultipleChoice
-            answers={previewQuestion.questionOptions}
+            answers={previewQuestion.QuestionOptions}
             responses={["20%", "30%", "50%"]}
             showPreviewResponse={showPreviewResponse}
             showCorrectPreviewResponse={showCorrectPreviewResponse}

@@ -7,7 +7,7 @@ const baseQuestionInfo = {
   title: "",
   question: "",
   type: "Mult Choice",
-  questionOptions: [
+  QuestionOptions: [
     { text: "", isAnswer: false },
     { text: "", isAnswer: false },
   ],

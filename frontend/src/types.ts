@@ -8,7 +8,7 @@ export interface Question {
   title: string;
   question: string;
   type: string;
-  questionOptions: QuestionOption[];
+  QuestionOptions: QuestionOption[];
   folderId: number | null;
   average?: number;
   total?: number;

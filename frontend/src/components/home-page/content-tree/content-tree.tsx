@@ -137,33 +137,41 @@ const ContentTree = (): ReactElement => {
 
   const handleDragEnd = (result: DropResult) => {
     if (result.destination) {
-      const newQuestions = state.questions;
+      const questions: Folder[] = state.questions;
 
       if (
         result.source.droppableId === "folders" &&
         result.destination.droppableId === "folders"
       ) {
-        const [srcFolder] = newQuestions.splice(result.source.index, 1);
-
-        newQuestions.splice(result.destination.index, 0, srcFolder);
+        // currently not supported by the backend, but this will control the ordering
+        // of folders.
+        return;
       } else {
-        const srcFolder = result.source.droppableId.split("folder")[1];
-        const destFolder = result.destination.droppableId.split("folder")[1];
-        const [srcQuestion] = newQuestions[srcFolder].questions.splice(
-          result.source.index,
-          1
+        const srcFolder: number = parseInt(
+          result.source.droppableId.split("folder")[1]
         );
 
-        newQuestions[destFolder].questions.splice(
-          result.destination.index,
-          0,
-          srcQuestion
+        const destFolder: number = parseInt(
+          result.destination.droppableId.split("folder")[1]
         );
+        const destId: number | undefined = questions[destFolder].id;
+
+        const question: Question =
+          questions[srcFolder].Questions[result.source.index];
+
+        putData(`${questionUrl}/${question.id}`, {
+          ...question,
+          folderId: destId,
+        })
+          .then(() => {
+            dispatch({ type: "questions-need-update" });
+          })
+          .catch((error) => {
+            console.error(error);
+          });
       }
     }
   };
-
-  console.log(questions);
 
   return (
     <div className="content-tree">
@@ -353,7 +361,7 @@ const ContentTree = (): ReactElement => {
 
                                                 <div className="content-tree-icons">
                                                   <button
-                                                    onClick={(e) => {
+                                                    onClick={() => {
                                                       toggleEditQuestion();
                                                     }}
                                                   >
