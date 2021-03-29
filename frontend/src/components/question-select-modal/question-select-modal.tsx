@@ -46,21 +46,10 @@ const QuestionSelect = (): ReactElement => {
   };
 
   const presentQuestions = () => {
-    const websocket: WebSocket = new WebSocket(url);
+    //TODO: add websocket command here
+    dispatch({ type: "close-question-select" });
 
-    websocket.onopen = () => {
-      websocket.send(
-        JSON.stringify({
-          action: "createRoom",
-          courseId: state.courseId,
-        })
-      );
-
-      dispatch({ type: "set-websocket", payload: websocket });
-      dispatch({ type: "close-question-select" });
-
-      history.push("/poll/present");
-    };
+    history.push("/poll/present");
   };
 
   const handlePreviewDragEnd = (result: DropResult) => {
