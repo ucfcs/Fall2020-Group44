@@ -19,7 +19,7 @@ const AnswerChoice = ({
   const handleAnswerChange = (e: SyntheticEvent, index: number) => {
     const tempQuestion = question;
 
-    tempQuestion.questionOptions[index][
+    tempQuestion.QuestionOptions[index][
       "text"
     ] = (e.target as HTMLInputElement).value;
 
@@ -32,7 +32,7 @@ const AnswerChoice = ({
   const handleCorrectChange = (event: SyntheticEvent, index: number) => {
     const tempQuestion = { ...question, correct: index };
 
-    tempQuestion.questionOptions[index][
+    tempQuestion.QuestionOptions[index][
       "isAnswer"
     ] = (event.target as HTMLInputElement).checked;
 
@@ -44,7 +44,7 @@ const AnswerChoice = ({
 
   const handleAnswerDelete = (index: number) => {
     const tempQuestion = question;
-    tempQuestion.questionOptions.splice(index, 1);
+    tempQuestion.QuestionOptions.splice(index, 1);
 
     dispatch({
       type: "set-current-question-info",

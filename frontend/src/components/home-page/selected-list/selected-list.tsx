@@ -3,14 +3,6 @@ import { Link } from "react-router-dom";
 import "./selected-list.scss";
 import { store } from "../../../store";
 
-interface PollQuestion {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-}
-
 const SelectedList = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
@@ -25,6 +17,7 @@ const SelectedList = (): ReactElement => {
           </p>
         ))}
       </div>
+
       <div className="option-buttons">
         <button className="present-button">
           <Link to="/poll/present">&#9658;&nbsp;Present</Link>
@@ -33,5 +26,13 @@ const SelectedList = (): ReactElement => {
     </div>
   );
 };
+
+interface PollQuestion {
+  title: string;
+  question: string;
+  type: string;
+  choices: string[];
+  correct: number;
+}
 
 export default SelectedList;

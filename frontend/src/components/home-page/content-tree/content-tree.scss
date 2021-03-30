@@ -28,7 +28,6 @@
       font-size: 1.25rem;
       border-color: #aaaaaa;
       text-decoration: none;
-      font-size: 1.25rem;
       padding: 0.5rem 1rem;
     }
 
@@ -54,7 +53,7 @@
     justify-content: space-between;
 
     .question-list-header {
-      height: 5%;
+      height: min-content;
       align-items: center;
       display: grid;
       grid-template-columns: auto 24px 30% 52px;
@@ -178,7 +177,7 @@
   .folder-item {
     display: grid;
 
-    grid-template-columns: 24px 0.5rem 24px auto 52px;
+    grid-template-columns: 24px 0.5rem 24px auto 64px;
 
     &:hover {
       .content-tree-icon {
@@ -190,6 +189,26 @@
       font-weight: 700;
       font-size: 1.25rem;
     }
+  }
+
+  .folder-name-label {
+    font-size: 1.25rem;
+    font-weight: bold;
+  }
+
+  .dropdown {
+    width: 24px;
+    height: 24px;
+  }
+
+  .dropdown-open {
+    width: 100%;
+    height: auto;
+  }
+
+  .dropdown-closed {
+    width: auto;
+    height: 100%;
   }
 
   .present-button {
@@ -213,15 +232,25 @@
 .content-tree-icons {
   display: flex;
   flex-direction: row;
+  justify-self: end;
+
+  button {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .delete-button {
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
 }
 
 .content-tree-icon {
   opacity: 0;
-  margin-left: 4px;
-
-  path {
-    transform: scale(0.06);
-  }
+  height: 24px;
+  width: auto;
 
   &.show {
     opacity: 1;
@@ -229,9 +258,8 @@
 }
 
 .folder-icon {
-  path {
-    transform: scale(0.04);
-  }
+  height: 1.25rem;
+  width: auto;
 }
 
 @media screen and (max-width: 1150px) {
