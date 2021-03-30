@@ -52,11 +52,22 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
   };
 
   const nextQuestion = (): void => {
+    // on the final question
     if (questionNumber >= props.questionCount - 1) {
       // this would make an api call to record what happened since it is the end of the session
       dispatch({ type: "update-question-number", payload: 0 });
       dispatch({ type: "update-question-progress", payload: RESPOND });
-      dispatch({ type: "open-questions" });
+      dispatch({ type: "update-session-questions", payload: [] });
+
+      // notify students the session has ended
+      if (state.websocket) {
+        state.websocket.send(
+          JSON.stringify({
+            action: "endSession",
+            courseId: state.courseId,
+          })
+        );
+      }
     } else {
       dispatch({ type: "update-question-number", payload: questionNumber + 1 });
       dispatch({ type: "update-question-progress", payload: RESPOND });

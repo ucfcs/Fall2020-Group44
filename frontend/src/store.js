@@ -277,14 +277,13 @@ const init = {
       ],
     },
   ],
-  poll: [],
+  sessionQuestions: [],
   editPreviewQuestion: false,
   openCreator: false,
   openFolderCreator: false,
   openQuestionSelect: false,
   questionProgress: 0,
   questionNumber: 0,
-  closedQuestions: closedQuestions,
   classSize: 0,
   openExportModal: false,
   currentQuestionInfo: baseQuestionInfo,
@@ -306,7 +305,7 @@ const StateProvider = ({ children }) => {
       case "close-preview-question":
         return { ...state, editPreviewQuestion: false };
       case "update-session-questions":
-        return { ...state, poll: action.payload };
+        return { ...state, sessionQuestions: action.payload };
       case "open-creator":
         return { ...state, openCreator: true };
       case "close-creator":
@@ -325,13 +324,6 @@ const StateProvider = ({ children }) => {
         return { ...state, questionNumber: action.payload };
       case "update-class-size":
         return { ...state, classSize: action.payload };
-      case "close-question":
-        return {
-          ...state,
-          closedQuestions: new Set([...state.closedQuestions, action.payload]),
-        };
-      case "open-questions":
-        return { ...state, closedQuestions: new Set([]) };
       case "open-export-modal":
         return { ...state, openExportModal: true };
       case "close-export-modal":

@@ -54,7 +54,7 @@ const QuestionSelect = (): ReactElement => {
 
   const handlePreviewDragEnd = (result: DropResult) => {
     if (result.destination) {
-      const newQuestions: PollQuestion[] = state.poll;
+      const newQuestions: SessionQuestion[] = state.sessionQuestions;
       const [srcQuestion] = newQuestions.splice(result.source.index, 1);
 
       newQuestions.splice(result.destination.index, 0, srcQuestion);
@@ -157,12 +157,15 @@ const QuestionSelect = (): ReactElement => {
       setSessionQuestions(sessionQuestions);
     }
 
-    // Update the poll with the questions in sessionQuestions
-    const newPoll: PollQuestion[] = [];
+    // Update the global state with the questions in sessionQuestions
+    const newPoll: SessionQuestion[] = [];
 
     Object.keys(sessionQuestions).forEach((f: string) => {
       sessionQuestions[f].forEach((q: number) => {
-        newPoll.push(state.questions[f].questions[q]);
+        const question = state.questions[f].questions[q];
+        question.isClosed = false;
+        question.responseCount = 0;
+        newPoll.push(question);
       });
     });
 
@@ -210,8 +213,8 @@ const QuestionSelect = (): ReactElement => {
                         className="selected-list__questions"
                         ref={provided.innerRef}
                       >
-                        {state.poll.map(
-                          (question: PollQuestion, index: number) => (
+                        {state.sessionQuestions.map(
+                          (question: SessionQuestion, index: number) => (
                             <Draggable
                               key={index}
                               draggableId={index + ""}
@@ -410,12 +413,14 @@ interface Question {
   type: string;
 }
 
-interface PollQuestion {
+interface SessionQuestion {
   title: string;
   question: string;
   type: string;
   choices: string[];
   correct: number;
+  responseCount: number;
+  isClosed: boolean;
 }
 
 export default QuestionSelect;
