@@ -12,11 +12,12 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { store } from "../../../store";
-import { Folder, Question } from "../../../types";
+import { Folder, Question, ServerResponse } from "../../../types";
 import {
   catchError,
   deleteFolder,
   deleteQuestion,
+  getFolders,
   updateFolder,
   updateQuestion,
 } from "../../../util/api";
@@ -96,9 +97,7 @@ const ContentTree = (): ReactElement => {
 
     if (id !== undefined) {
       updateFolder(id, { ...oldFolder, name: value })
-        .then(() => {
-          dispatch({ type: "questions-need-update" });
-        })
+        .then(updateFolders)
         .catch(catchError);
     }
   };
@@ -121,11 +120,7 @@ const ContentTree = (): ReactElement => {
       return;
     }
 
-    deleteQuestion(id)
-      .then(() => {
-        dispatch({ type: "questions-need-update" });
-      })
-      .catch(catchError);
+    deleteQuestion(id).then(updateFolders).catch(catchError);
   };
 
   const editFolder = (e: MouseEvent, folder: number) => {
@@ -144,11 +139,7 @@ const ContentTree = (): ReactElement => {
     const id: number | undefined = oldFolder.id;
 
     if (id !== undefined) {
-      deleteFolder(id)
-        .then(() => {
-          dispatch({ type: "questions-need-update" });
-        })
-        .catch(catchError);
+      deleteFolder(id).then(updateFolders).catch(catchError);
     }
   };
 
@@ -191,14 +182,26 @@ const ContentTree = (): ReactElement => {
               ...question,
               folderId: destId,
             })
-              .then(() => {
-                dispatch({ type: "questions-need-update" });
-              })
+              .then(updateFolders)
               .catch(catchError);
           }
         }
       }
     }
+  };
+
+  const updateFolders = (): void => {
+    getFolders(state.courseId)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json: ServerResponse) => {
+        dispatch({
+          type: "update-questions",
+          payload: [...json.folders, { name: null, Questions: json.questions }],
+        });
+      })
+      .catch(catchError);
   };
 
   return (

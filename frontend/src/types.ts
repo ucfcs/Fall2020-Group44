@@ -44,3 +44,8 @@ export interface QuestionInfo {
   answers: string[];
   correctIndex: number;
 }
+
+export interface ServerResponse {
+  folders: Folder[];
+  questions: Question[];
+}

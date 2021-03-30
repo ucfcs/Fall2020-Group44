@@ -21,7 +21,6 @@ const init = {
   previewQuestion: 0,
   courseId: "0",
   questions: [],
-  updateQuestions: true,
   poll: [],
   editPreviewQuestion: false,
   openCreator: false,
@@ -88,10 +87,6 @@ const StateProvider = ({ children }) => {
         return { ...state, websocket: null };
       case "update-questions":
         return { ...state, questions: action.payload };
-      case "questions-need-update":
-        return { ...state, updateQuestions: true };
-      case "questions-updated":
-        return { ...state, updateQuestions: false };
       default:
         throw new Error("Base reducer: this action type was not defined");
     }

@@ -2,15 +2,21 @@ import React, {
   useState,
   useContext,
   ReactElement,
-  useLayoutEffect,
+  useEffect,
+  SyntheticEvent,
 } from "react";
 import "./creator.scss";
 import { store } from "../../store";
 import CreatorEdit from "./creator-edit/creator-edit";
 import CreatorPreview from "./creator-preview/creator-preview";
 import Modal from "../modal/modal";
-import { catchError, createQuestion, updateQuestion } from "../../util/api";
-import { Question } from "../../types";
+import {
+  catchError,
+  createQuestion,
+  getFolders,
+  updateQuestion,
+} from "../../util/api";
+import { Question, ServerResponse } from "../../types";
 
 //todo: create question props
 
@@ -21,7 +27,8 @@ const Creator = (): ReactElement => {
   const state = global.state;
 
   const [firstLoad, setFirstLoad] = useState(true);
-  useLayoutEffect((): void => {
+
+  useEffect((): void => {
     if (firstLoad) {
       if (state.editPreviewQuestion) {
         dispatch({
@@ -53,7 +60,9 @@ const Creator = (): ReactElement => {
     dispatch({ type: "reset-current-question-info" });
   };
 
-  const saveQuestion = () => {
+  const saveQuestion = (event: SyntheticEvent) => {
+    event?.preventDefault();
+
     const info: Question = { ...questionInfo };
 
     if (!info.title) {
@@ -67,13 +76,32 @@ const Creator = (): ReactElement => {
         ];
 
       updateQuestion(id, { ...info, courseId: state.courseId })
-        .then(closePreviewQuestion)
+        .then(updateAndClose)
         .catch(catchError);
     } else {
       createQuestion({ ...info, courseId: state.courseId })
-        .then(closePreviewQuestion)
+        .then(updateAndClose)
         .catch(catchError);
     }
+  };
+
+  const updateAndClose = (): void => {
+    updateFolders();
+    closePreviewQuestion();
+  };
+
+  const updateFolders = (): void => {
+    getFolders(state.courseId)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json: ServerResponse) => {
+        dispatch({
+          type: "update-questions",
+          payload: [...json.folders, { name: null, Questions: json.questions }],
+        });
+      })
+      .catch(catchError);
   };
 
   return (

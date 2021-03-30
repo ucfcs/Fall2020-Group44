@@ -1,11 +1,11 @@
-import React, { ReactElement, useContext, useEffect } from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import ContentTree from "./content-tree/content-tree";
 import "./home.scss";
 import HomeHeader from "../home-header/home-header";
 import QuestionPreview from "./question-preview/question-preview";
 import { catchError, getFolders } from "../../util/api";
 import { store } from "../../store";
-import { Folder, Question } from "../../types";
+import { ServerResponse } from "../../types";
 
 const Body = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,8 +13,10 @@ const Body = (): ReactElement => {
   const dispatch = global.dispatch;
   const state = global.state;
 
+  const [firstLoad, setFirstLoad] = useState(true);
+
   useEffect(() => {
-    if (state.updateQuestions) {
+    if (firstLoad) {
       getFolders(state.courseId)
         .then((response) => {
           return response.json();
@@ -27,12 +29,11 @@ const Body = (): ReactElement => {
               { name: null, Questions: json.questions },
             ],
           });
+          setFirstLoad(false);
         })
         .catch(catchError);
     }
-
-    dispatch({ type: "questions-updated" });
-  }, [dispatch, state.courseId, state.updateQuestions]);
+  }, [dispatch, firstLoad, state.courseId, state.updateQuestions]);
 
   return (
     <>
@@ -48,10 +49,5 @@ const Body = (): ReactElement => {
     </>
   );
 };
-
-interface ServerResponse {
-  folders: Folder[];
-  questions: Question[];
-}
 
 export default Body;

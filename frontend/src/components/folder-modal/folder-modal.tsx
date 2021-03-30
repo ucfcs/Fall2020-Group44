@@ -1,6 +1,7 @@
 import React, { useState, useContext, ReactElement, FormEvent } from "react";
 import { store } from "../../store";
-import { catchError, createFolder } from "../../util/api";
+import { ServerResponse } from "../../types";
+import { catchError, createFolder, getFolders } from "../../util/api";
 import Modal from "../modal/modal";
 import "./folder-modal.scss";
 
@@ -24,8 +25,22 @@ const FolderModal = (): ReactElement => {
       name: newFolder,
     })
       .then(() => {
-        dispatch({ type: "questions-need-update" });
+        updateFolders();
         closeFolderModal();
+      })
+      .catch(catchError);
+  };
+
+  const updateFolders = (): void => {
+    getFolders(state.courseId)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json: ServerResponse) => {
+        dispatch({
+          type: "update-questions",
+          payload: [...json.folders, { name: null, Questions: json.questions }],
+        });
       })
       .catch(catchError);
   };
