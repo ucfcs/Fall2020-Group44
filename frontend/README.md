@@ -70,8 +70,8 @@ customize it when you are ready for it.
 Set these variables in a `.env` file in `/frontend`. Can be substitued for your remote URLs.
 
 ```
-REACT_APP_REST_URL=http://localhost:5000
-REACT_APP_WEBSOCKET_URL=ws://localhost:3001
+REACT_APP_REST_URL="http://localhost:5000/dev/api/v1"
+REACT_APP_WEBSOCKET_URL="ws://localhost:3001"
 ```
 
 ## Learn More

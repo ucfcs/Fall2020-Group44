@@ -67,7 +67,9 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 	try {
 		await Folder.update(
-			{ name: body.name as string },
+			{
+				name: body.name as string,
+			},
 			{ where: { id: folderId } }
 		);
 		return responses.ok({
