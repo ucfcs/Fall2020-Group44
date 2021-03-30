@@ -12,6 +12,7 @@ import {
 } from "react-beautiful-dnd";
 import { useHistory } from "react-router";
 import { store } from "../../store";
+import { Folder, Question } from "../../types";
 import Modal from "../modal/modal";
 import "./question-select-modal.scss";
 
@@ -65,7 +66,7 @@ const QuestionSelect = (): ReactElement => {
 
   const handlePreviewDragEnd = (result: DropResult) => {
     if (result.destination) {
-      const newQuestions: PollQuestion[] = state.poll;
+      const newQuestions: Question[] = state.poll;
       const [srcQuestion] = newQuestions.splice(result.source.index, 1);
 
       newQuestions.splice(result.destination.index, 0, srcQuestion);
@@ -169,11 +170,11 @@ const QuestionSelect = (): ReactElement => {
     }
 
     // Update the poll with the questions in sessionQuestions
-    const newPoll: PollQuestion[] = [];
+    const newPoll: Question[] = [];
 
-    Object.keys(sessionQuestions).forEach((f: string) => {
-      sessionQuestions[f].forEach((q: number) => {
-        newPoll.push(state.questions[f].questions[q]);
+    Object.keys(sessionQuestions).forEach((folderIndex: string) => {
+      sessionQuestions[folderIndex].forEach((questionIndex: number) => {
+        newPoll.push(state.questions[folderIndex].Questions[questionIndex]);
       });
     });
 
@@ -221,26 +222,24 @@ const QuestionSelect = (): ReactElement => {
                         className="selected-list__questions"
                         ref={provided.innerRef}
                       >
-                        {state.poll.map(
-                          (question: PollQuestion, index: number) => (
-                            <Draggable
-                              key={index}
-                              draggableId={index + ""}
-                              index={index}
-                            >
-                              {(provided) => (
-                                <div
-                                  ref={provided.innerRef}
-                                  {...provided.draggableProps}
-                                  {...provided.dragHandleProps}
-                                  className="selected-list__question"
-                                >
-                                  {index + 1 + ". " + question.title}
-                                </div>
-                              )}
-                            </Draggable>
-                          )
-                        )}
+                        {state.poll.map((question: Question, index: number) => (
+                          <Draggable
+                            key={index}
+                            draggableId={index + ""}
+                            index={index}
+                          >
+                            {(provided) => (
+                              <div
+                                ref={provided.innerRef}
+                                {...provided.draggableProps}
+                                {...provided.dragHandleProps}
+                                className="selected-list__question"
+                              >
+                                {index + 1 + ". " + question.title}
+                              </div>
+                            )}
+                          </Draggable>
+                        ))}
                         {provided.placeholder}
                       </div>
                     )}
@@ -260,7 +259,7 @@ const QuestionSelect = (): ReactElement => {
                 <div className="question-list-body">
                   <div>
                     {state.questions.map((folder: Folder, fIndex: number) =>
-                      folder.folder !== null ? (
+                      folder.name !== null ? (
                         <div key={fIndex}>
                           <div key={fIndex}>
                             <div className={`folder`}>
@@ -287,10 +286,10 @@ const QuestionSelect = (): ReactElement => {
                                   className="folder-icon"
                                 />
 
-                                <div>{folder.folder}</div>
+                                <div>{folder.name}</div>
                               </label>
                             </div>
-                            {folder.questions.map((question, qIndex) => (
+                            {folder.Questions.map((question, qIndex) => (
                               <div key={fIndex + "-" + qIndex}>
                                 <label
                                   htmlFor={fIndex + "-" + qIndex}
@@ -338,7 +337,7 @@ const QuestionSelect = (): ReactElement => {
                       ) : (
                         <div key={fIndex}>
                           <div className="rogue-question-separator"></div>
-                          {folder.questions.map((question, qIndex) => (
+                          {folder.Questions.map((question, qIndex) => (
                             <label
                               key={qIndex}
                               htmlFor={"rogue-" + qIndex}
@@ -410,23 +409,5 @@ const QuestionSelect = (): ReactElement => {
     </Modal>
   );
 };
-
-interface Folder {
-  folder: string;
-  questions: Question[];
-}
-
-interface Question {
-  title: string;
-  type: string;
-}
-
-interface PollQuestion {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-}
 
 export default QuestionSelect;
