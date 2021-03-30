@@ -98,7 +98,7 @@ const QuestionSelect = (): ReactElement => {
 
         // push entire folder to session
         sessionQuestions[folder] = [
-          ...Array(state.questions[folder].questions.length).keys(),
+          ...Array(state.questions[folder].Questions.length).keys(),
         ];
       }
       // if it's a single question

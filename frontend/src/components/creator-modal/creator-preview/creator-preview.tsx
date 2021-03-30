@@ -15,8 +15,8 @@ const CreatorPreview = (): ReactElement => {
 
   const question: Question = state.currentQuestionInfo;
 
-  const previewQuestion = state.editPreviewQuestion
-    ? state.questions[state.previewFolder].questions[state.previewQuestion]
+  const previewQuestion: Question = state.editPreviewQuestion
+    ? state.questions[state.previewFolder].Questions[state.previewQuestion]
     : question;
 
   return (

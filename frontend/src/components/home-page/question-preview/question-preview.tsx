@@ -2,6 +2,7 @@ import React, { useState, useContext, ReactElement } from "react";
 import "./question-preview.scss";
 import { store } from "../../../store";
 import MultipleChoice from "../question-types/multiple-choice";
+import { Question } from "../../../types";
 
 const QuestionPreview = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +22,7 @@ const QuestionPreview = (): ReactElement => {
     setShowCorrectPreviewResponse(!showCorrectPreviewResponse);
   };
 
-  const previewQuestion =
+  const previewQuestion: Question =
     state.questions[state.previewFolder]?.Questions[state.previewQuestion];
 
   const previewFolder = state.questions[state.previewFolder]?.folder;
