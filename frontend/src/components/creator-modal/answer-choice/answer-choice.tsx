@@ -1,6 +1,6 @@
 import React, { ReactElement, SyntheticEvent, useContext } from "react";
 import { store } from "../../../store";
-import { QuestionType, QuestionOption } from "../../../types";
+import { Question, QuestionOption } from "../../../types";
 
 import "./answer-choice.scss";
 
@@ -14,12 +14,12 @@ const AnswerChoice = ({
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: QuestionType = state.currentQuestionInfo;
+  const question: Question = state.currentQuestionInfo;
 
   const handleAnswerChange = (e: SyntheticEvent, index: number) => {
     const tempQuestion = question;
 
-    tempQuestion.questionOptions[index][
+    tempQuestion.QuestionOptions[index][
       "text"
     ] = (e.target as HTMLInputElement).value;
 
@@ -32,7 +32,7 @@ const AnswerChoice = ({
   const handleCorrectChange = (event: SyntheticEvent, index: number) => {
     const tempQuestion = { ...question, correct: index };
 
-    tempQuestion.questionOptions[index][
+    tempQuestion.QuestionOptions[index][
       "isAnswer"
     ] = (event.target as HTMLInputElement).checked;
 
@@ -44,7 +44,7 @@ const AnswerChoice = ({
 
   const handleAnswerDelete = (index: number) => {
     const tempQuestion = question;
-    tempQuestion.questionOptions.splice(index, 1);
+    tempQuestion.QuestionOptions.splice(index, 1);
 
     dispatch({
       type: "set-current-question-info",

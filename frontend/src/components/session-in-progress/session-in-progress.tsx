@@ -1,7 +1,7 @@
-import { QuestionType } from "../../types";
+import { Question } from "../../types";
 import React, { ReactElement, useContext, useEffect } from "react";
 import SessionProgress from "./session-progress/session-progress";
-import Question from "./question/question";
+import QuestionComponent from "./question/question";
 
 import "./session-in-progress.scss";
 
@@ -17,7 +17,7 @@ const SessionInProgress = (): ReactElement => {
   const questionProgress = state.questionProgress;
   const questionNumber = state.questionNumber;
 
-  const questions: QuestionType[] = state.sessionQuestions;
+  const questions: Question[] = state.sessionQuestions;
   const currentQuestion = questions[questionNumber];
 
   useEffect(() => {
@@ -34,9 +34,9 @@ const SessionInProgress = (): ReactElement => {
 
   const content = (): ReactElement => {
     return (
-      <Question
+      <QuestionComponent
         questionText={currentQuestion.question}
-        answers={currentQuestion.questionOptions}
+        answers={currentQuestion.QuestionOptions}
         showPercentages={questionProgress > 0}
         questionCount={questions.length}
         questionProgress={questionProgress}

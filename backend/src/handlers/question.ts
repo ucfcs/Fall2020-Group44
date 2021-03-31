@@ -42,13 +42,13 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		!body.question ||
 		!body.participationPoints ||
 		!body.correctnessPoints ||
-		!body.questionOptions ||
+		!body.QuestionOptions ||
 		body.courseId == null ||
 		body.folderId === undefined
 	) {
 		return responses.badRequest({
 			message:
-				'Missing paramter. title, question, participationPoints, correctnessPoints, questionOptions, courseId, folderId all required.',
+				'Missing paramter. title, question, participationPoints, correctnessPoints, QuestionOptions, courseId, folderId all required.',
 		});
 	}
 
@@ -61,7 +61,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 				courseId: String(body.courseId),
 				participationPoints: Number(body.participationPoints),
 				correctnessPoints: Number(body.correctnessPoints),
-				QuestionOptions: body.questionOptions,
+				QuestionOptions: body.QuestionOptions,
 			},
 			{
 				include: [
@@ -96,13 +96,13 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	if (
 		!body.title ||
 		!body.question ||
-		!body.questionOptions ||
+		!body.QuestionOptions ||
 		body.courseId == null ||
 		body.folderId === undefined
 	) {
 		return responses.badRequest({
 			message:
-				'Missing paramter. title, question, questionOptions, courseId, folderId all required.',
+				'Missing paramter. title, question, QuestionOptions, courseId, folderId all required.',
 		});
 	}
 

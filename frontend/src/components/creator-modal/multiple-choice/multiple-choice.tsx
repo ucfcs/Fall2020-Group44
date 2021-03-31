@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext } from "react";
-import { QuestionType } from "../../../types";
+import { Question } from "../../../types";
 import AnswerChoice from "../answer-choice/answer-choice";
 import { store } from "../../../store";
 import "./multiple-choice.scss";
@@ -10,17 +10,17 @@ const MultipleChoice = (): ReactElement => {
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: QuestionType = state.currentQuestionInfo;
+  const question: Question = state.currentQuestionInfo;
 
   const addAnswer = (): void => {
     const blankAnswer = { id: -1, questionId: -1, text: "", isAnswer: false };
-    const answers = [...question.questionOptions];
+    const answers = [...question.QuestionOptions];
 
     answers.push(blankAnswer);
 
     dispatch({
       type: "set-current-question-info",
-      payload: { ...question, questionOptions: answers },
+      payload: { ...question, QuestionOptions: answers },
     });
   };
 
@@ -30,7 +30,7 @@ const MultipleChoice = (): ReactElement => {
         <span className="red">*</span> Answers:
       </span>
 
-      {question.questionOptions.map((answer, index) => (
+      {question.QuestionOptions.map((answer, index) => (
         <AnswerChoice
           key={index}
           index={index}

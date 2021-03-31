@@ -1,5 +1,7 @@
 import React, { useState, useContext, ReactElement, FormEvent } from "react";
 import { store } from "../../store";
+import { ServerResponse } from "../../types";
+import { catchError, createFolder, getFolders } from "../../util/api";
 import Modal from "../modal/modal";
 import "./folder-modal.scss";
 
@@ -17,18 +19,30 @@ const FolderModal = (): ReactElement => {
 
   const handleFolderCreation = (e: FormEvent) => {
     e.preventDefault();
-    const newQuestions = state.questions;
-    const questionsLength = newQuestions.length;
-    newQuestions.splice(
-      questionsLength - (newQuestions[questionsLength - 1].folder ? 0 : 1),
-      0,
-      {
-        folder: newFolder,
-        questions: [],
-      }
-    );
-    dispatch({ type: "update-questions", payload: newQuestions });
-    closeFolderModal();
+
+    createFolder({
+      courseId: state.courseId,
+      name: newFolder,
+    })
+      .then(() => {
+        updateFolders();
+        closeFolderModal();
+      })
+      .catch(catchError);
+  };
+
+  const updateFolders = (): void => {
+    getFolders(state.courseId)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json: ServerResponse) => {
+        dispatch({
+          type: "update-questions",
+          payload: [...json.folders, { name: null, Questions: json.questions }],
+        });
+      })
+      .catch(catchError);
   };
 
   return (
@@ -38,17 +52,20 @@ const FolderModal = (): ReactElement => {
           <button type="reset" className="exit" onClick={closeFolderModal}>
             ×
           </button>
+
           <span className="header-title">Create Folder</span>
         </div>
         <div className="question-select-body">
           <div className="question-details">
             <div className="folder-info">
               <label htmlFor="folder-name">Folder Name: </label>
+
               <input
                 id="folder-name"
                 className="folder-name"
                 type="text"
                 placeholder="eg: Chapter 5"
+                value={newFolder}
                 onChange={(e) => {
                   setNewFolder(e.target.value);
                 }}
@@ -65,6 +82,7 @@ const FolderModal = (): ReactElement => {
           >
             Cancel
           </button>
+
           <button type="submit" className="save-button">
             Create
           </button>

@@ -2,7 +2,7 @@ import React, { useContext, SyntheticEvent, ReactElement } from "react";
 import MultipleChoice from "../multiple-choice/multiple-choice";
 import { store } from "../../../store";
 import "./creator-edit.scss";
-import { QuestionType } from "../../../types";
+import { Folder, Question } from "../../../types";
 
 //TODO: create question props
 
@@ -12,7 +12,7 @@ const CreatorEdit = (): ReactElement => {
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: QuestionType = state.currentQuestionInfo;
+  const question: Question = state.currentQuestionInfo;
 
   const handleTitleChange = (event: SyntheticEvent): void => {
     const tempQuestion = {
@@ -45,7 +45,7 @@ const CreatorEdit = (): ReactElement => {
     if (value === -1) {
       folderId = null;
     } else {
-      folderId = state.questions[value].folder.id;
+      folderId = state.questions[value].id;
     }
 
     const tempQuestion = {
@@ -138,8 +138,8 @@ const CreatorEdit = (): ReactElement => {
             onChange={handleFolderChange}
           >
             {state.questions.map((folder: Folder, fIndex: number) => (
-              <option key={fIndex} value={folder.folder ? fIndex : -1}>
-                {folder.folder || "--None--"}
+              <option key={fIndex} value={folder.name ? fIndex : -1}>
+                {folder.name || "--None--"}
               </option>
             ))}
           </select>
@@ -188,11 +188,5 @@ const CreatorEdit = (): ReactElement => {
     </div>
   );
 };
-
-interface Folder {
-  folder: string;
-  id: number;
-  questions: QuestionType[];
-}
 
 export default CreatorEdit;

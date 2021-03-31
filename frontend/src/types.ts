@@ -1,12 +1,18 @@
-export interface QuestionType {
-  id: number;
+export interface Folder {
+  Questions: Question[];
+  name: string;
+  id?: number;
+}
+
+export interface Question {
   title: string;
   question: string;
   type: string;
-  questionOptions: QuestionOption[];
+  QuestionOptions: QuestionOption[];
   folderId: number | null;
   average?: number;
   total?: number;
+  id?: number;
 }
 
 // this is poorly named, but it is done to match the backend
@@ -25,7 +31,7 @@ export interface Session {
   average: number;
   total: number;
   date: string;
-  questions: QuestionType;
+  questions: Question;
 }
 
 export interface StudentInfo {
@@ -33,4 +39,15 @@ export interface StudentInfo {
   total: number;
   sessions: number[];
   questions: number[][];
+}
+
+export interface QuestionInfo {
+  text: string;
+  answers: string[];
+  correctIndex: number;
+}
+
+export interface ServerResponse {
+  folders: Folder[];
+  questions: Question[];
 }

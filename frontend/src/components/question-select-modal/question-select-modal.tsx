@@ -13,7 +13,8 @@ import {
 import { useHistory } from "react-router";
 import { store } from "../../store";
 
-import { postData } from "../../util/api";
+import { createSession } from "../../util/api";
+import { Folder, Question } from "../../types";
 import Modal from "../modal/modal";
 import "./question-select-modal.scss";
 
@@ -48,25 +49,23 @@ const QuestionSelect = (): ReactElement => {
   };
 
   const presentQuestions = () => {
-    //TODO: add REST call POST /api/v1/session
-    postData(`${url}/dev/api/v1/session`, {
-      courseId: state.courseId,
-      questions: state.sessionQuestions.map(
-        (question: SessionQuestion) => question.id
-      ),
-    })
+    createSession(
+      state.courseId,
+      state.sessionQuestions.map((question: Question) => question.id)
+    )
       .then((res) => res.json())
       .then((res) => {
         console.log(res);
-      });
-    dispatch({ type: "close-question-select" });
 
-    history.push("/poll/present");
+        dispatch({ type: "close-question-select" });
+
+        history.push("/poll/present");
+      });
   };
 
   const handlePreviewDragEnd = (result: DropResult) => {
     if (result.destination) {
-      const newQuestions: SessionQuestion[] = state.sessionQuestions;
+      const newQuestions: Question[] = state.sessionQuestions;
       const [srcQuestion] = newQuestions.splice(result.source.index, 1);
 
       newQuestions.splice(result.destination.index, 0, srcQuestion);
@@ -170,11 +169,11 @@ const QuestionSelect = (): ReactElement => {
     }
 
     // Update the global state with the questions in sessionQuestions
-    const newSession: SessionQuestion[] = [];
+    const newSession: Question[] = [];
 
     Object.keys(sessionQuestions).forEach((f: string) => {
       sessionQuestions[f].forEach((q: number) => {
-        const question = state.questions[f].questions[q];
+        const question = state.questions[f].Questions[q];
         question.isClosed = false;
         question.responseCount = 0;
         newSession.push(question);
@@ -228,7 +227,7 @@ const QuestionSelect = (): ReactElement => {
                         ref={provided.innerRef}
                       >
                         {state.sessionQuestions.map(
-                          (question: SessionQuestion, index: number) => (
+                          (question: Question, index: number) => (
                             <Draggable
                               key={index}
                               draggableId={index + ""}
@@ -266,7 +265,7 @@ const QuestionSelect = (): ReactElement => {
                 <div className="question-list-body">
                   <div>
                     {state.questions.map((folder: Folder, fIndex: number) =>
-                      folder.folder !== null ? (
+                      folder.name !== null ? (
                         <div key={fIndex}>
                           <div key={fIndex}>
                             <div className={`folder`}>
@@ -293,10 +292,10 @@ const QuestionSelect = (): ReactElement => {
                                   className="folder-icon"
                                 />
 
-                                <div>{folder.folder}</div>
+                                <div>{folder.name}</div>
                               </label>
                             </div>
-                            {folder.questions.map((question, qIndex) => (
+                            {folder.Questions.map((question, qIndex) => (
                               <div key={fIndex + "-" + qIndex}>
                                 <label
                                   htmlFor={fIndex + "-" + qIndex}
@@ -344,7 +343,7 @@ const QuestionSelect = (): ReactElement => {
                       ) : (
                         <div key={fIndex}>
                           <div className="rogue-question-separator"></div>
-                          {folder.questions.map((question, qIndex) => (
+                          {folder.Questions.map((question, qIndex) => (
                             <label
                               key={qIndex}
                               htmlFor={"rogue-" + qIndex}
@@ -417,26 +416,5 @@ const QuestionSelect = (): ReactElement => {
     </Modal>
   );
 };
-
-interface Folder {
-  folder: string;
-  questions: Question[];
-}
-
-interface Question {
-  title: string;
-  type: string;
-}
-
-interface SessionQuestion {
-  id: number;
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-  responseCount: number;
-  isClosed: boolean;
-}
 
 export default QuestionSelect;

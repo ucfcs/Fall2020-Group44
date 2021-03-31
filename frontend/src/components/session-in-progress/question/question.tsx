@@ -6,7 +6,7 @@ import SessionControls from "../session-controls/session-controls";
 import { QuestionOption } from "../../../types";
 import { CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../../constants";
 
-const Question = (props: QuestionProps): ReactElement => {
+const QuestionComponent = (props: QuestionProps): ReactElement => {
   const correctAnswers: number[] = [];
   if (props.questionProgress == CORRECT_RESPONSE) {
     props.answers.forEach((answer) => {
@@ -95,4 +95,4 @@ interface QuestionProps {
   questionProgress: number;
 }
 
-export default Question;
+export default QuestionComponent;

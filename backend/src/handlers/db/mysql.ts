@@ -1,10 +1,12 @@
 import {
 	Folder,
 	Session,
+	SessionGrade,
 	Session_Question,
 	QuestionOption,
 	Question,
 	QuestionUserResponse,
+	QuestionGrade,
 	User,
 	UserSetting,
 } from '../../models';
@@ -15,6 +17,8 @@ export async function init(): Promise<void> {
 		await User.sync({ alter: true });
 		await Folder.sync({ alter: true });
 		await Session.sync({ alter: true });
+		await SessionGrade.sync({ alter: true });
+		await QuestionGrade.sync({ alter: true });
 		await Question.sync({ alter: true });
 		await Session_Question.sync({ alter: true });
 		await QuestionOption.sync({ alter: true });
