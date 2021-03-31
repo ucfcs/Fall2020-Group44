@@ -46,6 +46,7 @@ const SessionProgress = (): ReactElement => {
         setResponseCount(state.sessionQuestions[questionNumber].responseCount);
       });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [questionNumber]);
 
   if (state.websocket) {

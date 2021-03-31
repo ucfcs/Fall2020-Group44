@@ -30,6 +30,7 @@ const SessionInProgress = (): ReactElement => {
         })
       );
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestion]);
 
   const content = (): ReactElement => {

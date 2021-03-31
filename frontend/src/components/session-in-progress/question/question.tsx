@@ -4,7 +4,7 @@ import "./question.scss";
 import data from "./mock-data.json";
 import SessionControls from "../session-controls/session-controls";
 import { QuestionOption } from "../../../types";
-import { CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../../constants";
+import { CORRECT_RESPONSE } from "../../../constants";
 
 const QuestionComponent = (props: QuestionProps): ReactElement => {
   const correctAnswers: number[] = [];

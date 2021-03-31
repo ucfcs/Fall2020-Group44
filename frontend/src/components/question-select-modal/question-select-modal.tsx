@@ -27,8 +27,6 @@ const QuestionSelect = (): ReactElement => {
   const [isPreview, setIsPreview] = useState(false);
   const history = useHistory();
 
-  const url = `${process.env.REACT_APP_REST_URL}`;
-
   const folderCheckboxRefs: HTMLInputElement[] = [];
 
   // an object containing refs of the checkbox of each question
@@ -52,15 +50,11 @@ const QuestionSelect = (): ReactElement => {
     createSession(
       state.courseId,
       state.sessionQuestions.map((question: Question) => question.id)
-    )
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
+    ).then(() => {
+      dispatch({ type: "close-question-select" });
 
-        dispatch({ type: "close-question-select" });
-
-        history.push("/poll/present");
-      });
+      history.push("/poll/present");
+    });
   };
 
   const handlePreviewDragEnd = (result: DropResult) => {
