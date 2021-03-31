@@ -79,8 +79,8 @@ const CreatorEdit = (): ReactElement => {
     dispatch({ type: "set-current-question-info", payload: tempQuestion });
   };
 
-  const previewQuestion = state.editPreviewQuestion
-    ? state.questions[state.previewFolder].questions[state.previewQuestion]
+  const previewQuestion: Question = state.editPreviewQuestion
+    ? state.questions[state.previewFolder].Questions[state.previewQuestion]
     : question;
 
   return (
