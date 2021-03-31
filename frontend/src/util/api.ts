@@ -78,7 +78,7 @@ export async function createSession(
 
   const response: Response = await postData(`${url}/session`, {
     courseId,
-    questionIds,
+    questions: questionIds,
   });
 
   return response;
