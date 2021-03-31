@@ -10,7 +10,7 @@ const QuestionComponent = (props: QuestionProps): ReactElement => {
   const correctAnswers: number[] = [];
   if (props.questionProgress == CORRECT_RESPONSE) {
     props.answers.forEach((answer) => {
-      if (answer.isAnswer) {
+      if (answer.isAnswer && answer.id) {
         correctAnswers.push(answer.id);
       }
     });

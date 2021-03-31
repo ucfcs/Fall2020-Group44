@@ -19,8 +19,8 @@ export interface Question {
 // a QuestionOption is an answer. isAnswer determines if the answer is
 // correct.
 export interface QuestionOption {
-  id: number;
-  questionId: number;
+  id?: number;
+  questionId?: number;
   text: string;
   isAnswer: boolean;
 }
