@@ -408,6 +408,7 @@ const QuestionSelect = (): ReactElement => {
             type="submit"
             className="save-button"
             onClick={presentQuestions}
+            disabled={state.sessionQuestions.length == 0}
           >
             Present
           </button>
