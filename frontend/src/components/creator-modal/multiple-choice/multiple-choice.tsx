@@ -1,5 +1,5 @@
 import React, { ReactElement, useContext } from "react";
-import { Question } from "../../../types";
+import { QuestionType } from "../../../types";
 import AnswerChoice from "../answer-choice/answer-choice";
 import { store } from "../../../store";
 import "./multiple-choice.scss";
@@ -10,10 +10,10 @@ const MultipleChoice = (): ReactElement => {
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: Question = state.currentQuestionInfo;
+  const question: QuestionType = state.currentQuestionInfo;
 
   const addAnswer = (): void => {
-    const blankAnswer = { text: "", isAnswer: false };
+    const blankAnswer = { id: -1, questionId: -1, text: "", isAnswer: false };
     const answers = [...question.questionOptions];
 
     answers.push(blankAnswer);

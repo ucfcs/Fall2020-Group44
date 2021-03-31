@@ -1,6 +1,6 @@
 import React, { ReactElement, useContext } from "react";
 import { store } from "../../../store";
-import { Question } from "../../../types";
+import { QuestionType } from "../../../types";
 
 import "./creator-preview.scss";
 
@@ -13,7 +13,7 @@ const CreatorPreview = (): ReactElement => {
   const global = useContext(store) as any;
   const state = global.state;
 
-  const question: Question = state.currentQuestionInfo;
+  const question: QuestionType = state.currentQuestionInfo;
 
   const previewQuestion = state.editPreviewQuestion
     ? state.questions[state.previewFolder].questions[state.previewQuestion]

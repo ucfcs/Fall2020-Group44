@@ -2,7 +2,7 @@ import React, { useContext, SyntheticEvent, ReactElement } from "react";
 import MultipleChoice from "../multiple-choice/multiple-choice";
 import { store } from "../../../store";
 import "./creator-edit.scss";
-import { Question } from "../../../types";
+import { QuestionType } from "../../../types";
 
 //TODO: create question props
 
@@ -12,7 +12,7 @@ const CreatorEdit = (): ReactElement => {
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: Question = state.currentQuestionInfo;
+  const question: QuestionType = state.currentQuestionInfo;
 
   const handleTitleChange = (event: SyntheticEvent): void => {
     const tempQuestion = {
@@ -192,7 +192,7 @@ const CreatorEdit = (): ReactElement => {
 interface Folder {
   folder: string;
   id: number;
-  questions: Question[];
+  questions: QuestionType[];
 }
 
 export default CreatorEdit;

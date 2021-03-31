@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useReducer } from "react";
 
-const closedQuestions = new Set();
-
 const baseQuestionInfo = {
   title: "",
   question: "",
@@ -25,7 +23,7 @@ const init = {
       folder: "Chapter 1",
       questions: [
         {
-          id: 0,
+          id: 1,
           title: "Photosynthesis 1a",
           question: "What are the products of photosynthesis?",
           type: "Mult Choice",
@@ -34,21 +32,27 @@ const init = {
           correctnessPoints: 0.5,
           questionOptions: [
             {
+              id: 0,
+              questionId: 1,
               text: "Carbon dioxide and water",
               isAnswer: false,
             },
             {
+              id: 1,
+              questionId: 1,
               text: "Glucose and oxygen",
               isAnswer: true,
             },
             {
+              id: 2,
+              questionId: 1,
               text: "Lactic acid",
               isAnswer: false,
             },
           ],
         },
         {
-          id: 0,
+          id: 2,
           title: "Photosynthesis 1b",
           question: "What colour is chlorophyll?",
           type: "Mult Choice",
@@ -57,14 +61,20 @@ const init = {
           correctnessPoints: 0.5,
           questionOptions: [
             {
+              id: 3,
+              questionId: 2,
               text: "Black",
               isAnswer: false,
             },
             {
+              id: 4,
+              questionId: 2,
               text: "Blue",
               isAnswer: false,
             },
             {
+              id: 5,
+              questionId: 2,
               text: "Green",
               isAnswer: true,
             },
@@ -76,7 +86,7 @@ const init = {
       folder: "Chapter 2",
       questions: [
         {
-          id: 0,
+          id: 3,
           title: "Photosynthesis 2a",
           question: "Where does photosynthesis take place?",
           type: "Mult Choice",
@@ -85,21 +95,27 @@ const init = {
           correctnessPoints: 0.5,
           questionOptions: [
             {
+              id: 6,
+              questionId: 3,
               text: "In the chloroplasts",
               isAnswer: true,
             },
             {
+              id: 7,
+              questionId: 3,
               text: "In the cell wall",
               isAnswer: false,
             },
             {
+              id: 8,
+              questionId: 3,
               text: "In the nucleus",
               isAnswer: false,
             },
           ],
         },
         {
-          id: 0,
+          id: 4,
           title: "Photosynthesis 2b",
           question: "What are the reactants of photosynthesis?",
           type: "Mult Choice",
@@ -108,14 +124,20 @@ const init = {
           correctnessPoints: 0.5,
           questionOptions: [
             {
+              id: 9,
+              questionId: 4,
               text: "Carbon dioxide and water",
               isAnswer: true,
             },
             {
+              id: 10,
+              questionId: 4,
               text: "Carbon dioxide and oxygen",
               isAnswer: false,
             },
             {
+              id: 11,
+              questionId: 4,
               text: "Glucose and oxygen",
               isAnswer: false,
             },
@@ -127,7 +149,7 @@ const init = {
       folder: "Chapter 3",
       questions: [
         {
-          id: 0,
+          id: 5,
           title: "Photosynthesis 3a",
           question: "When do plants respire?",
           type: "Mult Choice",
@@ -136,21 +158,27 @@ const init = {
           correctnessPoints: 0.5,
           questionOptions: [
             {
+              id: 12,
+              questionId: 5,
               text: "During the day only",
               isAnswer: false,
             },
             {
+              id: 13,
+              questionId: 5,
               text: "During the day and night",
               isAnswer: true,
             },
             {
+              id: 14,
+              questionId: 5,
               text: "During the night only",
               isAnswer: false,
             },
           ],
         },
         {
-          id: 0,
+          id: 6,
           title: "Photosynthesis 3b",
           question: "When do plants photosynthesise?",
           type: "Mult Choice",
@@ -159,14 +187,20 @@ const init = {
           correctnessPoints: 0.5,
           questionOptions: [
             {
+              id: 15,
+              questionId: 6,
               text: "During the day and night",
               isAnswer: false,
             },
             {
+              id: 16,
+              questionId: 6,
               text: "During the night only",
               isAnswer: false,
             },
             {
+              id: 17,
+              questionId: 6,
               text: "During the day only",
               isAnswer: true,
             },
@@ -178,7 +212,7 @@ const init = {
       folder: "Chapter 4",
       questions: [
         {
-          id: 0,
+          id: 7,
           title: "Photosynthesis 4a",
           question: "What are the cells near the top of leaves called?",
           type: "Mult Choice",
@@ -187,21 +221,27 @@ const init = {
           correctnessPoints: 0.5,
           questionOptions: [
             {
+              id: 18,
+              questionId: 7,
               text: "Palisade cells",
               isAnswer: true,
             },
             {
+              id: 19,
+              questionId: 7,
               text: "Root hair cells",
               isAnswer: false,
             },
             {
+              id: 20,
+              questionId: 7,
               text: "Red blood cells",
               isAnswer: false,
             },
           ],
         },
         {
-          id: 0,
+          id: 8,
           title: "Photosynthesis 4b",
           question: "What does xylem carry?",
           type: "Mult Choice",
@@ -210,14 +250,20 @@ const init = {
           correctnessPoints: 0.5,
           questionOptions: [
             {
+              id: 21,
+              questionId: 8,
               text: "Water",
               isAnswer: false,
             },
             {
+              id: 22,
+              questionId: 8,
               text: "Blood",
               isAnswer: false,
             },
             {
+              id: 23,
+              questionId: 8,
               text: "Carbohydrates",
               isAnswer: true,
             },
@@ -229,7 +275,7 @@ const init = {
       folder: null,
       questions: [
         {
-          id: 0,
+          id: 9,
           title: "Photosynthesis 1",
           question: "What do stomata do?",
           type: "Mult Choice",
@@ -238,21 +284,27 @@ const init = {
           correctnessPoints: 0.5,
           questionOptions: [
             {
+              id: 24,
+              questionId: 9,
               text: "Stop carbon dioxide diffusing into leaves",
               isAnswer: false,
             },
             {
+              id: 25,
+              questionId: 9,
               text: "Allow oxygen to diffuse into leaves",
               isAnswer: false,
             },
             {
+              id: 26,
+              questionId: 9,
               text: "Allow carbon dioxide to diffuse into leaves",
               isAnswer: true,
             },
           ],
         },
         {
-          id: 0,
+          id: 10,
           title: "Photosynthesis 2",
           question: "How are root hair cells adapted?",
           type: "Mult Choice",
@@ -261,14 +313,20 @@ const init = {
           correctnessPoints: 0.5,
           questionOptions: [
             {
+              id: 27,
+              questionId: 10,
               text: "Huge surface area",
               isAnswer: false,
             },
             {
+              id: 28,
+              questionId: 10,
               text: "Lots of chloroplasts",
               isAnswer: true,
             },
             {
+              id: 29,
+              questionId: 10,
               text: "Have no cell wall",
               isAnswer: false,
             },

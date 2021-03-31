@@ -1,6 +1,6 @@
 import React, { ReactElement, SyntheticEvent, useContext } from "react";
 import { store } from "../../../store";
-import { Question, QuestionOption } from "../../../types";
+import { QuestionType, QuestionOption } from "../../../types";
 
 import "./answer-choice.scss";
 
@@ -14,7 +14,7 @@ const AnswerChoice = ({
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: Question = state.currentQuestionInfo;
+  const question: QuestionType = state.currentQuestionInfo;
 
   const handleAnswerChange = (e: SyntheticEvent, index: number) => {
     const tempQuestion = question;

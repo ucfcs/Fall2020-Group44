@@ -12,6 +12,8 @@ import {
 } from "react-beautiful-dnd";
 import { useHistory } from "react-router";
 import { store } from "../../store";
+
+import { postData } from "../../util/api";
 import Modal from "../modal/modal";
 import "./question-select-modal.scss";
 
@@ -24,7 +26,7 @@ const QuestionSelect = (): ReactElement => {
   const [isPreview, setIsPreview] = useState(false);
   const history = useHistory();
 
-  const url = `${process.env.REACT_APP_WEBSOCKET_URL}`;
+  const url = `${process.env.REACT_APP_REST_URL}`;
 
   const folderCheckboxRefs: HTMLInputElement[] = [];
 
@@ -47,6 +49,16 @@ const QuestionSelect = (): ReactElement => {
 
   const presentQuestions = () => {
     //TODO: add REST call POST /api/v1/session
+    postData(`${url}/dev/api/v1/session`, {
+      courseId: state.courseId,
+      questions: state.sessionQuestions.map(
+        (question: SessionQuestion) => question.id
+      ),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        console.log(res);
+      });
     dispatch({ type: "close-question-select" });
 
     history.push("/poll/present");
@@ -158,18 +170,20 @@ const QuestionSelect = (): ReactElement => {
     }
 
     // Update the global state with the questions in sessionQuestions
-    const newPoll: SessionQuestion[] = [];
+    const newSession: SessionQuestion[] = [];
 
     Object.keys(sessionQuestions).forEach((f: string) => {
       sessionQuestions[f].forEach((q: number) => {
         const question = state.questions[f].questions[q];
         question.isClosed = false;
         question.responseCount = 0;
-        newPoll.push(question);
+        newSession.push(question);
       });
     });
 
-    dispatch({ type: "update-session-questions", payload: newPoll });
+    console.log(newSession);
+
+    dispatch({ type: "update-session-questions", payload: newSession });
   };
 
   return (
@@ -414,6 +428,7 @@ interface Question {
 }
 
 interface SessionQuestion {
+  id: number;
   title: string;
   question: string;
   type: string;

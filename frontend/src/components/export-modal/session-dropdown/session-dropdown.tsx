@@ -1,5 +1,5 @@
 import React, { ReactElement, SyntheticEvent, useState } from "react";
-import { Question } from "../../../types";
+import { QuestionType } from "../../../types";
 
 import "./session-dropdown.scss";
 
@@ -46,7 +46,7 @@ const SessionDropdown = (props: Props): ReactElement => {
           {isOpen ? (
             <ol>
               {props.questions.map(
-                (question: Question, index: number): ReactElement => (
+                (question: QuestionType, index: number): ReactElement => (
                   <li key={index}>{question.title}</li>
                 )
               )}
@@ -69,7 +69,7 @@ const SessionDropdown = (props: Props): ReactElement => {
 interface Props {
   name: string;
   date: string;
-  questions: Question[];
+  questions: QuestionType[];
   points: number;
   index: number;
   preSelected: boolean;

@@ -10,7 +10,7 @@ import CreatorEdit from "./creator-edit/creator-edit";
 import CreatorPreview from "./creator-preview/creator-preview";
 import Modal from "../modal/modal";
 import { postData, putData } from "../../util/api";
-import { Question } from "../../types";
+import { QuestionType } from "../../types";
 
 //todo: create question props
 
@@ -40,7 +40,7 @@ const Creator = (): ReactElement => {
   }, [state.editPreviewQuestion]);
 
   const [isPreview, setIsPreview] = useState(false);
-  const questionInfo: Question = state.currentQuestionInfo;
+  const questionInfo: QuestionType = state.currentQuestionInfo;
 
   const closePreviewQuestion = (): void => {
     dispatch({ type: "close-preview-question" });

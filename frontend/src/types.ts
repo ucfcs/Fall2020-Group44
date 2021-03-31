@@ -1,4 +1,5 @@
-export interface Question {
+export interface QuestionType {
+  id: number;
   title: string;
   question: string;
   type: string;
@@ -12,6 +13,8 @@ export interface Question {
 // a QuestionOption is an answer. isAnswer determines if the answer is
 // correct.
 export interface QuestionOption {
+  id: number;
+  questionId: number;
   text: string;
   isAnswer: boolean;
 }
@@ -22,7 +25,7 @@ export interface Session {
   average: number;
   total: number;
   date: string;
-  questions: Question;
+  questions: QuestionType;
 }
 
 export interface StudentInfo {
@@ -30,10 +33,4 @@ export interface StudentInfo {
   total: number;
   sessions: number[];
   questions: number[][];
-}
-
-export interface QuestionInfo {
-  text: string;
-  answers: string[];
-  correctIndex: number;
 }

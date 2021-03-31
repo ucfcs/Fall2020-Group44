@@ -3,14 +3,26 @@ import "./question.scss";
 
 import data from "./mock-data.json";
 import SessionControls from "../session-controls/session-controls";
+import { QuestionOption } from "../../../types";
+import { CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../../constants";
 
 const Question = (props: QuestionProps): ReactElement => {
-  const correctClass = props.correctAnswer !== undefined ? "correct" : "";
-  const incorrectClass = props.correctAnswer !== undefined ? "incorrect" : "";
+  const correctAnswers: number[] = [];
+  if (props.questionProgress == CORRECT_RESPONSE) {
+    props.answers.forEach((answer) => {
+      if (answer.isAnswer) {
+        correctAnswers.push(answer.id);
+      }
+    });
+  }
+  const correctClass =
+    props.questionProgress == CORRECT_RESPONSE ? "correct" : "";
+  const incorrectClass =
+    props.questionProgress == CORRECT_RESPONSE ? "incorrect" : "";
   const correctClassBackground =
-    props.correctAnswer !== undefined ? "correct-background" : "";
+    props.questionProgress == CORRECT_RESPONSE ? "correct-background" : "";
   const incorrectClassBackground =
-    props.correctAnswer !== undefined ? "incorrect-background" : "";
+    props.questionProgress == CORRECT_RESPONSE ? "incorrect-background" : "";
   let percentages: number[] = [];
 
   if (props.showPercentages) {
@@ -23,12 +35,12 @@ const Question = (props: QuestionProps): ReactElement => {
       <h2>{props.questionText}</h2>
 
       <div className="answers">
-        {props.answers.map((answer: string, index: number) => {
+        {props.answers.map((answer: QuestionOption, index: number) => {
           return (
             <div key={index} className="answer">
               <div
                 className={`always-displayed ${
-                  index === props.correctAnswer
+                  answer.isAnswer
                     ? correctClassBackground
                     : incorrectClassBackground
                 }`}
@@ -38,16 +50,14 @@ const Question = (props: QuestionProps): ReactElement => {
                 </div>
 
                 <div className="answer-info">
-                  <p className="answer-text">{answer}</p>
+                  <p className="answer-text">{answer.text}</p>
 
                   {props.showPercentages ? (
                     <>
                       <div
                         style={{ width: `${percentages[index]}%` }}
                         className={`correct-bar ${
-                          index === props.correctAnswer
-                            ? correctClass
-                            : incorrectClass
+                          answer.isAnswer ? correctClass : incorrectClass
                         }`}
                       />
 
@@ -59,12 +69,10 @@ const Question = (props: QuestionProps): ReactElement => {
                 </div>
               </div>
 
-              {props.correctAnswer !== undefined ? (
+              {props.questionProgress == CORRECT_RESPONSE ? (
                 // for some reason .svg breaks vscode colors, but it actually works fine
                 <img
-                  src={`/img/${
-                    index === props.correctAnswer ? "check" : "x"
-                  }.svg`}
+                  src={`/img/${answer.isAnswer ? "check" : "x"}.svg`}
                   alt=""
                 />
               ) : null}
@@ -80,11 +88,11 @@ const Question = (props: QuestionProps): ReactElement => {
 
 interface QuestionProps {
   questionText: string;
-  answers: string[];
+  answers: QuestionOption[];
   closed?: boolean;
   showPercentages: boolean;
-  correctAnswer?: number | number[];
   questionCount: number;
+  questionProgress: number;
 }
 
 export default Question;
