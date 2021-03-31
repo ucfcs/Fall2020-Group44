@@ -90,7 +90,7 @@ export function catchError(error: Error): void {
 
 function getBaseUrl(): string {
   if (process.env.REACT_APP_REST_URL) {
-    return `${process.env.REACT_APP_REST_URL}/dev/api/v1`;
+    return `${process.env.REACT_APP_REST_URL}`;
   } else {
     throw new Error("API URL not found.");
   }

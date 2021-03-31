@@ -34,7 +34,7 @@ const Creator = (): ReactElement => {
         dispatch({
           type: "set-current-question-info",
           payload:
-            state.questions[state.previewFolder].questions[
+            state.questions[state.previewFolder].Questions[
               state.previewQuestion
             ],
         });
@@ -71,7 +71,7 @@ const Creator = (): ReactElement => {
 
     if (state.editPreviewQuestion) {
       const id =
-        state.questions[state.previewFolder].questions[state.previewQuestion][
+        state.questions[state.previewFolder].Questions[state.previewQuestion][
           "id"
         ];
 
