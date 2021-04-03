@@ -31,8 +31,9 @@ export class Connection {
 	 * inform the professor with message `studentConnected`
 	 *
 	 * params
-	 * - key: roomId == courseId
-	 * - connectionId: websocket connectionId of student
+	 * - courseId
+	 * - connectionId
+	 * - isProfessor
 	 * returns
 	 * - success of dynamodb update
 	 *****************************************************/
@@ -109,7 +110,7 @@ export class Connection {
 	 * the student
 	 *
 	 * params
-	 * - courseId
+	 * - courseId, connectionId
 	 * returns
 	 * - success of check
 	 *****************************************************/
@@ -163,7 +164,7 @@ export class Connection {
 	/******************************************************
 	 * check if room key exists
 	 * params
-	 * - key: roomId == courseId
+	 * - courseId
 	 * returns
 	 * - 1 if room exists, 0 otherwise
 	 *****************************************************/
@@ -204,7 +205,7 @@ export class Connection {
 	 * which students will be added to when they join
 	 *
 	 * params
-	 * - courseId, connectionId of professor
+	 * - courseId, connectionId, isProfessor
 	 * returns
 	 * - success of DynamoDB PUT
 	 *****************************************************/
@@ -594,15 +595,17 @@ export class Connection {
 			Key: {
 				courseId: courseId,
 			},
-			UpdateExpression: 'SET #s.#id = :id, #s.#name = :name',
+			UpdateExpression: 'SET #s.#id = :id, #s.#name = :name, #q = :q',
 			ExpressionAttributeValues: {
 				':id': 0,
 				':name': 'none',
+				':q': null,
 			},
 			ExpressionAttributeNames: {
 				'#s': 'session',
 				'#id': 'id',
 				'#name': 'name',
+				'#q': 'question',
 			},
 			ConditionExpression: 'attribute_exists(courseId)',
 		};
@@ -692,11 +695,86 @@ export class Connection {
 	}
 
 	/******************************************************
+	 * validates the response parameters of an attempted
+	 * submit, verifying quesitonId, sessionId, and that
+	 * the provided questionOptionId is one of the
+	 * QuestionOptions of the current question
+	 *
+	 * params
+	 * - courseId, questionId, questionOptionId, sessionId
+	 * returns
+	 * - true if valid, otherwise false
+	 *****************************************************/
+	private async validateSubmit(
+		courseId: string,
+		questionId: string,
+		questionOptionId: string,
+		sessionId: string
+	): Promise<number> {
+		try {
+			const params = {
+				TableName: process.env.DYNAMO_TABLE_NAME as string,
+				Key: {
+					courseId: courseId,
+				},
+				AttributesToGet: ['session', 'question'],
+			};
+
+			const data = await this.client?.get(params).promise();
+
+			if (!data || !data.Item) {
+				throw 'Course Not Found';
+			}
+
+			// validate session matches
+			if (data.Item.session.id !== parseInt(sessionId)) {
+				console.log(
+					'User attempted to submit a response for a ' +
+						'session not currently being presented'
+				);
+				return 0;
+			}
+
+			// validate question matches
+			if (data.Item.question.id !== parseInt(questionId)) {
+				console.log(
+					'User attempted to submit a response for a ' +
+						'question not currently being presented'
+				);
+				return 0;
+			}
+
+			// validate questionOptionId is part of the question
+			const found = data.Item.question.QuestionOptions.some(
+				(option: QuestionOption) => option.id === parseInt(questionOptionId)
+			);
+
+			console.log(found);
+
+			if (!found) {
+				console.log(
+					'User attempted to submit a response ' +
+						'using a questionOptionId that is not ' +
+						'a QuestionOption of the current question'
+				);
+				return 0;
+			}
+
+			// all parameters check out
+			return 1;
+		} catch (error) {
+			console.log('DynamoDB: error validating submit:');
+			console.log(error);
+			return 0;
+		}
+	}
+
+	/******************************************************
 	 * submit a users response, then notify the professor
 	 * if it is not an updated response
 	 *
 	 * params
-	 * - courseId, questionId, questionOptionId, userId
+	 * - courseId, questionId, questionOptionId, userId, sessionId
 	 * returns
 	 * - list of connection id's as an array of strings
 	 *****************************************************/
@@ -709,6 +787,18 @@ export class Connection {
 	): Promise<APIGatewayProxyResult> {
 		console.log('attempting to submit');
 		try {
+			// first check that the student is trying to submit
+			// for the current question/session
+			const validated = await this.validateSubmit(
+				courseId,
+				questionId,
+				questionOptionId,
+				sessionId
+			);
+
+			if (!validated)
+				throw 'Invalid params for the current question being presented';
+
 			// attempt to create response in db
 			await QuestionUserResponse.create({
 				questionId: parseInt(questionId),
@@ -838,10 +928,9 @@ export class Connection {
 	 * returns
 	 * - success of both operations
 	 *****************************************************/
-	// TODO: i don't know what a question object looks like yet
 	public async startQuestion(
 		courseId: string,
-		question: unknown
+		question: Question
 	): Promise<APIGatewayProxyResult> {
 		const params = {
 			TableName: process.env.DYNAMO_TABLE_NAME as string,
@@ -1035,4 +1124,30 @@ export class Connection {
 			console.log(e);
 		}
 	}
+}
+
+interface QuestionOption {
+	id: number;
+	createdAt: string;
+	questionId: number;
+	responseCount: number;
+	text: string;
+	isAnswer: boolean;
+	updatedAt: string;
+}
+
+interface Question {
+	question: string;
+	correctnessPoints: number;
+	responseCount: number;
+	title: string;
+	QuestionOptions: QuestionOption[];
+	folderId: number;
+	participationPoints: number;
+	createdAt: string;
+	isClosed: boolean;
+	progress: number;
+	id: number;
+	courseId: string;
+	updatedAt: string;
 }
