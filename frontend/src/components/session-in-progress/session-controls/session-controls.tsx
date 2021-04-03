@@ -10,8 +10,8 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
   const dispatch = global.dispatch;
   const state = global.state;
 
-  const questionProgress = state.questionProgress;
   const questionNumber = state.questionNumber;
+  const questionProgress = props.questionProgress;
 
   let nextStage: string;
 
@@ -31,9 +31,11 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
 
   const goForward = (): void => {
     if (questionProgress < CORRECT_RESPONSE) {
+      const newQuestions = state.sessionQuestions;
+      newQuestions[questionNumber].progress = questionProgress + 1;
       dispatch({
-        type: "update-question-progress",
-        payload: questionProgress + 1,
+        type: "update-session-questions",
+        payload: newQuestions,
       });
     } else {
       nextQuestion();
@@ -42,9 +44,11 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
 
   const goBack = (): void => {
     if (questionProgress > RESPOND) {
+      const newQuestions = state.sessionQuestions;
+      newQuestions[questionNumber].progress = questionProgress - 1;
       dispatch({
-        type: "update-question-progress",
-        payload: questionProgress - 1,
+        type: "update-session-questions",
+        payload: newQuestions,
       });
     } else {
       previousQuestion();
@@ -56,7 +60,6 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     if (questionNumber >= props.questionCount - 1) {
       // this would make an api call to record what happened since it is the end of the session
       dispatch({ type: "update-question-number", payload: 0 });
-      dispatch({ type: "update-question-progress", payload: RESPOND });
       dispatch({ type: "update-session-questions", payload: [] });
 
       // notify students the session has ended
@@ -69,18 +72,28 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
         );
       }
     } else {
+      const newQuestions = state.sessionQuestions;
+      newQuestions[questionNumber + 1].progress = RESPOND;
+      dispatch({
+        type: "update-session-questions",
+        payload: newQuestions,
+      });
       dispatch({ type: "update-question-number", payload: questionNumber + 1 });
-      dispatch({ type: "update-question-progress", payload: RESPOND });
     }
   };
 
   const previousQuestion = (): void => {
     if (questionNumber > 0) {
+      const newQuestions = state.sessionQuestions;
+      newQuestions[questionNumber - 1].progress = RESPOND;
+      dispatch({
+        type: "update-session-questions",
+        payload: newQuestions,
+      });
       dispatch({
         type: "update-question-number",
         payload: state.questionNumber - 1,
       });
-      dispatch({ type: "update-question-progress", payload: RESPOND });
     }
   };
 
@@ -117,6 +130,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
 
 interface SessionControlsProps {
   questionCount: number;
+  questionProgress: number;
 }
 
 export default SessionControls;

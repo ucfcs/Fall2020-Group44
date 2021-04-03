@@ -84,7 +84,10 @@ const QuestionComponent = (props: QuestionProps): ReactElement => {
           );
         })}
 
-        <SessionControls questionCount={props.questionCount} />
+        <SessionControls
+          questionCount={props.questionCount}
+          questionProgress={props.questionProgress}
+        />
       </div>
     </div>
   );

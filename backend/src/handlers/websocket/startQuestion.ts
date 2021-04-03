@@ -1,17 +1,9 @@
 import { Connection } from '../../util/websocket';
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 
-interface QuestionObject {
-	title: string;
-	question: string;
-	type: string;
-	choices: string[];
-	correct: number;
-}
-
 let connection: Connection;
 let room: string;
-let question: QuestionObject;
+let question: Question;
 
 export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	// initialize connection to redis/apigateway
@@ -40,3 +32,29 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		};
 	}
 };
+
+interface QuestionOption {
+	id: number;
+	createdAt: string;
+	questionId: number;
+	responseCount: number;
+	text: string;
+	isAnswer: boolean;
+	updatedAt: string;
+}
+
+interface Question {
+	question: string;
+	correctnessPoints: number;
+	responseCount: number;
+	title: string;
+	QuestionOptions: QuestionOption[];
+	folderId: number;
+	participationPoints: number;
+	createdAt: string;
+	isClosed: boolean;
+	progress: number;
+	id: number;
+	courseId: string;
+	updatedAt: string;
+}

@@ -15,9 +15,9 @@ const SessionInProgress = (): ReactElement => {
   const dispatch = global.dispatch;
   const state = global.state;
 
-  const questionProgress = state.questionProgress;
   const questionNumber = state.questionNumber;
   const isClosed = state.sessionQuestions[questionNumber].isClosed;
+  const questionProgress = state.sessionQuestions[questionNumber].progress;
 
   const questions: Question[] = state.sessionQuestions;
   const currentQuestion = questions[questionNumber];

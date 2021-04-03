@@ -11,8 +11,8 @@ const SessionProgress = (props: Props): ReactElement => {
   const dispatch = global.dispatch;
   const state = global.state;
 
-  const questionProgress = state.questionProgress;
   const questionNumber = state.questionNumber;
+  const questionProgress = state.sessionQuestions[questionNumber].progress;
   const isClosed = state.sessionQuestions[questionNumber].isClosed;
 
   const updateProgress = (event: SyntheticEvent): void => {
@@ -26,9 +26,11 @@ const SessionProgress = (props: Props): ReactElement => {
       progress = parseInt(target.value);
     }
 
+    const newQuestions = state.sessionQuestions;
+    newQuestions[questionNumber].progress = progress;
     dispatch({
-      type: "update-question-progress",
-      payload: progress,
+      type: "update-session-questions",
+      payload: newQuestions,
     });
   };
 

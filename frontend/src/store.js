@@ -24,7 +24,6 @@ const init = {
   openCreator: false,
   openFolderCreator: false,
   openQuestionSelect: false,
-  questionProgress: 0,
   questionNumber: 0,
   classSize: 0,
   openExportModal: false,
@@ -60,8 +59,6 @@ const StateProvider = ({ children }) => {
         return { ...state, openQuestionSelect: true };
       case "close-question-select":
         return { ...state, openQuestionSelect: false };
-      case "update-question-progress":
-        return { ...state, questionProgress: action.payload };
       case "update-question-number":
         return { ...state, questionNumber: action.payload };
       case "update-class-size":

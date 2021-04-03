@@ -31,7 +31,6 @@ const Sidebar = (props: SidebarProps): ReactElement => {
 
     if (num !== state.questionNumber) {
       dispatch({ type: "update-question-number", payload: num });
-      dispatch({ type: "update-question-progress", payload: RESPOND });
     }
   };
 

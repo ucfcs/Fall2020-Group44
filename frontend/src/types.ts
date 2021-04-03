@@ -13,6 +13,9 @@ export interface Question {
   average?: number;
   total?: number;
   id?: number;
+  responseCount?: number;
+  isClosed?: boolean;
+  progress?: number;
 }
 
 // this is poorly named, but it is done to match the backend

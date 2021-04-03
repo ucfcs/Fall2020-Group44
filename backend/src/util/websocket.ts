@@ -749,8 +749,6 @@ export class Connection {
 				(option: QuestionOption) => option.id === parseInt(questionOptionId)
 			);
 
-			console.log(found);
-
 			if (!found) {
 				console.log(
 					'User attempted to submit a response ' +
