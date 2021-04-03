@@ -23,12 +23,6 @@ const QuestionComponent = (props: QuestionProps): ReactElement => {
     props.questionProgress == CORRECT_RESPONSE ? "correct-background" : "";
   const incorrectClassBackground =
     props.questionProgress == CORRECT_RESPONSE ? "incorrect-background" : "";
-  let percentages: number[] = [];
-
-  if (props.showPercentages) {
-    // This will become api call
-    percentages = data.percentages;
-  }
 
   return (
     <div className="question">
@@ -36,6 +30,8 @@ const QuestionComponent = (props: QuestionProps): ReactElement => {
 
       <div className="answers">
         {props.answers.map((answer: QuestionOption, index: number) => {
+          const percentage =
+            ((answer.responseCount || 0) / props.responseTotal) * 100;
           return (
             <div key={index} className="answer">
               <div
@@ -55,14 +51,14 @@ const QuestionComponent = (props: QuestionProps): ReactElement => {
                   {props.showPercentages ? (
                     <>
                       <div
-                        style={{ width: `${percentages[index]}%` }}
+                        style={{ width: `${percentage}%` }}
                         className={`correct-bar ${
                           answer.isAnswer ? correctClass : incorrectClass
                         }`}
                       />
 
                       <div className="percentage">
-                        <p>{percentages[index]}%</p>
+                        <p>{percentage}%</p>
                       </div>
                     </>
                   ) : null}
@@ -93,6 +89,7 @@ interface QuestionProps {
   showPercentages: boolean;
   questionCount: number;
   questionProgress: number;
+  responseTotal: number;
 }
 
 export default QuestionComponent;

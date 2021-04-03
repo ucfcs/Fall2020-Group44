@@ -23,6 +23,7 @@ export interface QuestionOption {
   questionId?: number;
   text: string;
   isAnswer: boolean;
+  responseCount?: number;
 }
 
 export interface Session {

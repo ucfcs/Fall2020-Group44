@@ -710,16 +710,17 @@ export class Connection {
 		console.log('attempting to submit');
 		try {
 			// attempt to create response in db
-			const result = await QuestionUserResponse.create({
+			await QuestionUserResponse.create({
 				questionId: parseInt(questionId),
 				userId: parseInt(userId),
 				sessionId: parseInt(sessionId),
 				questionOptionId: parseInt(questionOptionId),
 			});
 
-			console.log(result);
 			// if successful, tell the professor a NEW response was recorded
-			await this.sendToProfessor(courseId, 'studentSubmitted');
+			await this.sendToProfessor(courseId, 'studentSubmittedNew', {
+				questionOptionId: questionOptionId,
+			});
 
 			return {
 				statusCode: 200,
@@ -735,18 +736,41 @@ export class Connection {
 				// but not notify the professor
 				console.log('response already exists. updating...');
 				try {
-					await QuestionUserResponse.update(
-						{
-							questionOptionId: parseInt(questionOptionId),
+					// we have to get the users previous response
+					// so that we can update it on the LTI side
+					let prevQuestionOptionId = '';
+					await QuestionUserResponse.findOne({
+						where: {
+							questionId: questionId,
+							userId: userId,
+							sessionId: sessionId,
 						},
-						{
-							where: {
-								questionId: questionId,
-								userId: userId,
-								sessionId: sessionId,
-							},
-						}
-					);
+					})
+						.then((prev) => {
+							if (prev) {
+								prevQuestionOptionId = String(prev.get().questionOptionId);
+							}
+						})
+						.then(() => {
+							QuestionUserResponse.update(
+								{
+									questionOptionId: parseInt(questionOptionId),
+								},
+								{
+									returning: true,
+									where: {
+										questionId: questionId,
+										userId: userId,
+										sessionId: sessionId,
+									},
+								}
+							);
+						});
+
+					this.sendToProfessor(courseId, 'studentSubmittedUpdate', {
+						previous: prevQuestionOptionId,
+						new: questionOptionId,
+					});
 
 					return {
 						statusCode: 200,

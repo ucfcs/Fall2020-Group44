@@ -14,7 +14,7 @@ import { useHistory } from "react-router";
 import { store } from "../../store";
 
 import { createSession } from "../../util/api";
-import { Folder, Question } from "../../types";
+import { Folder, Question, QuestionOption } from "../../types";
 import Modal from "../modal/modal";
 import "./question-select-modal.scss";
 
@@ -170,6 +170,10 @@ const QuestionSelect = (): ReactElement => {
         const question = state.questions[f].Questions[q];
         question.isClosed = false;
         question.responseCount = 0;
+        question.progress = 0;
+        question.QuestionOptions.forEach((qOption: QuestionOption) => {
+          qOption.responseCount = 0;
+        });
         newSession.push(question);
       });
     });
