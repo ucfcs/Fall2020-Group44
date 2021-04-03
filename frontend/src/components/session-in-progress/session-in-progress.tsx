@@ -1,11 +1,5 @@
 import { Question, QuestionOption } from "../../types";
-import React, {
-  ReactElement,
-  useContext,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { ReactElement, useContext, useEffect, useState } from "react";
 import SessionProgress from "./session-progress/session-progress";
 import QuestionComponent from "./question/question";
 
@@ -15,15 +9,6 @@ import PollHeader from "../session-header/session-header";
 import { store } from "../../store";
 import Sidebar from "./sidebar/sidebar";
 
-function usePrevious(value: number) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const ref: any = useRef();
-  useEffect(() => {
-    ref.current = value;
-  });
-  return ref.current;
-}
-
 const SessionInProgress = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
@@ -32,7 +17,6 @@ const SessionInProgress = (): ReactElement => {
 
   const questionProgress = state.questionProgress;
   const questionNumber = state.questionNumber;
-  const prevQuestionNumber = usePrevious(questionNumber);
   const isClosed = state.sessionQuestions[questionNumber].isClosed;
 
   const questions: Question[] = state.sessionQuestions;
@@ -40,21 +24,8 @@ const SessionInProgress = (): ReactElement => {
 
   // response bar
   const [classSize, setClassSize] = useState<number>(state.classSize);
-  const [responseCount, setResponseCount] = useState<number>(
-    state.sessionQuestions[questionNumber].responseCount
-  );
 
-  // everytime the question changes, update the reponse count for the previous
-  // question before getting the response count of the next question
-  useEffect(() => {
-    if (prevQuestionNumber !== undefined) {
-      updateResponses(prevQuestionNumber, responseCount).then(() => {
-        setResponseCount(state.sessionQuestions[questionNumber].responseCount);
-      });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [questionNumber]);
-
+  // websocket listener for the session in progress
   if (state.websocket) {
     state.websocket.onmessage = (event: MessageEvent) => {
       const message = JSON.parse(event.data);
@@ -63,14 +34,17 @@ const SessionInProgress = (): ReactElement => {
       switch (message.action) {
         case "studentSubmittedNew":
           if (!isClosed) {
-            setResponseCount(responseCount + 1);
             // set response for that question option
             const newQuestions = state.sessionQuestions;
             newQuestions[questionNumber].QuestionOptions.forEach(
               (option: QuestionOption) => {
+                // increment the response count of the QuestionOption
+                // and increment the question's total repsonse count
                 if (option.id == message.payload.questionOptionId) {
-                  if (typeof option.responseCount === "number")
+                  if (typeof option.responseCount === "number") {
                     option.responseCount++;
+                    newQuestions[questionNumber].responseCount++;
+                  }
                 }
               }
             );
@@ -86,10 +60,13 @@ const SessionInProgress = (): ReactElement => {
             const newQuestions = state.sessionQuestions;
             newQuestions[questionNumber].QuestionOptions.forEach(
               (option: QuestionOption) => {
+                // increment the response count of the new QuestionOption
                 if (option.id == message.payload.new) {
                   if (typeof option.responseCount === "number")
                     option.responseCount++;
-                } else if (option.id == message.payload.previous) {
+                }
+                // decrement the response count of the old QuestionOption
+                else if (option.id == message.payload.previous) {
                   if (typeof option.responseCount === "number")
                     option.responseCount--;
                 }
@@ -111,14 +88,7 @@ const SessionInProgress = (): ReactElement => {
     };
   }
 
-  // dispatch the updated response count for a question so
-  // that it persists
-  const updateResponses = async (questionNum: number, count: number) => {
-    const newQuestions = state.sessionQuestions;
-    newQuestions[questionNum].responseCount = count;
-    dispatch({ type: "update-session-questions", payload: newQuestions });
-  };
-
+  // each time the question changes, emit start question to the students
   useEffect(() => {
     if (state.websocket) {
       state.websocket.send(
@@ -140,7 +110,7 @@ const SessionInProgress = (): ReactElement => {
         showPercentages={questionProgress > 0}
         questionCount={questions.length}
         questionProgress={questionProgress}
-        responseTotal={responseCount}
+        responseTotal={state.sessionQuestions[questionNumber].responseCount}
       />
     );
   };
@@ -150,7 +120,10 @@ const SessionInProgress = (): ReactElement => {
       <PollHeader />
 
       {/* <div className="grid"> */}
-      <SessionProgress classSize={classSize} responseCount={responseCount} />
+      <SessionProgress
+        classSize={classSize}
+        responseCount={state.sessionQuestions[questionNumber].responseCount}
+      />
 
       <Sidebar questionCount={questions.length} />
 
@@ -159,11 +132,5 @@ const SessionInProgress = (): ReactElement => {
     </div>
   );
 };
-
-interface Option extends QuestionOption {
-  id: number;
-  questionId: number;
-  responseCount: number;
-}
 
 export default SessionInProgress;

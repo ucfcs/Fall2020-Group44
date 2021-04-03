@@ -1,12 +1,12 @@
 import React, { ReactElement } from "react";
 import "./question.scss";
 
-import data from "./mock-data.json";
 import SessionControls from "../session-controls/session-controls";
 import { QuestionOption } from "../../../types";
 import { CORRECT_RESPONSE } from "../../../constants";
 
 const QuestionComponent = (props: QuestionProps): ReactElement => {
+  // determine which of the answer choices are correct options
   const correctAnswers: number[] = [];
   if (props.questionProgress == CORRECT_RESPONSE) {
     props.answers.forEach((answer) => {
@@ -15,6 +15,8 @@ const QuestionComponent = (props: QuestionProps): ReactElement => {
       }
     });
   }
+
+  // css classes to be added to the question options
   const correctClass =
     props.questionProgress == CORRECT_RESPONSE ? "correct" : "";
   const incorrectClass =
@@ -30,8 +32,14 @@ const QuestionComponent = (props: QuestionProps): ReactElement => {
 
       <div className="answers">
         {props.answers.map((answer: QuestionOption, index: number) => {
-          const percentage =
-            ((answer.responseCount || 0) / props.responseTotal) * 100;
+          // calculate percentage for each answer choice
+          // if not calculable then set to 0
+          let responseCount = answer.responseCount || 0;
+          if (responseCount < 0) responseCount = 0;
+          const responseTotal =
+            props.responseTotal > 0 ? props.responseTotal : 1;
+          let percentage = Math.round((responseCount / responseTotal) * 100);
+          if (percentage > 100) percentage = 100;
           return (
             <div key={index} className="answer">
               <div
