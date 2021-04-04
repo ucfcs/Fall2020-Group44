@@ -12,7 +12,7 @@ import { UserSetting } from './UserSetting';
 // one-to-many relationship between Folder and Question
 Folder.hasMany(Question, { foreignKey: 'folderId' });
 Question.belongsTo(Folder, {
-	as: 'questions',
+	as: 'Questions',
 	constraints: false,
 	foreignKey: 'folderId',
 });

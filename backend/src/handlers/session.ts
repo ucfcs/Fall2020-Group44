@@ -37,6 +37,8 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const courseId = body.courseId;
 	const questionIds = body.questionIds;
 
+	console.log('body', body);
+
 	if (!questionIds || !body) {
 		return responses.badRequest({
 			message: 'Missing paramters. courseId and questions all required',

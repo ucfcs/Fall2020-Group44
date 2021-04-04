@@ -5,7 +5,7 @@ export const SessionGrade: ModelDefined<
 	SessionGradeAttributes,
 	SessionGradeCreationAttributes
 > = sequelize.define(
-	'sessionGrade',
+	'SessionGrade',
 	{
 		id: {
 			type: DataTypes.INTEGER,
