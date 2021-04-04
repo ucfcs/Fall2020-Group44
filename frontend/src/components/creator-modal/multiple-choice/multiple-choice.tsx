@@ -13,14 +13,17 @@ const MultipleChoice = (): ReactElement => {
   const question: Question = state.currentQuestionInfo;
 
   const addAnswer = (): void => {
-    const blankAnswer = { text: "", isAnswer: false };
-    const answers = [...question.questionOptions];
+    const blankAnswer = {
+      text: "",
+      isAnswer: false,
+    };
+    const answers = [...question.QuestionOptions];
 
     answers.push(blankAnswer);
 
     dispatch({
       type: "set-current-question-info",
-      payload: { ...question, questionOptions: answers },
+      payload: { ...question, QuestionOptions: answers },
     });
   };
 
@@ -30,7 +33,7 @@ const MultipleChoice = (): ReactElement => {
         <span className="red">*</span> Answers:
       </span>
 
-      {question.questionOptions.map((answer, index) => (
+      {question.QuestionOptions.map((answer, index) => (
         <AnswerChoice
           key={index}
           index={index}

@@ -15,14 +15,11 @@ const Present = (): ReactElement => {
       const message = JSON.parse(event.data);
 
       switch (message.action) {
-        case "studentConnected":
+        case "studentJoined":
           setStudentsConnected(studentsConnected + 1);
           break;
-        case "studentDisconnected":
+        case "studentLeft":
           setStudentsConnected(studentsConnected - 1);
-          break;
-        case "endSession":
-          state.websocket.close();
           break;
       }
     };

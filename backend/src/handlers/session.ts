@@ -35,9 +35,9 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
 
 	const courseId = body.courseId;
-	const questions = body.questions;
+	const questionIds = body.questionIds;
 
-	if (!questions || !body) {
+	if (!questionIds || !body) {
 		return responses.badRequest({
 			message: 'Missing paramters. courseId and questions all required',
 		});
@@ -52,7 +52,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		const sessionId = data.get().id;
 
 		await SessionQuestion.bulkCreate(
-			questions.map((questionId: number) => {
+			questionIds.map((questionId: number) => {
 				return {
 					sessionId,
 					questionId,

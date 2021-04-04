@@ -13,18 +13,17 @@ const SessionHeader = (): ReactElement => {
 
   const clearSession = (): void => {
     dispatch({ type: "update-question-number", payload: 0 });
-    dispatch({ type: "update-question-progress", payload: RESPOND });
-    dispatch({ type: "open-questions" });
+    dispatch({ type: "update-session-questions", payload: [] });
 
+    // tell websocket server to end the session,
+    // notifying all students
     if (state.websocket) {
       state.websocket.send(
         JSON.stringify({
-          action: "closeRoom",
+          action: "endSession",
           courseId: state.courseId,
         })
       );
-
-      dispatch({ type: "set-websocket", payload: null });
     }
   };
 

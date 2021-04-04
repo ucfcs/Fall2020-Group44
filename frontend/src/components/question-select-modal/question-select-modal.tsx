@@ -12,6 +12,9 @@ import {
 } from "react-beautiful-dnd";
 import { useHistory } from "react-router";
 import { store } from "../../store";
+
+import { createSession } from "../../util/api";
+import { Folder, Question, QuestionOption } from "../../types";
 import Modal from "../modal/modal";
 import "./question-select-modal.scss";
 
@@ -23,8 +26,6 @@ const QuestionSelect = (): ReactElement => {
 
   const [isPreview, setIsPreview] = useState(false);
   const history = useHistory();
-
-  const url = `${process.env.REACT_APP_WEBSOCKET_URL}`;
 
   const folderCheckboxRefs: HTMLInputElement[] = [];
 
@@ -46,26 +47,19 @@ const QuestionSelect = (): ReactElement => {
   };
 
   const presentQuestions = () => {
-    const websocket: WebSocket = new WebSocket(url);
-
-    websocket.onopen = () => {
-      websocket.send(
-        JSON.stringify({
-          action: "createRoom",
-          courseId: state.courseId,
-        })
-      );
-
-      dispatch({ type: "set-websocket", payload: websocket });
+    createSession(
+      state.courseId,
+      state.sessionQuestions.map((question: Question) => question.id)
+    ).then(() => {
       dispatch({ type: "close-question-select" });
 
       history.push("/poll/present");
-    };
+    });
   };
 
   const handlePreviewDragEnd = (result: DropResult) => {
     if (result.destination) {
-      const newQuestions: PollQuestion[] = state.poll;
+      const newQuestions: Question[] = state.sessionQuestions;
       const [srcQuestion] = newQuestions.splice(result.source.index, 1);
 
       newQuestions.splice(result.destination.index, 0, srcQuestion);
@@ -97,7 +91,7 @@ const QuestionSelect = (): ReactElement => {
 
         // push entire folder to session
         sessionQuestions[folder] = [
-          ...Array(state.questions[folder].questions.length).keys(),
+          ...Array(state.questions[folder].Questions.length).keys(),
         ];
       }
       // if it's a single question
@@ -168,16 +162,25 @@ const QuestionSelect = (): ReactElement => {
       setSessionQuestions(sessionQuestions);
     }
 
-    // Update the poll with the questions in sessionQuestions
-    const newPoll: PollQuestion[] = [];
+    // Update the global state with the questions in sessionQuestions
+    const newSession: Question[] = [];
 
     Object.keys(sessionQuestions).forEach((f: string) => {
       sessionQuestions[f].forEach((q: number) => {
-        newPoll.push(state.questions[f].questions[q]);
+        const question = state.questions[f].Questions[q];
+        question.isClosed = false;
+        question.responseCount = 0;
+        question.progress = 0;
+        question.QuestionOptions.forEach((qOption: QuestionOption) => {
+          qOption.responseCount = 0;
+        });
+        newSession.push(question);
       });
     });
 
-    dispatch({ type: "update-session-questions", payload: newPoll });
+    console.log(newSession);
+
+    dispatch({ type: "update-session-questions", payload: newSession });
   };
 
   return (
@@ -221,8 +224,8 @@ const QuestionSelect = (): ReactElement => {
                         className="selected-list__questions"
                         ref={provided.innerRef}
                       >
-                        {state.poll.map(
-                          (question: PollQuestion, index: number) => (
+                        {state.sessionQuestions.map(
+                          (question: Question, index: number) => (
                             <Draggable
                               key={index}
                               draggableId={index + ""}
@@ -260,7 +263,7 @@ const QuestionSelect = (): ReactElement => {
                 <div className="question-list-body">
                   <div>
                     {state.questions.map((folder: Folder, fIndex: number) =>
-                      folder.folder !== null ? (
+                      folder.name !== null ? (
                         <div key={fIndex}>
                           <div key={fIndex}>
                             <div className={`folder`}>
@@ -287,10 +290,10 @@ const QuestionSelect = (): ReactElement => {
                                   className="folder-icon"
                                 />
 
-                                <div>{folder.folder}</div>
+                                <div>{folder.name}</div>
                               </label>
                             </div>
-                            {folder.questions.map((question, qIndex) => (
+                            {folder.Questions.map((question, qIndex) => (
                               <div key={fIndex + "-" + qIndex}>
                                 <label
                                   htmlFor={fIndex + "-" + qIndex}
@@ -338,7 +341,7 @@ const QuestionSelect = (): ReactElement => {
                       ) : (
                         <div key={fIndex}>
                           <div className="rogue-question-separator"></div>
-                          {folder.questions.map((question, qIndex) => (
+                          {folder.Questions.map((question, qIndex) => (
                             <label
                               key={qIndex}
                               htmlFor={"rogue-" + qIndex}
@@ -402,6 +405,7 @@ const QuestionSelect = (): ReactElement => {
             type="submit"
             className="save-button"
             onClick={presentQuestions}
+            disabled={state.sessionQuestions.length == 0}
           >
             Present
           </button>
@@ -410,23 +414,5 @@ const QuestionSelect = (): ReactElement => {
     </Modal>
   );
 };
-
-interface Folder {
-  folder: string;
-  questions: Question[];
-}
-
-interface Question {
-  title: string;
-  type: string;
-}
-
-interface PollQuestion {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-}
 
 export default QuestionSelect;

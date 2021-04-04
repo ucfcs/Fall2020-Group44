@@ -2,15 +2,21 @@ import React, {
   useState,
   useContext,
   ReactElement,
-  useLayoutEffect,
+  useEffect,
+  SyntheticEvent,
 } from "react";
 import "./creator.scss";
 import { store } from "../../store";
 import CreatorEdit from "./creator-edit/creator-edit";
 import CreatorPreview from "./creator-preview/creator-preview";
 import Modal from "../modal/modal";
-import { postData, putData } from "../../util/api";
-import { Question } from "../../types";
+import {
+  catchError,
+  createQuestion,
+  getFolders,
+  updateQuestion,
+} from "../../util/api";
+import { Question, ServerResponse } from "../../types";
 
 //todo: create question props
 
@@ -20,16 +26,15 @@ const Creator = (): ReactElement => {
   const dispatch = global.dispatch;
   const state = global.state;
 
-  const url = `${process.env.REACT_APP_REST_URL}/dev/api/v1/question`;
-
   const [firstLoad, setFirstLoad] = useState(true);
-  useLayoutEffect((): void => {
+
+  useEffect((): void => {
     if (firstLoad) {
       if (state.editPreviewQuestion) {
         dispatch({
           type: "set-current-question-info",
           payload:
-            state.questions[state.previewFolder].questions[
+            state.questions[state.previewFolder].Questions[
               state.previewQuestion
             ],
         });
@@ -37,7 +42,14 @@ const Creator = (): ReactElement => {
 
       setFirstLoad(false);
     }
-  }, [state.editPreviewQuestion]);
+  }, [
+    dispatch,
+    firstLoad,
+    state.editPreviewQuestion,
+    state.previewFolder,
+    state.previewQuestion,
+    state.questions,
+  ]);
 
   const [isPreview, setIsPreview] = useState(false);
   const questionInfo: Question = state.currentQuestionInfo;
@@ -48,8 +60,10 @@ const Creator = (): ReactElement => {
     dispatch({ type: "reset-current-question-info" });
   };
 
-  const saveQuestion = () => {
-    const info = { ...questionInfo };
+  const saveQuestion = (event: SyntheticEvent) => {
+    event?.preventDefault();
+
+    const info: Question = { ...questionInfo };
 
     if (!info.title) {
       info.title = info.question;
@@ -57,27 +71,37 @@ const Creator = (): ReactElement => {
 
     if (state.editPreviewQuestion) {
       const id =
-        state.questions[state.previewFolder].questions[state.previewQuestion][
+        state.questions[state.previewFolder].Questions[state.previewQuestion][
           "id"
         ];
 
-      try {
-        putData(`${url}/${id}`, {
-          ...info,
-          courseId: state.courseId,
-        });
-      } catch (error) {
-        console.error(error);
-      }
+      updateQuestion(id, { ...info, courseId: state.courseId })
+        .then(updateAndClose)
+        .catch(catchError);
     } else {
-      try {
-        postData(url, { ...info, courseId: state.courseId });
-      } catch (error) {
-        console.error(error);
-      }
+      createQuestion({ ...info, courseId: state.courseId })
+        .then(updateAndClose)
+        .catch(catchError);
     }
+  };
 
+  const updateAndClose = (): void => {
+    updateFolders();
     closePreviewQuestion();
+  };
+
+  const updateFolders = (): void => {
+    getFolders(state.courseId)
+      .then((response) => {
+        return response.json();
+      })
+      .then((json: ServerResponse) => {
+        dispatch({
+          type: "update-questions",
+          payload: [...json.folders, { name: null, Questions: json.questions }],
+        });
+      })
+      .catch(catchError);
   };
 
   return (
