@@ -1,10 +1,11 @@
-import React, { FunctionComponent, useEffect } from 'react';
+import React, { FunctionComponent, useCallback, useEffect } from 'react';
 import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
-// import { Radios } from './Radios';
+import { Radios } from './Radios';
 import { BLACK } from '../libs/colors';
 import * as ws from '../services/websocket';
+import { AppContext } from './Provider';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -29,32 +30,48 @@ const styles = StyleSheet.create({
 
 export const Questions: FunctionComponent<
 	StackScreenProps<QuestionStackTree, 'Questions'>
-> = () => {
-	const onSelect = (option: Option) => {
+> = ({ navigation }) => {
+	const onSelectCallback = useCallback((option: Option) => {
 		console.log(option);
-	};
+	}, []);
 
+	// memoize the ws callbacks
+	const endSessionCallback = useCallback<OnEndSessionCallback>(
+		// pop to safely trigger the unmount
+		// and reuse the current home component
+		() => navigation.pop(),
+		[],
+	);
+
+	// on mount
 	useEffect(() => {
-		ws.on('startQuestion', console.log);
-		ws.on('endQuestion', console.log);
+		ws.add('endSession', endSessionCallback);
+		// on unmount
+		return () => ws.remove('endSession', endSessionCallback);
 	}, []);
 
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
-				<Text style={styles.header}>Waiting for question</Text>
-				{/* <Text style={styles.header}>
-					Who was the first president of the United States?
-				</Text> */}
-				{/* <Radios
-					options={[
-						{ key: '1', text: 'Abraham Lincoln' },
-						{ key: '2', text: 'Abraham Lincoln' },
-						{ key: '3', text: 'Abraham Lincoln' },
-						{ key: '4', text: 'Abraham Lincoln' },
-					]}
-					onSelect={onSelect}
-				/> */}
+				<AppContext.Consumer>
+					{({ state: { question } }) =>
+						question === null ? (
+							<Text style={styles.header}>Waiting for question</Text>
+						) : (
+							<>
+								<Text style={styles.header}>{question.title}</Text>
+								<Text style={styles.header}>{question.question}</Text>
+								<Radios
+									options={question.QuestionOptions.map((q) => ({
+										key: q.id.toString(),
+										text: q.text,
+									}))}
+									onSelect={onSelectCallback}
+								/>
+							</>
+						)
+					}
+				</AppContext.Consumer>
 			</View>
 		</SafeAreaView>
 	);

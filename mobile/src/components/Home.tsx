@@ -79,6 +79,22 @@ export const Home: FunctionComponent<
 	const [isLoading, setIsLoading] = useState(true);
 
 	// memoize these functions to only allocate
+	const startQuestionCallback = useCallback<OnStartQuestionCallback>(
+		(data) =>
+			dispatch({
+				type: 'SET_QUESTION',
+				payload: data.payload,
+			}),
+		[],
+	);
+	const endQuestionCallback = useCallback<OnEndQuestionCallback>(
+		() =>
+			dispatch({
+				type: 'SET_QUESTION',
+				payload: null,
+			}),
+		[],
+	);
 	const startSessionCallback = useCallback<OnStartSessionCallback>(
 		(data) =>
 			dispatch({
@@ -96,11 +112,13 @@ export const Home: FunctionComponent<
 		[],
 	);
 
-	// onMount
+	// on mount
 	useEffect(() => {
 		(async () => {
-			ws.on('startSession', startSessionCallback);
-			ws.on('endSession', endSessionCallback);
+			ws.add('startQuestion', startQuestionCallback);
+			ws.add('endQuestion', endQuestionCallback);
+			ws.add('startSession', startSessionCallback);
+			ws.add('endSession', endSessionCallback);
 
 			// HTTP - pull all currently enrolled courses
 			const { payload } = await getCanvasUserEnrollments(state.token);
@@ -117,10 +135,12 @@ export const Home: FunctionComponent<
 			// we have connectedc to the WS server so show home page
 			setIsLoading(false);
 
-			// onUnMount
+			// on unmount
 			return () => {
-				ws.remove('startSession');
-				ws.remove('endSession');
+				ws.remove('startQuestion', startQuestionCallback);
+				ws.remove('endQuestion', endQuestionCallback);
+				ws.remove('startSession', startSessionCallback);
+				ws.remove('endSession', endSessionCallback);
 			};
 		})();
 	}, []);
