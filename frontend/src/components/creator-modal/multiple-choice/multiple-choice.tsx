@@ -13,7 +13,10 @@ const MultipleChoice = (): ReactElement => {
   const question: Question = state.currentQuestionInfo;
 
   const addAnswer = (): void => {
-    const blankAnswer = { text: "", isAnswer: false };
+    const blankAnswer = {
+      text: "",
+      isAnswer: false,
+    };
     const answers = [...question.QuestionOptions];
 
     answers.push(blankAnswer);

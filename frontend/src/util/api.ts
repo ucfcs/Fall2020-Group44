@@ -70,6 +70,20 @@ export async function deleteQuestion(questionId: number): Promise<Response> {
   return response;
 }
 
+export async function createSession(
+  courseId: string,
+  questionIds: number[]
+): Promise<Response> {
+  const url: string = getBaseUrl();
+
+  const response: Response = await postData(`${url}/session`, {
+    courseId,
+    questionIds,
+  });
+
+  return response;
+}
+
 export function catchError(error: Error): void {
   console.error(error);
 }

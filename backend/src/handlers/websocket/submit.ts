@@ -17,6 +17,7 @@ export const handler = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 	try {
 		const params = JSON.parse(event?.body || '{}');
+		console.log(params);
 		// get vars from payload
 		courseId = params?.courseId;
 		questionId = params?.questionId;

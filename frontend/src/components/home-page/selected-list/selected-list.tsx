@@ -11,7 +11,7 @@ const SelectedList = (): ReactElement => {
   return (
     <div className="selected-list">
       <div className="selected-list__questions">
-        {state.poll.map((question: PollQuestion, index: number) => (
+        {state.sessionQuestions.map((question: PollQuestion, index: number) => (
           <p key={index} className="selected-list__question">
             {index + 1 + ". " + question.title + " - " + question.question}
           </p>

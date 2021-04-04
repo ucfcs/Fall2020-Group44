@@ -3,21 +3,17 @@ import { RESPOND, RESPONSES, CORRECT_RESPONSE } from "../../../constants";
 
 import "./session-progress.scss";
 
-import data from "./mock-data.json";
 import { store } from "../../../store";
 
-const SessionProgress = (): ReactElement => {
+const SessionProgress = (props: Props): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
   const state = global.state;
 
-  const questionProgress = state.questionProgress;
   const questionNumber = state.questionNumber;
-  const isClosed = state.closedQuestions.has(questionNumber);
-
-  const classSize: number = data.classSize;
-  const responseCount: number = data.responseCount;
+  const questionProgress = state.sessionQuestions[questionNumber].progress;
+  const isClosed = state.sessionQuestions[questionNumber].isClosed;
 
   const updateProgress = (event: SyntheticEvent): void => {
     let progress: number;
@@ -30,16 +26,42 @@ const SessionProgress = (): ReactElement => {
       progress = parseInt(target.value);
     }
 
+    const newQuestions = state.sessionQuestions;
+    newQuestions[questionNumber].progress = progress;
     dispatch({
-      type: "update-question-progress",
-      payload: progress,
+      type: "update-session-questions",
+      payload: newQuestions,
     });
   };
 
-  const close = (): void => {
-    if (!state.closedQuestions.has(questionNumber)) {
-      dispatch({ type: "close-question", payload: questionNumber });
+  // toggle Stop Responses
+  const toggleClosed = (): void => {
+    // send students start- or endQuestion ws message
+    if (!isClosed) {
+      if (state.websocket) {
+        state.websocket.send(
+          JSON.stringify({
+            action: "endQuestion",
+            courseId: state.courseId,
+          })
+        );
+      }
+    } else {
+      if (state.websocket) {
+        state.websocket.send(
+          JSON.stringify({
+            action: "startQuestion",
+            courseId: state.courseId,
+            question: state.sessionQuestions[questionNumber],
+          })
+        );
+      }
     }
+
+    //  update the isClosed attribute of the current Question
+    const newQuestions = state.sessionQuestions;
+    newQuestions[questionNumber].isClosed = !isClosed;
+    dispatch({ type: "update-session-questions", payload: newQuestions });
   };
 
   return (
@@ -89,17 +111,17 @@ const SessionProgress = (): ReactElement => {
 
         <div className="progress-bar">
           <span>
-            {responseCount} / {classSize} Responses
+            {props.responseCount} / {props.classSize} Responses
           </span>
 
-          <progress max={classSize} value={responseCount}>
-            {responseCount} / {classSize} Responses
+          <progress max={props.classSize} value={props.responseCount}>
+            {props.responseCount} / {props.classSize} Responses
           </progress>
         </div>
       </div>
 
       <button
-        onClick={close}
+        onClick={toggleClosed}
         className={`close-button ${isClosed ? "closed" : ""}`}
       >
         {isClosed ? (
@@ -112,5 +134,10 @@ const SessionProgress = (): ReactElement => {
     </div>
   );
 };
+
+interface Props {
+  classSize: number;
+  responseCount: number;
+}
 
 export default SessionProgress;

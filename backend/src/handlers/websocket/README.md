@@ -195,8 +195,14 @@ received once for each student that leaves the session, so the number of connect
 
 - **payload** `n/a`
 
-### studentSubmitted
+### studentSubmittedNew
 
-received once for each student that submits a response to the open question, so the number of responses can be incremented. This will not be received if a student changes their answer.
+received once for each student that submits a new response to the open question, so the number of responses can be incremented and the response can be recorded
 
-- **payload** `n/a`
+- **payload** `questionOptionId: number`
+
+### studentSubmittedUpdate
+
+received if the student updated their response to an open question, so the LTI does not increment the responses but can update the responses accordingly
+
+- **payload** `previous: number, new: number`

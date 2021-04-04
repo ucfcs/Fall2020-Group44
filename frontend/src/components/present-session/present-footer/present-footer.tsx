@@ -38,11 +38,13 @@ const PresentFooter = (): ReactElement => {
 
   const forceUpdate = useForceUpdate();
 
-  const [questions, setQuestions] = useState<PollQuestion[]>(state.poll);
+  const [questions, setQuestions] = useState<PollQuestion[]>(
+    state.sessionQuestions
+  );
 
   // array of booleans indicating which tooltip(s) is/are shown
   const [showTooltip, setShowTooltip] = useState(
-    new Array(state.poll.length).fill(false)
+    new Array(state.sessionQuestions.length).fill(false)
   );
 
   // reorganize session questions on drag end

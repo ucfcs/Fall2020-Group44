@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement, useContext, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
 import { store } from "./store";
@@ -17,6 +17,39 @@ function App(): ReactElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const state = global.state;
+  const dispatch = global.dispatch;
+
+  useEffect(() => {
+    //establish websocket connection
+    const websocket: WebSocket = new WebSocket(
+      `${process.env.REACT_APP_WEBSOCKET_URL}`
+    );
+
+    //when established, join the room as the professor
+    websocket.onopen = () => {
+      websocket.send(
+        JSON.stringify({
+          action: "professorJoinRoom",
+          courseId: state.courseId,
+        })
+      );
+    };
+
+    //set the global websocket
+    dispatch({ type: "set-websocket", payload: websocket });
+
+    // if the professor closes the window, remove them from the room
+    window.onbeforeunload = () => {
+      websocket.send(
+        JSON.stringify({
+          action: "leaveRoom",
+          courseId: state.courseId,
+        })
+      );
+    };
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <Router>

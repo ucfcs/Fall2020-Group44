@@ -12,7 +12,9 @@ import {
 } from "react-beautiful-dnd";
 import { useHistory } from "react-router";
 import { store } from "../../store";
-import { Folder, Question } from "../../types";
+
+import { createSession } from "../../util/api";
+import { Folder, Question, QuestionOption } from "../../types";
 import Modal from "../modal/modal";
 import "./question-select-modal.scss";
 
@@ -24,8 +26,6 @@ const QuestionSelect = (): ReactElement => {
 
   const [isPreview, setIsPreview] = useState(false);
   const history = useHistory();
-
-  const url = `${process.env.REACT_APP_WEBSOCKET_URL}`;
 
   const folderCheckboxRefs: HTMLInputElement[] = [];
 
@@ -47,26 +47,19 @@ const QuestionSelect = (): ReactElement => {
   };
 
   const presentQuestions = () => {
-    const websocket: WebSocket = new WebSocket(url);
-
-    websocket.onopen = () => {
-      websocket.send(
-        JSON.stringify({
-          action: "createRoom",
-          courseId: state.courseId,
-        })
-      );
-
-      dispatch({ type: "set-websocket", payload: websocket });
+    createSession(
+      state.courseId,
+      state.sessionQuestions.map((question: Question) => question.id)
+    ).then(() => {
       dispatch({ type: "close-question-select" });
 
       history.push("/poll/present");
-    };
+    });
   };
 
   const handlePreviewDragEnd = (result: DropResult) => {
     if (result.destination) {
-      const newQuestions: Question[] = state.poll;
+      const newQuestions: Question[] = state.sessionQuestions;
       const [srcQuestion] = newQuestions.splice(result.source.index, 1);
 
       newQuestions.splice(result.destination.index, 0, srcQuestion);
@@ -169,16 +162,25 @@ const QuestionSelect = (): ReactElement => {
       setSessionQuestions(sessionQuestions);
     }
 
-    // Update the poll with the questions in sessionQuestions
-    const newPoll: Question[] = [];
+    // Update the global state with the questions in sessionQuestions
+    const newSession: Question[] = [];
 
-    Object.keys(sessionQuestions).forEach((folderIndex: string) => {
-      sessionQuestions[folderIndex].forEach((questionIndex: number) => {
-        newPoll.push(state.questions[folderIndex].Questions[questionIndex]);
+    Object.keys(sessionQuestions).forEach((f: string) => {
+      sessionQuestions[f].forEach((q: number) => {
+        const question = state.questions[f].Questions[q];
+        question.isClosed = false;
+        question.responseCount = 0;
+        question.progress = 0;
+        question.QuestionOptions.forEach((qOption: QuestionOption) => {
+          qOption.responseCount = 0;
+        });
+        newSession.push(question);
       });
     });
 
-    dispatch({ type: "update-session-questions", payload: newPoll });
+    console.log(newSession);
+
+    dispatch({ type: "update-session-questions", payload: newSession });
   };
 
   return (
@@ -222,24 +224,26 @@ const QuestionSelect = (): ReactElement => {
                         className="selected-list__questions"
                         ref={provided.innerRef}
                       >
-                        {state.poll.map((question: Question, index: number) => (
-                          <Draggable
-                            key={index}
-                            draggableId={index + ""}
-                            index={index}
-                          >
-                            {(provided) => (
-                              <div
-                                ref={provided.innerRef}
-                                {...provided.draggableProps}
-                                {...provided.dragHandleProps}
-                                className="selected-list__question"
-                              >
-                                {index + 1 + ". " + question.title}
-                              </div>
-                            )}
-                          </Draggable>
-                        ))}
+                        {state.sessionQuestions.map(
+                          (question: Question, index: number) => (
+                            <Draggable
+                              key={index}
+                              draggableId={index + ""}
+                              index={index}
+                            >
+                              {(provided) => (
+                                <div
+                                  ref={provided.innerRef}
+                                  {...provided.draggableProps}
+                                  {...provided.dragHandleProps}
+                                  className="selected-list__question"
+                                >
+                                  {index + 1 + ". " + question.title}
+                                </div>
+                              )}
+                            </Draggable>
+                          )
+                        )}
                         {provided.placeholder}
                       </div>
                     )}
@@ -401,6 +405,7 @@ const QuestionSelect = (): ReactElement => {
             type="submit"
             className="save-button"
             onClick={presentQuestions}
+            disabled={state.sessionQuestions.length == 0}
           >
             Present
           </button>

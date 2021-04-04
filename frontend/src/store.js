@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useReducer } from "react";
 
-const closedQuestions = new Set();
-
 const baseQuestionInfo = {
   title: "",
   question: "",
@@ -21,14 +19,13 @@ const init = {
   previewQuestion: 0,
   courseId: "0",
   questions: [],
-  poll: [],
+  sessionQuestions: [],
   editPreviewQuestion: false,
   openCreator: false,
   openFolderCreator: false,
   openQuestionSelect: false,
-  questionProgress: 0,
   questionNumber: 0,
-  closedQuestions: closedQuestions,
+  classSize: 0,
   openExportModal: false,
   currentQuestionInfo: baseQuestionInfo,
   websocket: null,
@@ -49,7 +46,7 @@ const StateProvider = ({ children }) => {
       case "close-preview-question":
         return { ...state, editPreviewQuestion: false };
       case "update-session-questions":
-        return { ...state, poll: action.payload };
+        return { ...state, sessionQuestions: action.payload };
       case "open-creator":
         return { ...state, openCreator: true };
       case "close-creator":
@@ -62,17 +59,10 @@ const StateProvider = ({ children }) => {
         return { ...state, openQuestionSelect: true };
       case "close-question-select":
         return { ...state, openQuestionSelect: false };
-      case "update-question-progress":
-        return { ...state, questionProgress: action.payload };
       case "update-question-number":
         return { ...state, questionNumber: action.payload };
-      case "close-question":
-        return {
-          ...state,
-          closedQuestions: new Set([...state.closedQuestions, action.payload]),
-        };
-      case "open-questions":
-        return { ...state, closedQuestions: new Set([]) };
+      case "update-class-size":
+        return { ...state, classSize: action.payload };
       case "open-export-modal":
         return { ...state, openExportModal: true };
       case "close-export-modal":
