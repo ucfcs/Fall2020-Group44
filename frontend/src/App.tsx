@@ -48,8 +48,6 @@ function App(): ReactElement {
       );
     };
 
-    // disable-scroll for app
-    document.body.style.overflow = "hidden";
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
