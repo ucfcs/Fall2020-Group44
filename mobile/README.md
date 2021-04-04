@@ -38,3 +38,22 @@ following content. An object with one property, `BACKEND_URL`.
 	"WS_SERVER_URL": "http://localhost:3001"
 }
 ```
+
+## Setup
+
+Start terminal and open the following tabs.
+
+tab 1 - youll need to run ngrok to act as a proxy for your backend
+
+- use the following command `./ngrok http 5000`
+- copy the url and update the following places
+  - the redirect url on canvas developer keys
+  - the backend .env redirect url var
+  - into the `.env.json` in the mobile folder
+
+tab 2 - will be used to run the backend. `npm run dev`
+
+tab 3 - go into the mobile folder and run the following `npm run start`
+
+tab 4 - will be for running the emulator ios: `npx react-native run-ios`
+android: `npx react-native run-android`. Close after emulator has launched.
