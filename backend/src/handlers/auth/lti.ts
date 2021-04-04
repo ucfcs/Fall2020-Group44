@@ -30,47 +30,64 @@ export const launch: APIGatewayProxyHandler = async (
 export const login = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	console.log('--------------------\nlogin');
 
-	const state = uuid.v4();
-	const nonce = uuid.v4();
+	try {
+		const body = querystring.parse(event.body as string);
 
-	const body = querystring.parse(event.body as string);
+		if (!body.login_hint) {
+			return response.badRequest();
+		}
 
-	const url =
-		`${process.env.CANVAS_URL}/api/lti/authorize_redirect?` +
-		querystring.encode({
-			response_type: 'id_token',
-			scipe: 'openid',
-			login_hint: body.login_hint,
-			lti_message_hint: body.lti_message_hint,
-			state: state,
-			redirect_uri: process.env.LTI_REDIRECT_URL,
-			nonce: nonce,
-			prompt: 'none',
-			response_mode: 'form_post',
-		});
+		const state = uuid.v4();
+		const nonce = uuid.v4();
 
-	console.log('LTI JWT login init; redirecting to:', url);
+		const url =
+			`${process.env.CANVAS_URL}/api/lti/authorize_redirect?` +
+			querystring.encode({
+				response_type: 'id_token',
+				scope: 'openid',
+				login_hint: body.login_hint,
+				lti_message_hint: body.lti_message_hint,
+				state: state,
+				redirect_uri: process.env.LTI_REDIRECT_URL,
+				nonce: nonce,
+				prompt: 'none',
+				response_mode: 'form_post',
+			});
 
-	return response.movedPermanently(url);
+		console.log('LTI JWT login init; redirecting to:', url);
+
+		return response.movedPermanently(url);
+	} catch (error) {
+		return response.internalServerError(error);
+	}
 };
 
 // Step 4: Resource Display
 export const lti13 = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	console.log('--------------------\nlti13');
 
-	const body = querystring.parse(event.body as string);
+	try {
+		const body = querystring.parse(event.body as string);
 
-	// Parse and store payload data from launch
-	const id_token = body.id_token as string;
-	const parts = id_token.split('.');
-	const tokenBody = JSON.parse(Buffer.from(parts[1], 'base64').toString());
+		if (!body.id_token) {
+			return response.badRequest();
+		}
 
-	const courseData =
-		tokenBody['https://purl.imsglobal.org/spec/lti/claim/custom'];
+		// Parse and store payload data from launch
+		const id_token = body.id_token as string;
+		const parts = id_token.split('.');
+		const tokenBody = JSON.parse(Buffer.from(parts[1], 'base64').toString());
 
-	const token = await userAuthFlowGetToken(courseData.userid, '', '');
+		const courseData =
+			tokenBody['https://purl.imsglobal.org/spec/lti/claim/custom'];
 
-	return response.movedPermanently(
-		`${process.env.SITE_BASE_URL}/course/${courseData.courseid}?token=${token}` as string
-	);
+		const token = await userAuthFlowGetToken(courseData.userid, '', '');
+
+		// Redirect to course page
+		return response.movedPermanently(
+			`${process.env.SITE_BASE_URL}/course/${courseData.courseid}?token=${token}`
+		);
+	} catch (error) {
+		return response.internalServerError();
+	}
 };
