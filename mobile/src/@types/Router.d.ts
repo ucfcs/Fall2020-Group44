@@ -1,6 +1,6 @@
-type PollStackTree = {
+type QuestionStackTree = {
 	Home: undefined;
-	Polls: undefined;
+	Questions: undefined;
 };
 
 type SettingsStackTree = {
@@ -8,6 +8,6 @@ type SettingsStackTree = {
 };
 
 type RootTree = {
-	Polls: undefined;
+	Questions: undefined;
 	Settings: undefined;
 };

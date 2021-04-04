@@ -1,9 +1,10 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useEffect } from 'react';
 import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
-import { Radios } from './Radios';
+// import { Radios } from './Radios';
 import { BLACK } from '../libs/colors';
+import * as ws from '../services/websocket';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -26,20 +27,26 @@ const styles = StyleSheet.create({
 	},
 });
 
-export const Polls: FunctionComponent<
-	StackScreenProps<PollStackTree, 'Polls'>
+export const Questions: FunctionComponent<
+	StackScreenProps<QuestionStackTree, 'Questions'>
 > = () => {
 	const onSelect = (option: Option) => {
 		console.log(option);
 	};
 
+	useEffect(() => {
+		ws.on('startQuestion', console.log);
+		ws.on('endQuestion', console.log);
+	}, []);
+
 	return (
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
-				<Text style={styles.header}>
+				<Text style={styles.header}>Waiting for question</Text>
+				{/* <Text style={styles.header}>
 					Who was the first president of the United States?
-				</Text>
-				<Radios
+				</Text> */}
+				{/* <Radios
 					options={[
 						{ key: '1', text: 'Abraham Lincoln' },
 						{ key: '2', text: 'Abraham Lincoln' },
@@ -47,7 +54,7 @@ export const Polls: FunctionComponent<
 						{ key: '4', text: 'Abraham Lincoln' },
 					]}
 					onSelect={onSelect}
-				/>
+				/> */}
 			</View>
 		</SafeAreaView>
 	);
