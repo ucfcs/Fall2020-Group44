@@ -1,6 +1,6 @@
 interface Memo {
 	ws: WebSocket | null;
-	cb: Map<OnAction, OnCallback>;
+	cb: Map<OnAction, OnCallback[]>;
 }
 
 type EmitPayload =
@@ -38,7 +38,7 @@ type OnEndSessionCallback = (data: { action: 'endSession' }) => void;
 
 type OnStartQuestionCallback = (data: {
 	action: 'startQuestion';
-	payload: { question: Question };
+	payload: Question;
 }) => void;
 
 type OnEndQuestionCallback = (data: { action: 'endQuestion' }) => void;
