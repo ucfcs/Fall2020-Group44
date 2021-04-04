@@ -70,10 +70,15 @@ const styles = StyleSheet.create({
 });
 
 export const Home: FunctionComponent<
-	StackScreenProps<PollStackTree, 'Home'>
+	StackScreenProps<QuestionStackTree, 'Home'>
 > = ({ navigation }) => {
 	const { state, dispatch } = useContext(AppContext);
+
+	// this is used to give the home screen enough time
+	// to connect to the WS server
 	const [isLoading, setIsLoading] = useState(true);
+
+	// memoize these functions to only allocate
 	const startSessionCallback = useCallback<OnStartSessionCallback>(
 		(data) =>
 			dispatch({
@@ -82,14 +87,20 @@ export const Home: FunctionComponent<
 			}),
 		[],
 	);
+	const endSessionCallback = useCallback<OnEndSessionCallback>(
+		() =>
+			dispatch({
+				type: 'SET_SESSION',
+				payload: null,
+			}),
+		[],
+	);
 
 	// onMount
 	useEffect(() => {
 		(async () => {
 			ws.on('startSession', startSessionCallback);
-			ws.on('endSession', console.log);
-			ws.on('startQuestion', console.log);
-			ws.on('endQuestion', console.log);
+			ws.on('endSession', endSessionCallback);
 
 			// HTTP - pull all currently enrolled courses
 			const { payload } = await getCanvasUserEnrollments(state.token);
@@ -103,7 +114,14 @@ export const Home: FunctionComponent<
 				}
 			}
 
+			// we have connectedc to the WS server so show home page
 			setIsLoading(false);
+
+			// onUnMount
+			return () => {
+				ws.remove('startSession');
+				ws.remove('endSession');
+			};
 		})();
 	}, []);
 
@@ -140,7 +158,7 @@ export const Home: FunctionComponent<
 								</Text>
 								<Button
 									text='Join'
-									onPress={() => navigation.push('Polls')}></Button>
+									onPress={() => navigation.push('Questions')}></Button>
 							</View>
 						)
 					}
