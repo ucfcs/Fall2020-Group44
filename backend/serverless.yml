@@ -215,7 +215,7 @@ functions:
           path: /api/v1/auth/lti
           method: post
           cors: true
-  # Step 2: Step 2: Authentication Request
+  # Step 2: Authentication Request
   login:
     handler: src/handlers/auth/lti.login
     timeout: 10
