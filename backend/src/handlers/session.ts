@@ -1,5 +1,5 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Session, Session_Question, Question, QuestionOption } from '../models';
+import { Session, SessionQuestion, Question, QuestionOption } from '../models';
 import responses from '../util/api/responses';
 import { Connection } from '../util/websocket';
 
@@ -51,7 +51,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		});
 		const sessionId = data.get().id;
 
-		await Session_Question.bulkCreate(
+		await SessionQuestion.bulkCreate(
 			questions.map((questionId: number) => {
 				return {
 					sessionId,

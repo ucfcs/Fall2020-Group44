@@ -40,6 +40,10 @@ export function on(action: OnAction, callback: OnCallback) {
 	}
 }
 
+export function remove(action: OnAction) {
+	memo.cb.delete(action);
+}
+
 export function join(roomKey: string) {
 	if (memo.ws) {
 		memo.ws.send(
