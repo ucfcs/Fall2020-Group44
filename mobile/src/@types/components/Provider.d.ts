@@ -1,4 +1,5 @@
 interface AppState {
+	id: number;
 	name: string;
 	email: string;
 	token: string;
@@ -52,6 +53,7 @@ interface Question {
 type Phase = 'initializing' | 'authentication' | 'connection';
 
 type Action =
+	| { type: 'SET_ID'; payload: number }
 	| { type: 'SET_NAME'; payload: string }
 	| { type: 'SET_EMAIL'; payload: string }
 	| { type: 'SET_TOKEN'; payload: string }

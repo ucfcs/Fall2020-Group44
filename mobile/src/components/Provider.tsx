@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useReducer } from 'react';
 
 const intialState: AppState = {
+	id: 0,
 	name: '',
 	email: '',
 	token: '',
@@ -18,6 +19,9 @@ function reducer(state: AppState, action: Action): AppState {
 		//
 		// SETTER'S
 		//
+		case 'SET_ID':
+			state.id = action.payload;
+			break;
 		case 'SET_NAME':
 			state.name = action.payload;
 			break;
