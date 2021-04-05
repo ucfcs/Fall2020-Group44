@@ -325,6 +325,8 @@ const ContentTree = (): ReactElement => {
                                             alt=""
                                           />
 
+                                          <div />
+
                                           <span>{folder.name}</span>
 
                                           <div className="content-tree-icons">

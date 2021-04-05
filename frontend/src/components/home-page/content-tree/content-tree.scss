@@ -133,10 +133,6 @@
     display: none;
   }
 
-  .title {
-    height: 20px;
-  }
-
   .title,
   .type {
     overflow: hidden;
@@ -178,7 +174,7 @@
   .folder-item {
     display: grid;
 
-    grid-template-columns: 24px 0.5rem 24px auto 64px;
+    grid-template-columns: 24px 0.5rem 24px 4px auto 64px;
 
     &:hover {
       .content-tree-icon {
