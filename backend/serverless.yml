@@ -221,11 +221,11 @@ functions:
     timeout: 10
     events:
       - http:
-          path: /api/v1/auth/login
+          path: /api/v1/auth/lti13/login
           method: post
           cors: true
       - http:
-          path: /api/v1/auth/login
+          path: /api/v1/auth/lti13/login
           method: get
           cors: true
   # Step 4: Resource Display
@@ -234,11 +234,11 @@ functions:
     timeout: 10
     events:
       - http:
-          path: /api/v1/auth/lti13
+          path: /api/v1/auth/lti13/launch
           method: post
           cors: true
       - http:
-          path: /api/v1/auth/lti13
+          path: /api/v1/auth/lti13/launch
           method: get
           cors: true
 
