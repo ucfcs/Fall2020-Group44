@@ -1,3 +1,6 @@
+import { ERROR, LOG } from '../../util/logs';
+
+// import the models with the relationships established
 import {
 	Folder,
 	Session,
@@ -10,20 +13,27 @@ import {
 	User,
 	UserSetting,
 } from '../../models';
-import { ERROR, LOG } from '../../util/logs';
+
+// model init order
+const models = [
+	User,
+	Folder,
+	Session,
+	SessionGrade,
+	QuestionGrade,
+	Question,
+	SessionQuestion,
+	QuestionOption,
+	QuestionUserResponse,
+	UserSetting,
+];
 
 export async function init(): Promise<void> {
 	try {
-		await User.sync({ alter: true });
-		await Folder.sync({ alter: true });
-		await Session.sync({ alter: true });
-		await SessionGrade.sync({ alter: true });
-		await QuestionGrade.sync({ alter: true });
-		await Question.sync({ alter: true });
-		await SessionQuestion.sync({ alter: true });
-		await QuestionOption.sync({ alter: true });
-		await QuestionUserResponse.sync({ alter: true });
-		await UserSetting.sync({ alter: true });
+		// left to right
+		for (let i = 0; i < models.length; i++) {
+			await models[i].sync({ alter: true });
+		}
 		LOG('mysql🐬 init successful'.green);
 	} catch (error) {
 		ERROR(error);
@@ -32,14 +42,10 @@ export async function init(): Promise<void> {
 
 export async function drop(): Promise<void> {
 	try {
-		await UserSetting.drop();
-		await SessionQuestion.drop();
-		await QuestionUserResponse.drop();
-		await QuestionOption.drop();
-		await Question.drop();
-		await Session.drop();
-		await Folder.drop();
-		await User.drop();
+		// right to left
+		for (let i = models.length - 1; i >= 0; i--) {
+			await models[i].drop({ cascade: true });
+		}
 		LOG('mysql🐬 drop successful'.green);
 	} catch (error) {
 		ERROR(error);
