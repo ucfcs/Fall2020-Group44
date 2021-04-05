@@ -86,7 +86,7 @@ Student leaves a specific room
 
 Student submits response to a question
 
-- **payload** `courseId: string, questionId: string, optionId: string, ucfid: string, sessionId: string`
+- **payload** `courseId: string, questionId: string, questionOptionId: string, userId: string, sessionId: string`
 - **returns** success submitting response
 
 ### joinSession
