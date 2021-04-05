@@ -1,4 +1,5 @@
 import { DataTypes, ModelDefined } from 'sequelize';
+
 import sequelize from '../config/mysql';
 
 export const Session: ModelDefined<

@@ -1,6 +1,6 @@
 interface Memo {
 	ws: WebSocket | null;
-	cb: Map<string, Callback>;
+	cb: Map<OnAction, OnCallback[]>;
 }
 
 type EmitPayload =
@@ -16,8 +16,8 @@ type EmitPayload =
 			action: 'submit';
 			courseId: string;
 			questionId: string;
-			optionId: string;
-			ucfid: string;
+			questionOptionId: string;
+			userId: string;
 			sessionId: string;
 	  }
 	| {
@@ -34,19 +34,21 @@ type OnStartSessionCallback = (data: {
 	payload: { name: string; id: number };
 }) => void;
 
-type OnEndSessionCallback = () => void;
+type OnEndSessionCallback = (data: { action: 'endSession' }) => void;
 
 type OnStartQuestionCallback = (data: {
 	action: 'startQuestion';
-	payload: { question: Question };
+	payload: Question;
 }) => void;
 
-type OnEndQuestionCallback = () => void;
+type OnEndQuestionCallback = (data: { action: 'endQuestion' }) => void;
 
 //
-// handle inbound events callbacks
+// handle inbound
 //
-type Callback =
+type OnAction = 'startSession' | 'endSession' | 'startQuestion' | 'endQuestion';
+
+type OnCallback =
 	| OnStartSessionCallback
 	| OnEndSessionCallback
 	| OnStartQuestionCallback

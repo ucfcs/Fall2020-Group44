@@ -1,6 +1,6 @@
 import { Folder } from './Folder';
 import { Session } from './Session';
-import { Session_Question } from './SessionQuestion';
+import { SessionQuestion } from './SessionQuestion';
 import { SessionGrade } from './SessionGrade';
 import { Question } from './Question';
 import { QuestionGrade } from './QuestionGrade';
@@ -12,18 +12,18 @@ import { UserSetting } from './UserSetting';
 // one-to-many relationship between Folder and Question
 Folder.hasMany(Question, { foreignKey: 'folderId' });
 Question.belongsTo(Folder, {
-	as: 'questions',
+	as: 'Questions',
 	constraints: false,
 	foreignKey: 'folderId',
 });
 
 // many-to-many relationship between Session and Question
 Question.belongsToMany(Session, {
-	through: Session_Question,
+	through: SessionQuestion,
 	foreignKey: 'questionId',
 });
 Session.belongsToMany(Question, {
-	through: Session_Question,
+	through: SessionQuestion,
 	foreignKey: 'sessionId',
 });
 
@@ -78,7 +78,7 @@ export {
 	Folder,
 	Session,
 	SessionGrade,
-	Session_Question,
+	SessionQuestion,
 	Question,
 	QuestionGrade,
 	QuestionOption,

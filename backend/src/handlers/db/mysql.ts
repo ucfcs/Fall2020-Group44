@@ -2,7 +2,7 @@ import {
 	Folder,
 	Session,
 	SessionGrade,
-	Session_Question,
+	SessionQuestion,
 	QuestionOption,
 	Question,
 	QuestionUserResponse,
@@ -20,7 +20,7 @@ export async function init(): Promise<void> {
 		await SessionGrade.sync({ alter: true });
 		await QuestionGrade.sync({ alter: true });
 		await Question.sync({ alter: true });
-		await Session_Question.sync({ alter: true });
+		await SessionQuestion.sync({ alter: true });
 		await QuestionOption.sync({ alter: true });
 		await QuestionUserResponse.sync({ alter: true });
 		await UserSetting.sync({ alter: true });
@@ -33,7 +33,7 @@ export async function init(): Promise<void> {
 export async function drop(): Promise<void> {
 	try {
 		await UserSetting.drop();
-		await Session_Question.drop();
+		await SessionQuestion.drop();
 		await QuestionUserResponse.drop();
 		await QuestionOption.drop();
 		await Question.drop();

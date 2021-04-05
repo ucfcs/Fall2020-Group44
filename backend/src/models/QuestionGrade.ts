@@ -5,7 +5,7 @@ export const QuestionGrade: ModelDefined<
 	QuestionGradeAttributes,
 	QuestionGradeCreationAttributes
 > = sequelize.define(
-	'questionGrade',
+	'QuestionGrade',
 	{
 		id: {
 			type: DataTypes.INTEGER,

@@ -1,5 +1,5 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
-import { Session, Session_Question, Question, QuestionOption } from '../models';
+import { Session, SessionQuestion, Question, QuestionOption } from '../models';
 import responses from '../util/api/responses';
 import { Connection } from '../util/websocket';
 
@@ -37,6 +37,8 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const courseId = body.courseId;
 	const questionIds = body.questionIds;
 
+	console.log('body', body);
+
 	if (!questionIds || !body) {
 		return responses.badRequest({
 			message: 'Missing paramters. courseId and questions all required',
@@ -45,15 +47,16 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 
 	try {
 		const data = await Session.create({
-			name: Date.now().toString(),
+			name: new Date().toDateString(),
 			courseId: courseId as string,
 			userId: mockUserid,
 		});
+		const sessionId = data.get().id;
 
-		await Session_Question.bulkCreate(
+		await SessionQuestion.bulkCreate(
 			questionIds.map((questionId: number) => {
 				return {
-					sessionId: data.get().id,
+					sessionId,
 					questionId,
 				};
 			})

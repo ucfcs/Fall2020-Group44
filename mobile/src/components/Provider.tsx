@@ -44,6 +44,10 @@ function reducer(state: AppState, action: Action): AppState {
 		//
 		case 'SET_SESSION':
 			state.session = action.payload;
+			break;
+		case 'SET_QUESTION':
+			state.question = action.payload;
+			break;
 	}
 
 	return Object.assign({}, state);

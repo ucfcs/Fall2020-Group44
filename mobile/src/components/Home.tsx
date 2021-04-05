@@ -70,10 +70,31 @@ const styles = StyleSheet.create({
 });
 
 export const Home: FunctionComponent<
-	StackScreenProps<PollStackTree, 'Home'>
+	StackScreenProps<QuestionStackTree, 'Home'>
 > = ({ navigation }) => {
 	const { state, dispatch } = useContext(AppContext);
+
+	// this is used to give the home screen enough time
+	// to connect to the WS server
 	const [isLoading, setIsLoading] = useState(true);
+
+	// memoize these functions to only allocate
+	const startQuestionCallback = useCallback<OnStartQuestionCallback>(
+		(data) =>
+			dispatch({
+				type: 'SET_QUESTION',
+				payload: data.payload,
+			}),
+		[],
+	);
+	const endQuestionCallback = useCallback<OnEndQuestionCallback>(
+		() =>
+			dispatch({
+				type: 'SET_QUESTION',
+				payload: null,
+			}),
+		[],
+	);
 	const startSessionCallback = useCallback<OnStartSessionCallback>(
 		(data) =>
 			dispatch({
@@ -82,11 +103,22 @@ export const Home: FunctionComponent<
 			}),
 		[],
 	);
+	const endSessionCallback = useCallback<OnEndSessionCallback>(
+		() =>
+			dispatch({
+				type: 'SET_SESSION',
+				payload: null,
+			}),
+		[],
+	);
 
-	// onMount
+	// on mount
 	useEffect(() => {
 		(async () => {
-			ws.on('startSession', startSessionCallback);
+			ws.add('startQuestion', startQuestionCallback);
+			ws.add('endQuestion', endQuestionCallback);
+			ws.add('startSession', startSessionCallback);
+			ws.add('endSession', endSessionCallback);
 
 			// HTTP - pull all currently enrolled courses
 			const { payload } = await getCanvasUserEnrollments(state.token);
@@ -100,7 +132,16 @@ export const Home: FunctionComponent<
 				}
 			}
 
+			// we have connectedc to the WS server so show home page
 			setIsLoading(false);
+
+			// on unmount
+			return () => {
+				ws.remove('startQuestion', startQuestionCallback);
+				ws.remove('endQuestion', endQuestionCallback);
+				ws.remove('startSession', startSessionCallback);
+				ws.remove('endSession', endSessionCallback);
+			};
 		})();
 	}, []);
 
@@ -137,7 +178,7 @@ export const Home: FunctionComponent<
 								</Text>
 								<Button
 									text='Join'
-									onPress={() => navigation.push('Polls')}></Button>
+									onPress={() => navigation.push('Questions')}></Button>
 							</View>
 						)
 					}

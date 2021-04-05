@@ -18,7 +18,7 @@ import {
 
 import { Icon } from './Icon';
 import { Home } from './Home';
-import { Polls } from './Polls';
+import { Questions } from './Questions';
 import { Settings } from './Settings';
 import { BLACK, GOLD, GRAY_2 } from '../libs/colors';
 import { flush } from '../services/store';
@@ -26,7 +26,7 @@ import { AppContext } from './Provider';
 import { oauthMobileRevoke } from '../services/oauth';
 
 const Drawer = createDrawerNavigator<RootTree>();
-const PollStack = createStackNavigator<PollStackTree>();
+const QuestionStack = createStackNavigator<QuestionStackTree>();
 const SettingsStack = createStackNavigator<SettingsStackTree>();
 
 const options: StackNavigationOptions = {
@@ -40,12 +40,12 @@ const options: StackNavigationOptions = {
 // Poll Router
 //
 
-const PollRouter: FunctionComponent<
-	DrawerScreenProps<PollStackTree, 'Home'>
+const QuestionRouter: FunctionComponent<
+	DrawerScreenProps<QuestionStackTree, 'Home'>
 > = ({ navigation }) => {
 	return (
-		<PollStack.Navigator>
-			<PollStack.Screen
+		<QuestionStack.Navigator>
+			<QuestionStack.Screen
 				name='Home'
 				component={Home}
 				options={{
@@ -54,12 +54,12 @@ const PollRouter: FunctionComponent<
 					...options,
 				}}
 			/>
-			<PollStack.Screen
-				name='Polls'
-				component={Polls}
+			<QuestionStack.Screen
+				name='Questions'
+				component={Questions}
 				options={{ title: 'Class', ...options }}
 			/>
-		</PollStack.Navigator>
+		</QuestionStack.Navigator>
 	);
 };
 
@@ -149,15 +149,15 @@ export const Router: FunctionComponent = () => {
 	return (
 		<NavigationContainer>
 			<Drawer.Navigator
-				initialRouteName='Polls'
+				initialRouteName='Questions'
 				drawerContentOptions={{
 					activeTintColor: BLACK,
 					itemStyle: { marginVertical: 5 },
 				}}
 				drawerContent={drawerContent}>
 				<Drawer.Screen
-					name='Polls'
-					component={PollRouter}
+					name='Questions'
+					component={QuestionRouter}
 					options={{ drawerLabel: 'Questions Sessions' }}
 				/>
 				<Drawer.Screen
@@ -176,7 +176,7 @@ export const Router: FunctionComponent = () => {
 
 const headerLeftController = (
 	navigation:
-		| DrawerNavigationProp<PollStackTree, 'Home'>
+		| DrawerNavigationProp<QuestionStackTree, 'Home'>
 		| DrawerNavigationProp<SettingsStackTree, 'Settings'>,
 ) => {
 	return (
