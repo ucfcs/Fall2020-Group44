@@ -134,19 +134,19 @@ functions:
   # Question Option endpoints
   #
   createQuestionOption:
-    handler: src/handlers/question_option.create
+    handler: src/handlers/questionOption.create
     events:
       - http:
           method: post
           path: /api/v1/question/{questionId}/option
   updateQuestionOption:
-    handler: src/handlers/question_option.update
+    handler: src/handlers/questionOption.update
     events:
       - http:
           method: put
           path: /api/v1/question/{questionId}/option/{optionId}
   deleteQuestionOption:
-    handler: src/handlers/question_option.remove
+    handler: src/handlers/questionOption.remove
     events:
       - http:
           method: delete
@@ -156,25 +156,25 @@ functions:
   # Question User Response endpoints
   #
   createQuestionUserResponse:
-    handler: src/handlers/question_user_response.create
+    handler: src/handlers/questionUserResponse.create
     events:
       - http:
           method: post
           path: /api/v1/question/{questionId}/response
   deleteQuestionUserResponse:
-    handler: src/handlers/question_user_response.remove
+    handler: src/handlers/questionUserResponse.remove
     events:
       - http:
           method: delete
           path: /api/v1/question/{questionId}/response
   updateQuestionUserResponse:
-    handler: src/handlers/question_user_response.update
+    handler: src/handlers/questionUserResponse.update
     events:
       - http:
           method: put
           path: /api/v1/question/{questionId}/response
   getQuestionUserResponse:
-    handler: src/handlers/question_user_response.get
+    handler: src/handlers/questionUserResponse.get
     events:
       - http:
           method: get
