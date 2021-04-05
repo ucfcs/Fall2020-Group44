@@ -115,7 +115,13 @@ const Creator = (): ReactElement => {
           <div className="header-tabs">
             <div
               className={`tab-buttons edit-tab ${isPreview ? "" : "selected"}`}
+              tabIndex={0}
               onClick={() => setIsPreview(false)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  setIsPreview(false);
+                }
+              }}
             >
               Edit
             </div>
@@ -123,7 +129,13 @@ const Creator = (): ReactElement => {
               className={`tab-buttons preview-tab ${
                 isPreview ? "selected" : ""
               }`}
+              tabIndex={0}
               onClick={() => setIsPreview(true)}
+              onKeyPress={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  setIsPreview(true);
+                }
+              }}
             >
               Preview
             </div>

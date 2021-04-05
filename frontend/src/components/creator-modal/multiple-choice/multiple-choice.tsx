@@ -43,7 +43,7 @@ const MultipleChoice = (): ReactElement => {
       ))}
 
       <div className="add-answer">
-        <div className="add-answer-button" onClick={addAnswer}>
+        <div className="add-answer-button" tabIndex={0} onClick={addAnswer}>
           <span className="add-answer-icon">&#8853;&nbsp;</span>
 
           <span className="add-answer-text">Add Answer Choice</span>

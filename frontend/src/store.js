@@ -27,7 +27,7 @@ const init = {
   questionNumber: 0,
   classSize: 0,
   openExportModal: false,
-  currentQuestionInfo: baseQuestionInfo,
+  currentQuestionInfo: JSON.parse(JSON.stringify(baseQuestionInfo)),
   websocket: null,
 };
 const store = React.createContext(init);
@@ -68,7 +68,10 @@ const StateProvider = ({ children }) => {
       case "close-export-modal":
         return { ...state, openExportModal: false };
       case "reset-current-question-info":
-        return { ...state, currentQuestionInfo: baseQuestionInfo };
+        return {
+          ...state,
+          currentQuestionInfo: JSON.parse(JSON.stringify(baseQuestionInfo)),
+        };
       case "set-current-question-info":
         return { ...state, currentQuestionInfo: action.payload };
       case "set-websocket":

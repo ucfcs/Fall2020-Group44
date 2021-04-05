@@ -38,6 +38,7 @@
   .correct-checkbox {
     width: 15%;
     display: flex;
+    border: 1px solid transparent;
 
     input {
       cursor: pointer;
@@ -57,6 +58,11 @@
     &:hover {
       background: whitesmoke;
     }
+
+    &:focus-within {
+      border-color: gray;
+      border-radius: 0.5rem;
+    }
   }
 
   .delete-answer {
@@ -67,5 +73,10 @@
     color: #717171;
     font-weight: bold;
     font-size: 1rem;
+
+    &:focus {
+      border: 1px solid gray;
+      border-radius: 0.5rem;
+    }
   }
 }

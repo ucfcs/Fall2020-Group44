@@ -25,7 +25,7 @@ const QuestionPreview = (): ReactElement => {
   const previewQuestion: Question =
     state.questions[state.previewFolder]?.Questions[state.previewQuestion];
 
-  const previewFolder = state.questions[state.previewFolder]?.folder;
+  const previewFolder = state.questions[state.previewFolder]?.name;
 
   return previewQuestion ? (
     <div className="question-preview">

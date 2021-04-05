@@ -49,7 +49,12 @@ const FolderModal = (): ReactElement => {
     <Modal>
       <form className="folder-module" onSubmit={handleFolderCreation}>
         <div className="creator-header">
-          <button type="reset" className="exit" onClick={closeFolderModal}>
+          <button
+            type="reset"
+            className="exit"
+            tabIndex={0}
+            onClick={closeFolderModal}
+          >
             ×
           </button>
 
@@ -65,6 +70,7 @@ const FolderModal = (): ReactElement => {
                 className="folder-name"
                 type="text"
                 placeholder="eg: Chapter 5"
+                tabIndex={0}
                 value={newFolder}
                 onChange={(e) => {
                   setNewFolder(e.target.value);
@@ -78,12 +84,13 @@ const FolderModal = (): ReactElement => {
           <button
             type="reset"
             className="cancel-button"
+            tabIndex={0}
             onClick={closeFolderModal}
           >
             Cancel
           </button>
 
-          <button type="submit" className="save-button">
+          <button type="submit" className="save-button" tabIndex={0}>
             Create
           </button>
         </div>
