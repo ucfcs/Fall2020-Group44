@@ -117,11 +117,8 @@ const Creator = (): ReactElement => {
               className={`tab-buttons edit-tab ${isPreview ? "" : "selected"}`}
               tabIndex={0}
               onClick={() => setIsPreview(false)}
-              onKeyPress={(e: SyntheticEvent) => {
-                if (
-                  ((e as unknown) as KeyboardEvent).key === "Enter" ||
-                  ((e as unknown) as KeyboardEvent).key === "Spacebar"
-                ) {
+              onKeyPress={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
                   setIsPreview(false);
                 }
               }}
@@ -134,11 +131,8 @@ const Creator = (): ReactElement => {
               }`}
               tabIndex={0}
               onClick={() => setIsPreview(true)}
-              onKeyPress={(e: SyntheticEvent) => {
-                if (
-                  ((e as unknown) as KeyboardEvent).key === "Enter" ||
-                  ((e as unknown) as KeyboardEvent).key === "Spacebar"
-                ) {
+              onKeyPress={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
                   setIsPreview(true);
                 }
               }}
