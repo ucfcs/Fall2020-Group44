@@ -48,13 +48,13 @@ export const Questions: FunctionComponent<
 					action: 'submit',
 					courseId: state.question.courseId,
 					questionOptionId: option.key,
-					questionId: '' + state.question.id,
+					questionId: '' + state.question.id, // make sure its a string
 					sessionId: state.session.id.toString(),
-					userId: '1',
+					userId: state.id.toString(),
 				});
 			}
 		},
-		[state.question, state.session],
+		[state.question, state.session, state.id],
 	);
 	const endSessionCallback = useCallback<OnEndSessionCallback>(
 		// pop to safely trigger the unmount
