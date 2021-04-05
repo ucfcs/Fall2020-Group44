@@ -37,4 +37,9 @@ export const Question: ModelDefined<
 		allowNull: false,
 		defaultValue: 0.5,
 	},
+	type: {
+		type: DataTypes.STRING,
+		allowNull: false,
+		defaultValue: 'Mult Choice',
+	},
 });

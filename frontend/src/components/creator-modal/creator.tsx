@@ -57,7 +57,21 @@ const Creator = (): ReactElement => {
   const closePreviewQuestion = (): void => {
     dispatch({ type: "close-preview-question" });
     dispatch({ type: "close-creator" });
-    dispatch({ type: "reset-current-question-info" });
+    dispatch({
+      type: "set-current-question-info",
+      payload: {
+        title: "",
+        question: "",
+        type: "Mult Choice",
+        QuestionOptions: [
+          { text: "", isAnswer: false },
+          { text: "", isAnswer: false },
+        ],
+        folderId: null,
+        participationPoints: 0.5,
+        correctnessPoints: 0.5,
+      },
+    });
   };
 
   const saveQuestion = (event: SyntheticEvent) => {
@@ -115,7 +129,16 @@ const Creator = (): ReactElement => {
           <div className="header-tabs">
             <div
               className={`tab-buttons edit-tab ${isPreview ? "" : "selected"}`}
+              tabIndex={0}
               onClick={() => setIsPreview(false)}
+              onKeyPress={(e: SyntheticEvent) => {
+                if (
+                  ((e as unknown) as KeyboardEvent).key === "Enter" ||
+                  ((e as unknown) as KeyboardEvent).key === "Spacebar"
+                ) {
+                  setIsPreview(false);
+                }
+              }}
             >
               Edit
             </div>
@@ -123,7 +146,16 @@ const Creator = (): ReactElement => {
               className={`tab-buttons preview-tab ${
                 isPreview ? "selected" : ""
               }`}
+              tabIndex={0}
               onClick={() => setIsPreview(true)}
+              onKeyPress={(e: SyntheticEvent) => {
+                if (
+                  ((e as unknown) as KeyboardEvent).key === "Enter" ||
+                  ((e as unknown) as KeyboardEvent).key === "Spacebar"
+                ) {
+                  setIsPreview(true);
+                }
+              }}
             >
               Preview
             </div>

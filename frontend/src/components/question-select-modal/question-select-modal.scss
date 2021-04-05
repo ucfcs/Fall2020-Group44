@@ -13,15 +13,19 @@
   .exit {
     background-color: #ffc904;
     font-size: 1.5rem;
-    width: 2rem;
-    height: 2rem;
-    border: none;
+    width: 2.25rem;
+    height: 2.25rem;
+    border: 2px solid;
     border-radius: 50%;
     margin: 0.5rem 0.5rem 0 0;
     position: absolute;
     top: 0;
     right: 0;
     cursor: pointer;
+
+    &:focus {
+      border-color: gray;
+    }
   }
 
   button:focus {
@@ -104,11 +108,21 @@
         text-decoration: none;
         color: black;
       }
+
+      &:focus {
+        border: 2px solid gray;
+        border-radius: 0.5rem;
+      }
     }
 
     .cancel-button {
       background-color: #cccccc;
       color: black;
+
+      &:focus {
+        border: 2px solid gray;
+        border-radius: 0.5rem;
+      }
     }
   }
 
@@ -198,6 +212,10 @@
       margin-top: 1rem;
       padding-top: 1rem;
     }
+
+    &:focus-within {
+      background-color: whitesmoke;
+    }
   }
 
   .rogue-question-separator {
@@ -257,6 +275,10 @@
       .content-tree-icon {
         opacity: 1;
       }
+    }
+
+    &:focus-within {
+      background: whitesmoke;
     }
   }
 

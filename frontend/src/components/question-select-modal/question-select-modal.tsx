@@ -88,13 +88,15 @@ const QuestionSelect = (): ReactElement => {
       // if it's a folder's checkbox
       if (isFolder) {
         // check all the questions in the folder
-        questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
-          checkbox.checked = true;
+        if (questionCheckboxRefs[folder]) {
+          questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
+            checkbox.checked = true;
 
-          if (checkbox.parentElement) {
-            checkbox.parentElement.classList.add("selected");
-          }
-        });
+            if (checkbox.parentElement) {
+              checkbox.parentElement.classList.add("selected");
+            }
+          });
+        }
 
         // push entire folder to session
         sessionQuestions[folder] = [
@@ -112,9 +114,11 @@ const QuestionSelect = (): ReactElement => {
         // see if all the questions in the folder are checked.
         let isAllChecked = true;
 
-        questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
-          if (!checkbox.checked) isAllChecked = false;
-        });
+        if (questionCheckboxRefs[folder]) {
+          questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
+            if (!checkbox.checked) isAllChecked = false;
+          });
+        }
 
         // check the folder's checkbox if so
         if (isAllChecked && folderCheckboxRefs[folder]) {
@@ -135,12 +139,14 @@ const QuestionSelect = (): ReactElement => {
       // folder
       if (isFolder) {
         // uncheck all the questions in the folder
-        questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
-          checkbox.checked = false;
-          if (checkbox.parentElement) {
-            checkbox.parentElement.classList.remove("selected");
-          }
-        });
+        if (questionCheckboxRefs[folder]) {
+          questionCheckboxRefs[folder].forEach((checkbox: HTMLInputElement) => {
+            checkbox.checked = false;
+            if (checkbox.parentElement) {
+              checkbox.parentElement.classList.remove("selected");
+            }
+          });
+        }
 
         // delete all the questions in the folder from the session
         sessionQuestions[folder] = [];
@@ -185,7 +191,12 @@ const QuestionSelect = (): ReactElement => {
     <Modal>
       <div className="question-select-module">
         <div className="creator-header">
-          <button type="reset" className="exit" onClick={closeQuestionSelect}>
+          <button
+            type="reset"
+            className="exit"
+            tabIndex={0}
+            onClick={closeQuestionSelect}
+          >
             X
           </button>
 
@@ -194,6 +205,7 @@ const QuestionSelect = (): ReactElement => {
           <div className="header-tabs">
             <div
               className={`tab-buttons edit-tab ${isPreview ? "" : "selected"}`}
+              tabIndex={0}
               onClick={() => setIsPreview(false)}
             >
               Edit
@@ -203,6 +215,7 @@ const QuestionSelect = (): ReactElement => {
               className={`tab-buttons preview-tab ${
                 isPreview ? "selected" : ""
               }`}
+              tabIndex={0}
               onClick={() => setIsPreview(true)}
             >
               Preview
@@ -273,6 +286,7 @@ const QuestionSelect = (): ReactElement => {
                                   }
                                   id={"folder-" + fIndex}
                                   type="checkbox"
+                                  tabIndex={0}
                                   onClick={(e) =>
                                     selectQuestionsForPoll(e, true, fIndex)
                                   }
@@ -392,6 +406,7 @@ const QuestionSelect = (): ReactElement => {
           <button
             type="reset"
             className="cancel-button"
+            tabIndex={0}
             onClick={closeQuestionSelect}
           >
             Cancel
@@ -400,6 +415,7 @@ const QuestionSelect = (): ReactElement => {
           <button
             type="submit"
             className="save-button"
+            tabIndex={0}
             onClick={presentQuestions}
           >
             Present

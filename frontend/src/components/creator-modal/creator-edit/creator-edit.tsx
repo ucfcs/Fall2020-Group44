@@ -59,6 +59,20 @@ const CreatorEdit = (): ReactElement => {
     });
   };
 
+  const handleTypeChange = (event: SyntheticEvent): void => {
+    const value: number = parseInt((event.target as HTMLInputElement).value);
+
+    const tempQuestion = {
+      ...question,
+      type: value,
+    };
+
+    dispatch({
+      type: "set-current-question-info",
+      payload: tempQuestion,
+    });
+  };
+
   const updateParticipation = (event: SyntheticEvent): void => {
     const value = (event.target as HTMLInputElement).value;
     const tempQuestion = {
@@ -94,6 +108,23 @@ const CreatorEdit = (): ReactElement => {
         </div>
 
         <div className="question-info">
+          <label htmlFor="question-type">
+            <span className="red">*</span> Type:
+          </label>
+
+          <select
+            className="question-type"
+            name="question-type"
+            id="question-type"
+            disabled
+            tabIndex={0}
+            onChange={handleTypeChange}
+          >
+            <option value="Mult Choice">Multiple Choice</option>
+          </select>
+        </div>
+
+        <div className="question-info">
           <label htmlFor="question-title">Title:</label>
 
           <input
@@ -117,7 +148,7 @@ const CreatorEdit = (): ReactElement => {
             id="question-text"
             type="text"
             required
-            tabIndex={1}
+            tabIndex={0}
             className="question-text-input"
             placeholder="eg: Who was the first President of the United States?"
             defaultValue={previewQuestion.question}
@@ -134,6 +165,7 @@ const CreatorEdit = (): ReactElement => {
             className="folder-select"
             name="folder-select"
             id="folder-select"
+            tabIndex={0}
             defaultValue={-1}
             onChange={handleFolderChange}
           >
@@ -162,7 +194,7 @@ const CreatorEdit = (): ReactElement => {
             <input
               id="participation-input"
               type="number"
-              tabIndex={2}
+              tabIndex={0}
               onChange={updateParticipation}
               value={state.currentQuestionInfo.participationPoints}
               step="0.1"
@@ -176,7 +208,7 @@ const CreatorEdit = (): ReactElement => {
             <input
               id="correctness-input"
               type="number"
-              tabIndex={2}
+              tabIndex={0}
               onChange={updateCorrectness}
               value={state.currentQuestionInfo.correctnessPoints}
               step="0.1"

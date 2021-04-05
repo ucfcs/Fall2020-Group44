@@ -72,6 +72,7 @@ const AnswerChoice = ({
         <input
           type="checkbox"
           id={"correct-answer-" + index}
+          tabIndex={0}
           checked={answer.isAnswer}
           onChange={(event: SyntheticEvent) =>
             handleCorrectChange(event, index)

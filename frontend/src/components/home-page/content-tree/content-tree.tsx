@@ -234,16 +234,15 @@ const ContentTree = (): ReactElement => {
         </button>
       </div>
 
+      <div className="question-list-header">
+        <span className="title">Title</span>
+
+        <span />
+
+        <span className="type">Type</span>
+      </div>
       <div className="question-list">
         <div>
-          <div className="question-list-header">
-            <span className="title">Title</span>
-
-            <span />
-
-            <span className="type">Type</span>
-          </div>
-
           <div className="question-list-body">
             <DragDropContext onDragEnd={handleDragEnd}>
               <Droppable droppableId="folders" type="droppableItem">
