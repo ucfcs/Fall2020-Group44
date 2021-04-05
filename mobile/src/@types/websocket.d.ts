@@ -16,8 +16,8 @@ type EmitPayload =
 			action: 'submit';
 			courseId: string;
 			questionId: string;
-			optionId: string;
-			ucfid: string;
+			questionOptionId: string;
+			userId: string;
 			sessionId: string;
 	  }
 	| {

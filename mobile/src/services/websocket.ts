@@ -13,11 +13,10 @@ export function init() {
 		memo.ws.onmessage = (event) => {
 			const data: any = JSON.parse(event.data);
 
-			console.log('action =>', data.action);
+			console.log('data =>', data);
 			const cbs = memo.cb.get(data.action);
 
 			if (Array.isArray(cbs)) {
-				console.log('cbs =>', cbs.length);
 				cbs.forEach((cb) => cb(data));
 			}
 		};
@@ -45,14 +44,20 @@ export function remove(action: OnAction, callback: OnCallback) {
 	}
 }
 
+export function emit(payload: EmitPayload) {
+	console.log('ws payload', payload);
+
+	if (memo.ws) {
+		memo.ws.send(format(payload));
+	}
+}
+
 export function join(roomKey: string) {
 	if (memo.ws) {
-		memo.ws.send(
-			format({
-				action: 'studentJoinRoom',
-				courseId: roomKey,
-			}),
-		);
+		emit({
+			action: 'studentJoinRoom',
+			courseId: roomKey,
+		});
 	}
 }
 

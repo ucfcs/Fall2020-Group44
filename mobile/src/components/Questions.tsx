@@ -1,4 +1,9 @@
-import React, { FunctionComponent, useCallback, useEffect } from 'react';
+import React, {
+	FunctionComponent,
+	useCallback,
+	useContext,
+	useEffect,
+} from 'react';
 import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
@@ -31,11 +36,26 @@ const styles = StyleSheet.create({
 export const Questions: FunctionComponent<
 	StackScreenProps<QuestionStackTree, 'Questions'>
 > = ({ navigation }) => {
-	const onSelectCallback = useCallback((option: Option) => {
-		console.log(option);
-	}, []);
+	const { state } = useContext(AppContext);
 
-	// memoize the ws callbacks
+	//
+	// memoize the callbacks
+	//
+	const onSelectCallback = useCallback(
+		(option: Option) => {
+			if (state.question && state.session) {
+				ws.emit({
+					action: 'submit',
+					courseId: state.question.courseId,
+					questionOptionId: option.key,
+					questionId: '' + state.question.id,
+					sessionId: state.session.id.toString(),
+					userId: '1',
+				});
+			}
+		},
+		[state.question, state.session],
+	);
 	const endSessionCallback = useCallback<OnEndSessionCallback>(
 		// pop to safely trigger the unmount
 		// and reuse the current home component
