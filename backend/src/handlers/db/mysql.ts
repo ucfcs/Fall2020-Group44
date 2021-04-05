@@ -30,7 +30,6 @@ const models = [
 
 export async function init(): Promise<void> {
 	try {
-		// left to right
 		for (let i = 0; i < models.length; i++) {
 			await models[i].sync({ alter: true });
 		}
@@ -42,7 +41,6 @@ export async function init(): Promise<void> {
 
 export async function drop(): Promise<void> {
 	try {
-		// right to left
 		for (let i = models.length - 1; i >= 0; i--) {
 			await models[i].drop({ cascade: true });
 		}
