@@ -1,6 +1,3 @@
-import { ERROR, LOG } from '../../util/logs';
-
-// import the models with the relationships established
 import {
 	Folder,
 	Session,
@@ -13,20 +10,7 @@ import {
 	User,
 	UserSetting,
 } from '../../models';
-
-// model init order
-const models = [
-	User,
-	Folder,
-	Session,
-	SessionGrade,
-	QuestionGrade,
-	Question,
-	SessionQuestion,
-	QuestionOption,
-	QuestionUserResponse,
-	UserSetting,
-];
+import { ERROR, LOG } from '../../util/logs';
 
 export async function init(): Promise<void> {
 	try {

@@ -38,10 +38,11 @@ export const handler: APIGatewayProxyHandler = async (event) => {
 		});
 		const payload = await res.json();
 
-		if (res.status === 401) {
-			return responses.unauthorized(payload);
-		} else {
-			return responses.ok(payload);
+		switch (res.status) {
+			case 401:
+				return responses.unauthorized(payload);
+			default:
+				return responses.ok(payload);
 		}
 	} catch (error) {
 		console.error(error);
