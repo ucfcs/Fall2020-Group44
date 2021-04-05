@@ -121,7 +121,8 @@ export const Home: FunctionComponent<
 			ws.add('endSession', endSessionCallback);
 
 			// HTTP - pull all currently enrolled courses
-			const { payload } = await getCanvasUserEnrollments(state.token);
+			const payload = await getCanvasUserEnrollments(state.token);
+
 
 			// WS - use course unique id's as room keys to join
 			// joining also emits info about the currently active session

@@ -41,13 +41,13 @@ export const Splash: FunctionComponent = () => {
 
 					// if the token has expired this request will return a 401 error
 					// well restart the users flow
-					if ('errors' in data.payload && Array.isArray(data.payload.errors)) {
+					if ('errors' in data) {
 						dispatch({ type: 'SET_PHASE', payload: 'authentication' });
-						return;
+					} else {
+						dispatch({ type: 'SET_ID', payload: data.id });
+						dispatch({ type: 'SET_NAME', payload: data.name });
+						dispatch({ type: 'SET_EMAIL', payload: data.email });
 					}
-
-					dispatch({ type: 'SET_NAME', payload: data.payload.name });
-					dispatch({ type: 'SET_EMAIL', payload: data.payload.email });
 				} catch (error) {
 					console.error(error);
 					dispatch({ type: 'SET_PHASE', payload: 'authentication' });

@@ -1,45 +1,79 @@
 import env from '../../.env.json';
-import { toJSON } from '../util';
 
 //
 // Canvas
 //
 
-export function getCanvasSelf(token: string) {
-	return fetchCanvasProxy(token, {
+export async function getCanvasSelf(token: string) {
+	const res = await fetchCanvasProxy(token, {
 		method: 'GET',
 		url: '/api/v1/users/self',
 	});
+
+	if (res.status === 200) {
+		return toJSON<GetCanvasSelfSuccess>(res);
+	} else {
+		return toJSON<CanvasError>(res);
+	}
 }
 
-export function getCanvasUserEnrollments(token: string) {
-	return fetchCanvasProxy(token, {
+export async function getCanvasUserProfile(token: string) {
+	const res = await fetchCanvasProxy(token, {
+		method: 'GET',
+		url: '/api/v1/users/:user_id/profile',
+	});
+
+	if (res.status === 200) {
+		return toJSON<GetCanvasUserProfileSuccess>(res);
+	} else {
+		return toJSON<CanvasError>(res);
+	}
+}
+
+export async function getCanvasUserEnrollments(token: string) {
+	const res = await fetchCanvasProxy(token, {
 		method: 'GET',
 		url: '/api/v1/users/:user_id/enrollments',
 	});
+
+	if (res.status === 200) {
+		return toJSON<GetCanvasUserEnrollmentsSuccess[]>(res);
+	} else {
+		return toJSON<CanvasError>(res);
+	}
 }
 
 //
 // User
 //
 
-export function getUserSetting(token: string) {
-	return fetch(`${env.BACKEND_URL}/dev/api/v1/user/setting?platform=mobile`, {
-		method: 'GET',
-		headers: {
-			Authorization: `Bearer ${token}`,
+export async function getUserSetting(token: string) {
+	const res = await fetch(
+		`${env.BACKEND_URL}/dev/api/v1/user/setting?platform=mobile`,
+		{
+			method: 'GET',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
 		},
-	}).then(toJSON);
+	);
+
+	return toJSON<GetUserSettingSuccess>(res);
 }
 
-export function setUserSetting(token: string, settings: Settings) {
-	return fetch(`${env.BACKEND_URL}/dev/api/v1/user/setting?platform=mobile`, {
-		method: 'PUT',
-		headers: {
-			Authorization: `Bearer ${token}`,
+export async function setUserSetting(token: string, settings: Settings) {
+	const res = await fetch(
+		`${env.BACKEND_URL}/dev/api/v1/user/setting?platform=mobile`,
+		{
+			method: 'PUT',
+			headers: {
+				Authorization: `Bearer ${token}`,
+			},
+			body: JSON.stringify(settings),
 		},
-		body: JSON.stringify(settings),
-	}).then(toJSON);
+	);
+
+	return toJSON<SetUserSettingSuccess>(res);
 }
 
 //
@@ -52,12 +86,16 @@ function fetchCanvasProxy(
 		method: 'GET' | 'POST';
 		url: string;
 	},
-) {
+): Promise<Response> {
 	return fetch(`${env.BACKEND_URL}/dev/api/v1/proxy/canvas`, {
 		method: 'POST',
 		headers: {
 			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify(body),
-	}).then(toJSON);
+	});
+}
+
+function toJSON<T>(res: Response): Promise<T> {
+	return res.json();
 }
