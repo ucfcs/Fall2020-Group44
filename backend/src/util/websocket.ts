@@ -490,12 +490,11 @@ export class Connection {
 				}),
 			};
 		} catch (err) {
-			// if for some reason the professor is no longer connected to the websocket, close the room
+			// the professor is no longer connected to the websocket
 			if (err.statusCode == 410) {
 				console.log(
-					`The professor for room ${courseId} is no longer connected. Closing the room.`
+					`The professor for room ${courseId} is no longer connected.`
 				);
-				await this.closeRoom(courseId);
 				return {
 					statusCode: 410,
 					body: JSON.stringify({
