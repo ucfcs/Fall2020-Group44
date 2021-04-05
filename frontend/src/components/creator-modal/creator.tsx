@@ -57,21 +57,7 @@ const Creator = (): ReactElement => {
   const closePreviewQuestion = (): void => {
     dispatch({ type: "close-preview-question" });
     dispatch({ type: "close-creator" });
-    dispatch({
-      type: "set-current-question-info",
-      payload: {
-        title: "",
-        question: "",
-        type: "Mult Choice",
-        QuestionOptions: [
-          { text: "", isAnswer: false },
-          { text: "", isAnswer: false },
-        ],
-        folderId: null,
-        participationPoints: 0.5,
-        correctnessPoints: 0.5,
-      },
-    });
+    dispatch({ type: "reset-current-question-info" });
   };
 
   const saveQuestion = (event: SyntheticEvent) => {

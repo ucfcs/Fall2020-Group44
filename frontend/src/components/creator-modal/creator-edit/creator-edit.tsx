@@ -133,6 +133,7 @@ const CreatorEdit = (): ReactElement => {
             tabIndex={0}
             maxLength={120}
             className="question-title-input"
+            autoComplete="off"
             placeholder="eg: US History 1a"
             defaultValue={previewQuestion.title}
             onChange={handleTitleChange}
@@ -150,6 +151,7 @@ const CreatorEdit = (): ReactElement => {
             required
             tabIndex={0}
             className="question-text-input"
+            autoComplete="off"
             placeholder="eg: Who was the first President of the United States?"
             defaultValue={previewQuestion.question}
             onChange={handleQuestionChange}
