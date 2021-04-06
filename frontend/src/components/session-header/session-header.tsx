@@ -1,6 +1,5 @@
 import React, { ReactElement, useContext } from "react";
 import { Link } from "react-router-dom";
-import { RESPOND } from "../../constants";
 import { store } from "../../store";
 
 import "./session-header.scss";

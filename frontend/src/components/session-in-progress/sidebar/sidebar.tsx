@@ -1,6 +1,5 @@
 import React, { ReactElement, SyntheticEvent, useContext } from "react";
 
-import { RESPOND } from "../../../constants";
 import { store } from "../../../store";
 
 import "./sidebar.scss";
