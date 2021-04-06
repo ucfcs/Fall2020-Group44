@@ -19,8 +19,13 @@
       font-size: 1.25rem;
       color: black;
 
-      &:hover {
+      &:hover,
+      &:focus {
         background: whitesmoke;
+      }
+
+      &:focus {
+        border: 1px solid black;
       }
     }
 

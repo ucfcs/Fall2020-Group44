@@ -72,7 +72,6 @@ const AnswerChoice = ({
         <input
           type="checkbox"
           id={"correct-answer-" + index}
-          tabIndex={-1}
           checked={answer.isAnswer}
           onChange={(event: SyntheticEvent) =>
             handleCorrectChange(event, index)
@@ -84,15 +83,10 @@ const AnswerChoice = ({
 
       <button
         className="delete-answer"
-        tabIndex={-1}
         onClick={() => handleAnswerDelete(index)}
       >
         X
       </button>
-
-      {/* <div className="delete-answer">
-        <div onClick={() => handleAnswerDelete(index)}>X</div>
-      </div> */}
     </div>
   );
 };
