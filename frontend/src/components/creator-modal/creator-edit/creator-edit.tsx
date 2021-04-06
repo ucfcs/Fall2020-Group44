@@ -117,7 +117,6 @@ const CreatorEdit = (): ReactElement => {
             name="question-type"
             id="question-type"
             disabled
-            tabIndex={0}
             onChange={handleTypeChange}
           >
             <option value="Mult Choice">Multiple Choice</option>
@@ -130,7 +129,6 @@ const CreatorEdit = (): ReactElement => {
           <input
             id="question-title"
             type="text"
-            tabIndex={0}
             maxLength={120}
             className="question-title-input"
             autoComplete="off"
@@ -149,7 +147,6 @@ const CreatorEdit = (): ReactElement => {
             id="question-text"
             type="text"
             required
-            tabIndex={0}
             className="question-text-input"
             autoComplete="off"
             placeholder="eg: Who was the first President of the United States?"
@@ -167,7 +164,6 @@ const CreatorEdit = (): ReactElement => {
             className="folder-select"
             name="folder-select"
             id="folder-select"
-            tabIndex={0}
             defaultValue={-1}
             onChange={handleFolderChange}
           >
@@ -196,7 +192,6 @@ const CreatorEdit = (): ReactElement => {
             <input
               id="participation-input"
               type="number"
-              tabIndex={0}
               onChange={updateParticipation}
               value={state.currentQuestionInfo.participationPoints}
               step="0.1"
@@ -210,7 +205,6 @@ const CreatorEdit = (): ReactElement => {
             <input
               id="correctness-input"
               type="number"
-              tabIndex={0}
               onChange={updateCorrectness}
               value={state.currentQuestionInfo.correctnessPoints}
               step="0.1"
