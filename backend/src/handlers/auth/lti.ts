@@ -31,17 +31,28 @@ export const launch: APIGatewayProxyHandler = async (
 	// User does not exist, Oauth2 flow to create new user
 	if (!user) {
 		// Temporarily store LTI data in the database
+		await Lti.destroy({
+			where: {
+				canvasUserId: Number(userId),
+			},
+		});
 		await Lti.create({
 			canvasUserId: Number(userId),
 			canvasCourseId: Number(courseId),
 		});
+
+		const scopes = [
+			'url:POST|/api/v1/courses/:course_id/assignments',
+			'url:GET|/api/v1/courses/:course_id/students',
+			'url:POST|/api/v1/courses/:course_id/assignments/:assignment_id/submissions/update_grades',
+		];
 		const url =
 			`${process.env.CANVAS_URL}/login/oauth2/auth?` +
 			querystring.encode({
 				client_id: process.env.CANVAS_ID,
 				response_type: 'code',
 				redirect_uri: process.env.CANVAS_REDIRECT,
-				scope: 'url:POST|/api/v1/courses/:course_id/assignments',
+				scope: scopes.join(' '),
 			});
 
 		return response.movedPermanently(url);
@@ -81,7 +92,7 @@ export const redirect: APIGatewayProxyHandler = async (
 
 		const data: CanvasOAuthResponses = await res.json();
 
-		// Generate token and retrive LTI ata
+		// Generate token and retrive LTI data
 		const [token, LtiData] = await Promise.all([
 			userAuthFlowGetToken(data.user.id, data.access_token, data.refresh_token),
 			Lti.findOne({
