@@ -52,6 +52,8 @@ CANVAS_URL=http://example.com
 CANVAS_ID=101
 CANVAS_KEY=shhhh
 CANVAS_REDIRECT=http://somewhere.else
+
+FRONTEND_URL=http://localhost:3000
 ```
 
 ### Initialize Docker
