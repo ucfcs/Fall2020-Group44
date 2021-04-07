@@ -8,22 +8,19 @@ import fetch from 'node-fetch';
 import response from '../../util/api/responses';
 import querystring from 'querystring';
 import { userAuthFlowGetToken } from '../../util/auth';
-import { User } from '../../models';
+import { Lti, User } from '../../models';
 import { encode } from '../../util/token';
 
 /**
- * @see http://localhost:3000/dev/api/v1/auth/lti
+ * @see http://localhost:5000/dev/api/v1/auth/lti
  */
 export const launch: APIGatewayProxyHandler = async (
 	event: APIGatewayEvent
 ) => {
 	const body = querystring.decode(event.body as string);
 
-	const courseId = body.custom_canvas_course_id;
 	const userId = body.custom_canvas_user_id;
-
-	console.log('courseId', courseId);
-	console.log('userId', userId);
+	const courseId = body.custom_canvas_course_id;
 
 	const user = await User.findOne({
 		where: {
@@ -31,15 +28,19 @@ export const launch: APIGatewayProxyHandler = async (
 		},
 	});
 
-	// User does not exist
+	// User does not exist, Oauth2 flow to create new user
 	if (!user) {
+		// Temporarily store LTI data in the database
+		await Lti.create({
+			canvasUserId: Number(userId),
+			canvasCourseId: Number(courseId),
+		});
 		const url =
 			`${process.env.CANVAS_URL}/login/oauth2/auth?` +
 			querystring.encode({
 				client_id: process.env.CANVAS_ID,
 				response_type: 'code',
 				redirect_uri: process.env.CANVAS_REDIRECT,
-				state: 1,
 				scope: 'url:POST|/api/v1/courses/:course_id/assignments',
 			});
 
@@ -49,7 +50,7 @@ export const launch: APIGatewayProxyHandler = async (
 	const token = encode(user.get());
 
 	return response.movedPermanently(
-		`${process.env.SITE_BASE_URL}?token=${token}` as string
+		`${process.env.SITE_BASE_URL}/course/${courseId}?token=${token}` as string
 	);
 };
 
@@ -64,8 +65,6 @@ export const redirect: APIGatewayProxyHandler = async (
 	}
 
 	try {
-		// let us initiate the next step of the OAuth flow but sending the POST request with the auth code
-		// see https://canvas.instructure.com/doc/api/file.oauth_endpoints.html#post-login-oauth2-token
 		const res = await fetch(`${process.env.CANVAS_URL}/login/oauth2/token`, {
 			method: 'POST',
 			headers: {
@@ -82,14 +81,21 @@ export const redirect: APIGatewayProxyHandler = async (
 
 		const data: CanvasOAuthResponses = await res.json();
 
-		const token = await userAuthFlowGetToken(
-			data.user.id,
-			data.access_token,
-			data.refresh_token
-		);
+		// Generate token and retrive LTI ata
+		const [token, LtiData] = await Promise.all([
+			userAuthFlowGetToken(data.user.id, data.access_token, data.refresh_token),
+			Lti.findOne({
+				where: {
+					canvasUserId: data.user.id,
+				},
+			}),
+		]);
+
+		const courseId = LtiData?.get().canvasCourseId;
+		LtiData?.destroy();
 
 		return response.movedPermanently(
-			`${process.env.SITE_BASE_URL}/course/${queryStringParameters.state}?token=${token}` as string
+			`${process.env.SITE_BASE_URL}/course/${courseId}?token=${token}` as string
 		);
 	} catch (error) {
 		console.error('Error while fetching:', error);
