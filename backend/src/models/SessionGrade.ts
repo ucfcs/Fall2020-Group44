@@ -13,6 +13,10 @@ export const SessionGrade: ModelDefined<
 			primaryKey: true,
 			autoIncrement: true,
 		},
+		courseId: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
 		userId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,

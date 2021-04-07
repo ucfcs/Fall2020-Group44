@@ -180,6 +180,13 @@ functions:
           method: get
           path: /api/v1/question/{questionId}/response
 
+  calculateGrades:
+    handler: src/handlers/calculateGrades.calculate
+    events:
+      - http:
+          method: POST
+          path: /api/v1/session/calculate
+
   #
   # Auth
   #

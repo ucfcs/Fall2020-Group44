@@ -13,11 +13,15 @@ export const QuestionGrade: ModelDefined<
 			primaryKey: true,
 			autoIncrement: true,
 		},
+		courseId: {
+			type: DataTypes.STRING,
+			allowNull: false,
+		},
 		userId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
-		sessionId: {
+		sessionGradeId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
@@ -38,7 +42,7 @@ export const QuestionGrade: ModelDefined<
 		indexes: [
 			{
 				unique: true,
-				fields: ['userId', 'sessionId', 'questionId'],
+				fields: ['userId', 'sessionGradeId', 'questionId'],
 			},
 		],
 	}
