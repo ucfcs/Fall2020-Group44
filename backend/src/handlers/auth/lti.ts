@@ -4,6 +4,7 @@ import {
 	ProxyResult,
 } from 'aws-lambda';
 import uuid from 'uuid';
+import fetch from 'node-fetch';
 import response from '../../util/api/responses';
 import querystring from 'querystring';
 import { userAuthFlowGetToken } from '../../util/auth';
@@ -14,10 +15,69 @@ import { userAuthFlowGetToken } from '../../util/auth';
 export const launch: APIGatewayProxyHandler = async (
 	event: APIGatewayEvent
 ) => {
-	// do we have a user with that info
-	console.log(querystring.parse(event.body as string));
+	const body = querystring.decode(event.body as string);
 
-	return response.movedPermanently(process.env.SITE_BASE_URL as string);
+	const courseId = body.custom_canvas_course_id;
+	const userId = body.custom_canvas_user_id;
+
+	console.log('courseId', courseId);
+	console.log('userId', userId);
+
+	const url =
+		`${process.env.CANVAS_URL}/login/oauth2/auth?` +
+		querystring.encode({
+			client_id: process.env.CANVAS_ID,
+			response_type: 'code',
+			redirect_uri: process.env.CANVAS_REDIRECT,
+			state: 1,
+			scope: 'url:POST|/api/v1/courses/:course_id/assignments',
+		});
+
+	return response.movedPermanently(url);
+};
+
+export const redirect: APIGatewayProxyHandler = async (
+	event: APIGatewayEvent
+) => {
+	const { queryStringParameters } = event;
+	if (!queryStringParameters) {
+		return response.badRequest({
+			message: 'query string "code" is missing',
+		});
+	}
+
+	try {
+		// let us initiate the next step of the OAuth flow but sending the POST request with the auth code
+		// see https://canvas.instructure.com/doc/api/file.oauth_endpoints.html#post-login-oauth2-token
+		const res = await fetch(`${process.env.CANVAS_URL}/login/oauth2/token`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				grant_type: 'authorization_code',
+				client_id: process.env.CANVAS_ID,
+				client_secret: process.env.CANVAS_KEY,
+				redirect_uri: process.env.CANVAS_REDIRECT,
+				code: queryStringParameters.code,
+			}),
+		});
+
+		const data: CanvasOAuthResponses = await res.json();
+
+		const token = await userAuthFlowGetToken(
+			data.user.id,
+			data.access_token,
+			data.refresh_token
+		);
+
+		return response.movedPermanently(
+			`${process.env.SITE_BASE_URL}/course/${queryStringParameters.state}?token=${token}` as string
+		);
+	} catch (error) {
+		console.error('Error while fetching:', error);
+		return response.internalServerError(error);
+	}
 };
 
 /**
