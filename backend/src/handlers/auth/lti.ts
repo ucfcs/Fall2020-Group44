@@ -8,6 +8,8 @@ import fetch from 'node-fetch';
 import response from '../../util/api/responses';
 import querystring from 'querystring';
 import { userAuthFlowGetToken } from '../../util/auth';
+import { User } from '../../models';
+import { encode } from '../../util/token';
 
 /**
  * @see http://localhost:3000/dev/api/v1/auth/lti
@@ -23,17 +25,32 @@ export const launch: APIGatewayProxyHandler = async (
 	console.log('courseId', courseId);
 	console.log('userId', userId);
 
-	const url =
-		`${process.env.CANVAS_URL}/login/oauth2/auth?` +
-		querystring.encode({
-			client_id: process.env.CANVAS_ID,
-			response_type: 'code',
-			redirect_uri: process.env.CANVAS_REDIRECT,
-			state: 1,
-			scope: 'url:POST|/api/v1/courses/:course_id/assignments',
-		});
+	const user = await User.findOne({
+		where: {
+			canvasId: userId,
+		},
+	});
 
-	return response.movedPermanently(url);
+	// User does not exist
+	if (!user) {
+		const url =
+			`${process.env.CANVAS_URL}/login/oauth2/auth?` +
+			querystring.encode({
+				client_id: process.env.CANVAS_ID,
+				response_type: 'code',
+				redirect_uri: process.env.CANVAS_REDIRECT,
+				state: 1,
+				scope: 'url:POST|/api/v1/courses/:course_id/assignments',
+			});
+
+		return response.movedPermanently(url);
+	}
+
+	const token = encode(user.get());
+
+	return response.movedPermanently(
+		`${process.env.SITE_BASE_URL}?token=${token}` as string
+	);
 };
 
 export const redirect: APIGatewayProxyHandler = async (
