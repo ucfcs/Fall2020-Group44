@@ -61,7 +61,7 @@ export const launch: APIGatewayProxyHandler = async (
 	const token = encode(user.get());
 
 	return response.movedPermanently(
-		`${process.env.SITE_BASE_URL}/course/${courseId}?token=${token}` as string
+		`${process.env.SITE_BASE_URL}/course/${courseId}?token=${token}`
 	);
 };
 
@@ -106,7 +106,7 @@ export const redirect: APIGatewayProxyHandler = async (
 		LtiData?.destroy();
 
 		return response.movedPermanently(
-			`${process.env.SITE_BASE_URL}/course/${courseId}?token=${token}` as string
+			`${process.env.SITE_BASE_URL}/course/${courseId}?token=${token}`
 		);
 	} catch (error) {
 		console.error('Error while fetching:', error);
