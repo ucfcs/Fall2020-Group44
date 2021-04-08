@@ -215,6 +215,15 @@ functions:
           path: /api/v1/auth/lti
           method: post
           cors: true
+  ltiRedirect:
+    handler: src/handlers/auth/lti.redirect
+    timeout: 10
+    events:
+      - http:
+          path: /api/v1/auth/lti/redirect
+          method: get
+          cors: true
+
   # Step 2: Authentication Request
   login:
     handler: src/handlers/auth/lti.login

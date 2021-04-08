@@ -8,6 +8,7 @@ import { QuestionOption } from './QuestionOption';
 import { QuestionUserResponse } from './QuestionUserResponse';
 import { User } from './User';
 import { UserSetting } from './UserSetting';
+import { Lti } from './Lti';
 
 // one-to-many relationship between Folder and Question
 Folder.hasMany(Question, { foreignKey: 'folderId' });
@@ -85,4 +86,5 @@ export {
 	QuestionUserResponse,
 	User,
 	UserSetting,
+	Lti,
 };

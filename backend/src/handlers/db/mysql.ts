@@ -12,6 +12,7 @@ import {
 	QuestionGrade,
 	User,
 	UserSetting,
+	Lti,
 } from '../../models';
 
 // model init order
@@ -26,6 +27,7 @@ const models = [
 	QuestionOption,
 	QuestionUserResponse,
 	UserSetting,
+	Lti,
 ];
 
 export async function init(): Promise<void> {
