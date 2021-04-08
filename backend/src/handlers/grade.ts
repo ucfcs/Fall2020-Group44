@@ -23,7 +23,6 @@ export const getSessionsGrades = async (
 			mockUserid,
 			courseId
 		);
-
 		const studentIds: number[] = await Promise.all(
 			canvasStudents.map(async (student: CanvasStudent) => {
 				const user = await User.findOne({ where: { canvasId: student.id } });
@@ -65,6 +64,7 @@ export const getSessionsGrades = async (
 				};
 			})
 		);
+
 		return responses.ok({
 			students: studentGrades,
 			sessions,
@@ -92,7 +92,6 @@ export const getQuestionsGrades = async (
 		const studentIds: number[] = await Promise.all(
 			canvasStudents.map(async (student: CanvasStudent) => {
 				const user = await User.findOne({ where: { canvasId: student.id } });
-
 				return Number(user?.get().id);
 			})
 		);
@@ -139,6 +138,7 @@ export const getQuestionsGrades = async (
 				};
 			})
 		);
+
 		return responses.ok({
 			questions,
 			students: studentsGrades,
