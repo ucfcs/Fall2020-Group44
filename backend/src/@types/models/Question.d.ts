@@ -9,6 +9,7 @@ interface QuestionAttributes {
 	participationPoints: number;
 	correctnessPoints: number;
 	type: string;
+	QuestionOptions: Array<QuestionOption>;
 }
 
 interface QuestionCreationAttributes {

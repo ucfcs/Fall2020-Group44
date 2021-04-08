@@ -5,6 +5,7 @@ interface SessionAttributes {
 	name: string;
 	userId: UserId;
 	courseId: CourseId;
+	Questions?: Question[];
 }
 
 interface SessionCreationAttributes {
