@@ -57,11 +57,6 @@ const calculate = async (
 			questionIdMap.set(q.id, index);
 		});
 
-		console.log(sessionQuestions);
-
-		console.log(questionIdMap);
-		console.log(`max points for a session: ${maxPoints}`);
-
 		//get all students in a course:
 		// fetch(`https://webcourses.ucf.edu/api/v1/courses/${courseId}/users`, {
 		// 	method: 'GET',
@@ -75,7 +70,6 @@ const calculate = async (
 		// });
 
 		const mockUsers = Array.from({ length: 25 }, (_, i) => i + 1);
-		console.log(mockUsers);
 
 		mockUsers.forEach(async (user) => {
 			// initialize SessionGrade Object with zero points:
@@ -105,13 +99,10 @@ const calculate = async (
 				},
 			});
 
-			console.log(userResponses);
-
 			// if there are any user responses for that user,
 			// iterate thru them and update their grade for
 			// each question they responded to in the session
 			if (userResponses) {
-				console.log('loop thru user Responses');
 				userResponses.forEach((response) => {
 					// grade response
 					const index = questionIdMap.get(response.get().questionId);
@@ -123,7 +114,6 @@ const calculate = async (
 
 					const participationPoints = question.participationPoints;
 					let correctnessPoints = 0;
-					console.log('loop thru questionOptions');
 					question.QuestionOptions.forEach(
 						(qOption: QuestionlOptionAttributes) => {
 							if (qOption.isAnswer) {
@@ -141,7 +131,6 @@ const calculate = async (
 				});
 			}
 
-			console.log('create grade');
 			// update session grades with their responses
 			await SessionGrade.create(userSessionGrade, {
 				include: [
