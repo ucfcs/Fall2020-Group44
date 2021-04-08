@@ -3,7 +3,7 @@ import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 import dynamodb from '../config/dynamo';
 import { QuestionUserResponse } from '../models/QuestionUserResponse';
-import { calculate } from '../handlers/calculateGrades';
+import { calculate } from '../handlers/sessionGrades';
 
 export class Connection {
 	client?: AWS.DynamoDB.DocumentClient;
