@@ -75,4 +75,18 @@ export default {
 			body: JSON.stringify(data || {}),
 		};
 	},
+	/**
+	 * @see https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/404
+	 */
+	notFound(data?: unknown): APIGatewayProxyResult {
+		return {
+			headers: {
+				'Content-Type': 'application/json',
+				'Access-Control-Allow-Methods': '*',
+				'Access-Control-Allow-Origin': '*',
+			},
+			statusCode: 404,
+			body: JSON.stringify(data || {}),
+		};
+	},
 };
