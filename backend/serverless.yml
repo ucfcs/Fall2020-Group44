@@ -59,6 +59,16 @@ functions:
           path: /api/v1/courses/{courseId}
 
   #
+  # Grade endpoints
+  #
+  getSessionGrade:
+    handler: src/handlers/grade.getSessionsGrades
+    events:
+      - http:
+          method: get
+          path: /api/v1/courses/{courseId}/grades
+
+          #
   # Folder endpoints
   #
   getFolder:
