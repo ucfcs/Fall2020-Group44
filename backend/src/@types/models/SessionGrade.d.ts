@@ -5,7 +5,7 @@ interface SessionGradeAttributes {
 	courseId: CourseId;
 	userId: UserId;
 	sessionId: SessionId;
-	QuestionGrades: Array<QuestionGrade>;
+	QuestionGrades: QuestionGrade[];
 	points: number;
 	maxPoints: number;
 }
@@ -14,7 +14,7 @@ interface SessionGradeCreationAttributes {
 	courseId: CourseId;
 	userId: UserId;
 	sessionId: SessionId;
-	QuestionGrades: Array<QuestionGrade>;
+	QuestionGrades: QuestionGrade[];
 	points: number;
 	maxPoints: number;
 }

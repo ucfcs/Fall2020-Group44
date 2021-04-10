@@ -36,7 +36,6 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 // POST /api/v1/question
 const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const body = JSON.parse(event.body || '{}');
-	console.log(body);
 
 	if (
 		!body.title ||
