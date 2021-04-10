@@ -5,15 +5,10 @@ export const User: ModelDefined<
 	UserAttributes,
 	UserCreationAttributes
 > = sequelize.define('User', {
-	id: {
-		type: DataTypes.INTEGER,
-		allowNull: false,
-		primaryKey: true,
-		autoIncrement: true,
-	},
 	canvasId: {
 		type: DataTypes.INTEGER,
 		allowNull: false,
+		primaryKey: true,
 	},
 	token: {
 		type: DataTypes.STRING,

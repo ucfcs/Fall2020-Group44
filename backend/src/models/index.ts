@@ -59,6 +59,10 @@ UserSetting.belongsTo(User, { foreignKey: 'userId' });
 Session.hasMany(SessionGrade, { foreignKey: 'sessionId' });
 SessionGrade.belongsTo(Session, { foreignKey: 'sessionId' });
 
+// one-to-many relationship between SessionGrade and QuestionGrade
+SessionGrade.hasMany(QuestionGrade, { foreignKey: 'sessionGradeId' });
+QuestionGrade.belongsTo(SessionGrade, { foreignKey: 'sessionGradeId' });
+
 // one-to-many relationship between User and SessionGrade
 User.hasMany(SessionGrade, {
 	foreignKey: 'userId',
