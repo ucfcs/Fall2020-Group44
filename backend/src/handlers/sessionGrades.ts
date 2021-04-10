@@ -1,4 +1,4 @@
-import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
+import { ProxyResult } from 'aws-lambda';
 import {
 	QuestionUserResponse,
 	SessionGrade,

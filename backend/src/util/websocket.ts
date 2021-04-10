@@ -348,7 +348,7 @@ export class Connection {
 			// if they are a professor, also remove professor connectionId
 			if (result?.Attributes?.professor == connectionId) {
 				const profParams = {
-					TableName: process.env.TABLE_NAME as string,
+					TableName: process.env.DYNAMO_TABLE_NAME as string,
 					Key: {
 						courseId: courseId,
 					},
