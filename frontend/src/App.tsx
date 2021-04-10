@@ -12,6 +12,8 @@ import Creator from "./components/creator-modal/creator";
 import QuestionSelect from "./components/question-select-modal/question-select-modal";
 import ExportModal from "./components/export-modal/export-modal";
 import FolderModal from "./components/folder-modal/folder-modal";
+import LogIn from "./components/log-in/log-in";
+import PrivateRoute from "./components/private-route/private-route";
 
 function App(): ReactElement {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -54,23 +56,25 @@ function App(): ReactElement {
   return (
     <Router>
       <Switch>
-        <Route exact path="/">
+        <PrivateRoute exact={true} path="/">
           <Home />
-        </Route>
+        </PrivateRoute>
 
-        <Route path="/poll/present">
+        <Route path="/course/:courseId" component={LogIn} />
+
+        <PrivateRoute path="/poll/present">
           <Present />
-        </Route>
+        </PrivateRoute>
 
-        <Route path="/poll/display">
+        <PrivateRoute path="/poll/display">
           <SessionInProgress />
-        </Route>
+        </PrivateRoute>
 
-        <Route path="/gradebook/:id" component={GradebookSession} />
+        <PrivateRoute path="/gradebook/:id" component={GradebookSession} />
 
-        <Route path="/gradebook">
+        <PrivateRoute path="/gradebook">
           <Gradebook />
-        </Route>
+        </PrivateRoute>
       </Switch>
 
       {state.openCreator ? <Creator /> : null}

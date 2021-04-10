@@ -20,10 +20,13 @@ const FolderModal = (): ReactElement => {
   const handleFolderCreation = (e: FormEvent) => {
     e.preventDefault();
 
-    createFolder({
-      courseId: state.courseId,
-      name: newFolder,
-    })
+    createFolder(
+      {
+        courseId: state.courseId,
+        name: newFolder,
+      },
+      state.jwt
+    )
       .then(() => {
         updateFolders();
         closeFolderModal();
@@ -32,7 +35,7 @@ const FolderModal = (): ReactElement => {
   };
 
   const updateFolders = (): void => {
-    getFolders(state.courseId)
+    getFolders(state.courseId, state.jwt)
       .then((response) => {
         return response.json();
       })

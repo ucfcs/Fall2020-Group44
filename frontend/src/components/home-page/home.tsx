@@ -17,7 +17,7 @@ const Body = (): ReactElement => {
 
   useEffect(() => {
     if (firstLoad) {
-      getFolders(state.courseId)
+      getFolders(state.courseId, state.jwt)
         .then((response) => {
           return response.json();
         })
@@ -33,7 +33,7 @@ const Body = (): ReactElement => {
         })
         .catch(catchError);
     }
-  }, [dispatch, firstLoad, state.courseId, state.updateQuestions]);
+  }, [dispatch, firstLoad, state.courseId, state.jwt, state.updateQuestions]);
 
   return (
     <>

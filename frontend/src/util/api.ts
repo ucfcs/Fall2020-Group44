@@ -1,85 +1,117 @@
 import { Folder, Question } from "../types";
 
-export async function getFolders(courseId: string): Promise<Response> {
+export async function getFolders(
+  courseId: string,
+  token: string
+): Promise<Response> {
   const url: string = getBaseUrl();
 
-  const response: Response = await sendGet(`${url}/courses/${courseId}`);
+  const response: Response = await sendGet(`${url}/courses/${courseId}`, token);
 
   return response;
 }
 
-export async function createFolder(folder: NewFolder): Promise<Response> {
+export async function createFolder(
+  folder: NewFolder,
+  token: string
+): Promise<Response> {
   const url: string = getBaseUrl();
 
-  const response: Response = await postData(`${url}/folder`, folder);
+  const response: Response = await sendPost(`${url}/folder`, folder, token);
 
   return response;
 }
 
 export async function updateFolder(
   folderId: number,
-  newFolder: Folder
+  newFolder: Folder,
+  token: string
 ): Promise<Response> {
   const url: string = getBaseUrl();
 
   const response: Response = await sendPut(
     `${url}/folder/${folderId}`,
-    newFolder
+    newFolder,
+    token
   );
 
   return response;
 }
 
-export async function deleteFolder(folderId: number): Promise<Response> {
+export async function deleteFolder(
+  folderId: number,
+  token: string
+): Promise<Response> {
   const url: string = getBaseUrl();
 
-  const response: Response = await sendDelete(`${url}/folder/${folderId}`);
+  const response: Response = await sendDelete(
+    `${url}/folder/${folderId}`,
+    token
+  );
 
   return response;
 }
 
 export async function createQuestion(
-  newQuestion: NewQuestion
+  newQuestion: NewQuestion,
+  token: string
 ): Promise<Response> {
   const url: string = getBaseUrl();
 
-  const response: Response = await postData(`${url}/question`, newQuestion);
+  const response: Response = await sendPost(
+    `${url}/question`,
+    newQuestion,
+    token
+  );
 
   return response;
 }
 
 export async function updateQuestion(
   questionId: number,
-  newQuestion: NewQuestion | Question
+  newQuestion: NewQuestion | Question,
+  token: string
 ): Promise<Response> {
   const url: string = getBaseUrl();
 
   const response: Response = await sendPut(
     `${url}/question/${questionId}`,
-    newQuestion
+    newQuestion,
+    token
   );
 
   return response;
 }
 
-export async function deleteQuestion(questionId: number): Promise<Response> {
+export async function deleteQuestion(
+  questionId: number,
+  token: string
+): Promise<Response> {
   const url: string = getBaseUrl();
 
-  const response: Response = await sendDelete(`${url}/question/${questionId}`);
+  const response: Response = await sendDelete(
+    `${url}/question/${questionId}`,
+    token
+  );
 
   return response;
 }
 
 export async function createSession(
   courseId: string,
-  questionIds: number[]
+  questionIds: number[],
+  token: string
 ): Promise<Response> {
   const url: string = getBaseUrl();
 
-  const response: Response = await postData(`${url}/session`, {
-    courseId,
-    questionIds,
-  });
+  const response: Response = await sendPost(
+    `${url}/session`,
+    {
+      courseId,
+      questionIds,
+    },
+    token
+  );
 
   return response;
 }
@@ -96,17 +128,26 @@ function getBaseUrl(): string {
   }
 }
 
-async function sendGet(url = ""): Promise<Response> {
-  const response: Response = await fetch(url);
+async function sendGet(url: string, token: string): Promise<Response> {
+  const response: Response = await fetch(url, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
 
   return response;
 }
 
-async function postData(url = "", data = {}): Promise<Response> {
+async function sendPost(
+  url: string,
+  data = {},
+  token: string
+): Promise<Response> {
   const response: Response = await fetch(url, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });
@@ -114,11 +155,16 @@ async function postData(url = "", data = {}): Promise<Response> {
   return response;
 }
 
-async function sendPut(url = "", data = {}): Promise<Response> {
+async function sendPut(
+  url: string,
+  data = {},
+  token: string
+): Promise<Response> {
   const response: Response = await fetch(url, {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(data),
   });
@@ -126,9 +172,12 @@ async function sendPut(url = "", data = {}): Promise<Response> {
   return response;
 }
 
-async function sendDelete(url = ""): Promise<Response> {
+async function sendDelete(url: string, token: string): Promise<Response> {
   const response: Response = await fetch(url, {
     method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
   });
 
   return response;

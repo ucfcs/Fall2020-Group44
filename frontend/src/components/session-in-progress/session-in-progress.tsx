@@ -29,7 +29,6 @@ const SessionInProgress = (): ReactElement => {
   if (state.websocket) {
     state.websocket.onmessage = (event: MessageEvent) => {
       const message = JSON.parse(event.data);
-      console.log(message);
 
       switch (message.action) {
         case "studentSubmittedNew":

@@ -96,7 +96,7 @@ const ContentTree = (): ReactElement => {
     const id: number | undefined = oldFolder.id;
 
     if (id !== undefined) {
-      updateFolder(id, { ...oldFolder, name: value })
+      updateFolder(id, { ...oldFolder, name: value }, state.jwt)
         .then(updateFolders)
         .catch(catchError);
     }
@@ -120,7 +120,7 @@ const ContentTree = (): ReactElement => {
       return;
     }
 
-    deleteQuestion(id).then(updateFolders).catch(catchError);
+    deleteQuestion(id, state.jwt).then(updateFolders).catch(catchError);
   };
 
   const editFolder = (e: MouseEvent, folder: number) => {
@@ -139,7 +139,7 @@ const ContentTree = (): ReactElement => {
     const id: number | undefined = oldFolder.id;
 
     if (id !== undefined) {
-      deleteFolder(id).then(updateFolders).catch(catchError);
+      deleteFolder(id, state.jwt).then(updateFolders).catch(catchError);
     }
   };
 
@@ -178,10 +178,14 @@ const ContentTree = (): ReactElement => {
           const questionId: number | undefined = question.id;
 
           if (questionId !== undefined && destId !== undefined) {
-            updateQuestion(questionId, {
-              ...question,
-              folderId: destId,
-            })
+            updateQuestion(
+              questionId,
+              {
+                ...question,
+                folderId: destId,
+              },
+              state.jwt
+            )
               .then(updateFolders)
               .catch(catchError);
           }
@@ -191,7 +195,7 @@ const ContentTree = (): ReactElement => {
   };
 
   const updateFolders = (): void => {
-    getFolders(state.courseId)
+    getFolders(state.courseId, state.jwt)
       .then((response) => {
         return response.json();
       })
