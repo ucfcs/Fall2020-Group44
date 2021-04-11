@@ -27,7 +27,7 @@ export const getSessionsGrades = async (
 		// Get grades for each student
 		const students = await Promise.all(
 			canvasStudents.map(async (student: CanvasStudent) => {
-				return await User.findOne({
+				const user = await User.findOne({
 					attributes: ['canvasId'],
 					where: { canvasId: student.id },
 					include: {
@@ -38,6 +38,11 @@ export const getSessionsGrades = async (
 						},
 					},
 				});
+
+				return {
+					name: student.name,
+					...user?.get(),
+				};
 			})
 		);
 
@@ -82,7 +87,7 @@ export const getQuestionsGrades = async (
 		// Get grades for each student
 		const students = await Promise.all(
 			canvasStudents.map(async (student: CanvasStudent) => {
-				return await User.findOne({
+				const user = await User.findOne({
 					attributes: ['canvasId'],
 					where: { canvasId: student.id },
 					include: {
@@ -93,6 +98,11 @@ export const getQuestionsGrades = async (
 						},
 					},
 				});
+
+				return {
+					name: student.name,
+					...user?.get(),
+				};
 			})
 		);
 
