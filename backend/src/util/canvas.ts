@@ -6,7 +6,7 @@ const getToken = async (userId: number): Promise<string> => {
 	try {
 		const user = await User.findOne({
 			where: {
-				id: userId,
+				canvasId: userId,
 			},
 		});
 

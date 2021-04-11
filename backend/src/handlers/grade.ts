@@ -23,50 +23,34 @@ export const getSessionsGrades = async (
 			mockUserid,
 			courseId
 		);
-		const studentIds: number[] = await Promise.all(
+
+		// Get grades for each student
+		const students = await Promise.all(
 			canvasStudents.map(async (student: CanvasStudent) => {
-				const user = await User.findOne({ where: { canvasId: student.id } });
-				return Number(user?.get().id);
+				return await User.findOne({
+					attributes: ['canvasId'],
+					where: { canvasId: student.id },
+					include: {
+						model: SessionGrade,
+						attributes: ['id', 'points', 'maxPoints'],
+						where: {
+							courseId: courseId,
+						},
+					},
+				});
 			})
 		);
 
 		// Get all sessions belong to the current course
-		const sessions = (
-			await Session.findAll({
-				where: {
-					courseId: courseId,
-				},
-			})
-		).map((session) => ({ id: session.get().id, name: session.get().name }));
-
-		// Get individual grade for each session
-		const studentGrades = await Promise.all(
-			studentIds.map(async (studentId: number, index: number) => {
-				const grades = await Promise.all(
-					sessions.map(async (session) => {
-						const grade = await SessionGrade.findOne({
-							where: {
-								userId: studentId,
-								sessionId: session.id,
-							},
-						});
-
-						return {
-							points: grade?.get().points,
-							maxPoints: grade?.get().maxPoints,
-						};
-					})
-				);
-
-				return {
-					name: canvasStudents[index].name,
-					grades: grades,
-				};
-			})
-		);
+		const sessions = await Session.findAll({
+			where: {
+				courseId: courseId,
+			},
+			attributes: ['id', 'name'],
+		});
 
 		return responses.ok({
-			students: studentGrades,
+			students,
 			sessions,
 		});
 	} catch (error) {
@@ -82,6 +66,11 @@ export const getQuestionsGrades = async (
 ): Promise<ProxyResult> => {
 	const courseId = Number(event.pathParameters?.courseId);
 	const sessionId = Number(event.pathParameters?.sessionId);
+	const sessionGradeId = (
+		await SessionGrade.findOne({
+			where: { sessionId },
+		})
+	)?.get().id;
 
 	try {
 		// Get all students belong to the current course from Canvas
@@ -89,10 +78,21 @@ export const getQuestionsGrades = async (
 			mockUserid,
 			courseId
 		);
-		const studentIds: number[] = await Promise.all(
+
+		// Get grades for each student
+		const students = await Promise.all(
 			canvasStudents.map(async (student: CanvasStudent) => {
-				const user = await User.findOne({ where: { canvasId: student.id } });
-				return Number(user?.get().id);
+				return await User.findOne({
+					attributes: ['canvasId'],
+					where: { canvasId: student.id },
+					include: {
+						model: QuestionGrade,
+						attributes: ['id', 'points', 'maxPoints'],
+						where: {
+							sessionGradeId: sessionGradeId,
+						},
+					},
+				});
 			})
 		);
 
@@ -103,45 +103,16 @@ export const getQuestionsGrades = async (
 			},
 			include: {
 				model: Question,
+				attributes: ['id', 'title'],
 			},
 		});
 		if (!session) {
 			return responses.notFound();
 		}
-		const questions = session.get().Questions?.map((question) => ({
-			id: question.get().id,
-			title: question.get().title,
-		}));
-
-		// Get individual grade for each question
-		const studentsGrades = await Promise.all(
-			studentIds.map(async (studentId: number, index: number) => {
-				const grades = await Promise.all(
-					(questions || []).map(async (question) => {
-						const questionGrade = await QuestionGrade.findOne({
-							where: {
-								userId: studentId,
-								questionId: question.id,
-							},
-						});
-
-						return {
-							points: questionGrade?.get().points,
-							maxPoints: questionGrade?.get().maxPoints,
-						};
-					})
-				);
-
-				return {
-					name: canvasStudents[index].name,
-					grades: grades,
-				};
-			})
-		);
 
 		return responses.ok({
-			questions,
-			students: studentsGrades,
+			students,
+			questions: session.get().Questions,
 		});
 	} catch (error) {
 		return responses.badRequest({
