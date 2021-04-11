@@ -7,7 +7,7 @@ const LogIn = (props: Props): ReactElement => {
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
 
-  const courseId: number = props.match.params.courseId;
+  const courseId: string = props.match.params.courseId;
 
   const searchParams: URLSearchParams = new URL(document.location.href)
     .searchParams;
@@ -30,7 +30,7 @@ const LogIn = (props: Props): ReactElement => {
 interface Props {
   match: {
     params: {
-      [key: string]: number;
+      [key: string]: string;
     };
   };
 }
