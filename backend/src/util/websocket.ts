@@ -3,6 +3,7 @@ import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 import dynamodb from '../config/dynamo';
 import { QuestionUserResponse } from '../models/QuestionUserResponse';
+import { calculate } from '../handlers/sessionGrades';
 
 export class Connection {
 	client?: AWS.DynamoDB.DocumentClient;
@@ -347,7 +348,7 @@ export class Connection {
 			// if they are a professor, also remove professor connectionId
 			if (result?.Attributes?.professor == connectionId) {
 				const profParams = {
-					TableName: process.env.TABLE_NAME as string,
+					TableName: process.env.DYNAMO_TABLE_NAME as string,
 					Key: {
 						courseId: courseId,
 					},
@@ -607,21 +608,23 @@ export class Connection {
 				'#q': 'question',
 			},
 			ConditionExpression: 'attribute_exists(courseId)',
+			ReturnValues: 'ALL_OLD',
 		};
 
 		try {
-			await this.client?.update(params).promise();
+			const result = await this.client?.update(params).promise();
 
 			await this.publishAll(courseId, 'endSession');
 
 			console.log(`session ended in room ${courseId}`);
 
-			return {
-				statusCode: 200,
-				body: JSON.stringify({
-					message: `successfully ended session in room ${courseId}`,
-				}),
-			};
+			const sessionId = result?.Attributes?.session.id;
+
+			if (!sessionId) {
+				throw `sessionId of session ended in ${courseId} not obtainable from DynamoDB`;
+			}
+
+			return await calculate(courseId, sessionId);
 		} catch (error) {
 			console.log(`error ending session in room ${courseId}:`);
 			console.log(error);
