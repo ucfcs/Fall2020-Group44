@@ -49,7 +49,8 @@ const QuestionSelect = (): ReactElement => {
   const presentQuestions = () => {
     createSession(
       state.courseId,
-      state.sessionQuestions.map((question: Question) => question.id)
+      state.sessionQuestions.map((question: Question) => question.id),
+      state.jwt
     ).then(() => {
       dispatch({ type: "close-question-select" });
 
@@ -183,8 +184,6 @@ const QuestionSelect = (): ReactElement => {
         newSession.push(question);
       });
     });
-
-    console.log(newSession);
 
     dispatch({ type: "update-session-questions", payload: newSession });
   };

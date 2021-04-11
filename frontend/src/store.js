@@ -17,7 +17,7 @@ const baseQuestionInfo = {
 const init = {
   previewFolder: 0,
   previewQuestion: 0,
-  courseId: "0",
+  courseId: null,
   questions: [],
   sessionQuestions: [],
   editPreviewQuestion: false,
@@ -29,6 +29,7 @@ const init = {
   openExportModal: false,
   currentQuestionInfo: JSON.parse(JSON.stringify(baseQuestionInfo)),
   websocket: null,
+  jwt: null,
 };
 const store = React.createContext(init);
 const { Provider } = store;
@@ -80,6 +81,10 @@ const StateProvider = ({ children }) => {
         return { ...state, websocket: null };
       case "update-questions":
         return { ...state, questions: action.payload };
+      case "set-course-id":
+        return { ...state, courseId: action.payload };
+      case "set-jwt":
+        return { ...state, jwt: action.payload };
       default:
         throw new Error("Base reducer: this action type was not defined");
     }

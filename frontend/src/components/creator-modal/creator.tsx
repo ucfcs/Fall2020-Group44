@@ -75,11 +75,11 @@ const Creator = (): ReactElement => {
           "id"
         ];
 
-      updateQuestion(id, { ...info, courseId: state.courseId })
+      updateQuestion(id, { ...info, courseId: state.courseId }, state.jwt)
         .then(updateAndClose)
         .catch(catchError);
     } else {
-      createQuestion({ ...info, courseId: state.courseId })
+      createQuestion({ ...info, courseId: state.courseId }, state.jwt)
         .then(updateAndClose)
         .catch(catchError);
     }
@@ -91,7 +91,7 @@ const Creator = (): ReactElement => {
   };
 
   const updateFolders = (): void => {
-    getFolders(state.courseId)
+    getFolders(state.courseId, state.jwt)
       .then((response) => {
         return response.json();
       })
