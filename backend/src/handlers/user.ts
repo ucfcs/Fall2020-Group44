@@ -26,7 +26,7 @@ export const getUserSetting: APIGatewayProxyHandler = async (event) => {
 	try {
 		const settings = await UserSetting.findOne({
 			where: {
-				userId: user.id,
+				userId: user.canvasId,
 				platform,
 			},
 			limit: 1,
@@ -67,7 +67,7 @@ export const setUserSetting: APIGatewayProxyHandler = async (event) => {
 		const isSettingSaved = await UserSetting.findOne({
 			where: {
 				platform,
-				userId: user.id,
+				userId: user.canvasId,
 			},
 			limit: 1,
 		});
@@ -76,7 +76,7 @@ export const setUserSetting: APIGatewayProxyHandler = async (event) => {
 			await UserSetting.create({
 				document,
 				platform,
-				userId: user.id,
+				userId: user.canvasId,
 			});
 		} else {
 			await UserSetting.update(
@@ -85,7 +85,7 @@ export const setUserSetting: APIGatewayProxyHandler = async (event) => {
 				},
 				{
 					where: {
-						userId: user.id,
+						userId: user.canvasId,
 						platform,
 					},
 					limit: 1,
