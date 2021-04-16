@@ -74,6 +74,12 @@ REACT_APP_REST_URL="http://localhost:5000/dev/api/v1"
 REACT_APP_WEBSOCKET_URL="ws://localhost:3001"
 ```
 
+## Authenticating
+
+The frontend is authenticated through a redirect in Canvas. It is `<base url>/course/<courseId>?token=<jwt>`
+
+If you want to access the frontend locally you will need to navigate to `https://localhost:3000/course/<courseId>?token=<data of your choice>`
+
 ## Learn More
 
 You can learn more in the

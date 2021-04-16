@@ -18,4 +18,8 @@ export const User: ModelDefined<
 		type: DataTypes.STRING,
 		allowNull: false,
 	},
+	tokenExpireTime: {
+		type: DataTypes.INTEGER,
+		allowNull: true,
+	},
 });
