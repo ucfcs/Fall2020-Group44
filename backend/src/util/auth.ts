@@ -18,7 +18,7 @@ export async function userAuthFlowGetToken(
 	try {
 		// does row exist with the give UserId
 		let user: UserAttributes;
-		const row = await User.findOne({ where: { id: userId }, limit: 1 });
+		const row = await User.findOne({ where: { canvasId: userId }, limit: 1 });
 
 		if (!row) {
 			// create a row
@@ -36,7 +36,7 @@ export async function userAuthFlowGetToken(
 					token,
 					refreshToken,
 				},
-				{ where: { id: userId }, limit: 1 }
+				{ where: { canvasId: userId }, limit: 1 }
 			);
 
 			user = row.get({ clone: true });
@@ -102,7 +102,7 @@ export async function refreshUserToken(
 				},
 				{
 					where: {
-						id: user.id,
+						canvasId: user.canvasId,
 					},
 					limit: 1,
 				}
