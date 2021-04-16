@@ -154,11 +154,7 @@ const GradebookSession = (props: Prop): ReactElement => {
             </thead>
             <tbody>
               {students.map((student: StudentInfo, index: number) => (
-                <Student
-                  key={index}
-                  student={student}
-                  sessionExpanded={props.match.params.id}
-                />
+                <Student key={index} student={student} />
               ))}
             </tbody>
           </table>
