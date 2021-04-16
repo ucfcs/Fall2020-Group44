@@ -118,11 +118,17 @@ export const createAssignment = async (
 			}
 		);
 
+		if (res.status != 200 && res.status != 201) {
+			return Promise.reject({
+				message: 'Error while creating assignment in Canvas.',
+			});
+		}
+
 		const data = await res.json();
 
 		return Number(data.id);
 	} catch (error) {
-		console.log('Error while creating assignment:', error);
+		console.log('Error while creating assignment in Canvas', error);
 		return Promise.reject(error);
 	}
 };
@@ -137,8 +143,8 @@ export const postGrades = async (
 		const token = await getToken(userId);
 
 		await Promise.all(
-			grades.map(async (grade) => {
-				await fetch(
+			grades.map(async (grade: StudentGrade) => {
+				const res = await fetch(
 					`${process.env.CANVAS_URL}/api/v1/courses/${courseId}/assignments/${assignmentId}/submissions/${grade.id}?` +
 						querystring.encode({
 							'submission[posted_grade]': grade.points,
@@ -151,10 +157,16 @@ export const postGrades = async (
 						},
 					}
 				);
+
+				if (res.status != 200) {
+					return Promise.reject({
+						message: 'Error while posting grades to Canvas.',
+					});
+				}
 			})
 		);
 	} catch (error) {
-		console.log('Error while posting grade:', error);
+		console.log(error);
 		return Promise.reject(error);
 	}
 };

@@ -159,17 +159,19 @@ export const exportGrades = async (
 			canvasStudents.map(async (student: CanvasStudent) => {
 				let totalPoints = 0;
 				let totalMaxPoints = 0;
-				sessionIds.map(async (sessionId: number) => {
-					const sessionGrade = await SessionGrade.findOne({
-						where: {
-							sessionId: sessionId,
-							userId: student.id,
-						},
-					});
+				await Promise.all(
+					sessionIds.map(async (sessionId: number) => {
+						const sessionGrade = await SessionGrade.findOne({
+							where: {
+								sessionId: sessionId,
+								userId: student.id,
+							},
+						});
 
-					totalPoints += Number(sessionGrade?.get().points);
-					totalMaxPoints += Number(sessionGrade?.get().maxPoints);
-				});
+						totalPoints += Number(sessionGrade?.get().points);
+						totalMaxPoints += Number(sessionGrade?.get().maxPoints);
+					})
+				);
 
 				return {
 					id: student.id,
@@ -185,8 +187,8 @@ export const exportGrades = async (
 		});
 	} catch (error) {
 		console.log(error);
-		return responses.badRequest({
-			message: error || 'Fail to query',
+		return responses.internalServerError({
+			error,
 		});
 	}
 };
