@@ -1,23 +1,24 @@
 import React, { ReactElement } from "react";
-import { StudentInfo } from "../../types";
-
-interface Props {
-  student: StudentInfo;
-}
+import { SessionGrade, StudentInfo } from "../../types";
 
 const Student = ({ student }: Props): ReactElement => {
   return (
     <tr className="student">
       <td>{student.name}</td>
-      <td className="align-right">{student.total.toFixed(2)}</td>
 
-      {student.sessions.map((session, sIndex) => (
-        <td key={sIndex} className="align-right">
-          {session.toFixed(2)}
-        </td>
-      ))}
+      {student.SessionGrades.map(
+        (sessionGrade: SessionGrade, sIndex: number) => (
+          <td key={sIndex} className="align-right">
+            {sessionGrade.points} / {sessionGrade.maxPoints}
+          </td>
+        )
+      )}
     </tr>
   );
 };
+
+interface Props {
+  student: StudentInfo;
+}
 
 export default Student;

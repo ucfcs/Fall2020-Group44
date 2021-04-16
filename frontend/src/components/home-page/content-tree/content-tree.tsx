@@ -12,7 +12,7 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { store } from "../../../store";
-import { Folder, Question, ServerResponse } from "../../../types";
+import { Folder, Question, FolderAndQuestionResponse } from "../../../types";
 import {
   catchError,
   deleteFolder,
@@ -199,7 +199,7 @@ const ContentTree = (): ReactElement => {
       .then((response) => {
         return response.json();
       })
-      .then((json: ServerResponse) => {
+      .then((json: FolderAndQuestionResponse) => {
         dispatch({
           type: "update-questions",
           payload: [...json.folders, { name: null, Questions: json.questions }],

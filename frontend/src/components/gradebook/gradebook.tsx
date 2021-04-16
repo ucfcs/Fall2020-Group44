@@ -3,31 +3,70 @@ import React, {
   ReactElement,
   SyntheticEvent,
   useContext,
+  useEffect,
+  Dispatch,
+  SetStateAction,
 } from "react";
 import { Link } from "react-router-dom";
 import Student from "./student";
-import { StudentInfo } from "../../types";
+import {
+  BasicSessionInfo,
+  CourseGradesResponse,
+  StudentInfo,
+} from "../../types";
 
 import "./gradebook.scss";
 
-import data from "./mock-data.json";
 import HomeHeader from "../home-header/home-header";
 import { store } from "../../store";
-
-const RED = 0.5;
-const YELLOW = 0.75;
+import { catchError, getCourseGrades } from "../../util/api";
 
 const Gradebook = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
   const dispatch = global.dispatch;
-
-  const overallSessions = data.overallSessions;
-  const classAverage: number = data.classAverage;
-  const overallTotal = data.classTotal;
+  const state = global.state;
 
   const [activeSearch, setActiveSearch] = useState(false);
-  const [students, setStudents] = useState(data.students);
+
+  const [dataLoaded, setDataLoaded] = useState(false);
+  const [firstLoad, setFirstLoad] = useState(true);
+  const [sessions, setSessions]: [
+    BasicSessionInfo[],
+    Dispatch<SetStateAction<BasicSessionInfo[]>>
+  ] = useState([] as BasicSessionInfo[]);
+  const [students, setStudents]: [
+    StudentInfo[],
+    Dispatch<SetStateAction<StudentInfo[]>>
+  ] = useState([] as StudentInfo[]);
+
+  useEffect(() => {
+    if (firstLoad) {
+      getCourseGrades(state.courseId, state.token)
+        .then((response) => {
+          return response.json();
+        })
+        .then((response: CourseGradesResponse) => {
+          console.log(response);
+          setStudents(response.students.filter(filterStudents));
+          setSessions(response.sessions);
+          setDataLoaded(true);
+        })
+        .catch(catchError);
+
+      setFirstLoad(false);
+    }
+  }, [firstLoad, dataLoaded, state.courseId, state.token]);
+
+  // @TODO
+  // REMOVE THIS IT IS ONLY FOR TESTING BAD BACKEND DATA
+  const filterStudents = (student: StudentInfo): boolean => {
+    return (
+      student.name !== undefined &&
+      student.canvasId !== undefined &&
+      student.SessionGrades !== undefined
+    );
+  };
 
   const focus = () => {
     setActiveSearch(true);
@@ -40,19 +79,13 @@ const Gradebook = (): ReactElement => {
   };
 
   const searchStudent = (event: SyntheticEvent) => {
-    setStudents(
-      data.students.filter((student: StudentInfo) =>
-        student.name
-          .toLowerCase()
-          .includes((event.target as HTMLInputElement).value.toLowerCase())
-      )
-    );
-  };
-
-  const getBackgroundColor = (percentage: number): string => {
-    if (percentage < RED) return "#FF0033";
-    else if (percentage < YELLOW) return "#FFC904";
-    else return "#00CA51";
+    // setStudents(
+    //   data.students.filter((student: StudentInfo) =>
+    //     student.name
+    //       .toLowerCase()
+    //       .includes((event.target as HTMLInputElement).value.toLowerCase())
+    //   )
+    // );
   };
 
   const exportToCanvas = () => {
@@ -63,93 +96,61 @@ const Gradebook = (): ReactElement => {
     <>
       <HomeHeader />
 
-      <div className="gradebook">
-        <div className="grade-navigation">
-          <div className="search">
-            <label
-              htmlFor="grade-search"
-              className={activeSearch ? "active" : ""}
-            >
-              Search for Student...
-            </label>
+      {!dataLoaded ? (
+        <p>Loading...</p>
+      ) : (
+        <div className="gradebook">
+          <div className="grade-navigation">
+            <div className="search">
+              <label
+                htmlFor="grade-search"
+                className={activeSearch ? "active" : ""}
+              >
+                Search for Student...
+              </label>
 
-            <input
-              id="grade-search"
-              onFocus={focus}
-              onBlur={blur}
-              onChange={searchStudent}
-            />
+              <input
+                id="grade-search"
+                onFocus={focus}
+                onBlur={blur}
+                onChange={searchStudent}
+              />
+            </div>
+            <button className="export-button" onClick={exportToCanvas}>
+              Export to Webcourses
+            </button>
           </div>
-          <button className="export-button" onClick={exportToCanvas}>
-            Export to Webcourses
-          </button>
-        </div>
 
-        <div className="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Student</th>
+          <div className="table-wrapper">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student</th>
 
-                <th>Totals</th>
-                {overallSessions.map((session, sIndex: number) => (
-                  <th key={sIndex} className="session-name">
-                    <div>
-                      <span>{session.name} </span>
-                      <Link className="expand" to={`/gradebook/${session.id}`}>
-                        Expand&nbsp;&gt;
-                      </Link>
-                    </div>
-                    <div className="date">{session.date}</div>
-                  </th>
+                  {sessions.map((session: BasicSessionInfo, sIndex: number) => (
+                    <th key={sIndex} className="session-name">
+                      <div>
+                        <span>{session.name} </span>
+                        <Link
+                          className="expand"
+                          to={`/gradebook/${session.id}`}
+                        >
+                          Expand&nbsp;&gt;
+                        </Link>
+                      </div>
+                    </th>
+                  ))}
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((student: StudentInfo, index: number) => (
+                  <Student key={index} student={student} />
                 ))}
-              </tr>
-              <tr>
-                <th>Class Average</th>
-                <th className="align-right">
-                  <div>
-                    {classAverage.toFixed(2)}/{overallTotal.toFixed(2)}
-                  </div>
-                  <div className="bar">
-                    <div
-                      className="bar-value"
-                      style={{
-                        width: (classAverage / overallTotal) * 100 + "%",
-                        backgroundColor: getBackgroundColor(
-                          classAverage / overallTotal
-                        ),
-                      }}
-                    ></div>
-                  </div>
-                </th>
-                {overallSessions.map((session, sIndex: number) => (
-                  <td key={sIndex} className="align-right">
-                    <div>
-                      {session.average.toFixed(2)}/{session.total.toFixed(2)}
-                    </div>
-                    <div className="bar">
-                      <div
-                        className="bar-value"
-                        style={{
-                          width: (session.average / session.total) * 100 + "%",
-                          backgroundColor: getBackgroundColor(
-                            session.average / session.total
-                          ),
-                        }}
-                      ></div>
-                    </div>
-                  </td>
-                ))}
-              </tr>
-            </thead>
-            <tbody>
-              {students.map((student: StudentInfo, index: number) => (
-                <Student key={index} student={student} />
-              ))}
-            </tbody>
-          </table>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 };
