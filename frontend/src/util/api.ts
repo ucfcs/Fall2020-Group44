@@ -116,6 +116,20 @@ export async function createSession(
   return response;
 }
 
+export async function getCourseGrades(
+  courseId: string,
+  token: string
+): Promise<Response> {
+  const url: string = getBaseUrl();
+
+  const response: Response = await sendGet(
+    `${url}/courses/${courseId}/grades`,
+    token
+  );
+
+  return response;
+}
+
 export function catchError(error: Error): void {
   console.error(error);
 }
