@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 import querystring from 'querystring';
 import { User } from '../models';
 
-export const getToken = async (userId: number): Promise<string> => {
+const getToken = async (userId: number): Promise<string> => {
 	try {
 		const user = await User.findOne({
 			where: {
