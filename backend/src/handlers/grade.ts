@@ -15,7 +15,13 @@ const mockUserid = 1;
 export const getSessionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
-	const courseId = Number(event.pathParameters?.courseId);
+	const courseId = event.pathParameters?.courseId;
+
+	if (!courseId) {
+		return responses.badRequest({
+			message: 'Missing parameter: courseId',
+		});
+	}
 
 	try {
 		// Get all students belong to the current course from Canvas
@@ -69,8 +75,21 @@ export const getSessionsGrades = async (
 export const getQuestionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
-	const courseId = Number(event.pathParameters?.courseId);
+	const courseId = event.pathParameters?.courseId;
 	const sessionId = Number(event.pathParameters?.sessionId);
+
+	if (!courseId) {
+		return responses.badRequest({
+			message: 'Missing parameter: courseId',
+		});
+	}
+
+	if (!sessionId) {
+		return responses.badRequest({
+			message: 'Missing parameter: sessionId',
+		});
+	}
+
 	const sessionGradeId = (
 		await SessionGrade.findOne({
 			where: { sessionId },
