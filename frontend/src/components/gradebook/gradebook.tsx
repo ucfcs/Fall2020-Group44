@@ -31,11 +31,11 @@ const Gradebook = (): ReactElement => {
   const [sessions, setSessions]: [
     BasicSessionInfo[],
     Dispatch<SetStateAction<BasicSessionInfo[]>>
-  ] = useState([] as BasicSessionInfo[]);
+  ] = useState<BasicSessionInfo[]>([]);
   const [students, setStudents]: [
     StudentSessionInfo[],
     Dispatch<SetStateAction<StudentSessionInfo[]>>
-  ] = useState([] as StudentSessionInfo[]);
+  ] = useState<StudentSessionInfo[]>([]);
 
   useEffect(() => {
     if (firstLoad) {
