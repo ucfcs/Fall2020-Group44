@@ -49,6 +49,12 @@ functions:
     handler: src/handlers/db/index.drop
 
   #
+  # Authorizer functions
+  #
+  tokenAuthorizer:
+    handler: src/handlers/auth/authorizer.tokenAuthorizer
+
+  #
   # Course endpoints
   #
   getCourse:
@@ -57,6 +63,7 @@ functions:
       - http:
           method: get
           path: /api/v1/courses/{courseId}
+          authorizer: tokenAuthorizer
 
   #
   # Grade endpoints
@@ -67,18 +74,21 @@ functions:
       - http:
           method: get
           path: /api/v1/courses/{courseId}/grades
+          authorizer: tokenAuthorizer
   getQuestionsGrades:
     handler: src/handlers/grade.getQuestionsGrades
     events:
       - http:
           method: get
           path: /api/v1/courses/{courseId}/session/{sessionId}/grades
+          authorizer: tokenAuthorizer
   exportGrades:
     handler: src/handlers/grade.exportGrades
     events:
       - http:
           method: post
           path: /api/v1/courses/{courseId}/grades_export
+          authorizer: tokenAuthorizer
 
 
   #
@@ -90,24 +100,28 @@ functions:
       - http:
           method: get
           path: /api/v1/folder/{folderId}
+          authorizer: tokenAuthorizer
   newFolder:
     handler: src/handlers/folder.create
     events:
       - http:
           method: post
           path: /api/v1/folder
+          authorizer: tokenAuthorizer
   updateFolder:
     handler: src/handlers/folder.update
     events:
       - http:
           method: put
           path: /api/v1/folder/{folderId}
+          authorizer: tokenAuthorizer
   deleteFolder:
     handler: src/handlers/folder.remove
     events:
       - http:
           method: delete
           path: /api/v1/folder/{folderId}
+          authorizer: tokenAuthorizer
 
   #
   # Session endpoints
@@ -118,12 +132,14 @@ functions:
       - http:
           method: get
           path: /api/v1/session/{sessionId}
+          authorizer: tokenAuthorizer
   createSession:
     handler: src/handlers/session.create
     events:
       - http:
           method: post
           path: /api/v1/session
+          authorizer: tokenAuthorizer
 
   #
   # Question endpoints
@@ -134,24 +150,28 @@ functions:
       - http:
           method: get
           path: /api/v1/question/{questionId}
+          authorizer: tokenAuthorizer
   createQuestion:
     handler: src/handlers/question.create
     events:
       - http:
           method: post
           path: /api/v1/question
+          authorizer: tokenAuthorizer
   updateQuestion:
     handler: src/handlers/question.update
     events:
       - http:
           method: put
           path: /api/v1/question/{questionId}
+          authorizer: tokenAuthorizer
   deleteQuestion:
     handler: src/handlers/question.remove
     events:
       - http:
           method: delete
           path: /api/v1/question/{questionId}
+          authorizer: tokenAuthorizer
 
   #
   # Question Option endpoints
@@ -162,18 +182,21 @@ functions:
       - http:
           method: post
           path: /api/v1/question/{questionId}/option
+          authorizer: tokenAuthorizer
   updateQuestionOption:
     handler: src/handlers/question_option.update
     events:
       - http:
           method: put
           path: /api/v1/question/{questionId}/option/{optionId}
+          authorizer: tokenAuthorizer
   deleteQuestionOption:
     handler: src/handlers/question_option.remove
     events:
       - http:
           method: delete
           path: /api/v1/question/{questionId}/option/{optionId}
+          authorizer: tokenAuthorizer
 
   #
   # Question User Response endpoints
@@ -184,24 +207,28 @@ functions:
       - http:
           method: post
           path: /api/v1/question/{questionId}/response
+          authorizer: tokenAuthorizer
   deleteQuestionUserResponse:
     handler: src/handlers/question_user_response.remove
     events:
       - http:
           method: delete
           path: /api/v1/question/{questionId}/response
+          authorizer: tokenAuthorizer
   updateQuestionUserResponse:
     handler: src/handlers/question_user_response.update
     events:
       - http:
           method: put
           path: /api/v1/question/{questionId}/response
+          authorizer: tokenAuthorize
   getQuestionUserResponse:
     handler: src/handlers/question_user_response.get
     events:
       - http:
           method: get
           path: /api/v1/question/{questionId}/response
+          authorizer: tokenAuthorizer
 
   #
   # Auth
@@ -295,6 +322,7 @@ functions:
           path: /api/v1/user/setting
           method: get
           cors: true
+          authorizer: tokenAuthorizer
   setUserSetting:
     handler: src/handlers/user.setUserSetting
     events:
@@ -302,6 +330,7 @@ functions:
           path: /api/v1/user/setting
           method: put
           cors: true
+          authorizer: tokenAuthorizer
 
   #
   # websocket endpoints
