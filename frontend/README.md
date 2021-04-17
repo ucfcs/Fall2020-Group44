@@ -71,7 +71,7 @@ Set these variables in a `.env` file in `/frontend`. Can be substitued for your 
 
 ```
 REACT_APP_REST_URL="http://localhost:5000/dev/api/v1"
-REACT_APP_WEBSOCKET_URL="ws://localhost:3001"
+REACT_APP_WEBSOCKET_URL="ws://localhost:5001"
 ```
 
 ## Authenticating
