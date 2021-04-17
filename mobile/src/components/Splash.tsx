@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useContext, useEffect } from 'react';
 import { ActivityIndicator, StyleSheet, View } from 'react-native';
 
-import { GOLD } from '../libs/colors';
+import { BLACK, GOLD } from '../libs/colors';
 import { AppContext } from './Provider';
 import { load } from '../services/store';
 import { getCanvasSelf, getUserSetting } from '../services/backend';
@@ -79,7 +79,7 @@ export const Splash: FunctionComponent = () => {
 
 	return (
 		<View style={styles.container}>
-			<ActivityIndicator size='large' />
+			<ActivityIndicator size='large' color={BLACK} />
 		</View>
 	);
 };
