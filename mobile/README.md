@@ -17,7 +17,8 @@ connected. `npx react-native run-android`
 
 ## Run instructions for Windows and macOS:
 
-See [https://aka.ms/ReactNative](https://aka.ms/ReactNative) for the latest up-to-date instructions.
+See [https://aka.ms/ReactNative](https://aka.ms/ReactNative) for the latest
+up-to-date instructions.
 
 ## Resources
 
