@@ -12,6 +12,7 @@ export const tokenAuthorizer = async (
 	callback: Callback
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
 ): Promise<any> => {
+	// Missing token, reject request
 	if (!event.authorizationToken) {
 		return callback(null, {
 			principalId: 'user',
