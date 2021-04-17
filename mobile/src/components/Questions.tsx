@@ -4,7 +4,13 @@ import React, {
 	useContext,
 	useEffect,
 } from 'react';
-import { StyleSheet, View, SafeAreaView, Text } from 'react-native';
+import {
+	StyleSheet,
+	View,
+	SafeAreaView,
+	Text,
+	ActivityIndicator,
+} from 'react-native';
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { Radios } from './Radios';
@@ -76,7 +82,10 @@ export const Questions: FunctionComponent<
 				<AppContext.Consumer>
 					{({ state: { question } }) =>
 						question === null ? (
-							<Text style={styles.header}>Waiting for question</Text>
+							<>
+								<Text style={styles.header}>Waiting on Next Question</Text>
+								<ActivityIndicator size='large' color={BLACK} />
+							</>
 						) : (
 							<>
 								<Text style={styles.header}>{question.title}</Text>

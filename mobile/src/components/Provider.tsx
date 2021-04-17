@@ -32,7 +32,6 @@ function reducer(state: AppState, action: Action): AppState {
 			state.phase = action.payload;
 			break;
 		case 'SET_TOKEN':
-			console.log(action.payload);
 			state.token = action.payload;
 			break;
 		//

@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 16,
+		backgroundColor: WHITE,
 	},
 	logoBox: {
 		width: '100%',
@@ -127,7 +128,7 @@ export const Login: FunctionComponent = () => {
 			</SafeAreaView>
 			{isReadingAuthLink && (
 				<View style={styles.overlay}>
-					<ActivityIndicator color='white' size='large' />
+					<ActivityIndicator color={WHITE} size='large' />
 				</View>
 			)}
 		</>

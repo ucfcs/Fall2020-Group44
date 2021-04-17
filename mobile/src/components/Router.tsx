@@ -57,7 +57,14 @@ const QuestionRouter: FunctionComponent<
 			<QuestionStack.Screen
 				name='Questions'
 				component={Questions}
-				options={{ title: 'Class', ...options }}
+				options={{
+					title: 'Question Session',
+					headerBackTitleStyle: {
+						color: BLACK,
+					},
+					headerTintColor: BLACK,
+					...options,
+				}}
 			/>
 		</QuestionStack.Navigator>
 	);
