@@ -53,6 +53,9 @@ CANVAS_ID=101
 CANVAS_KEY=shhhh
 CANVAS_REDIRECT=http://somewhere.else
 
+# key to encode/decode jsonwebtoken
+PRIVATE_KEY=private
+
 FRONTEND_URL=http://localhost:3000
 ```
 
