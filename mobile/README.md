@@ -2,6 +2,7 @@
 
 ## Prerequisite
 
+- [Setup Environment](https://reactnative.dev/docs/environment-setup)
 - [Running on Device](https://reactnative.dev/docs/running-on-device)
 - Setup ngrok as a proxy for the backend and add that url to the `.env.json`
 
@@ -56,3 +57,10 @@ tab 3 - go into the mobile folder and run the following `npm run start`
 
 tab 4 - will be for running the emulator ios: `npx react-native run-ios`
 android: `npx react-native run-android`. Close after emulator has launched.
+
+## Run on android
+
+```bash
+adb -s 84B7N15A28013227 reverse tcp:5000 tcp:5000
+adb -s 84B7N15A28013227 reverse tcp:5001 tcp:5001
+```

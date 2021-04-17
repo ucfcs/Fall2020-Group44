@@ -4,7 +4,7 @@
 	"description": "",
 	"main": "index.js",
 	"scripts": {
-		"dev": "serverless offline --httpPort 5000",
+		"dev": "serverless offline --httpPort 5000 --websocketPort 5001",
 		"deploy": "serverless deploy --stage production",
 		"db:init": "serverless invoke local --function dbInit",
 		"db:mysql:init": "serverless invoke local --function dbInit --only-mysql",
