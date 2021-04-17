@@ -22,36 +22,39 @@ function App(): ReactElement {
   const dispatch = global.dispatch;
 
   useEffect(() => {
-    //establish websocket connection
-    const websocket: WebSocket = new WebSocket(
-      `${process.env.REACT_APP_WEBSOCKET_URL}`
-    );
-
-    //when established, join the room as the professor
-    websocket.onopen = () => {
-      websocket.send(
-        JSON.stringify({
-          action: "professorJoinRoom",
-          courseId: state.courseId,
-        })
+    if (state.courseId) {
+      console.log(state.courseId);
+      //establish websocket connection
+      const websocket: WebSocket = new WebSocket(
+        `${process.env.REACT_APP_WEBSOCKET_URL}`
       );
-    };
 
-    //set the global websocket
-    dispatch({ type: "set-websocket", payload: websocket });
+      //when established, join the room as the professor
+      websocket.onopen = () => {
+        websocket.send(
+          JSON.stringify({
+            action: "professorJoinRoom",
+            courseId: state.courseId,
+          })
+        );
+      };
 
-    // if the professor closes the window, remove them from the room
-    window.onbeforeunload = () => {
-      websocket.send(
-        JSON.stringify({
-          action: "leaveRoom",
-          courseId: state.courseId,
-        })
-      );
-    };
+      //set the global websocket
+      dispatch({ type: "set-websocket", payload: websocket });
+
+      // if the professor closes the window, remove them from the room
+      window.onbeforeunload = () => {
+        websocket.send(
+          JSON.stringify({
+            action: "leaveRoom",
+            courseId: state.courseId,
+          })
+        );
+      };
+    }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [state.courseId]);
 
   return (
     <Router>
