@@ -53,17 +53,39 @@ export interface FolderAndQuestionResponse {
 }
 
 export interface CourseGradesResponse {
-  students: StudentInfo[];
+  students: StudentSessionInfo[];
   sessions: BasicSessionInfo[];
 }
 
-export interface StudentInfo {
-  name: string;
-  canvasId: number;
-  SessionGrades: SessionGrade[];
+export interface SessionGradesResponse {
+  students: StudentQuestionInfo[];
+  questions: QuestionGradeInfo[];
 }
 
-export interface SessionGrade {
+export interface QuestionGradeInfo {
+  id: number;
+  title: string;
+  SessionQuestion: SessionQuestion;
+}
+
+export interface SessionQuestion {
+  questionId: number;
+  sessionId: number;
+}
+
+export interface StudentSessionInfo {
+  name: string;
+  canvasId: number;
+  SessionGrades: Grade[];
+}
+
+export interface StudentQuestionInfo {
+  name: string;
+  canvasId: number;
+  QuestionGrades: Grade[];
+}
+
+export interface Grade {
   id: number;
   points: number;
   maxPoints: number;

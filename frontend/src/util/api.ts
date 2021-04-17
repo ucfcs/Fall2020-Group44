@@ -130,6 +130,21 @@ export async function getCourseGrades(
   return response;
 }
 
+export async function getSessionGrades(
+  courseId: string,
+  sessionId: number,
+  token: string
+): Promise<Response> {
+  const url: string = getBaseUrl();
+
+  const response: Response = await sendGet(
+    `${url}/courses/${courseId}/session/${sessionId}/grades`,
+    token
+  );
+
+  return response;
+}
+
 export function catchError(error: Error): void {
   console.error(error);
 }

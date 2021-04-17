@@ -1,7 +1,6 @@
 import React, {
   useState,
   ReactElement,
-  SyntheticEvent,
   useContext,
   useEffect,
   Dispatch,
@@ -12,7 +11,7 @@ import Student from "./student";
 import {
   BasicSessionInfo,
   CourseGradesResponse,
-  StudentInfo,
+  StudentSessionInfo,
 } from "../../types";
 
 import "./gradebook.scss";
@@ -27,8 +26,6 @@ const Gradebook = (): ReactElement => {
   const dispatch = global.dispatch;
   const state = global.state;
 
-  const [activeSearch, setActiveSearch] = useState(false);
-
   const [dataLoaded, setDataLoaded] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
   const [sessions, setSessions]: [
@@ -36,9 +33,9 @@ const Gradebook = (): ReactElement => {
     Dispatch<SetStateAction<BasicSessionInfo[]>>
   ] = useState([] as BasicSessionInfo[]);
   const [students, setStudents]: [
-    StudentInfo[],
-    Dispatch<SetStateAction<StudentInfo[]>>
-  ] = useState([] as StudentInfo[]);
+    StudentSessionInfo[],
+    Dispatch<SetStateAction<StudentSessionInfo[]>>
+  ] = useState([] as StudentSessionInfo[]);
 
   useEffect(() => {
     if (firstLoad) {
@@ -47,7 +44,6 @@ const Gradebook = (): ReactElement => {
           return response.json();
         })
         .then((response: CourseGradesResponse) => {
-          console.log(response);
           setStudents(response.students.filter(filterStudents));
           setSessions(response.sessions);
           setDataLoaded(true);
@@ -60,32 +56,12 @@ const Gradebook = (): ReactElement => {
 
   // @TODO
   // REMOVE THIS IT IS ONLY FOR TESTING BAD BACKEND DATA
-  const filterStudents = (student: StudentInfo): boolean => {
+  const filterStudents = (student: StudentSessionInfo): boolean => {
     return (
       student.name !== undefined &&
       student.canvasId !== undefined &&
       student.SessionGrades !== undefined
     );
-  };
-
-  const focus = () => {
-    setActiveSearch(true);
-  };
-
-  const blur = (event: SyntheticEvent) => {
-    if (!(event.target as HTMLInputElement).value) {
-      setActiveSearch(false);
-    }
-  };
-
-  const searchStudent = (event: SyntheticEvent) => {
-    // setStudents(
-    //   data.students.filter((student: StudentInfo) =>
-    //     student.name
-    //       .toLowerCase()
-    //       .includes((event.target as HTMLInputElement).value.toLowerCase())
-    //   )
-    // );
   };
 
   const exportToCanvas = () => {
@@ -101,21 +77,6 @@ const Gradebook = (): ReactElement => {
       ) : (
         <div className="gradebook">
           <div className="grade-navigation">
-            <div className="search">
-              <label
-                htmlFor="grade-search"
-                className={activeSearch ? "active" : ""}
-              >
-                Search for Student...
-              </label>
-
-              <input
-                id="grade-search"
-                onFocus={focus}
-                onBlur={blur}
-                onChange={searchStudent}
-              />
-            </div>
             <button className="export-button" onClick={exportToCanvas}>
               Export to Webcourses
             </button>
@@ -143,7 +104,7 @@ const Gradebook = (): ReactElement => {
                 </tr>
               </thead>
               <tbody>
-                {students.map((student: StudentInfo, index: number) => (
+                {students.map((student: StudentSessionInfo, index: number) => (
                   <Student key={index} student={student} />
                 ))}
               </tbody>
