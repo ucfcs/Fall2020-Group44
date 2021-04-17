@@ -7,7 +7,7 @@ import {
 	User,
 } from '../models';
 import responses from '../util/api/responses';
-import { getStudents } from '../util/canvas';
+import { createAssignment, getStudents, postGrades } from '../util/canvas';
 
 const mockUserid = 1;
 
@@ -127,6 +127,68 @@ export const getQuestionsGrades = async (
 	} catch (error) {
 		return responses.badRequest({
 			message: error || 'Fail to query',
+		});
+	}
+};
+
+export const exportGrades = async (
+	event: APIGatewayEvent
+): Promise<ProxyResult> => {
+	const courseId = Number(event.pathParameters?.courseId);
+
+	try {
+		const body = JSON.parse(event.body || '{}');
+
+		if (!body.name || !body.points || !body.sessionIds) {
+			return responses.badRequest({
+				message: 'Missing body parameters: name, points, sessionIds',
+			});
+		}
+
+		const sessionIds = body.sessionIds;
+		const assignmentName = body.name;
+		const assignmentPoints = Number(body.points);
+
+		const [assignmentId, canvasStudents] = await Promise.all([
+			createAssignment(mockUserid, courseId, assignmentName, assignmentPoints), // Create a new assignment
+			getStudents(mockUserid, courseId), // Get all students belong to the current course from Canvas
+		]);
+
+		// Calculate assignment points for each students
+		const grades = await Promise.all(
+			canvasStudents.map(async (student: CanvasStudent) => {
+				let totalPoints = 0;
+				let totalMaxPoints = 0;
+				await Promise.all(
+					sessionIds.map(async (sessionId: number) => {
+						const sessionGrade = await SessionGrade.findOne({
+							where: {
+								sessionId: sessionId,
+								userId: student.id,
+							},
+						});
+
+						totalPoints += Number(sessionGrade?.get().points);
+						totalMaxPoints += Number(sessionGrade?.get().maxPoints);
+					})
+				);
+
+				return {
+					id: student.id,
+					points: (totalPoints / totalMaxPoints) * assignmentPoints,
+				};
+			})
+		);
+
+		await postGrades(mockUserid, courseId, assignmentId, grades);
+
+		return responses.ok({
+			message: 'success',
+		});
+	} catch (error) {
+		console.log(error);
+		return responses.internalServerError({
+			error,
 		});
 	}
 };

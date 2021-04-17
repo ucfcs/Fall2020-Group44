@@ -73,6 +73,13 @@ functions:
       - http:
           method: get
           path: /api/v1/courses/{courseId}/session/{sessionId}/grades
+  exportGrades:
+    handler: src/handlers/grade.exportGrades
+    events:
+      - http:
+          method: post
+          path: /api/v1/courses/{courseId}/grades_export
+
 
   #
   # Folder endpoints

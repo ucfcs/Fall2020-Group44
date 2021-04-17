@@ -93,3 +93,85 @@ export const getStudents = async (
 		return Promise.reject(error);
 	}
 };
+
+export const createAssignment = async (
+	userId: number,
+	courseId: number,
+	name: string,
+	maxPoint: number
+): Promise<number> => {
+	try {
+		const token = await getToken(userId);
+
+		const res = await fetch(
+			`${process.env.CANVAS_URL}/api/v1/courses/${courseId}/assignments?` +
+				querystring.encode({
+					'assignment[name]': name,
+					'assignment[points_possible]': maxPoint,
+					'assignment[published]': true,
+				}),
+			{
+				method: 'POST',
+				headers: {
+					Authorization: `Bearer ${token}`,
+				},
+			}
+		);
+
+		if (res.status != 200 && res.status != 201) {
+			return Promise.reject({
+				message: 'Error while creating assignment in Canvas.',
+			});
+		}
+
+		const data = await res.json();
+
+		return Number(data.id);
+	} catch (error) {
+		console.log('Error while creating assignment in Canvas', error);
+		return Promise.reject(error);
+	}
+};
+
+export const postGrades = async (
+	userId: number,
+	courseId: number,
+	assignmentId: number,
+	grades: StudentGrade[]
+): Promise<void> => {
+	try {
+		const token = await getToken(userId);
+
+		await Promise.all(
+			grades.map(async (grade: StudentGrade) => {
+				const res = await fetch(
+					`${process.env.CANVAS_URL}/api/v1/courses/${courseId}/assignments/${assignmentId}/submissions/${grade.id}?` +
+						querystring.encode({
+							'submission[posted_grade]': grade.points,
+						}),
+
+					{
+						method: 'PUT',
+						headers: {
+							Authorization: `Bearer ${token}`,
+						},
+					}
+				);
+
+				if (res.status != 200) {
+					return Promise.reject({
+						message: 'Error while posting grades to Canvas.',
+					});
+				}
+			})
+		);
+	} catch (error) {
+		console.log(error);
+		return Promise.reject(error);
+	}
+};
+
+interface StudentGrade {
+	id: number;
+	points: number;
+}
