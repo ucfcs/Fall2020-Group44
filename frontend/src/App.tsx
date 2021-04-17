@@ -23,7 +23,6 @@ function App(): ReactElement {
 
   useEffect(() => {
     if (state.courseId) {
-      console.log(state.courseId);
       //establish websocket connection
       const websocket: WebSocket = new WebSocket(
         `${process.env.REACT_APP_WEBSOCKET_URL}`
