@@ -153,7 +153,13 @@ export const getQuestionsGrades = async (
 export const exportGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
-	const courseId = Number(event.pathParameters?.courseId);
+	const courseId = event.pathParameters?.courseId;
+
+	if (!courseId) {
+		return responses.badRequest({
+			message: 'Missing parameter: courseId',
+		});
+	}
 
 	try {
 		const body = JSON.parse(event.body || '{}');
