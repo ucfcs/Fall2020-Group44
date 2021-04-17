@@ -15,7 +15,7 @@ import {
 
 import { oauthMobileURL } from '../services/oauth';
 import { save } from '../services/store';
-import { WHITE } from '../libs/colors';
+import { PURE_WHITE } from '../libs/colors';
 import { Button } from './Button';
 import { AppContext } from './Provider';
 import { Icon } from './Icon';
@@ -23,14 +23,14 @@ import { Icon } from './Icon';
 const styles = StyleSheet.create({
 	safeArea: {
 		flex: 1,
-		backgroundColor: WHITE,
+		backgroundColor: PURE_WHITE,
 	},
 	container: {
 		flex: 1,
 		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 16,
-		backgroundColor: WHITE,
+		backgroundColor: PURE_WHITE,
 	},
 	logoBox: {
 		width: '100%',
@@ -128,7 +128,7 @@ export const Login: FunctionComponent = () => {
 			</SafeAreaView>
 			{isReadingAuthLink && (
 				<View style={styles.overlay}>
-					<ActivityIndicator color={WHITE} size='large' />
+					<ActivityIndicator color={PURE_WHITE} size='large' />
 				</View>
 			)}
 		</>

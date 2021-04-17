@@ -108,7 +108,6 @@ export const Router: FunctionComponent = () => {
 								width: 64,
 								height: 64,
 								borderRadius: 32,
-								backgroundColor: 'red',
 								overflow: 'hidden',
 								marginBottom: 8,
 							}}>
