@@ -22,7 +22,7 @@ Runs eslint and prettier on the frontend files in `src/`.
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [localhost:5000/dev/mock_launch](localhost:5000/dev/mock_launch) to view it in the browser.
+Open [http://localhost:5000/dev/mock_launch](http://localhost:5000/dev/mock_launch) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
