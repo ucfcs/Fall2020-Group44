@@ -12,8 +12,6 @@ export function init() {
 
 		memo.ws.onmessage = (event) => {
 			const data: any = JSON.parse(event.data);
-
-			console.log('data =>', data);
 			const cbs = memo.cb.get(data.action);
 
 			if (Array.isArray(cbs)) {
@@ -45,8 +43,6 @@ export function remove(action: OnAction, callback: OnCallback) {
 }
 
 export function emit(payload: EmitPayload) {
-	console.log('ws payload', payload);
-
 	if (memo.ws) {
 		memo.ws.send(format(payload));
 	}
