@@ -65,7 +65,7 @@ const getToken = async (userId: number): Promise<string> => {
 
 export const getStudents = async (
 	userId: number,
-	courseId: number
+	courseId: string
 ): Promise<CanvasStudent[]> => {
 	try {
 		const token = await getToken(userId);

@@ -8,8 +8,9 @@ import {
 	QuestionOption,
 } from '../models';
 import responses from '../util/api/responses';
+import { getStudents } from '../util/canvas';
 
-// import fetch from 'node-fetch';
+const mockUserid = 1;
 
 const calculate = async (
 	courseId: string,
@@ -57,21 +58,11 @@ const calculate = async (
 			questionIdMap.set(q.id, index);
 		});
 
-		//get all students in a course:
-		// fetch(`https://webcourses.ucf.edu/api/v1/courses/${courseId}/users`, {
-		// 	method: 'GET',
-		// 	headers: {
-		// 		Authorization: `Bearer ${token}`,
-		// 	},
-		// 	body: { // not sure if this is correct
-		// 		enrollment_role: 'StudentEnrollment',
-		// 		per_page: 100,
-		// 	},
-		// });
+		const users: number[] = (await getStudents(mockUserid, courseId)).map(
+			(student) => student.id
+		);
 
-		const mockUsers = Array.from({ length: 25 }, (_, i) => i + 1);
-
-		mockUsers.forEach(async (user) => {
+		users.forEach(async (user) => {
 			// initialize SessionGrade Object with zero points:
 			const userSessionGrade = {
 				courseId: courseId,
