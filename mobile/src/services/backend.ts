@@ -49,7 +49,7 @@ export async function getCanvasUserEnrollments(token: string) {
 
 export async function getUserSetting(token: string) {
 	const res = await fetch(
-		`${env.BACKEND_URL}/dev/api/v1/user/setting?platform=mobile`,
+		`${env.BACKEND_URL}/api/v1/user/setting?platform=mobile`,
 		{
 			method: 'GET',
 			headers: {
@@ -63,7 +63,7 @@ export async function getUserSetting(token: string) {
 
 export async function setUserSetting(token: string, settings: Settings) {
 	const res = await fetch(
-		`${env.BACKEND_URL}/dev/api/v1/user/setting?platform=mobile`,
+		`${env.BACKEND_URL}/api/v1/user/setting?platform=mobile`,
 		{
 			method: 'PUT',
 			headers: {
@@ -87,7 +87,7 @@ function fetchCanvasProxy(
 		url: string;
 	},
 ): Promise<Response> {
-	return fetch(`${env.BACKEND_URL}/dev/api/v1/proxy/canvas`, {
+	return fetch(`${env.BACKEND_URL}/api/v1/proxy/canvas`, {
 		method: 'POST',
 		headers: {
 			Authorization: `Bearer ${token}`,
