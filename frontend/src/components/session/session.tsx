@@ -39,7 +39,7 @@ const GradebookSession = (props: Props): ReactElement => {
 
   useEffect(() => {
     if (firstLoad) {
-      getSessionGrades(state.courseId, props.match.params.id, state.token)
+      getSessionGrades(state.courseId, props.match.params.id, state.jwt)
         .then((response) => {
           return response.json();
         })
@@ -52,13 +52,7 @@ const GradebookSession = (props: Props): ReactElement => {
 
       setFirstLoad(false);
     }
-  }, [
-    firstLoad,
-    dataLoaded,
-    state.courseId,
-    state.token,
-    props.match.params.id,
-  ]);
+  }, [firstLoad, dataLoaded, state.courseId, state.jwt, props.match.params.id]);
 
   // @TODO
   // REMOVE THIS IT IS ONLY FOR TESTING BAD BACKEND DATA

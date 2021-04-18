@@ -39,7 +39,7 @@ const Gradebook = (): ReactElement => {
 
   useEffect(() => {
     if (firstLoad) {
-      getCourseGrades(state.courseId, state.token)
+      getCourseGrades(state.courseId, state.jwt)
         .then((response) => {
           return response.json();
         })
@@ -52,7 +52,7 @@ const Gradebook = (): ReactElement => {
 
       setFirstLoad(false);
     }
-  }, [firstLoad, dataLoaded, state.courseId, state.token]);
+  }, [firstLoad, dataLoaded, state.courseId, state.jwt]);
 
   // @TODO
   // REMOVE THIS IT IS ONLY FOR TESTING BAD BACKEND DATA
