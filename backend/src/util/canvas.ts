@@ -96,7 +96,7 @@ export const getStudents = async (
 
 export const createAssignment = async (
 	userId: number,
-	courseId: number,
+	courseId: string,
 	name: string,
 	maxPoint: number
 ): Promise<number> => {
@@ -135,7 +135,7 @@ export const createAssignment = async (
 
 export const postGrades = async (
 	userId: number,
-	courseId: number,
+	courseId: string,
 	assignmentId: number,
 	grades: StudentGrade[]
 ): Promise<void> => {
