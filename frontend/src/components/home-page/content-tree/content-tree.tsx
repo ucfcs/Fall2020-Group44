@@ -6,7 +6,7 @@ import React, {
   SyntheticEvent,
 } from "react";
 import { store } from "../../../store";
-import { Folder, ServerResponse } from "../../../types";
+import { Folder, FolderAndQuestionResponse } from "../../../types";
 import {
   catchError,
   deleteFolder,
