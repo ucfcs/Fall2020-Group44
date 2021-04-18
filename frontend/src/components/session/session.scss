@@ -91,17 +91,6 @@
 
     padding: 0.5em 1em;
     font-size: 16px;
-
-    .expand {
-      color: #ffc904;
-      font-size: 12px;
-      cursor: pointer;
-      text-shadow: 1px 1px gray;
-    }
-
-    .date {
-      font-size: 12px;
-    }
   }
 
   tbody td {
@@ -110,17 +99,5 @@
 
   .align-right {
     text-align: right;
-  }
-}
-
-.bar {
-  width: 100%;
-  margin-top: 0.5rem;
-  background-color: #dddddd;
-  border-radius: 0.5rem;
-
-  .bar-value {
-    height: 4px;
-    border-radius: 0.5rem;
   }
 }

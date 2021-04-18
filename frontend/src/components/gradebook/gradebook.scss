@@ -77,10 +77,11 @@
 
   .table-wrapper {
     overflow-x: auto;
+    margin: 0 2rem;
   }
 
   table {
-    width: 100%;
+    margin: auto;
     text-align: left;
     border-collapse: collapse;
     border: 1px solid black;
@@ -88,22 +89,15 @@
 
   th,
   td {
-    min-width: 130px;
+    min-width: 150px;
     border: 1px solid lightgray;
 
     padding: 0.5em 1em;
     font-size: 16px;
+  }
 
-    .expand {
-      color: #ffc904;
-      font-size: 12px;
-      cursor: pointer;
-      text-shadow: 1px 1px gray;
-    }
-
-    .date {
-      font-size: 12px;
-    }
+  .session-name {
+    text-align: right;
   }
 
   tbody td {
@@ -112,17 +106,5 @@
 
   .align-right {
     text-align: right;
-  }
-}
-
-.bar {
-  width: 100%;
-  margin-top: 0.5rem;
-  background-color: #dddddd;
-  border-radius: 0.5rem;
-
-  .bar-value {
-    height: 4px;
-    border-radius: 0.5rem;
   }
 }

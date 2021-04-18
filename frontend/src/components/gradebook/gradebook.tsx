@@ -43,7 +43,7 @@ const Gradebook = (): ReactElement => {
         .then((response) => {
           return response.json();
         })
-        .then((response: CourseGradesResponse) => {
+        .then((response: CourseGradesResponse): void => {
           setStudents(response.students.filter(filterStudents));
           setSessions(response.sessions);
           setDataLoaded(true);
@@ -90,15 +90,9 @@ const Gradebook = (): ReactElement => {
 
                   {sessions.map((session: BasicSessionInfo, sIndex: number) => (
                     <th key={sIndex} className="session-name">
-                      <div>
-                        <span>{session.name} </span>
-                        <Link
-                          className="expand"
-                          to={`/gradebook/${session.id}`}
-                        >
-                          Expand&nbsp;&gt;
-                        </Link>
-                      </div>
+                      <Link to={`/gradebook/${session.id}`}>
+                        {session.name}
+                      </Link>
                     </th>
                   ))}
                 </tr>
