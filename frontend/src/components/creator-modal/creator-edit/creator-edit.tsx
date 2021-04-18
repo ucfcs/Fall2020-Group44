@@ -97,16 +97,6 @@ const CreatorEdit = (): ReactElement => {
     ? state.questions[state.previewFolder].Questions[state.previewQuestion]
     : question;
 
-  const previewFolder = state.questions[state.previewFolder]?.name;
-
-  let folderIndex = -1;
-
-  state.questions.forEach((folder: Folder, i: number) => {
-    if (folder.name === previewFolder) {
-      folderIndex = i;
-    }
-  });
-
   return (
     <div className="creator-body">
       <div className="question-details">
@@ -174,7 +164,7 @@ const CreatorEdit = (): ReactElement => {
             className="folder-select"
             name="folder-select"
             id="folder-select"
-            defaultValue={folderIndex}
+            defaultValue={state.createFolderIndex}
             onChange={handleFolderChange}
           >
             {state.questions.map((folder: Folder, fIndex: number) => (

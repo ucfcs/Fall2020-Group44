@@ -6,14 +6,13 @@ import React, {
   SyntheticEvent,
 } from "react";
 import { store } from "../../../store";
-import { Folder, Question, ServerResponse } from "../../../types";
+import { Folder, ServerResponse } from "../../../types";
 import {
   catchError,
   deleteFolder,
   deleteQuestion,
   getFolders,
   updateFolder,
-  updateQuestion,
 } from "../../../util/api";
 import "./content-tree.scss";
 
@@ -168,7 +167,13 @@ const ContentTree = (): ReactElement => {
       <div className="create-buttons">
         <button
           className="create-question-button"
-          onClick={() => dispatch({ type: "open-creator" })}
+          onClick={() => {
+            dispatch({ type: "open-creator" });
+            dispatch({
+              type: "update-creator-module-folder-index",
+              payload: -1,
+            });
+          }}
         >
           Question
         </button>
@@ -306,6 +311,11 @@ const ContentTree = (): ReactElement => {
                             <div className="content-tree-icons">
                               <button
                                 onClick={() => {
+                                  handleUpdatePreviewQuestion(fIndex, qIndex);
+                                  dispatch({
+                                    type: "update-creator-module-folder-index",
+                                    payload: fIndex,
+                                  });
                                   toggleEditQuestion();
                                 }}
                               >
@@ -357,7 +367,15 @@ const ContentTree = (): ReactElement => {
                         <div className="type">{question.type}</div>
 
                         <div className="content-tree-icons">
-                          <button onClick={toggleEditQuestion}>
+                          <button
+                            onClick={() => {
+                              dispatch({
+                                type: "update-creator-module-folder-index",
+                                payload: -1,
+                              });
+                              toggleEditQuestion();
+                            }}
+                          >
                             <img
                               className="content-tree-icon"
                               alt="Edit"
