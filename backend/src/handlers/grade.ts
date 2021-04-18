@@ -13,10 +13,11 @@ import {
 import responses from '../util/api/responses';
 import { createAssignment, getStudents, postGrades } from '../util/canvas';
 import { calculate } from './sessionGrades';
+import { Sequelize } from 'sequelize';
 
 const mockUserid = 1;
 
-// GET /api/v1/cousrses/:courseId/grades
+// GET /api/v1/courses/:courseId/grades
 export const getSessionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
@@ -29,11 +30,37 @@ export const getSessionsGrades = async (
 	}
 
 	try {
+		// Get all sessions belong to the current course
+		const sessions = await Session.findAll({
+			where: {
+				courseId: courseId,
+			},
+			attributes: ['id', 'name'],
+			include: {
+				model: SessionGrade,
+				attributes: [
+					[Sequelize.fn('avg', Sequelize.col('points')), 'avgPoints'],
+					'maxPoints',
+				],
+				required: true,
+			},
+			group: ['sessionId'],
+		});
+
+		let classMax = 0;
+		sessions.forEach((session) => {
+			session
+				.get()
+				.SessionGrades?.forEach((grade) => (classMax += grade.get().maxPoints));
+		});
+
 		// Get all students belong to the current course from Canvas
 		const canvasStudents: CanvasStudent[] = await getStudents(
 			mockUserid,
 			courseId
 		);
+
+		let classTotal = 0;
 
 		// Get grades for each student
 		const students = await Promise.all(
@@ -41,31 +68,40 @@ export const getSessionsGrades = async (
 				const user = await User.findOne({
 					attributes: ['canvasId'],
 					where: { canvasId: student.id },
-					include: {
-						model: SessionGrade,
-						attributes: ['id', 'points', 'maxPoints'],
-						where: {
-							courseId: courseId,
+					include: [
+						{
+							model: SessionGrade,
+							attributes: ['id', 'sessionId', 'points', 'maxPoints'],
+							where: {
+								courseId: courseId,
+							},
+							// required: true,
 						},
-					},
+					],
 				});
+
+				let studentTotal = 0;
+
+				//calculate the user's total
+				user?.get().SessionGrades?.forEach((grade) => {
+					studentTotal += grade.points;
+				});
+
+				//add to running class total
+				classTotal += studentTotal;
 
 				return {
 					name: student.name,
+					total: studentTotal,
 					...user?.get(),
 				};
 			})
 		);
 
-		// Get all sessions belong to the current course
-		const sessions = await Session.findAll({
-			where: {
-				courseId: courseId,
-			},
-			attributes: ['id', 'name'],
-		});
+		const classAverage = classTotal / canvasStudents.length;
 
 		return responses.ok({
+			classAverage: { points: classAverage, maxPoints: classMax },
 			students,
 			sessions,
 		});
@@ -95,12 +131,6 @@ export const getQuestionsGrades = async (
 		});
 	}
 
-	const sessionGradeId = (
-		await SessionGrade.findOne({
-			where: { sessionId },
-		})
-	)?.get().id;
-
 	try {
 		// Get all students belong to the current course from Canvas
 		const canvasStudents: CanvasStudent[] = await getStudents(
@@ -111,6 +141,12 @@ export const getQuestionsGrades = async (
 		// Get grades for each student
 		const students = await Promise.all(
 			canvasStudents.map(async (student: CanvasStudent) => {
+				const sessionGradeId = (
+					await SessionGrade.findOne({
+						where: { sessionId: sessionId, userId: student.id },
+					})
+				)?.get().id;
+
 				const user = await User.findOne({
 					attributes: ['canvasId'],
 					where: { canvasId: student.id },
