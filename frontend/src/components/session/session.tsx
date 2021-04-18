@@ -9,62 +9,62 @@ import React, {
 import { Link } from "react-router-dom";
 import Student from "./student";
 import {
-  BasicSessionInfo,
-  CourseGradesResponse,
-  StudentSessionInfo,
+  QuestionGradeInfo,
+  SessionGradesResponse,
+  StudentQuestionInfo,
 } from "../../types";
 
-import "./gradebook.scss";
+import "./session.scss";
 
 import HomeHeader from "../home-header/home-header";
 import { store } from "../../store";
-import { catchError, getCourseGrades } from "../../util/api";
+import { catchError, getSessionGrades } from "../../util/api";
 
-const Gradebook = (): ReactElement => {
+const GradebookSession = (props: Props): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
-  const dispatch = global.dispatch;
   const state = global.state;
+  const dispatch = global.dispatch;
 
   const [dataLoaded, setDataLoaded] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
-  const [sessions, setSessions]: [
-    BasicSessionInfo[],
-    Dispatch<SetStateAction<BasicSessionInfo[]>>
-  ] = useState<BasicSessionInfo[]>([]);
+  const [questions, setQuestions]: [
+    QuestionGradeInfo[],
+    Dispatch<SetStateAction<QuestionGradeInfo[]>>
+  ] = useState<QuestionGradeInfo[]>([]);
   const [students, setStudents]: [
-    StudentSessionInfo[],
-    Dispatch<SetStateAction<StudentSessionInfo[]>>
-  ] = useState<StudentSessionInfo[]>([]);
+    StudentQuestionInfo[],
+    Dispatch<SetStateAction<StudentQuestionInfo[]>>
+  ] = useState<StudentQuestionInfo[]>([]);
 
   useEffect(() => {
     if (firstLoad) {
-      getCourseGrades(state.courseId, state.jwt)
+      getSessionGrades(state.courseId, props.match.params.id, state.jwt)
         .then((response) => {
           return response.json();
         })
-        .then((response: CourseGradesResponse): void => {
+        .then((response: SessionGradesResponse) => {
           setStudents(response.students.filter(filterStudents));
-          setSessions(response.sessions);
+          setQuestions(response.questions);
           setDataLoaded(true);
         })
         .catch(catchError);
 
       setFirstLoad(false);
     }
-  }, [firstLoad, dataLoaded, state.courseId, state.jwt]);
+  }, [firstLoad, dataLoaded, state.courseId, state.jwt, props.match.params.id]);
 
   // @TODO
   // REMOVE THIS IT IS ONLY FOR TESTING BAD BACKEND DATA
-  const filterStudents = (student: StudentSessionInfo): boolean => {
+  const filterStudents = (student: StudentQuestionInfo): boolean => {
     return (
       student.name !== undefined &&
       student.canvasId !== undefined &&
-      student.SessionGrades !== undefined
+      student.QuestionGrades !== undefined
     );
   };
 
-  const exportToCanvas = () => {
+  const exportToCanvas = (): void => {
     dispatch({ type: "open-export-modal" });
   };
 
@@ -75,8 +75,14 @@ const Gradebook = (): ReactElement => {
       {!dataLoaded ? (
         <p>Loading...</p>
       ) : (
-        <div className="gradebook">
+        <div className="session">
           <div className="grade-navigation">
+            <div className="session-info-wrapper">
+              <Link className="close-expand-button" to="/gradebook">
+                Back
+              </Link>
+            </div>
+
             <button className="export-button" onClick={exportToCanvas}>
               Export to Webcourses
             </button>
@@ -88,17 +94,21 @@ const Gradebook = (): ReactElement => {
                 <tr>
                   <th>Student</th>
 
-                  {sessions.map((session: BasicSessionInfo, sIndex: number) => (
-                    <th key={sIndex} className="session-name">
-                      <Link to={`/gradebook/${session.id}`}>
-                        {session.name}
-                      </Link>
-                    </th>
-                  ))}
+                  {questions.map(
+                    (
+                      question: QuestionGradeInfo,
+                      qIndex: number
+                    ): ReactElement => (
+                      <th key={qIndex + "question"} className="expanded">
+                        <div className="question-name">{question.title}</div>
+                      </th>
+                    )
+                  )}
                 </tr>
               </thead>
+
               <tbody>
-                {students.map((student: StudentSessionInfo, index: number) => (
+                {students.map((student: StudentQuestionInfo, index: number) => (
                   <Student key={index} student={student} />
                 ))}
               </tbody>
@@ -110,4 +120,12 @@ const Gradebook = (): ReactElement => {
   );
 };
 
-export default Gradebook;
+interface Props {
+  match: {
+    params: {
+      [key: string]: number;
+    };
+  };
+}
+
+export default GradebookSession;

@@ -1,12 +1,12 @@
 import React, { ReactElement } from "react";
-import { Grade, StudentSessionInfo } from "../../types";
+import { Grade, StudentQuestionInfo } from "../../types";
 
 const Student = ({ student }: Props): ReactElement => {
   return (
     <tr className="student">
       <td>{student.name}</td>
 
-      {student.SessionGrades.map((sessionGrade: Grade, sIndex: number) => (
+      {student.QuestionGrades.map((sessionGrade: Grade, sIndex: number) => (
         <td key={sIndex} className="align-right">
           {sessionGrade.points} / {sessionGrade.maxPoints}
         </td>
@@ -16,7 +16,7 @@ const Student = ({ student }: Props): ReactElement => {
 };
 
 interface Props {
-  student: StudentSessionInfo;
+  student: StudentQuestionInfo;
 }
 
 export default Student;

@@ -1,13 +1,12 @@
-.gradebook {
+.session {
   width: 100%;
   font-size: 20px;
 
   .grade-navigation {
-    padding: 1rem 0;
-    width: 100%;
+    margin: 1rem 3rem;
 
     display: flex;
-    justify-content: flex-end;
+    justify-content: space-between;
     align-items: center;
   }
 
@@ -72,16 +71,14 @@
     font-weight: bold;
 
     padding: 0.75em;
-    margin-right: 3rem;
   }
 
   .table-wrapper {
     overflow-x: auto;
-    margin: 0 2rem;
   }
 
   table {
-    margin: auto;
+    width: 100%;
     text-align: left;
     border-collapse: collapse;
     border: 1px solid black;
@@ -89,15 +86,11 @@
 
   th,
   td {
-    min-width: 150px;
+    min-width: 130px;
     border: 1px solid lightgray;
 
     padding: 0.5em 1em;
     font-size: 16px;
-  }
-
-  .session-name {
-    text-align: right;
   }
 
   tbody td {

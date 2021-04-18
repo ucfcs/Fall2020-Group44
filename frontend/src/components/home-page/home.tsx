@@ -5,7 +5,7 @@ import HomeHeader from "../home-header/home-header";
 import QuestionPreview from "./question-preview/question-preview";
 import { catchError, getFolders } from "../../util/api";
 import { store } from "../../store";
-import { ServerResponse } from "../../types";
+import { FolderAndQuestionResponse } from "../../types";
 
 const Body = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +21,7 @@ const Body = (): ReactElement => {
         .then((response) => {
           return response.json();
         })
-        .then((json: ServerResponse) => {
+        .then((json: FolderAndQuestionResponse) => {
           dispatch({
             type: "update-questions",
             payload: [

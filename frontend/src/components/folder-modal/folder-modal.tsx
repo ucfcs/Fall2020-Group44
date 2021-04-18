@@ -1,6 +1,6 @@
 import React, { useState, useContext, ReactElement, FormEvent } from "react";
 import { store } from "../../store";
-import { ServerResponse } from "../../types";
+import { FolderAndQuestionResponse } from "../../types";
 import { catchError, createFolder, getFolders } from "../../util/api";
 import Modal from "../modal/modal";
 import "./folder-modal.scss";
@@ -39,7 +39,7 @@ const FolderModal = (): ReactElement => {
       .then((response) => {
         return response.json();
       })
-      .then((json: ServerResponse) => {
+      .then((json: FolderAndQuestionResponse) => {
         dispatch({
           type: "update-questions",
           payload: [...json.folders, { name: null, Questions: json.questions }],

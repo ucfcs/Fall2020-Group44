@@ -29,20 +29,16 @@ export interface QuestionOption {
   responseCount?: number;
 }
 
-export interface Session {
-  name: string;
+export interface BasicSessionInfo {
   id: number;
+  name: string;
+}
+
+export interface Session extends BasicSessionInfo {
   average: number;
   total: number;
   date: string;
   questions: Question;
-}
-
-export interface StudentInfo {
-  name: string;
-  total: number;
-  sessions: number[];
-  questions: number[][];
 }
 
 export interface QuestionInfo {
@@ -51,7 +47,46 @@ export interface QuestionInfo {
   correctIndex: number;
 }
 
-export interface ServerResponse {
+export interface FolderAndQuestionResponse {
   folders: Folder[];
   questions: Question[];
+}
+
+export interface CourseGradesResponse {
+  students: StudentSessionInfo[];
+  sessions: BasicSessionInfo[];
+}
+
+export interface SessionGradesResponse {
+  students: StudentQuestionInfo[];
+  questions: QuestionGradeInfo[];
+}
+
+export interface QuestionGradeInfo {
+  id: number;
+  title: string;
+  SessionQuestion: SessionQuestion;
+}
+
+export interface SessionQuestion {
+  questionId: number;
+  sessionId: number;
+}
+
+export interface StudentSessionInfo {
+  name: string;
+  canvasId: number;
+  SessionGrades: Grade[];
+}
+
+export interface StudentQuestionInfo {
+  name: string;
+  canvasId: number;
+  QuestionGrades: Grade[];
+}
+
+export interface Grade {
+  id: number;
+  points: number;
+  maxPoints: number;
 }
