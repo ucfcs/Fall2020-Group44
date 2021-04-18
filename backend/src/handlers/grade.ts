@@ -1,4 +1,8 @@
-import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
+import {
+	APIGatewayProxyHandler,
+	APIGatewayEvent,
+	ProxyResult,
+} from 'aws-lambda';
 import {
 	Question,
 	QuestionGrade,
@@ -8,6 +12,7 @@ import {
 } from '../models';
 import responses from '../util/api/responses';
 import { createAssignment, getStudents, postGrades } from '../util/canvas';
+import { calculate } from './sessionGrades';
 
 const mockUserid = 1;
 
@@ -215,5 +220,30 @@ export const exportGrades = async (
 		return responses.internalServerError({
 			error,
 		});
+	}
+};
+
+export const setQuestionsGrades: APIGatewayProxyHandler = async (event) => {
+	const courseId = event.pathParameters?.courseId;
+	const sessionId = Number(event.pathParameters?.sessionId);
+
+	if (!courseId) {
+		return responses.badRequest({
+			message: 'Missing parameter: courseId',
+		});
+	}
+
+	if (!sessionId) {
+		return responses.badRequest({
+			message: 'Missing parameter: sessionId',
+		});
+	}
+
+	try {
+		await calculate(courseId, sessionId);
+		return responses.ok();
+	} catch (error) {
+		console.error(error);
+		return responses.internalServerError();
 	}
 };
