@@ -164,7 +164,7 @@ const CreatorEdit = (): ReactElement => {
             className="folder-select"
             name="folder-select"
             id="folder-select"
-            defaultValue={-1}
+            defaultValue={state.creatorFolderIndex}
             onChange={handleFolderChange}
           >
             {state.questions.map((folder: Folder, fIndex: number) => (

@@ -17,6 +17,7 @@ const baseQuestionInfo = {
 const init = {
   previewFolder: 0,
   previewQuestion: 0,
+  creatorFolderIndex: -1,
   courseId: null,
   questions: [],
   sessionQuestions: [],
@@ -42,6 +43,8 @@ const StateProvider = ({ children }) => {
         return { ...state, previewFolder: action.payload };
       case "update-preview-question":
         return { ...state, previewQuestion: action.payload };
+      case "update-creator-module-folder-index":
+        return { ...state, creatorFolderIndex: action.payload };
       case "edit-preview-question":
         return { ...state, editPreviewQuestion: true };
       case "close-preview-question":
