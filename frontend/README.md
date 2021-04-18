@@ -22,7 +22,7 @@ Runs eslint and prettier on the frontend files in `src/`.
 ### `npm start`
 
 Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Open [http://localhost:5000/dev/mock_launch](http://localhost:5000/dev/mock_launch) to view it in the browser.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
@@ -71,14 +71,14 @@ Set these variables in a `.env` file in `/frontend`. Can be substitued for your 
 
 ```
 REACT_APP_REST_URL="http://localhost:5000/dev/api/v1"
-REACT_APP_WEBSOCKET_URL="ws://localhost:3001"
+REACT_APP_WEBSOCKET_URL="ws://localhost:5001"
 ```
 
 ## Authenticating
 
 The frontend is authenticated through a redirect in Canvas. It is `<base url>/course/<courseId>?token=<jwt>`
 
-If you want to access the frontend locally you will need to navigate to `https://localhost:3000/course/<courseId>?token=<data of your choice>`
+If you want to access the frontend locally you will need to navigate to `http://localhost:5000/dev/mock_launch`. This enpoint will simulate a LTI launch
 
 ## Learn More
 

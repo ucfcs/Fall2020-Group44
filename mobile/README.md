@@ -2,24 +2,24 @@
 
 ## Prerequisite
 
+- [Setup Environment](https://reactnative.dev/docs/environment-setup)
 - [Running on Device](https://reactnative.dev/docs/running-on-device)
 - Setup ngrok as a proxy for the backend and add that url to the `.env.json`
 
 ## Run instructions for iOS:
 
-    •  npx react-native run-ios
-    - or -
-    • Open mobile/ios/mobile.xcworkspace in Xcode or run "xed -b ios"
-    • Hit the Run button
+`npx react-native run-ios` or open `./ios/mobile.xcworkspace` then hit the Run
+button
 
 ## Run instructions for Android:
 
-    • Have an Android emulator running (quickest way to get started), or a device connected.
-    •  npx react-native run-android
+Have an Android emulator running (quickest way to get started), or a device
+connected. `npx react-native run-android`
 
 ## Run instructions for Windows and macOS:
 
-    • See https://aka.ms/ReactNative for the latest up-to-date instructions.
+See [https://aka.ms/ReactNative](https://aka.ms/ReactNative) for the latest
+up-to-date instructions.
 
 ## Resources
 
@@ -57,3 +57,10 @@ tab 3 - go into the mobile folder and run the following `npm run start`
 
 tab 4 - will be for running the emulator ios: `npx react-native run-ios`
 android: `npx react-native run-android`. Close after emulator has launched.
+
+## Run on android
+
+```bash
+adb -s 84B7N15A28013227 reverse tcp:5000 tcp:5000
+adb -s 84B7N15A28013227 reverse tcp:5001 tcp:5001
+```

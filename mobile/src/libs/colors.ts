@@ -1,5 +1,6 @@
 export const GOLD = '#FFC904';
 export const WHITE = '#E5E5E5';
+export const PURE_WHITE = '#FFFFFF';
 export const BLACK = '#000000';
 export const GRAY_2 = '#666666';
 export const GRAY_3 = '#999999';
