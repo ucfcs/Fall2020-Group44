@@ -141,7 +141,7 @@ const ContentTree = (): ReactElement => {
       .then((response) => {
         return response.json();
       })
-      .then((json: ServerResponse) => {
+      .then((json: FolderAndQuestionResponse) => {
         dispatch({
           type: "update-questions",
           payload: [...json.folders, { name: null, Questions: json.questions }],

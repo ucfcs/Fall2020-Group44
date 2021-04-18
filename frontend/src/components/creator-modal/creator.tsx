@@ -16,7 +16,7 @@ import {
   getFolders,
   updateQuestion,
 } from "../../util/api";
-import { Question, ServerResponse } from "../../types";
+import { Question, FolderAndQuestionResponse } from "../../types";
 
 //todo: create question props
 
@@ -95,7 +95,7 @@ const Creator = (): ReactElement => {
       .then((response) => {
         return response.json();
       })
-      .then((json: ServerResponse) => {
+      .then((json: FolderAndQuestionResponse) => {
         dispatch({
           type: "update-questions",
           payload: [...json.folders, { name: null, Questions: json.questions }],
