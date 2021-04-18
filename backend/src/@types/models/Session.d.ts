@@ -6,6 +6,7 @@ interface SessionAttributes {
 	userId: UserId;
 	courseId: CourseId;
 	Questions?: Question[];
+	public readonly SessionGrades?: SessionGrade[];
 }
 
 interface SessionCreationAttributes {
