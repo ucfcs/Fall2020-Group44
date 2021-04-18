@@ -80,6 +80,12 @@
     margin: 0 2rem;
   }
 
+  .averages {
+    td {
+      padding: 1em 1em 1em 1em;
+    }
+  }
+
   table {
     margin: auto;
     text-align: left;
@@ -87,17 +93,24 @@
     border: 1px solid black;
   }
 
+  th {
+    padding: 0.5em 1em 2em 1em;
+  }
+
+  td {
+    padding: 0.5em 1em;
+  }
+
   th,
   td {
     min-width: 150px;
     border: 1px solid lightgray;
 
-    padding: 0.5em 1em;
     font-size: 16px;
   }
 
   .session-name {
-    text-align: right;
+    // text-align: right;
   }
 
   tbody td {

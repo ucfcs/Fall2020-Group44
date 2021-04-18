@@ -5,10 +5,11 @@ const Student = ({ student }: Props): ReactElement => {
   return (
     <tr className="student">
       <td>{student.name}</td>
+      <td className="align-right">{student.total.toFixed(2)}</td>
 
       {student.SessionGrades.map((sessionGrade: Grade, sIndex: number) => (
         <td key={sIndex} className="align-right">
-          {sessionGrade.points} / {sessionGrade.maxPoints}
+          {sessionGrade.points.toFixed(2)}
         </td>
       ))}
     </tr>

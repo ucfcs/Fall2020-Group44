@@ -10,6 +10,7 @@ import { Link } from "react-router-dom";
 import Student from "./student";
 import {
   BasicSessionInfo,
+  ClassAverageInfo,
   CourseGradesResponse,
   StudentSessionInfo,
 } from "../../types";
@@ -28,6 +29,10 @@ const Gradebook = (): ReactElement => {
 
   const [dataLoaded, setDataLoaded] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
+  const [classAverage, setClassAverage]: [
+    ClassAverageInfo,
+    Dispatch<SetStateAction<ClassAverageInfo>>
+  ] = useState<ClassAverageInfo>({ points: 0, maxPoints: 0 });
   const [sessions, setSessions]: [
     BasicSessionInfo[],
     Dispatch<SetStateAction<BasicSessionInfo[]>>
@@ -46,6 +51,7 @@ const Gradebook = (): ReactElement => {
         .then((response: CourseGradesResponse): void => {
           setStudents(response.students.filter(filterStudents));
           setSessions(response.sessions);
+          setClassAverage(response.classAverage);
           setDataLoaded(true);
         })
         .catch(catchError);
@@ -87,6 +93,7 @@ const Gradebook = (): ReactElement => {
               <thead>
                 <tr>
                   <th>Student</th>
+                  <th>Totals</th>
 
                   {sessions.map((session: BasicSessionInfo, sIndex: number) => (
                     <th key={sIndex} className="session-name">
@@ -98,6 +105,19 @@ const Gradebook = (): ReactElement => {
                 </tr>
               </thead>
               <tbody>
+                <tr className="averages">
+                  <td>Class Average</td>
+                  <td className="align-right">
+                    {classAverage.points.toFixed(2)}/
+                    {classAverage.maxPoints.toFixed(2)}
+                  </td>
+                  {sessions.map((session: BasicSessionInfo, sIndex: number) => (
+                    <td key={sIndex} className="session-average align-right">
+                      {session.SessionGrades[0].avgPoints.toFixed(2)} /
+                      {session.SessionGrades[0].maxPoints.toFixed(2)}
+                    </td>
+                  ))}
+                </tr>
                 {students.map((student: StudentSessionInfo, index: number) => (
                   <Student key={index} student={student} />
                 ))}
