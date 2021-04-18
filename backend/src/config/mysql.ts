@@ -1,3 +1,4 @@
+import 'mysql2';
 import { Sequelize } from 'sequelize';
 
 export default new Sequelize(
