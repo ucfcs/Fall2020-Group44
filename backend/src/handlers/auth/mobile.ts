@@ -55,7 +55,7 @@ export const redirect: APIGatewayProxyHandler = async (event) => {
  */
 export const url: APIGatewayProxyHandler = async () => {
 	return responses.ok({
-		url: `${process.env.CANVAS_URL}/login/oauth2/auth?response_type=code&client_id=${process.env.CANVAS_ID}&redirect_uri=${process.env.CANVAS_REDIRECT}`,
+		url: `${process.env.CANVAS_URL}/login/oauth2/auth?response_type=code&client_id=${process.env.CANVAS_ID}&redirect_uri=${process.env.CANVAS_REDIRECT}&state=mobile`,
 	});
 };
 

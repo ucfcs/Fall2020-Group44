@@ -54,6 +54,7 @@ export const launch: APIGatewayProxyHandler = async (
 				response_type: 'code',
 				redirect_uri: process.env.CANVAS_REDIRECT,
 				scope: scopes.join(' '),
+				state: 'web',
 			});
 
 		return response.movedPermanently(url);
