@@ -239,6 +239,14 @@ functions:
   #
   # Auth
   #
+  redirect:
+    handler: src/handlers/auth/redirect.handler
+    timeout: 10
+    events:
+      - http:
+          method: get
+          path: api/v1/auth/redirect
+          cors: true
   mobileAuthRedirect:
     handler: src/handlers/auth/mobile.redirect
     timeout: 10
