@@ -103,14 +103,27 @@ export const Home: FunctionComponent<
 			}),
 		[],
 	);
-	const endSessionCallback = useCallback<OnEndSessionCallback>(
-		() =>
-			dispatch({
-				type: 'SET_SESSION',
-				payload: null,
-			}),
-		[],
-	);
+	const endSessionCallback = useCallback<OnEndSessionCallback>(() => {
+		dispatch({
+			type: 'SET_SESSION',
+			payload: null,
+		});
+		dispatch({
+			type: 'SET_QUESTION',
+			payload: null,
+		});
+	}, []);
+
+	const joinSession = useCallback(() => {
+		// join session so the number goes brrrr
+		ws.emit({
+			action: 'joinSession',
+			courseId: state.session.courseId,
+		});
+
+		// next page
+		navigation.push('Questions');
+	}, [state.session]);
 
 	// on mount
 	useEffect(() => {
@@ -123,13 +136,12 @@ export const Home: FunctionComponent<
 			// HTTP - pull all currently enrolled courses
 			const payload = await getCanvasUserEnrollments(state.token);
 
-
 			// WS - use course unique id's as room keys to join
 			// joining also emits info about the currently active session
 			// loop through courses and join the WS rooms
 			if (Array.isArray(payload)) {
 				for (const course of payload) {
-					ws.join(course.id.toString());
+					ws.join(course.course_id.toString());
 				}
 			}
 
@@ -177,9 +189,7 @@ export const Home: FunctionComponent<
 								<Text style={[styles.p, styles.pGreen]}>
 									Questions Session In Progress
 								</Text>
-								<Button
-									text='Join'
-									onPress={() => navigation.push('Questions')}></Button>
+								<Button text='Join' onPress={joinSession}></Button>
 							</View>
 						)
 					}
