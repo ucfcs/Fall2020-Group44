@@ -158,7 +158,6 @@ export const Questions: FunctionComponent<
 							</>
 						) : (
 							<>
-								<Text style={styles.header}>{question.title}</Text>
 								<Text style={styles.header}>{question.question}</Text>
 								<Radios
 									options={question.QuestionOptions.map((q) => ({
@@ -180,7 +179,7 @@ export const Questions: FunctionComponent<
 						transform: [{ translateY: tranAnim }],
 					}}>
 					<View style={styles.toast}>
-						<Text style={styles.toastText}>Student Response Submitted</Text>
+						<Text style={styles.toastText}>Response Submitted</Text>
 					</View>
 				</Animated.View>
 			</View>
