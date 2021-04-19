@@ -83,6 +83,8 @@ const GradebookSession = (props: Props): ReactElement => {
               </Link>
             </div>
 
+            <div className="session-name"></div>
+
             <button className="export-button" onClick={exportToCanvas}>
               Export to Webcourses
             </button>
@@ -92,7 +94,8 @@ const GradebookSession = (props: Props): ReactElement => {
             <table>
               <thead>
                 <tr>
-                  <th>Student</th>
+                  <th className="header-text first-column">Student</th>
+                  {/* <th className="header-text">Totals</th> */}
 
                   {questions.map(
                     (
@@ -100,7 +103,9 @@ const GradebookSession = (props: Props): ReactElement => {
                       qIndex: number
                     ): ReactElement => (
                       <th key={qIndex + "question"} className="expanded">
-                        <div className="question-name">{question.title}</div>
+                        <div className="header-text question-name">
+                          {question.title}
+                        </div>
                       </th>
                     )
                   )}
