@@ -73,6 +73,19 @@ docker-compose -f "docker-compose.yml" up -d --build
 npm i
 ```
 
+### Update MySQL
+
+In order for MySQL to allow `GROUP BY` commands, we need to update the `sql_mode`. Run the following command in MySQL: 
+```
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+```
+
+To do this locally, you will have to enter your docker container, then enter your MySQL instance with the following commands before running the one above: 
+```
+docker exec -it <MySQL CONTAINER ID> /bin/bash
+mysql -u <MYSQL_USER> -p
+```
+
 #### Run Local Serverless
 
 Now you can
