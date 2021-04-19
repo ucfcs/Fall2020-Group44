@@ -3,18 +3,6 @@ import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
 import { GOLD, GRAY_3 } from '../libs/colors';
 
 const styles = StyleSheet.create({
-	safeArea: {
-		flex: 1,
-	},
-	container: {
-		flex: 1,
-		justifyContent: 'flex-start',
-		alignItems: 'center',
-		paddingTop: 32,
-		paddingLeft: 16,
-		paddingRight: 16,
-		paddingBottom: 16,
-	},
 	baseRadio: {
 		height: 48,
 		width: '100%',
@@ -44,6 +32,7 @@ const styles = StyleSheet.create({
 
 export const Radios: FunctionComponent<RadioProps> = ({
 	options,
+	disable,
 	onSelect,
 }) => {
 	const [selectedOption, setSelectedOption] = useState<null | Option>(null);
@@ -58,11 +47,15 @@ export const Radios: FunctionComponent<RadioProps> = ({
 						{
 							borderColor: option.key === selectedOption?.key ? GOLD : GRAY_3,
 						},
+						{
+							opacity: disable ? 0.25 : 1,
+						},
 					]}
 					onPress={() => {
 						setSelectedOption(option);
 						onSelect(option);
-					}}>
+					}}
+					disabled={disable}>
 					{option.key === selectedOption?.key ? (
 						<View style={[styles.dot, { borderColor: GOLD }]}>
 							<View style={styles.innerDot} />

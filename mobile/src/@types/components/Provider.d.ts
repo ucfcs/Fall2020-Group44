@@ -8,6 +8,7 @@ interface AppState {
 	//
 	session: Session | null;
 	question: Question | null;
+	questionIsLocked: boolean;
 	//
 	phase: Phase;
 }
@@ -65,5 +66,8 @@ type Action =
 	//
 	| { type: 'SET_SESSION'; payload: Session | null }
 	| { type: 'SET_QUESTION'; payload: Question | null }
+	//
+	| { type: 'LOCK_QUESTION' }
+	| { type: 'UNLOCK_QUESTION' }
 	//
 	| { type: 'END' };

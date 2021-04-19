@@ -10,6 +10,7 @@ const intialState: AppState = {
 	//
 	session: null,
 	question: null,
+	questionIsLocked: false,
 	//
 	phase: 'initializing',
 };
@@ -49,7 +50,18 @@ function reducer(state: AppState, action: Action): AppState {
 			state.session = action.payload;
 			break;
 		case 'SET_QUESTION':
+			// if the same question is being set dont update state
+			if (state.question?.id === action.payload?.id) return state;
+
+			// otherwise lets update the whole state tree
 			state.question = action.payload;
+			break;
+		//
+		case 'LOCK_QUESTION':
+			state.questionIsLocked = true;
+			break;
+		case 'UNLOCK_QUESTION':
+			state.questionIsLocked = false;
 			break;
 	}
 
