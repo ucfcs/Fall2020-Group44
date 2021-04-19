@@ -11,20 +11,18 @@ const SessionHeader = (): ReactElement => {
   const state = global.state;
 
   const clearSession = (): void => {
-    if (!state.sessionInProgress) {
-      dispatch({ type: "update-question-number", payload: 0 });
-      dispatch({ type: "update-session-questions", payload: [] });
+    dispatch({ type: "update-question-number", payload: 0 });
+    dispatch({ type: "update-session-questions", payload: [] });
 
-      // tell websocket server to end the session,
-      // notifying all students
-      if (state.websocket) {
-        state.websocket.send(
-          JSON.stringify({
-            action: "endSession",
-            courseId: state.courseId,
-          })
-        );
-      }
+    // tell websocket server to end the session,
+    // notifying all students
+    if (state.websocket) {
+      state.websocket.send(
+        JSON.stringify({
+          action: "endSession",
+          courseId: state.courseId,
+        })
+      );
     }
   };
 
