@@ -38,6 +38,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
         payload: newQuestions,
       });
     } else {
+      dispatch({ type: "disable-exit-warning" });
       nextQuestion();
     }
   };

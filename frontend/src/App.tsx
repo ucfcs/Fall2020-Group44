@@ -12,6 +12,7 @@ import Creator from "./components/creator-modal/creator";
 import QuestionSelect from "./components/question-select-modal/question-select-modal";
 import ExportModal from "./components/export-modal/export-modal";
 import FolderModal from "./components/folder-modal/folder-modal";
+import WarningModal from "./components/warining-modal/warning-modal";
 import LogIn from "./components/log-in/log-in";
 import PrivateRoute from "./components/private-route/private-route";
 
@@ -83,6 +84,7 @@ function App(): ReactElement {
       {state.openFolderCreator ? <FolderModal /> : null}
       {state.openQuestionSelect ? <QuestionSelect /> : null}
       {state.openExportModal ? <ExportModal /> : null}
+      {state.showExitWarning ? <WarningModal /> : null}
     </Router>
   );
 }

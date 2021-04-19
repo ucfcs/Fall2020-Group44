@@ -129,7 +129,7 @@ const SessionProgress = (props: Props): ReactElement => {
         ) : (
           <img src="/img/unlock.svg" alt="" />
         )}
-        {isClosed ? "Responses Stopped" : "Stop Responses"}
+        {isClosed ? "Open Responses" : "Stop Responses"}
       </button>
     </div>
   );

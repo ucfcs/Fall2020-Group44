@@ -11,33 +11,60 @@ const SessionHeader = (): ReactElement => {
   const state = global.state;
 
   const clearSession = (): void => {
-    dispatch({ type: "update-question-number", payload: 0 });
-    dispatch({ type: "update-session-questions", payload: [] });
+    if (!state.sessionInProgress) {
+      dispatch({ type: "update-question-number", payload: 0 });
+      dispatch({ type: "update-session-questions", payload: [] });
 
-    // tell websocket server to end the session,
-    // notifying all students
-    if (state.websocket) {
-      state.websocket.send(
-        JSON.stringify({
-          action: "endSession",
-          courseId: state.courseId,
-        })
-      );
+      // tell websocket server to end the session,
+      // notifying all students
+      if (state.websocket) {
+        state.websocket.send(
+          JSON.stringify({
+            action: "endSession",
+            courseId: state.courseId,
+          })
+        );
+      }
     }
   };
 
   return (
     <div className="session-header">
-      <Link to="/">
+      {state.sessionInProgress ? (
         <img
           alt="UCF React Logo"
           src="/img/UCFReactLogoBlackBackground.png"
-          onClick={clearSession}
+          onClick={() => {
+            dispatch({ type: "show-exit-warning-modal" });
+            clearSession();
+          }}
         />
-      </Link>
-      <Link onClick={clearSession} className="exit-button" to="/">
-        EXIT
-      </Link>
+      ) : (
+        <Link to="/">
+          <img
+            alt="UCF React Logo"
+            src="/img/UCFReactLogoBlackBackground.png"
+            onClick={clearSession}
+          />
+        </Link>
+      )}
+
+      <div className="exit-button-wrapper">
+        {state.sessionInProgress ? (
+          <button
+            className="exit-button"
+            onClick={() => {
+              dispatch({ type: "show-exit-warning-modal" });
+            }}
+          >
+            EXIT
+          </button>
+        ) : (
+          <Link onClick={clearSession} className="exit-button" to="/">
+            EXIT
+          </Link>
+        )}
+      </div>
     </div>
   );
 };

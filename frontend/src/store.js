@@ -18,6 +18,8 @@ const init = {
   previewFolder: 0,
   previewQuestion: 0,
   creatorFolderIndex: -1,
+  sessionInProgress: false,
+  showExitWarning: false,
   courseId: null,
   questions: [],
   sessionQuestions: [],
@@ -45,6 +47,14 @@ const StateProvider = ({ children }) => {
         return { ...state, previewQuestion: action.payload };
       case "update-creator-module-folder-index":
         return { ...state, creatorFolderIndex: action.payload };
+      case "enable-exit-warning":
+        return { ...state, sessionInProgress: true };
+      case "disable-exit-warning":
+        return { ...state, sessionInProgress: false };
+      case "show-exit-warning-modal":
+        return { ...state, showExitWarning: true };
+      case "hide-exit-warning-modal":
+        return { ...state, showExitWarning: false };
       case "edit-preview-question":
         return { ...state, editPreviewQuestion: true };
       case "close-preview-question":
