@@ -24,7 +24,6 @@
 		"@types/uuid": "^8.3.0",
 		"@typescript-eslint/eslint-plugin": "^4.22.0",
 		"@typescript-eslint/parser": "^4.22.0",
-		"colors": "^1.4.0",
 		"eslint": "^7.24.0",
 		"fork-ts-checker-webpack-plugin": "^6.2.1",
 		"prettier": "2.2.1",
@@ -39,11 +38,12 @@
 		"webpack-node-externals": "^2.5.2"
 	},
 	"dependencies": {
+		"aws-sdk": "^2.888.0",
+		"colors": "^1.4.0",
 		"jsonwebtoken": "^8.5.1",
 		"mysql2": "^2.2.5",
 		"node-fetch": "^2.6.1",
 		"sequelize": "^6.6.2",
-		"serverless-dynamodb-local": "^0.2.39",
 		"uuid": "^8.3.2"
 	}
 }

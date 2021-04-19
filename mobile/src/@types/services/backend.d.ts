@@ -88,4 +88,8 @@ interface GetUserSettingSuccess {
 	};
 }
 
-interface SetUserSettingSuccess extends GetUserSettingSuccess {}
+interface SetUserSettingSuccess {
+	settings: {
+		document: string;
+	};
+}

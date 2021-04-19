@@ -24,6 +24,7 @@ interface Settings {
 interface Session {
 	id: number;
 	name: string;
+	courseId: string;
 }
 
 interface Question {

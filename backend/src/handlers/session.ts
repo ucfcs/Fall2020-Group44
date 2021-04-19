@@ -1,7 +1,6 @@
 import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 import { Session, SessionQuestion, Question, QuestionOption } from '../models';
 import responses from '../util/api/responses';
-import { Connection } from '../util/websocket';
 
 const mockUserid = 1;
 
@@ -59,15 +58,6 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 				};
 			})
 		);
-
-		console.log('STARTING SESSIONNNNN');
-
-		// emit to all the students that a session was just created
-		const connection = new Connection();
-		connection.init();
-		await connection.startSession(courseId, data.get().id, data.get().name);
-
-		console.log('SUCCESSFULLY STARTED SESSION');
 
 		return responses.ok({
 			message: 'Success',

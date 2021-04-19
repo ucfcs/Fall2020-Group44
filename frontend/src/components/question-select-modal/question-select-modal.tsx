@@ -13,7 +13,7 @@ import {
 import { useHistory } from "react-router";
 import { store } from "../../store";
 
-import { createSession } from "../../util/api";
+import { createSession, catchError } from "../../util/api";
 import { Folder, Question, QuestionOption } from "../../types";
 import Modal from "../modal/modal";
 import "./question-select-modal.scss";
@@ -51,11 +51,26 @@ const QuestionSelect = (): ReactElement => {
       state.courseId,
       state.sessionQuestions.map((question: Question) => question.id),
       state.jwt
-    ).then(() => {
-      dispatch({ type: "close-question-select" });
+    )
+      .then(async (res) => {
+        dispatch({ type: "close-question-select" });
 
-      history.push("/poll/present");
-    });
+        const { data } = await res.json();
+
+        if (state.websocket) {
+          state.websocket.send(
+            JSON.stringify({
+              action: "startSession",
+              courseId: state.courseId,
+              sessionId: data.id,
+              sessionName: data.name,
+            })
+          );
+        }
+
+        history.push("/poll/present");
+      })
+      .catch(catchError);
   };
 
   const handlePreviewDragEnd = (result: DropResult) => {
