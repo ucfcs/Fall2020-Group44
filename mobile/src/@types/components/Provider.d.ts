@@ -1,3 +1,5 @@
+import { Dispatch } from 'react';
+
 interface AppState {
 	id: number;
 	name: string;
@@ -14,7 +16,7 @@ interface AppState {
 
 interface AppContext {
 	state: AppState;
-	dispatch: React.Dispatch<Action>;
+	dispatch: Dispatch<Action>;
 }
 
 interface Settings {
@@ -24,6 +26,7 @@ interface Settings {
 interface Session {
 	id: number;
 	name: string;
+	courseId: string;
 }
 
 interface Question {

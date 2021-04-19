@@ -3,13 +3,14 @@ import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 
 import dynamodb from '../config/dynamo';
 import { QuestionUserResponse } from '../models/QuestionUserResponse';
-import { calculate } from '../handlers/sessionGrades';
+import responses from './api/responses';
+import fetch from 'node-fetch';
 
 export class Connection {
 	client?: AWS.DynamoDB.DocumentClient;
 	gateway?: AWS.ApiGatewayManagementApi;
 
-	public init(event?: APIGatewayEvent): void {
+	public init(event: APIGatewayEvent): void {
 		this.client = new AWS.DynamoDB.DocumentClient({
 			apiVersion: '2012-08-10',
 			endpoint: dynamodb.config.endpoint,
@@ -21,8 +22,9 @@ export class Connection {
 			apiVersion: '2018-11-29',
 			endpoint:
 				process.env.NODE_ENV == 'development'
-					? 'http://localhost:3001'
+					? 'http://localhost:5001'
 					: `${event?.requestContext.domainName}/${event?.requestContext.stage}`,
+			credentials: dynamodb.config.credentials,
 		});
 	}
 
@@ -555,6 +557,7 @@ export class Connection {
 			await this.publishAll(courseId, 'startSession', {
 				name: sessionName,
 				id: sessionId,
+				courseId,
 			});
 
 			console.log(
@@ -624,7 +627,20 @@ export class Connection {
 				throw `sessionId of session ended in ${courseId} not obtainable from DynamoDB`;
 			}
 
-			return await calculate(courseId, sessionId);
+			// just invoke calc grades and dont wait on what happens
+
+			if (process.env.BASE_REST_URL) {
+				fetch(
+					`${process.env.BASE_REST_URL}/api/v1/courses/${courseId}/session/${sessionId}/grades`,
+					{
+						method: 'POST',
+					}
+				).catch(console.error);
+			}
+
+			return responses.ok({
+				message: `Success calculating grades for sessionId ${sessionId}`,
+			});
 		} catch (error) {
 			console.log(`error ending session in room ${courseId}:`);
 			console.log(error);
