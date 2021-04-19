@@ -37,6 +37,8 @@ Below is the template for the ENV files.
 # use thesse values for accessing the local MySQL & Reddis containers
 NODE_ENV=development
 
+BASE_REST_URL=http://localhost:5000
+
 MYSQL_HOST=localhost
 MYSQL_DATABASE=ucfpoll
 MYSQL_USER=root
