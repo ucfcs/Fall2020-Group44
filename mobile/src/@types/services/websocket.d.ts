@@ -31,7 +31,7 @@ type EmitPayload =
 
 type OnStartSessionCallback = (data: {
 	action: 'startSession';
-	payload: { name: string; id: number };
+	payload: Session;
 }) => void;
 
 type OnEndSessionCallback = (data: { action: 'endSession' }) => void;
