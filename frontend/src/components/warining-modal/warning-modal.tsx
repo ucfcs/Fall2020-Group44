@@ -36,7 +36,7 @@ const WarningModal = (): ReactElement => {
         </div>
         <div className="warning-body">
           <p className="warning-message">
-            There are incomplete question. Are you sure you want to end the
+            There are incomplete questions. Are you sure you want to end the
             session?
           </p>
         </div>
