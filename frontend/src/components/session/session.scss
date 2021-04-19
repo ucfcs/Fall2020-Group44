@@ -117,4 +117,23 @@
   .align-right {
     text-align: right;
   }
+
+  .averages-text {
+    font-size: 18px;
+    color: #717171;
+    font-weight: bold;
+  }
+
+  .bar {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    background-color: #dddddd;
+    border-radius: 0.5rem;
+
+    .bar-value {
+      height: 7px;
+      border-radius: 0.5rem;
+    }
+  }
 }

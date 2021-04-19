@@ -65,14 +65,26 @@ export interface CourseGradesResponse {
 }
 
 export interface SessionGradesResponse {
+  classAverage: ClassAverageInfo;
   students: StudentQuestionInfo[];
-  questions: QuestionGradeInfo[];
+  session: SessionInfo;
+}
+
+export interface SessionInfo {
+  name: string;
+  Questions: QuestionGradeInfo[];
 }
 
 export interface QuestionGradeInfo {
   id: number;
   title: string;
+  QuestionGrades: QuestionGradeAvgInfo[];
   SessionQuestion: SessionQuestion;
+}
+
+export interface QuestionGradeAvgInfo {
+  avgPoints: number;
+  maxPoints: number;
 }
 
 export interface SessionQuestion {
@@ -94,6 +106,7 @@ export interface StudentSessionInfo {
 
 export interface StudentQuestionInfo {
   name: string;
+  total: number;
   canvasId: number;
   QuestionGrades: Grade[];
 }
