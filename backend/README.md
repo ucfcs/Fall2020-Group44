@@ -83,7 +83,7 @@ docker exec -it <MySQL CONTAINER ID> /bin/bash
 mysql -u <MYSQL_USER> -p
 ```
 
-After entering your password, you can run the following command in MySQL: 
+After entering the `MYSQL_ROOT_PASSWORD`, you can run the following command in MySQL: 
 ```
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 ```
