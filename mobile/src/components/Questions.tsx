@@ -100,10 +100,8 @@ export const Questions: FunctionComponent<
 		[],
 	);
 
-	// on mount
 	useEffect(() => {
 		ws.add('endSession', endSessionCallback);
-		// on unmount
 		return () => ws.remove('endSession', endSessionCallback);
 	}, []);
 
@@ -142,8 +140,13 @@ export const Questions: FunctionComponent<
 	}, [showToast]);
 
 	useEffect(() => {
+		const timePtr = setTimeout(setWaiting, 1000, false);
+
 		setWaiting(true);
-		setTimeout(setWaiting, 1000, false);
+
+		// if this view is popped lets make sure we dont try to
+		// update the state on an unmounted comp
+		return () => clearTimeout(timePtr);
 	}, [state.question]);
 
 	return (
