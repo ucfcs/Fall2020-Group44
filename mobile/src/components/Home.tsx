@@ -116,10 +116,12 @@ export const Home: FunctionComponent<
 
 	const joinSession = useCallback(() => {
 		// join session so the number goes brrrr
-		ws.emit({
-			action: 'joinSession',
-			courseId: state.session.courseId,
-		});
+		if (state.session) {
+			ws.emit({
+				action: 'joinSession',
+				courseId: state.session.courseId,
+			});
+		}
 
 		// next page
 		navigation.push('Questions');

@@ -5,7 +5,7 @@ const memo: Memo = {
 	cb: new Map<OnAction, OnCallback[]>(),
 };
 
-export function init() {
+export function init(): void {
 	// dont re-init WS
 	if (memo.ws === null) {
 		memo.ws = new WebSocket(env.WS_SERVER_URL);
@@ -21,7 +21,7 @@ export function init() {
 	}
 }
 
-export function add(action: OnAction, callback: OnCallback) {
+export function add(action: OnAction, callback: OnCallback): void {
 	const cbs = memo.cb.get(action) || [];
 
 	cbs.push(callback);
@@ -31,7 +31,7 @@ export function add(action: OnAction, callback: OnCallback) {
 	}
 }
 
-export function remove(action: OnAction, callback: OnCallback) {
+export function remove(action: OnAction, callback: OnCallback): void {
 	const cbs = memo.cb.get(action);
 
 	if (Array.isArray(cbs)) {
@@ -42,13 +42,13 @@ export function remove(action: OnAction, callback: OnCallback) {
 	}
 }
 
-export function emit(payload: EmitPayload) {
+export function emit(payload: EmitPayload): void {
 	if (memo.ws) {
 		memo.ws.send(format(payload));
 	}
 }
 
-export function join(roomKey: string) {
+export function join(roomKey: string): void {
 	if (memo.ws) {
 		emit({
 			action: 'studentJoinRoom',

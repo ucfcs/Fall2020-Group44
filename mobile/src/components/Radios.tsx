@@ -1,12 +1,6 @@
 import React, { FunctionComponent, useState } from 'react';
-import {
-	StyleSheet,
-	TouchableOpacity,
-	View,
-	SafeAreaView,
-	Text,
-} from 'react-native';
-import { GOLD, GRAY_3, GRAY_4 } from '../libs/colors';
+import { StyleSheet, TouchableOpacity, View, Text } from 'react-native';
+import { GOLD, GRAY_3 } from '../libs/colors';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -53,10 +47,6 @@ export const Radios: FunctionComponent<RadioProps> = ({
 	onSelect,
 }) => {
 	const [selectedOption, setSelectedOption] = useState<null | Option>(null);
-
-	const isSelected = (): boolean => {
-		return false;
-	};
 
 	return (
 		<>

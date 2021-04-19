@@ -1,5 +1,3 @@
-import { Dispatch } from 'react';
-
 interface AppState {
 	id: number;
 	name: string;
@@ -16,7 +14,7 @@ interface AppState {
 
 interface AppContext {
 	state: AppState;
-	dispatch: Dispatch<Action>;
+	dispatch: React.Dispatch<Action>;
 }
 
 interface Settings {
