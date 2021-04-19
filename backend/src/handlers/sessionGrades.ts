@@ -74,6 +74,7 @@ const calculate = async (
 					return {
 						courseId: courseId,
 						userId: user,
+						sessionId: sessionId,
 						questionId: question.id,
 						points: 0,
 						maxPoints:

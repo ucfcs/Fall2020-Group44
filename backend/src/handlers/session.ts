@@ -37,8 +37,6 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const courseId = body.courseId;
 	const questionIds = body.questionIds;
 
-	console.log('body', body);
-
 	if (!questionIds || !body) {
 		return responses.badRequest({
 			message: 'Missing paramters. courseId and questions all required',
@@ -62,10 +60,14 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 			})
 		);
 
+		console.log('STARTING SESSIONNNNN');
+
 		// emit to all the students that a session was just created
 		const connection = new Connection();
 		connection.init();
 		await connection.startSession(courseId, data.get().id, data.get().name);
+
+		console.log('SUCCESSFULLY STARTED SESSION');
 
 		return responses.ok({
 			message: 'Success',
