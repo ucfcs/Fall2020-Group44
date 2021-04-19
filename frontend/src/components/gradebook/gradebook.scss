@@ -8,7 +8,7 @@
 
     display: flex;
     justify-content: flex-end;
-    align-items: center;
+    align-items: left;
   }
 
   .session-info-wrapper {
@@ -16,9 +16,25 @@
     flex-direction: row;
   }
 
+  .expand {
+    color: #ffc904;
+    font-size: 15px;
+    cursor: pointer;
+    // text-shadow: 1px 1px gray;
+    text-decoration: none;
+  }
+
   .session-info-name {
     font-weight: 700;
     margin-right: 1rem;
+  }
+
+  .first-column {
+    min-width: 300px;
+  }
+
+  .table-body-text {
+    color: #717171;
   }
 
   .close-expand-button {
@@ -93,6 +109,17 @@
     border: 1px solid black;
   }
 
+  .header-text {
+    font-size: 22px;
+    color: #717171;
+  }
+
+  .averages-text {
+    font-size: 18px;
+    color: #717171;
+    font-weight: bold;
+  }
+
   th {
     padding: 0.5em 1em 2em 1em;
   }
@@ -103,14 +130,10 @@
 
   th,
   td {
-    min-width: 150px;
-    border: 1px solid lightgray;
+    min-width: 250px;
+    border: 1px solid #c8c8c8;
 
     font-size: 16px;
-  }
-
-  .session-name {
-    // text-align: right;
   }
 
   tbody td {
@@ -119,5 +142,18 @@
 
   .align-right {
     text-align: right;
+  }
+
+  .bar {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    background-color: #dddddd;
+    border-radius: 0.5rem;
+
+    .bar-value {
+      height: 7px;
+      border-radius: 0.5rem;
+    }
   }
 }
