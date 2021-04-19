@@ -20,9 +20,7 @@ const WarningModal = (): ReactElement => {
   };
 
   const clearSession = (): void => {
-    if (state.sessionInProgress) {
-      dispatch({ type: "show-exit-warning-modal" });
-    } else {
+    if (!state.sessionInProgress) {
       dispatch({ type: "update-question-number", payload: 0 });
       dispatch({ type: "update-session-questions", payload: [] });
 
@@ -41,8 +39,8 @@ const WarningModal = (): ReactElement => {
 
   return (
     <Modal>
-      <div className="warning-module" onSubmit={endSession}>
-        <div className="creator-header">
+      <div className="warning-module">
+        <div className="warning-header">
           <button
             type="reset"
             className="exit"
@@ -71,8 +69,8 @@ const WarningModal = (): ReactElement => {
             Cancel
           </button>
 
-          <Link onClick={clearSession} className="save-button" to="/">
-            EXIT
+          <Link onClick={endSession} className="save-button" to="/">
+            Confirm
           </Link>
         </div>
       </div>

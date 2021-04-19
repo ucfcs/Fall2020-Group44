@@ -19,7 +19,7 @@ const init = {
   previewQuestion: 0,
   creatorFolderIndex: -1,
   sessionInProgress: false,
-  showExitWarning: false,
+  openExitWarning: false,
   courseId: null,
   questions: [],
   sessionQuestions: [],
@@ -52,9 +52,9 @@ const StateProvider = ({ children }) => {
       case "disable-exit-warning":
         return { ...state, sessionInProgress: false };
       case "show-exit-warning-modal":
-        return { ...state, showExitWarning: true };
+        return { ...state, openExitWarning: true };
       case "hide-exit-warning-modal":
-        return { ...state, showExitWarning: false };
+        return { ...state, openExitWarning: false };
       case "edit-preview-question":
         return { ...state, editPreviewQuestion: true };
       case "close-preview-question":

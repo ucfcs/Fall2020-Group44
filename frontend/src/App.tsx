@@ -84,7 +84,7 @@ function App(): ReactElement {
       {state.openFolderCreator ? <FolderModal /> : null}
       {state.openQuestionSelect ? <QuestionSelect /> : null}
       {state.openExportModal ? <ExportModal /> : null}
-      {state.showExitWarning ? <WarningModal /> : null}
+      {state.openExitWarning ? <WarningModal /> : null}
     </Router>
   );
 }
