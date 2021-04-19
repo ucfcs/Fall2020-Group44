@@ -113,7 +113,6 @@ export const Home: FunctionComponent<
 			payload: null,
 		});
 	}, []);
-
 	const joinSession = useCallback(() => {
 		// join session so the number goes brrrr
 		if (state.session) {
