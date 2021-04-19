@@ -1,10 +1,13 @@
 import env from '../../.env.json';
+import { toJSON } from '../util';
 
 //
 // Canvas
 //
 
-export async function getCanvasSelf(token: string) {
+export async function getCanvasSelf(
+	token: string,
+): Promise<GetCanvasSelfSuccess | CanvasError> {
 	const res = await fetchCanvasProxy(token, {
 		method: 'GET',
 		url: '/api/v1/users/self',
@@ -17,7 +20,9 @@ export async function getCanvasSelf(token: string) {
 	}
 }
 
-export async function getCanvasUserProfile(token: string) {
+export async function getCanvasUserProfile(
+	token: string,
+): Promise<GetCanvasUserProfileSuccess | CanvasError> {
 	const res = await fetchCanvasProxy(token, {
 		method: 'GET',
 		url: '/api/v1/users/:user_id/profile',
@@ -30,7 +35,9 @@ export async function getCanvasUserProfile(token: string) {
 	}
 }
 
-export async function getCanvasUserEnrollments(token: string) {
+export async function getCanvasUserEnrollments(
+	token: string,
+): Promise<GetCanvasUserEnrollmentsSuccess[] | CanvasError> {
 	const res = await fetchCanvasProxy(token, {
 		method: 'GET',
 		url: '/api/v1/users/:user_id/enrollments',
@@ -47,7 +54,9 @@ export async function getCanvasUserEnrollments(token: string) {
 // User
 //
 
-export async function getUserSetting(token: string) {
+export async function getUserSetting(
+	token: string,
+): Promise<GetUserSettingSuccess> {
 	const res = await fetch(
 		`${env.BACKEND_URL}/api/v1/user/setting?platform=mobile`,
 		{
@@ -61,7 +70,10 @@ export async function getUserSetting(token: string) {
 	return toJSON<GetUserSettingSuccess>(res);
 }
 
-export async function setUserSetting(token: string, settings: Settings) {
+export async function setUserSetting(
+	token: string,
+	settings: Settings,
+): Promise<SetUserSettingSuccess> {
 	const res = await fetch(
 		`${env.BACKEND_URL}/api/v1/user/setting?platform=mobile`,
 		{
@@ -94,8 +106,4 @@ function fetchCanvasProxy(
 		},
 		body: JSON.stringify(body),
 	});
-}
-
-function toJSON<T>(res: Response): Promise<T> {
-	return res.json();
 }
