@@ -32,6 +32,12 @@ export interface QuestionOption {
 export interface BasicSessionInfo {
   id: number;
   name: string;
+  SessionGrades: SessionGradesInfo[];
+}
+
+export interface SessionGradesInfo {
+  avgPoints: number;
+  maxPoints: number;
 }
 
 export interface Session extends BasicSessionInfo {
@@ -53,19 +59,32 @@ export interface FolderAndQuestionResponse {
 }
 
 export interface CourseGradesResponse {
+  classAverage: ClassAverageInfo;
   students: StudentSessionInfo[];
   sessions: BasicSessionInfo[];
 }
 
 export interface SessionGradesResponse {
+  classAverage: ClassAverageInfo;
   students: StudentQuestionInfo[];
-  questions: QuestionGradeInfo[];
+  session: SessionInfo;
+}
+
+export interface SessionInfo {
+  name: string;
+  Questions: QuestionGradeInfo[];
 }
 
 export interface QuestionGradeInfo {
   id: number;
   title: string;
+  QuestionGrades: QuestionGradeAvgInfo[];
   SessionQuestion: SessionQuestion;
+}
+
+export interface QuestionGradeAvgInfo {
+  avgPoints: number;
+  maxPoints: number;
 }
 
 export interface SessionQuestion {
@@ -73,14 +92,21 @@ export interface SessionQuestion {
   sessionId: number;
 }
 
+export interface ClassAverageInfo {
+  points: number;
+  maxPoints: number;
+}
+
 export interface StudentSessionInfo {
   name: string;
+  total: number;
   canvasId: number;
   SessionGrades: Grade[];
 }
 
 export interface StudentQuestionInfo {
   name: string;
+  total: number;
   canvasId: number;
   QuestionGrades: Grade[];
 }

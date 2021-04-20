@@ -25,6 +25,10 @@ export const QuestionGrade: ModelDefined<
 			type: DataTypes.INTEGER,
 			allowNull: false,
 		},
+		sessionId: {
+			type: DataTypes.INTEGER,
+			allowNull: false,
+		},
 		questionId: {
 			type: DataTypes.INTEGER,
 			allowNull: false,

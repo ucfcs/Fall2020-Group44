@@ -26,7 +26,7 @@
     margin-right: 1rem;
     background-color: whitesmoke;
     color: black;
-    padding: 0 0.25rem;
+    padding: 0.5rem 1rem;
     border-radius: 0.25rem;
     box-shadow: 0px 3px 4px rgba(0, 0, 0, 0.4);
     font-weight: bold;
@@ -84,20 +84,56 @@
     border: 1px solid black;
   }
 
+  .header-text {
+    font-size: 22px;
+    color: #717171;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  th {
+    padding: 0.5em 1em 2em 1em;
+  }
+
   th,
   td {
-    min-width: 130px;
-    border: 1px solid lightgray;
+    min-width: 200px;
+    max-width: 200px;
+    border: 1px solid #c8c8c8;
 
-    padding: 0.5em 1em;
     font-size: 16px;
   }
 
+  .table-body-text {
+    color: #717171;
+  }
+
   tbody td {
+    padding: 0.5em 1em;
     font-size: 16px;
   }
 
   .align-right {
     text-align: right;
+  }
+
+  .averages-text {
+    font-size: 18px;
+    color: #717171;
+    font-weight: bold;
+  }
+
+  .bar {
+    width: 100%;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    background-color: #dddddd;
+    border-radius: 0.5rem;
+
+    .bar-value {
+      height: 7px;
+      border-radius: 0.5rem;
+    }
   }
 }

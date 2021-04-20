@@ -6,6 +6,7 @@ interface UserAttributes {
 	refreshToken: string;
 	tokenExpireTime: number;
 	public readonly SessionGrades?: SessionGrades[];
+	public readonly QuestionGrades?: QuestionGrades[];
 }
 
 interface UserCreationAttributes {
