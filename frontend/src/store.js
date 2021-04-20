@@ -6,8 +6,8 @@ const baseQuestionInfo = {
   question: "",
   type: "Mult Choice",
   QuestionOptions: [
-    { text: "", isAnswer: false },
-    { text: "", isAnswer: false },
+    { id: 1, text: "", isAnswer: false },
+    { id: 2, text: "", isAnswer: false },
   ],
   folderId: null,
   participationPoints: 0.5,
