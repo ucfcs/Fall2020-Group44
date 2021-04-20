@@ -39,33 +39,37 @@ export const Radios: FunctionComponent<RadioProps> = ({
 
 	return (
 		<>
-			{options.map((option) => (
-				<TouchableOpacity
-					key={option.key}
-					style={[
-						styles.baseRadio,
-						{
-							borderColor: option.key === selectedOption?.key ? GOLD : GRAY_3,
-						},
-						{
-							opacity: disable ? 0.25 : 1,
-						},
-					]}
-					onPress={() => {
-						setSelectedOption(option);
-						onSelect(option);
-					}}
-					disabled={disable}>
-					{option.key === selectedOption?.key ? (
-						<View style={[styles.dot, { borderColor: GOLD }]}>
-							<View style={styles.innerDot} />
-						</View>
-					) : (
-						<View style={[styles.dot, { borderColor: GRAY_3 }]} />
-					)}
-					<Text>{option.text}</Text>
-				</TouchableOpacity>
-			))}
+			{options.map((option) => {
+				const isThisSelected = option.key === selectedOption?.key;
+
+				return (
+					<TouchableOpacity
+						key={option.key}
+						style={[
+							styles.baseRadio,
+							{
+								borderColor: isThisSelected ? GOLD : GRAY_3,
+							},
+							{
+								opacity: disable && !isThisSelected ? 0.25 : 1,
+							},
+						]}
+						onPress={() => {
+							setSelectedOption(option);
+							onSelect(option);
+						}}
+						disabled={disable}>
+						{isThisSelected ? (
+							<View style={[styles.dot, { borderColor: GOLD }]}>
+								<View style={styles.innerDot} />
+							</View>
+						) : (
+							<View style={[styles.dot, { borderColor: GRAY_3 }]} />
+						)}
+						<Text>{option.text}</Text>
+					</TouchableOpacity>
+				);
+			})}
 		</>
 	);
 };
