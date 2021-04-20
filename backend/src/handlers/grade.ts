@@ -15,12 +15,13 @@ import { createAssignment, getStudents, postGrades } from '../util/canvas';
 import { calculate } from './sessionGrades';
 import { Sequelize } from 'sequelize';
 
-const mockUserid = 1;
 
 // GET /api/v1/courses/:courseId/grades
 export const getSessionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
+
+	const currentUser: any = event.requestContext.authorizer;
 	const courseId = event.pathParameters?.courseId;
 
 	if (!courseId) {
@@ -56,7 +57,7 @@ export const getSessionsGrades = async (
 
 		// Get all students belong to the current course from Canvas
 		const canvasStudents: CanvasStudent[] = await getStudents(
-			mockUserid,
+			currentUser.canvasId,
 			courseId
 		);
 
@@ -116,6 +117,7 @@ export const getSessionsGrades = async (
 export const getQuestionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
+	const currentUser: any = event.requestContext.authorizer;
 	const courseId = event.pathParameters?.courseId;
 	const sessionId = Number(event.pathParameters?.sessionId);
 
@@ -169,7 +171,7 @@ export const getQuestionsGrades = async (
 
 		// Get all students belong to the current course from Canvas
 		const canvasStudents: CanvasStudent[] = await getStudents(
-			mockUserid,
+			currentUser.canvasId,
 			courseId
 		);
 
@@ -229,6 +231,7 @@ export const getQuestionsGrades = async (
 export const exportGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
+	const user: any = event.requestContext.authorizer;
 	const courseId = event.pathParameters?.courseId;
 
 	if (!courseId) {
@@ -251,8 +254,8 @@ export const exportGrades = async (
 		const assignmentPoints = Number(body.points);
 
 		const [assignmentId, canvasStudents] = await Promise.all([
-			createAssignment(mockUserid, courseId, assignmentName, assignmentPoints), // Create a new assignment
-			getStudents(mockUserid, courseId), // Get all students belong to the current course from Canvas
+			createAssignment(user.canvasId, courseId, assignmentName, assignmentPoints), // Create a new assignment
+			getStudents(user.canvasId, courseId), // Get all students belong to the current course from Canvas
 		]);
 
 		// Calculate assignment points for each students
@@ -281,7 +284,7 @@ export const exportGrades = async (
 			})
 		);
 
-		await postGrades(mockUserid, courseId, assignmentId, grades);
+		await postGrades(user.canvasId, courseId, assignmentId, grades);
 
 		return responses.ok({
 			message: 'success',
