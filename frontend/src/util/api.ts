@@ -1,4 +1,4 @@
-import { Folder, Question } from "../types";
+import { ExportGradesBody, Folder, Question } from "../types";
 
 export async function getFolders(
   courseId: string,
@@ -155,6 +155,22 @@ export async function postSessionGrades(
   const response: Response = await sendPost(
     `${url}/courses/${courseId}/session/${sessionId}/grades`,
     {},
+    token
+  );
+
+  return response;
+}
+
+export async function exportGrades(
+  courseId: string,
+  body: ExportGradesBody,
+  token: string
+): Promise<Response> {
+  const url: string = getBaseUrl();
+
+  const response: Response = await sendPost(
+    `${url}/courses/${courseId}/grades/export`,
+    body,
     token
   );
 
