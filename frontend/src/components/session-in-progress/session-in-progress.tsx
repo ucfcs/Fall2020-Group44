@@ -118,16 +118,15 @@ const SessionInProgress = (): ReactElement => {
     <div className="session-in-progress">
       <PollHeader />
 
-      {/* <div className="grid"> */}
-      <SessionProgress
-        classSize={classSize}
-        responseCount={state.sessionQuestions[questionNumber].responseCount}
-      />
-
       <Sidebar questionCount={questions.length} />
-
-      <div className="content">{content()}</div>
-      {/* </div> */}
+      <div className="session-content">
+        <SessionProgress
+          classSize={classSize}
+          responseCount={state.sessionQuestions[questionNumber].responseCount}
+        />
+        <div className="content">{content()}</div>
+        {/* </div> */}
+      </div>
     </div>
   );
 };
