@@ -90,10 +90,15 @@ export const updateMany: APIGatewayProxyHandler = async (event) => {
 	}
 
 	try {
-		const p = [];
+		const oldQuestionOptions = await QuestionOption.findAll({
+			where: { questionId },
+		});
+		const upsertP = [];
+		const removeP = [];
 
+		// add new or update
 		for (const { id, text, isAnswer } of body) {
-			p.push(
+			upsertP.push(
 				QuestionOption.upsert({
 					id,
 					text,
@@ -103,13 +108,25 @@ export const updateMany: APIGatewayProxyHandler = async (event) => {
 			);
 		}
 
-		const r = await Promise.all(p);
-		console.log(r);
+		// remove questions that were removed
+		for (const oldQuestionOption of oldQuestionOptions) {
+			for (const newQuestionOption of body) {
+				if (oldQuestionOption.get().id === newQuestionOption.id) {
+					break;
+				}
+			}
 
-		// await QuestionOption.update(
-		// 	{ text: String(body?.text), isAnswer: body?.isAnswer == 'true' },
-		// 	{ where: { id: questionOptionId } }
-		// );
+			removeP.push(
+				QuestionOption.destroy({
+					where: {
+						id: oldQuestionOption.get().id,
+					},
+				})
+			);
+		}
+
+		await Promise.all(upsertP);
+		await Promise.all(removeP);
 
 		return responses.ok({
 			message: 'Success',
