@@ -1,9 +1,8 @@
-import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
+import { APIGatewayProxyHandler } from 'aws-lambda';
 import { QuestionOption } from '../models';
 import responses from '../util/api/responses';
 
-// POST /api/v1/question_option
-const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+export const create: APIGatewayProxyHandler = async (event) => {
 	const body = JSON.parse(event.body || '{}');
 	const questionId = event.pathParameters?.questionId;
 
@@ -31,8 +30,7 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-// PUT /api/v1/question_option
-const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+export const updateOne: APIGatewayProxyHandler = async (event) => {
 	const body = JSON.parse(event.body || '{}');
 	const questionOptionId = event.pathParameters?.optionId;
 
@@ -57,8 +55,74 @@ const update = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-// DELETE /api/v1/question_option
-const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
+export const updateMany: APIGatewayProxyHandler = async (event) => {
+	const questionId: number = Number.parseInt(
+		event.pathParameters?.questionId as string,
+		10
+	);
+	let body: QuestionlOptionAttributes[];
+
+	if (!questionId || Number.isNaN(questionId)) {
+		return responses.badRequest({
+			message: 'Question id was not set',
+		});
+	}
+
+	// lets check if they body was propperly formatted
+	try {
+		body = JSON.parse(event.body || '[]');
+	} catch (error) {
+		return responses.badRequest({
+			message: 'Body was not proper JSON',
+		});
+	}
+
+	if (!Array.isArray(body)) {
+		return responses.badRequest({
+			message: 'Missing body or what not an array of question options',
+		});
+	}
+
+	if (body.length <= 0) {
+		return responses.badRequest({
+			message: 'Question options was an empty array',
+		});
+	}
+
+	try {
+		const p = [];
+
+		for (const { id, text, isAnswer } of body) {
+			p.push(
+				QuestionOption.upsert({
+					id,
+					text,
+					isAnswer,
+					questionId,
+				})
+			);
+		}
+
+		const r = await Promise.all(p);
+		console.log(r);
+
+		// await QuestionOption.update(
+		// 	{ text: String(body?.text), isAnswer: body?.isAnswer == 'true' },
+		// 	{ where: { id: questionOptionId } }
+		// );
+
+		return responses.ok({
+			message: 'Success',
+		});
+	} catch (error) {
+		console.error(error);
+		return responses.badRequest({
+			message: error.name || 'Fail to update',
+		});
+	}
+};
+
+export const remove: APIGatewayProxyHandler = async (event) => {
 	const questionOptionId = event.pathParameters?.optionId;
 
 	if (!questionOptionId) {
@@ -79,5 +143,3 @@ const remove = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		});
 	}
 };
-
-export { create, update, remove };

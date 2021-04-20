@@ -71,16 +71,23 @@ export async function updateQuestion(
   questionId: number,
   newQuestion: NewQuestion | Question,
   token: string
-): Promise<Response> {
+): Promise<[Response, Response]> {
   const url: string = getBaseUrl();
+  const questionOnly = Object.assign(
+    {},
+    { QuestionOptions: undefined },
+    newQuestion
+  );
 
-  const response: Response = await sendPut(
-    `${url}/question/${questionId}`,
-    newQuestion,
+  const qres = sendPut(`${url}/question/${questionId}`, questionOnly, token);
+
+  const qores = sendPut(
+    `${url}/question/${questionId}/option`,
+    newQuestion.QuestionOptions,
     token
   );
 
-  return response;
+  return await Promise.all([qres, qores]);
 }
 
 export async function deleteQuestion(
