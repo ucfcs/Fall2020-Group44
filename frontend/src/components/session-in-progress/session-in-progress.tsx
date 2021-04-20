@@ -125,7 +125,6 @@ const SessionInProgress = (): ReactElement => {
           responseCount={state.sessionQuestions[questionNumber].responseCount}
         />
         <div className="content">{content()}</div>
-        {/* </div> */}
       </div>
     </div>
   );
