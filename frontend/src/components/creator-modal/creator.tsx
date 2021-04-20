@@ -114,13 +114,7 @@ const Creator = (): ReactElement => {
     <Modal>
       <form className="create-question-module" onSubmit={saveQuestion}>
         <div className="creator-header">
-          <button
-            className="exit"
-            onClick={(event: SyntheticEvent): void => {
-              event.preventDefault();
-              closePreviewQuestion();
-            }}
-          >
+          <button className="exit" type="button" onClick={closePreviewQuestion}>
             ×
           </button>
 
@@ -163,10 +157,7 @@ const Creator = (): ReactElement => {
           <button
             type="reset"
             className="cancel-button"
-            onClick={(event: SyntheticEvent): void => {
-              event.preventDefault();
-              closePreviewQuestion();
-            }}
+            onClick={closePreviewQuestion}
           >
             Cancel
           </button>

@@ -1,4 +1,4 @@
-import React, { ReactElement, SyntheticEvent, useContext } from "react";
+import React, { ReactElement, useContext } from "react";
 import { Question } from "../../../types";
 import AnswerChoice from "../answer-choice/answer-choice";
 import { v4 as uuid } from "uuid";
@@ -13,9 +13,7 @@ const MultipleChoice = (): ReactElement => {
 
   const question: Question = state.currentQuestionInfo;
 
-  const addAnswer = (event: SyntheticEvent): void => {
-    event.preventDefault();
-
+  const addAnswer = (): void => {
     const blankAnswer = {
       key: uuid(),
       text: "",
@@ -47,7 +45,7 @@ const MultipleChoice = (): ReactElement => {
       ))}
 
       <div className="add-answer">
-        <button className="add-answer-button" onClick={addAnswer}>
+        <button className="add-answer-button" type="button" onClick={addAnswer}>
           <span className="add-answer-icon">&#8853;&nbsp;</span>Add Answer
           Choice
         </button>
