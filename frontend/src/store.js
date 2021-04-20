@@ -75,7 +75,7 @@ const StateProvider = ({ children }) => {
       case "reset-current-question-info":
         return {
           ...state,
-          currentQuestionInfo: Object.assign({}, baseQuestionInfo),
+          currentQuestionInfo: JSON.parse(JSON.stringify(baseQuestionInfo)),
         };
       case "set-current-question-info":
         return { ...state, currentQuestionInfo: action.payload };
