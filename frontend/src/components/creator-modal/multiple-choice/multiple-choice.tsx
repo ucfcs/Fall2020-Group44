@@ -14,6 +14,7 @@ const MultipleChoice = (): ReactElement => {
 
   const addAnswer = (): void => {
     const blankAnswer = {
+      id: question.QuestionOptions.length + 1,
       text: "",
       isAnswer: false,
     };
