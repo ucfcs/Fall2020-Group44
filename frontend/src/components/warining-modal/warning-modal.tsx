@@ -12,11 +12,28 @@ const WarningModal = (): ReactElement => {
 
   const endSession = () => {
     dispatch({ type: "disable-exit-warning" });
+    clearSession();
     closeWarningModal();
   };
 
   const closeWarningModal = () => {
     dispatch({ type: "hide-exit-warning-modal" });
+  };
+
+  const clearSession = (): void => {
+    dispatch({ type: "update-question-number", payload: 0 });
+    dispatch({ type: "update-session-questions", payload: [] });
+
+    // tell websocket server to end the session,
+    // notifying all students
+    if (state.websocket) {
+      state.websocket.send(
+        JSON.stringify({
+          action: "endSession",
+          courseId: state.courseId,
+        })
+      );
+    }
   };
 
   return (

@@ -34,7 +34,6 @@ const SessionHeader = (): ReactElement => {
           src="/img/UCFReactLogoBlackBackground.png"
           onClick={() => {
             dispatch({ type: "show-exit-warning-modal" });
-            clearSession();
           }}
         />
       ) : (

@@ -38,7 +38,6 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
         payload: newQuestions,
       });
     } else {
-      dispatch({ type: "disable-exit-warning" });
       nextQuestion();
     }
   };
@@ -115,6 +114,15 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
       ) : questionNumber < props.questionCount - 1 ? (
         <button className="next-button control-button" onClick={goForward}>
           {nextStage}
+        </button>
+      ) : state.sessionInProgress ? (
+        <button
+          onClick={() => {
+            dispatch({ type: "show-exit-warning-modal" });
+          }}
+          className="control-button skip-button link-button"
+        >
+          End Session
         </button>
       ) : (
         <Link
