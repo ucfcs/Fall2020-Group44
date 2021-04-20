@@ -1,4 +1,4 @@
-import React, { ReactElement, useContext } from "react";
+import React, { ReactElement, SyntheticEvent, useContext } from "react";
 import { Question } from "../../../types";
 import AnswerChoice from "../answer-choice/answer-choice";
 import { v4 as uuid } from "uuid";
@@ -13,7 +13,9 @@ const MultipleChoice = (): ReactElement => {
 
   const question: Question = state.currentQuestionInfo;
 
-  const addAnswer = (): void => {
+  const addAnswer = (event: SyntheticEvent): void => {
+    event.preventDefault();
+
     const blankAnswer = {
       key: uuid(),
       text: "",

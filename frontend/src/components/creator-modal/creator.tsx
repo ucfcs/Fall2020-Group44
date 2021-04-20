@@ -114,7 +114,13 @@ const Creator = (): ReactElement => {
     <Modal>
       <form className="create-question-module" onSubmit={saveQuestion}>
         <div className="creator-header">
-          <button className="exit" onClick={closePreviewQuestion}>
+          <button
+            className="exit"
+            onClick={(event: SyntheticEvent): void => {
+              event.preventDefault();
+              closePreviewQuestion();
+            }}
+          >
             ×
           </button>
 
