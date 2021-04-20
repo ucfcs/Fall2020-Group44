@@ -91,6 +91,8 @@ const ExportModal = (): ReactElement => {
       return;
     }
 
+    setWarnEmptyName(false);
+    setWarnNoneSelected(false);
     setIsExporting(true);
 
     exportGrades(
