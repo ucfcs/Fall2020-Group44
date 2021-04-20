@@ -79,6 +79,12 @@ const Creator = (): ReactElement => {
         .then(updateAndClose)
         .catch(catchError);
     } else {
+      // remove the id's from the payload since theyll be assigned by the db/backend
+      info.QuestionOptions = info.QuestionOptions.map((q) => ({
+        text: q.text,
+        isAnswer: q.isAnswer,
+      }));
+
       createQuestion({ ...info, courseId: state.courseId }, state.jwt)
         .then(updateAndClose)
         .catch(catchError);
