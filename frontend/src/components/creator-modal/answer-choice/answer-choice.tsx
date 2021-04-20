@@ -82,6 +82,7 @@ const AnswerChoice = ({
       </div>
 
       <button
+        type="button"
         className="delete-answer"
         onClick={() => handleAnswerDelete(index)}
       >
