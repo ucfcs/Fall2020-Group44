@@ -53,8 +53,8 @@ const WarningModal = (): ReactElement => {
         </div>
         <div className="warning-body">
           <p className="warning-message">
-            There are incomplete questions. Are you sure you want to end the
-            session?
+            The session is incomplete because responses are still open for some
+            questions. Are you sure you want to end the session?
           </p>
         </div>
 

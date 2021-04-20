@@ -1,5 +1,5 @@
 import React, { ReactElement, SyntheticEvent, useContext } from "react";
-
+import { Question } from "../../../types";
 import { store } from "../../../store";
 
 import "./sidebar.scss";
@@ -45,7 +45,7 @@ const Sidebar = (props: SidebarProps): ReactElement => {
               value={number - 1}
               onClick={pickQuestion}
             >
-              Question {number}
+              Question {number} {props.questions[index].isClosed ? "✓" : ""}
             </button>
           </li>
         ))}
@@ -56,6 +56,7 @@ const Sidebar = (props: SidebarProps): ReactElement => {
 
 interface SidebarProps {
   questionCount: number;
+  questions: Question[];
 }
 
 export default Sidebar;
