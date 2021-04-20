@@ -35,7 +35,7 @@ const MultipleChoice = (): ReactElement => {
 
       {question.QuestionOptions.map((answer, index) => (
         <AnswerChoice
-          key={index}
+          key={answer.id}
           index={index}
           answer={answer}
           letter={String.fromCharCode(65 + index)}
