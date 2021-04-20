@@ -1,21 +1,67 @@
-import React, { ReactElement, SyntheticEvent, useState } from "react";
-import { Question } from "../../../types";
+import React, {
+  Dispatch,
+  ReactElement,
+  SetStateAction,
+  SyntheticEvent,
+  useContext,
+  useState,
+} from "react";
+import { store } from "../../../store";
+import { QuestionGradeInfo, SessionGradesResponse } from "../../../types";
+import { catchError, getSessionGrades } from "../../../util/api";
 
 import "./session-dropdown.scss";
 
 const SessionDropdown = (props: Props): ReactElement => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const global = useContext(store) as any;
+  const state = global.state;
+
   const [isOpen, setOpen] = useState(false);
   const [isSelected, setIsSelected] = useState(props.preSelected);
+
+  const [questions, setQuestions] = useState<string[]>([]);
 
   const iconClass = isOpen ? "open" : "closed";
 
   const handleDropdown = (event: SyntheticEvent): void => {
     event.preventDefault();
+
+    if (!isOpen && questions.length <= 0) {
+      getSessionGrades(state.courseId, props.id, state.jwt)
+        .then((response: Response) => response.json())
+        .then((response: SessionGradesResponse) => {
+          const questionTitles: string[] = [];
+
+          response.session.Questions.forEach((question: QuestionGradeInfo) => {
+            questionTitles.push(question.title);
+          });
+
+          setQuestions(questionTitles);
+        })
+        .catch(catchError);
+    }
+
     setOpen(!isOpen);
   };
 
   const handleSelect = (event: SyntheticEvent): void => {
-    setIsSelected((event.target as HTMLInputElement).checked);
+    const checked: boolean = (event.target as HTMLInputElement).checked;
+
+    setIsSelected(checked);
+
+    if (checked) {
+      const newSelectedIds: number[] = [...props.selectedIds];
+      newSelectedIds.push(props.id);
+
+      props.setSelectedIds(newSelectedIds);
+    } else {
+      const newSelectedIds: number[] = props.selectedIds.filter(
+        (id: number) => id !== props.id
+      );
+
+      props.setSelectedIds(newSelectedIds);
+    }
   };
 
   return (
@@ -45,9 +91,9 @@ const SessionDropdown = (props: Props): ReactElement => {
 
           {isOpen ? (
             <ol>
-              {props.questions.map(
-                (question: Question, index: number): ReactElement => (
-                  <li key={index}>{question.title}</li>
+              {questions.map(
+                (question: string, index: number): ReactElement => (
+                  <li key={index}>{question}</li>
                 )
               )}
             </ol>
@@ -58,21 +104,18 @@ const SessionDropdown = (props: Props): ReactElement => {
       <span className="points" onClick={handleDropdown}>
         {props.points}
       </span>
-
-      <span className="date" onClick={handleDropdown}>
-        {props.date}
-      </span>
     </div>
   );
 };
 
 interface Props {
   name: string;
-  date: string;
-  questions: Question[];
   points: number;
   index: number;
   preSelected: boolean;
+  id: number;
+  setSelectedIds: Dispatch<SetStateAction<number[]>>;
+  selectedIds: number[];
 }
 
 export default SessionDropdown;

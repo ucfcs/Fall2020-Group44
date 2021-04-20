@@ -116,3 +116,9 @@ export interface Grade {
   points: number;
   maxPoints: number;
 }
+
+export interface ExportGradesBody {
+  name: string;
+  points: number;
+  sessionIds: number[];
+}

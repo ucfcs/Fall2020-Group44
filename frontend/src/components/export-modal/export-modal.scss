@@ -54,7 +54,7 @@
     color: #666666;
     font-weight: bold;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     font-size: 1.25rem;
   }
 
@@ -103,5 +103,19 @@
 
   .export {
     background-color: #ffc904;
+  }
+
+  .warning {
+    color: red;
+    font-size: 1.25rem;
+    margin: 0;
+    margin-top: 1rem;
+  }
+
+  .waiting-warning {
+    font-size: 1.5rem;
+    margin: 0;
+    margin-top: 2rem;
+    text-align: center;
   }
 }
