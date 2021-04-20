@@ -14,7 +14,7 @@ const Sidebar = (props: SidebarProps): ReactElement => {
 
   const buttons: number[] = [];
 
-  for (let i = 0; i < props.questionCount; i++) {
+  for (let i = 0; i < props.questions.length; i++) {
     buttons.push(i + 1);
   }
 
@@ -55,7 +55,6 @@ const Sidebar = (props: SidebarProps): ReactElement => {
 };
 
 interface SidebarProps {
-  questionCount: number;
   questions: Question[];
 }
 
