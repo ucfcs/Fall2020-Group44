@@ -1,5 +1,11 @@
-import React, { ReactElement, SyntheticEvent, useContext } from "react";
+import React, {
+  ReactElement,
+  SyntheticEvent,
+  useContext,
+  useEffect,
+} from "react";
 import { RESPOND, RESPONSES, CORRECT_RESPONSE } from "../../../constants";
+import { Question } from "../../../types";
 
 import "./session-progress.scss";
 
@@ -14,6 +20,19 @@ const SessionProgress = (props: Props): ReactElement => {
   const questionNumber = state.questionNumber;
   const questionProgress = state.sessionQuestions[questionNumber].progress;
   const isClosed = state.sessionQuestions[questionNumber].isClosed;
+
+  // do this to compare objects
+  // because useEffect doesn't do deep compare
+  const effectDependency = JSON.stringify(state.sessionQuestions);
+
+  useEffect(() => {
+    if (
+      state.sessionQuestions.every((question: Question) => question.isClosed)
+    ) {
+      dispatch({ type: "disable-exit-warning" });
+      dispatch({ type: "hide-exit-warning-modal" });
+    }
+  }, [dispatch, state.sessionQuestions, effectDependency]);
 
   const updateProgress = (event: SyntheticEvent): void => {
     let progress: number;
@@ -129,7 +148,7 @@ const SessionProgress = (props: Props): ReactElement => {
         ) : (
           <img src="/img/unlock.svg" alt="" />
         )}
-        {isClosed ? "Responses Stopped" : "Stop Responses"}
+        {isClosed ? "Open Responses" : "Stop Responses"}
       </button>
     </div>
   );

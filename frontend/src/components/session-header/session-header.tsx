@@ -28,16 +28,40 @@ const SessionHeader = (): ReactElement => {
 
   return (
     <div className="session-header">
-      <Link to="/">
+      {state.sessionInProgress ? (
         <img
           alt="UCF React Logo"
           src="/img/UCFReactLogoBlackBackground.png"
-          onClick={clearSession}
+          onClick={() => {
+            dispatch({ type: "show-exit-warning-modal" });
+          }}
         />
-      </Link>
-      <Link onClick={clearSession} className="exit-button" to="/">
-        EXIT
-      </Link>
+      ) : (
+        <Link to="/">
+          <img
+            alt="UCF React Logo"
+            src="/img/UCFReactLogoBlackBackground.png"
+            onClick={clearSession}
+          />
+        </Link>
+      )}
+
+      <div className="exit-button-wrapper">
+        {state.sessionInProgress ? (
+          <button
+            className="exit-button"
+            onClick={() => {
+              dispatch({ type: "show-exit-warning-modal" });
+            }}
+          >
+            EXIT
+          </button>
+        ) : (
+          <Link onClick={clearSession} className="exit-button" to="/">
+            EXIT
+          </Link>
+        )}
+      </div>
     </div>
   );
 };
