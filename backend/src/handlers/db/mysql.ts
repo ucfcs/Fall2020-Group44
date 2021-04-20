@@ -35,6 +35,14 @@ export async function init(): Promise<void> {
 		for (let i = 0; i < models.length; i++) {
 			await models[i].sync({ alter: true });
 		}
+
+		// ignore the fact that its the User model
+		// each model has access to sequelize connection object
+		// after pointing to said object we can run raw querys from this script
+		await User.sequelize?.query(
+			'SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,"ONLY_FULL_GROUP_BY",""));'
+		);
+
 		LOG('mysql🐬 init successful'.green);
 	} catch (error) {
 		ERROR(error);
