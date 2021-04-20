@@ -94,7 +94,7 @@ functions:
       - http:
           cors: true
           method: post
-          path: /api/v1/courses/{courseId}/grades_export
+          path: /api/v1/courses/{courseId}/grades/export
           # authorizer: tokenAuthorizer
 
   #
