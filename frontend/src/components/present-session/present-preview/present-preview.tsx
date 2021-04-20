@@ -13,6 +13,10 @@ const PresentPreview = (props: Props): ReactElement => {
     dispatch({ type: "update-class-size", payload: props.studentsConnected });
   };
 
+  const startSession = () => {
+    dispatch({ type: "enable-exit-warning" });
+  };
+
   return (
     <div className="present-preview">
       <div className="preview-left">
@@ -23,7 +27,9 @@ const PresentPreview = (props: Props): ReactElement => {
         />
         <h2>{"Let's Begin!"}</h2>
         <button onClick={setClassSize} className="start-button">
-          <Link to="/poll/display">Start Session &gt;</Link>
+          <Link to="/poll/display" onClick={startSession}>
+            Start Session &gt;
+          </Link>
         </button>
         <p className="helper-text">
           Click Start Session to begin collecting responses

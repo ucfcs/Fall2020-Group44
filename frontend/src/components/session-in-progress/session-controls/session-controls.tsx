@@ -115,6 +115,15 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
         <button className="next-button control-button" onClick={goForward}>
           {nextStage}
         </button>
+      ) : state.sessionInProgress ? (
+        <button
+          onClick={() => {
+            dispatch({ type: "show-exit-warning-modal" });
+          }}
+          className="control-button skip-button link-button"
+        >
+          End Session
+        </button>
       ) : (
         <Link
           onClick={nextQuestion}

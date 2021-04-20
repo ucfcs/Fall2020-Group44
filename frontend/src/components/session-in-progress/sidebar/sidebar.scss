@@ -5,6 +5,8 @@
   border-right: 2px solid #737373;
   font-size: 24px;
 
+  overflow: auto;
+
   ol {
     list-style: none;
     padding: 0;
@@ -16,6 +18,7 @@
     font-size: inherit;
     padding: 1rem 2rem;
     color: #737373;
+    line-height: 24px;
 
     &.active {
       padding-left: 1.5rem;
