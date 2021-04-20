@@ -79,7 +79,7 @@ const Creator = (): ReactElement => {
         .then(updateAndClose)
         .catch(catchError);
     } else {
-      // remove the id's from the payload since theyll be assigned by the db/backend
+      // remove the keys from the payload
       info.QuestionOptions = info.QuestionOptions.map((q) => ({
         text: q.text,
         isAnswer: q.isAnswer,
@@ -117,7 +117,9 @@ const Creator = (): ReactElement => {
           <button className="exit" onClick={closePreviewQuestion}>
             ×
           </button>
+
           <span className="header-title">Create Question</span>
+
           <div className="header-tabs">
             <div
               className={`tab-buttons edit-tab ${isPreview ? "" : "selected"}`}
@@ -131,6 +133,7 @@ const Creator = (): ReactElement => {
             >
               Edit
             </div>
+
             <div
               className={`tab-buttons preview-tab ${
                 isPreview ? "selected" : ""
@@ -147,15 +150,21 @@ const Creator = (): ReactElement => {
             </div>
           </div>
         </div>
+
         {isPreview ? <CreatorPreview /> : <CreatorEdit />}
+
         <div className="buttons">
           <button
             type="reset"
             className="cancel-button"
-            onClick={closePreviewQuestion}
+            onClick={(event: SyntheticEvent): void => {
+              event.preventDefault();
+              closePreviewQuestion();
+            }}
           >
             Cancel
           </button>
+
           <button type="submit" className="save-button">
             Save
           </button>

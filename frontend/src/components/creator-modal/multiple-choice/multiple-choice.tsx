@@ -1,6 +1,7 @@
 import React, { ReactElement, useContext } from "react";
 import { Question } from "../../../types";
 import AnswerChoice from "../answer-choice/answer-choice";
+import { v4 as uuid } from "uuid";
 import { store } from "../../../store";
 import "./multiple-choice.scss";
 
@@ -14,7 +15,7 @@ const MultipleChoice = (): ReactElement => {
 
   const addAnswer = (): void => {
     const blankAnswer = {
-      id: question.QuestionOptions.length + 1,
+      key: uuid(),
       text: "",
       isAnswer: false,
     };
@@ -36,7 +37,7 @@ const MultipleChoice = (): ReactElement => {
 
       {question.QuestionOptions.map((answer, index) => (
         <AnswerChoice
-          key={answer.id}
+          key={answer.id !== undefined ? answer.id : answer.key}
           index={index}
           answer={answer}
           letter={String.fromCharCode(65 + index)}

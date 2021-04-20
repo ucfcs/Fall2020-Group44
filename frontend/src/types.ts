@@ -23,6 +23,7 @@ export interface Question {
 // correct.
 export interface QuestionOption {
   id?: number;
+  key?: string;
   questionId?: number;
   text: string;
   isAnswer: boolean;

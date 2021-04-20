@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useReducer } from "react";
+import { v4 as uuid } from "uuid";
 
 const baseQuestionInfo = {
   title: "",
   question: "",
   type: "Mult Choice",
   QuestionOptions: [
-    { id: 1, text: "", isAnswer: false },
-    { id: 2, text: "", isAnswer: false },
+    { key: uuid(), text: "", isAnswer: false },
+    { key: uuid(), text: "", isAnswer: false },
   ],
   folderId: null,
   participationPoints: 0.5,
@@ -28,7 +29,7 @@ const init = {
   questionNumber: 0,
   classSize: 0,
   openExportModal: false,
-  currentQuestionInfo: Object.assign({}, baseQuestionInfo),
+  currentQuestionInfo: JSON.parse(JSON.stringify(baseQuestionInfo)),
   websocket: null,
   jwt: null,
 };
