@@ -79,30 +79,26 @@ export const Home: FunctionComponent<
 	const [isLoading, setIsLoading] = useState(true);
 
 	// memoize these functions to only allocate
-	const startQuestionCallback = useCallback<OnStartQuestionCallback>(
-		(data) =>
-			dispatch({
-				type: 'SET_QUESTION',
-				payload: data.payload,
-			}),
-		[],
-	);
-	const endQuestionCallback = useCallback<OnEndQuestionCallback>(
-		() =>
-			dispatch({
-				type: 'SET_QUESTION',
-				payload: null,
-			}),
-		[],
-	);
-	const startSessionCallback = useCallback<OnStartSessionCallback>(
-		(data) =>
-			dispatch({
-				type: 'SET_SESSION',
-				payload: data.payload,
-			}),
-		[],
-	);
+	const startQuestionCallback = useCallback<OnStartQuestionCallback>((data) => {
+		dispatch({
+			type: 'UNLOCK_QUESTION',
+		});
+		dispatch({
+			type: 'SET_QUESTION',
+			payload: data.payload,
+		});
+	}, []);
+	const endQuestionCallback = useCallback<OnEndQuestionCallback>(() => {
+		dispatch({
+			type: 'LOCK_QUESTION',
+		});
+	}, []);
+	const startSessionCallback = useCallback<OnStartSessionCallback>((data) => {
+		dispatch({
+			type: 'SET_SESSION',
+			payload: data.payload,
+		});
+	}, []);
 	const endSessionCallback = useCallback<OnEndSessionCallback>(() => {
 		dispatch({
 			type: 'SET_SESSION',

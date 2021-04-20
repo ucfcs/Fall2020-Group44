@@ -1,5 +1,6 @@
 interface RadioProps {
 	options: Option[];
+	disable: boolean;
 	onSelect: (option: Option) => void;
 }
 

@@ -3,11 +3,9 @@ import React, {
 	useCallback,
 	useContext,
 	useEffect,
-	useRef,
 	useState,
 } from 'react';
 import {
-	Animated,
 	StyleSheet,
 	View,
 	SafeAreaView,
@@ -17,9 +15,10 @@ import {
 import { StackScreenProps } from '@react-navigation/stack';
 
 import { Radios } from './Radios';
-import { BLACK, PURE_WHITE } from '../libs/colors';
+import { BLACK } from '../libs/colors';
 import * as ws from '../services/websocket';
 import { AppContext } from './Provider';
+import { Toast } from './Toast';
 
 const styles = StyleSheet.create({
 	safeArea: {
@@ -41,35 +40,14 @@ const styles = StyleSheet.create({
 		fontSize: 24,
 		marginBottom: 32,
 	},
-	toast: {
-		borderRadius: 4,
-		backgroundColor: PURE_WHITE,
-		width: '100%',
-		height: 48,
-		shadowColor: BLACK,
-		shadowOffset: {
-			width: 1,
-			height: 1,
-		},
-		shadowRadius: 4,
-		shadowOpacity: 0.5,
-		justifyContent: 'center',
-		alignItems: 'center',
-	},
-	toastText: {
-		color: BLACK,
-		fontSize: 16,
-	},
 });
 
 export const Questions: FunctionComponent<
 	StackScreenProps<QuestionStackTree, 'Questions'>
 > = ({ navigation }) => {
 	const { state } = useContext(AppContext);
-	const [showToast, setShowTest] = useState(false);
 	const [waiting, setWaiting] = useState(true);
-	const fadeAnim = useRef(new Animated.Value(0)).current;
-	const tranAnim = useRef(new Animated.Value(0)).current;
+	let toast: ToastRefAttributes | null = null;
 
 	//
 	// memoize the callbacks
@@ -87,8 +65,7 @@ export const Questions: FunctionComponent<
 					userId: state.id.toString(),
 				});
 
-				// show toast
-				setShowTest(true);
+				toast?.cheer('Response Submitted');
 			}
 		},
 		[state.question, state.session, state.id],
@@ -99,45 +76,18 @@ export const Questions: FunctionComponent<
 		() => navigation.pop(),
 		[],
 	);
-
-	useEffect(() => {
-		ws.add('endSession', endSessionCallback);
-		return () => ws.remove('endSession', endSessionCallback);
+	const endQuestionCallback = useCallback<OnEndQuestionCallback>(() => {
+		toast?.cheer('Answering is Locked');
 	}, []);
 
 	useEffect(() => {
-		if (showToast) {
-			Animated.parallel([
-				Animated.timing(tranAnim, {
-					toValue: -32,
-					useNativeDriver: true,
-					duration: 1000,
-				}),
-				Animated.timing(fadeAnim, {
-					toValue: 1,
-					useNativeDriver: true,
-					duration: 1000,
-				}),
-			]).start(() => {
-				Animated.parallel([
-					Animated.timing(tranAnim, {
-						toValue: 0,
-						useNativeDriver: true,
-						duration: 1000,
-						delay: 3000,
-					}),
-					Animated.timing(fadeAnim, {
-						toValue: 0,
-						useNativeDriver: true,
-						duration: 1000,
-						delay: 3000,
-					}),
-				]).start();
-			});
-
-			setShowTest(false);
-		}
-	}, [showToast]);
+		ws.add('endSession', endSessionCallback);
+		ws.add('endQuestion', endQuestionCallback);
+		return () => {
+			ws.remove('endSession', endSessionCallback);
+			ws.remove('endQuestion', endQuestionCallback);
+		};
+	}, []);
 
 	useEffect(() => {
 		const timePtr = setTimeout(setWaiting, 1000, false);
@@ -153,7 +103,7 @@ export const Questions: FunctionComponent<
 		<SafeAreaView style={styles.safeArea}>
 			<View style={styles.container}>
 				<AppContext.Consumer>
-					{({ state: { question } }) =>
+					{({ state: { question, questionIsLocked } }) =>
 						waiting || !question ? (
 							<>
 								<Text style={styles.header}>Waiting on Next Question</Text>
@@ -168,23 +118,18 @@ export const Questions: FunctionComponent<
 										text: q.text,
 									}))}
 									onSelect={onSelectCallback}
+									disable={questionIsLocked}
 								/>
 							</>
 						)
 					}
 				</AppContext.Consumer>
-				<Animated.View // Special animatable View
-					style={{
-						position: 'absolute',
-						width: '100%',
-						bottom: 0,
-						opacity: fadeAnim,
-						transform: [{ translateY: tranAnim }],
-					}}>
-					<View style={styles.toast}>
-						<Text style={styles.toastText}>Response Submitted</Text>
-					</View>
-				</Animated.View>
+				<Toast
+					ref={(t) => {
+						// for some reason ref can come back as null
+						if (t) toast = t;
+					}}
+				/>
 			</View>
 		</SafeAreaView>
 	);
