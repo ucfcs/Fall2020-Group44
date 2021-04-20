@@ -8,6 +8,7 @@ interface QuestionlOptionAttributes {
 }
 
 interface QuestionOptionCreationAttributes {
+	id?: QuestionOptionId;
 	questionId: QuestionId;
 	text: string;
 	isAnswer: boolean;
