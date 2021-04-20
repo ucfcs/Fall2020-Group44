@@ -64,7 +64,7 @@ export const updateMany: APIGatewayProxyHandler = async (event) => {
 
 	if (!questionId || Number.isNaN(questionId)) {
 		return responses.badRequest({
-			message: 'Question id was not set',
+			message: 'The question id was not set.',
 		});
 	}
 
@@ -73,19 +73,19 @@ export const updateMany: APIGatewayProxyHandler = async (event) => {
 		body = JSON.parse(event.body || '[]');
 	} catch (error) {
 		return responses.badRequest({
-			message: 'Body was not proper JSON',
+			message: 'The body was not a proper JSON string.',
 		});
 	}
 
 	if (!Array.isArray(body)) {
 		return responses.badRequest({
-			message: 'Missing body or what not an array of question options',
+			message: 'The body was not an array of question options.',
 		});
 	}
 
 	if (body.length <= 0) {
 		return responses.badRequest({
-			message: 'Question options was an empty array',
+			message: 'Question options were an empty array.',
 		});
 	}
 
