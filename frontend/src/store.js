@@ -28,7 +28,7 @@ const init = {
   questionNumber: 0,
   classSize: 0,
   openExportModal: false,
-  currentQuestionInfo: JSON.parse(JSON.stringify(baseQuestionInfo)),
+  currentQuestionInfo: Object.assign({}, baseQuestionInfo),
   websocket: null,
   jwt: null,
 };
@@ -74,7 +74,7 @@ const StateProvider = ({ children }) => {
       case "reset-current-question-info":
         return {
           ...state,
-          currentQuestionInfo: JSON.parse(JSON.stringify(baseQuestionInfo)),
+          currentQuestionInfo: Object.assign({}, baseQuestionInfo),
         };
       case "set-current-question-info":
         return { ...state, currentQuestionInfo: action.payload };
