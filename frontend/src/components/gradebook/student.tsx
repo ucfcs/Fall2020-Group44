@@ -1,7 +1,8 @@
+import { Session } from "inspector";
 import React, { ReactElement } from "react";
-import { Grade, StudentSessionInfo } from "../../types";
+import { Grade, StudentSessionInfo, BasicSessionInfo } from "../../types";
 
-const Student = ({ student }: Props): ReactElement => {
+const Student = ({ student, sessions }: Props): ReactElement => {
   return (
     <tr className="student">
       <td className="first-column table-body-text">{student.name}</td>
@@ -9,9 +10,13 @@ const Student = ({ student }: Props): ReactElement => {
         {student.total.toFixed(2)}
       </td>
 
-      {student.SessionGrades.map((sessionGrade: Grade, sIndex: number) => (
+      {sessions.map((session: BasicSessionInfo, sIndex: number) => (
         <td key={sIndex} className="align-right table-body-text">
-          {sessionGrade.points.toFixed(2)}
+          {student.SessionGrades.map((grade: Grade) => {
+            if (grade.sessionId === session.id) {
+              return grade.points.toFixed(2);
+            }
+          })}
         </td>
       ))}
     </tr>
@@ -20,6 +25,7 @@ const Student = ({ student }: Props): ReactElement => {
 
 interface Props {
   student: StudentSessionInfo;
+  sessions: BasicSessionInfo[];
 }
 
 export default Student;

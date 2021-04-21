@@ -164,7 +164,7 @@ const Gradebook = (): ReactElement => {
                   })}
                 </tr>
                 {students.map((student: StudentSessionInfo, index: number) => (
-                  <Student key={index} student={student} />
+                  <Student key={index} student={student} sessions={sessions} />
                 ))}
               </tbody>
             </table>
