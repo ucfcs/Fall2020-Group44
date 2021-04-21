@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
-import { Grade, StudentSessionInfo } from "../../types";
+import { Grade, StudentSessionInfo, BasicSessionInfo } from "../../types";
 
-const Student = ({ student }: Props): ReactElement => {
+const Student = ({ student, sessions }: Props): ReactElement => {
   return (
     <tr className="student">
       <td className="first-column table-body-text">{student.name}</td>
@@ -9,17 +9,37 @@ const Student = ({ student }: Props): ReactElement => {
         {student.total.toFixed(2)}
       </td>
 
-      {student.SessionGrades.map((sessionGrade: Grade, sIndex: number) => (
-        <td key={sIndex} className="align-right table-body-text">
-          {sessionGrade.points.toFixed(2)}
-        </td>
-      ))}
+      {
+        // for each session
+        sessions.map((session: BasicSessionInfo, sIndex: number) => {
+          let isEmpty = true;
+          return (
+            <td key={sIndex} className="align-right table-body-text">
+              {
+                // check if a student has a grade
+                student.SessionGrades.map((grade: Grade) => {
+                  // if so, display the grade
+                  if (grade.sessionId === session.id) {
+                    isEmpty = false;
+                    return grade.points.toFixed(2);
+                  }
+                })
+              }
+              {
+                // if not, display a dash
+                isEmpty && "-"
+              }
+            </td>
+          );
+        })
+      }
     </tr>
   );
 };
 
 interface Props {
   student: StudentSessionInfo;
+  sessions: BasicSessionInfo[];
 }
 
 export default Student;

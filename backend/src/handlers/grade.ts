@@ -181,12 +181,6 @@ export const getQuestionsGrades = async (
 		// Get grades for each student
 		const students = await Promise.all(
 			canvasStudents.map(async (student: CanvasStudent) => {
-				const sessionGradeId = (
-					await SessionGrade.findOne({
-						where: { sessionId: sessionId, userId: student.id },
-					})
-				)?.get().id;
-
 				const user = await User.findOne({
 					attributes: ['canvasId'],
 					where: { canvasId: student.id },
@@ -194,7 +188,7 @@ export const getQuestionsGrades = async (
 						model: QuestionGrade,
 						attributes: ['id', 'points', 'maxPoints'],
 						where: {
-							sessionGradeId: sessionGradeId,
+							sessionId: sessionId,
 						},
 					},
 				});
