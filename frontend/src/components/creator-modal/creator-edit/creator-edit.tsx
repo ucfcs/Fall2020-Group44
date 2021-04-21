@@ -12,7 +12,9 @@ const CreatorEdit = (): ReactElement => {
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: Question = state.currentQuestionInfo;
+  const question: Question = JSON.parse(
+    JSON.stringify(state.currentQuestionInfo)
+  );
 
   const handleTitleChange = (event: SyntheticEvent): void => {
     const tempQuestion = {
@@ -193,7 +195,10 @@ const CreatorEdit = (): ReactElement => {
               id="participation-input"
               type="number"
               onChange={updateParticipation}
-              value={state.currentQuestionInfo.participationPoints}
+              value={
+                JSON.parse(JSON.stringify(state.currentQuestionInfo))
+                  .participationPoints
+              }
               step="0.1"
               min="0.0"
             />
@@ -206,7 +211,10 @@ const CreatorEdit = (): ReactElement => {
               id="correctness-input"
               type="number"
               onChange={updateCorrectness}
-              value={state.currentQuestionInfo.correctnessPoints}
+              value={
+                JSON.parse(JSON.stringify(state.currentQuestionInfo))
+                  .correctnessPoints
+              }
               step="0.1"
               min="0.0"
             />
