@@ -30,6 +30,8 @@ const SessionInProgress = (): ReactElement => {
     state.websocket.onmessage = (event: MessageEvent) => {
       const message = JSON.parse(event.data);
 
+      console.log(message);
+
       switch (message.action) {
         case "studentSubmittedNew":
           if (!isClosed) {
@@ -59,15 +61,17 @@ const SessionInProgress = (): ReactElement => {
             const newQuestions = state.sessionQuestions;
             newQuestions[questionNumber].QuestionOptions.forEach(
               (option: QuestionOption) => {
-                // increment the response count of the new QuestionOption
-                if (option.id == message.payload.new) {
-                  if (typeof option.responseCount === "number")
-                    option.responseCount++;
-                }
-                // decrement the response count of the old QuestionOption
-                else if (option.id == message.payload.previous) {
-                  if (typeof option.responseCount === "number")
-                    option.responseCount--;
+                if (message.payload.previous !== message.payload.new) {
+                  // increment the response count of the new QuestionOption
+                  if (option.id == message.payload.new) {
+                    if (typeof option.responseCount === "number")
+                      option.responseCount++;
+                  }
+                  // decrement the response count of the old QuestionOption
+                  else if (option.id == message.payload.previous) {
+                    if (typeof option.responseCount === "number")
+                      option.responseCount--;
+                  }
                 }
               }
             );
