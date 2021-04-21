@@ -16,13 +16,12 @@ import { createAssignment, getStudents, postGrades } from '../util/canvas';
 import { calculate } from './sessionGrades';
 import { Sequelize } from 'sequelize';
 
-
 // GET /api/v1/courses/:courseId/grades
 export const getSessionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
-
-	const currentUser: APIGatewayEventDefaultAuthorizerContext = event.requestContext.authorizer || {};
+	const currentUser: APIGatewayEventDefaultAuthorizerContext =
+		event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 
 	if (!courseId) {
@@ -118,7 +117,8 @@ export const getSessionsGrades = async (
 export const getQuestionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
-	const currentUser: APIGatewayEventDefaultAuthorizerContext= event.requestContext.authorizer || {};
+	const currentUser: APIGatewayEventDefaultAuthorizerContext =
+		event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 	const sessionId = Number(event.pathParameters?.sessionId);
 
@@ -232,7 +232,8 @@ export const getQuestionsGrades = async (
 export const exportGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
-	const currentUser: APIGatewayEventDefaultAuthorizerContext= event.requestContext.authorizer || {};
+	const currentUser: APIGatewayEventDefaultAuthorizerContext =
+		event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 
 	if (!courseId) {
@@ -255,7 +256,12 @@ export const exportGrades = async (
 		const assignmentPoints = Number(body.points);
 
 		const [assignmentId, canvasStudents] = await Promise.all([
-			createAssignment(currentUser.canvasId, courseId, assignmentName, assignmentPoints), // Create a new assignment
+			createAssignment(
+				currentUser.canvasId,
+				courseId,
+				assignmentName,
+				assignmentPoints
+			), // Create a new assignment
 			getStudents(currentUser.canvasId, courseId), // Get all students belong to the current course from Canvas
 		]);
 
@@ -299,7 +305,8 @@ export const exportGrades = async (
 };
 
 export const setQuestionsGrades: APIGatewayProxyHandler = async (event) => {
-	const currentUser: APIGatewayEventDefaultAuthorizerContext= event.requestContext.authorizer || {};
+	const currentUser: APIGatewayEventDefaultAuthorizerContext =
+		event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 	const sessionId = Number(event.pathParameters?.sessionId);
 
