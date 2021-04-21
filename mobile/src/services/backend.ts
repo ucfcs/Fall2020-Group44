@@ -62,6 +62,8 @@ export async function getUserSetting(
 		{
 			method: 'GET',
 			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 		},
@@ -79,6 +81,8 @@ export async function setUserSetting(
 		{
 			method: 'PUT',
 			headers: {
+				Accept: 'application/json',
+				'Content-Type': 'application/json',
 				Authorization: `Bearer ${token}`,
 			},
 			body: JSON.stringify(settings),
@@ -102,6 +106,8 @@ function fetchCanvasProxy(
 	return fetch(`${env.BACKEND_URL}/api/v1/proxy/canvas`, {
 		method: 'POST',
 		headers: {
+			Accept: 'application/json',
+			'Content-Type': 'application/json',
 			Authorization: `Bearer ${token}`,
 		},
 		body: JSON.stringify(body),
