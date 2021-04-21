@@ -10,20 +10,30 @@ const Student = ({ student, sessions }: Props): ReactElement => {
         {student.total.toFixed(2)}
       </td>
 
-      {sessions.map((session: BasicSessionInfo, sIndex: number) => {
-        let isEmpty = true;
-        return (
-          <td key={sIndex} className="align-right table-body-text">
-            {student.SessionGrades.map((grade: Grade) => {
-              if (grade.sessionId === session.id) {
-                isEmpty = false;
-                return grade.points.toFixed(2);
+      {
+        // for each session
+        sessions.map((session: BasicSessionInfo, sIndex: number) => {
+          let isEmpty = true;
+          return (
+            <td key={sIndex} className="align-right table-body-text">
+              {
+                // check if a student has a grade
+                student.SessionGrades.map((grade: Grade) => {
+                  // if so, display the grade
+                  if (grade.sessionId === session.id) {
+                    isEmpty = false;
+                    return grade.points.toFixed(2);
+                  }
+                })
               }
-            })}
-            {isEmpty && "-"}
-          </td>
-        );
-      })}
+              {
+                // if not, display a dash
+                isEmpty && "-"
+              }
+            </td>
+          );
+        })
+      }
     </tr>
   );
 };
