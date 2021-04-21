@@ -192,8 +192,8 @@ const ContentTree = (): ReactElement => {
             <div>
               {questions.map((folder: Folder, fIndex: number) =>
                 folder.name !== null ? (
-                  <div>
-                    <div key={fIndex}>
+                  <div key={fIndex}>
+                    <div>
                       <div
                         className={`folder ${
                           folderCollapse[fIndex] ? "collapsed" : ""
