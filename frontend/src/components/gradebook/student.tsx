@@ -13,9 +13,9 @@ const Student = ({ student, sessions }: Props): ReactElement => {
       {sessions.map((session: BasicSessionInfo, sIndex: number) => (
         <td key={sIndex} className="align-right table-body-text">
           {student.SessionGrades.map((grade: Grade) => {
-            if (grade.sessionId === session.id) {
-              return grade.points.toFixed(2);
-            }
+            return grade.sessionId === session.id
+              ? grade.points.toFixed(2)
+              : "-";
           })}
         </td>
       ))}
