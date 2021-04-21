@@ -1,6 +1,7 @@
 import React, { ReactElement, useContext } from "react";
 import { Link } from "react-router-dom";
 import { store } from "../../store";
+import { postSessionGrades } from "../../util/api";
 
 import "./session-header.scss";
 
@@ -11,8 +12,14 @@ const SessionHeader = (): ReactElement => {
   const state = global.state;
 
   const clearSession = (): void => {
+    postSessionGrades(
+      state.courseId,
+      state.sessionId,
+      state.jwt
+    ).catch((error) => console.log(error));
     dispatch({ type: "update-question-number", payload: 0 });
     dispatch({ type: "update-session-questions", payload: [] });
+    dispatch({ type: "update-session-id", payload: -1 });
 
     // tell websocket server to end the session,
     // notifying all students
