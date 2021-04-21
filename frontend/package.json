@@ -26,7 +26,8 @@
     "eject": "react-scripts eject",
     "format": "prettier -w src/",
     "lint": "eslint src/ --fix",
-    "cleanup": "prettier -w src/ && eslint src/ --fix"
+    "cleanup": "prettier -w src/ && eslint src/ --fix",
+    "deploy": "aws s3 sync ./build s3://ucfreact"
   },
   "eslintConfig": {
     "extends": [
