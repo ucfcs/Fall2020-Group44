@@ -1,13 +1,14 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 import React, { useReducer } from "react";
+import { v4 as uuid } from "uuid";
 
 const baseQuestionInfo = {
   title: "",
   question: "",
   type: "Mult Choice",
   QuestionOptions: [
-    { text: "", isAnswer: false },
-    { text: "", isAnswer: false },
+    { key: uuid(), text: "", isAnswer: false },
+    { key: uuid(), text: "", isAnswer: false },
   ],
   folderId: null,
   participationPoints: 0.5,

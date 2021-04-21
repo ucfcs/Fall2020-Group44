@@ -71,16 +71,25 @@ export async function updateQuestion(
   questionId: number,
   newQuestion: NewQuestion | Question,
   token: string
-): Promise<Response> {
+): Promise<[Response, Response]> {
   const url: string = getBaseUrl();
 
-  const response: Response = await sendPut(
+  // first lets up the first level of the question
+  const questionUpdateResponse: Promise<Response> = sendPut(
     `${url}/question/${questionId}`,
     newQuestion,
     token
   );
 
-  return response;
+  // then well update the nest props of a question object
+  // i.e. the question options
+  const optionsUpdateManyResponse: Promise<Response> = sendPut(
+    `${url}/question/${questionId}/option`,
+    newQuestion.QuestionOptions,
+    token
+  );
+
+  return await Promise.all([questionUpdateResponse, optionsUpdateManyResponse]);
 }
 
 export async function deleteQuestion(

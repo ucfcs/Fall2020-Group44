@@ -79,6 +79,12 @@ const Creator = (): ReactElement => {
         .then(updateAndClose)
         .catch(catchError);
     } else {
+      // remove the keys from the payload
+      info.QuestionOptions = info.QuestionOptions.map((q) => ({
+        text: q.text,
+        isAnswer: q.isAnswer,
+      }));
+
       createQuestion({ ...info, courseId: state.courseId }, state.jwt)
         .then(updateAndClose)
         .catch(catchError);
@@ -108,10 +114,12 @@ const Creator = (): ReactElement => {
     <Modal>
       <form className="create-question-module" onSubmit={saveQuestion}>
         <div className="creator-header">
-          <button className="exit" onClick={closePreviewQuestion}>
+          <button className="exit" type="button" onClick={closePreviewQuestion}>
             ×
           </button>
+
           <span className="header-title">Create Question</span>
+
           <div className="header-tabs">
             <div
               className={`tab-buttons edit-tab ${isPreview ? "" : "selected"}`}
@@ -125,6 +133,7 @@ const Creator = (): ReactElement => {
             >
               Edit
             </div>
+
             <div
               className={`tab-buttons preview-tab ${
                 isPreview ? "selected" : ""
@@ -141,7 +150,9 @@ const Creator = (): ReactElement => {
             </div>
           </div>
         </div>
+
         {isPreview ? <CreatorPreview /> : <CreatorEdit />}
+
         <div className="buttons">
           <button
             type="reset"
@@ -150,6 +161,7 @@ const Creator = (): ReactElement => {
           >
             Cancel
           </button>
+
           <button type="submit" className="save-button">
             Save
           </button>

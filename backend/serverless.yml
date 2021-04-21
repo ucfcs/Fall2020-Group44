@@ -200,13 +200,22 @@ functions:
           method: post
           path: /api/v1/question/{questionId}/option
           authorizer: tokenAuthorizer
-  updateQuestionOption:
-    handler: src/handlers/question_option.update
+  updateOneQuestionOption:
+    handler: src/handlers/question_option.updateOne
     events:
       - http:
           cors: true
           method: put
           path: /api/v1/question/{questionId}/option/{optionId}
+          authorizer: tokenAuthorizer
+          authorizer: tokenAuthorizer
+  updateManyQuestionOption:
+    handler: src/handlers/question_option.updateMany
+    events:
+      - http:
+          cors: true
+          method: put
+          path: /api/v1/question/{questionId}/option
           authorizer: tokenAuthorizer
   deleteQuestionOption:
     handler: src/handlers/question_option.remove
@@ -431,7 +440,6 @@ functions:
     events:
       - websocket:
           route: endQuestion
-
 
 custom:
   webpack:
