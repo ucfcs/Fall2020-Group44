@@ -10,11 +10,11 @@ import {
 import responses from '../util/api/responses';
 import { getStudents } from '../util/canvas';
 
-const mockUserid = 1;
 
 const calculate = async (
 	courseId: string,
-	sessionId: number
+	sessionId: number,
+	userId: number
 ): Promise<ProxyResult> => {
 	try {
 		//get the questions for that session to calculate the max points
@@ -58,7 +58,7 @@ const calculate = async (
 			questionIdMap.set(q.id, index);
 		});
 
-		const users: number[] = (await getStudents(mockUserid, courseId)).map(
+		const users: number[] = (await getStudents(userId, courseId)).map(
 			(student) => student.id
 		);
 

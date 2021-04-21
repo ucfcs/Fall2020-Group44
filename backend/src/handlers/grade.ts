@@ -299,6 +299,7 @@ export const exportGrades = async (
 };
 
 export const setQuestionsGrades: APIGatewayProxyHandler = async (event) => {
+	const currentUser: APIGatewayEventDefaultAuthorizerContext= event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 	const sessionId = Number(event.pathParameters?.sessionId);
 
@@ -315,7 +316,7 @@ export const setQuestionsGrades: APIGatewayProxyHandler = async (event) => {
 	}
 
 	try {
-		await calculate(courseId, sessionId);
+		await calculate(courseId, sessionId, Number(currentUser.canvasId));
 		return responses.ok();
 	} catch (error) {
 		console.error(error);
