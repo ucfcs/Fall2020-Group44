@@ -1,4 +1,4 @@
-import { BACKEND_URL } from '../../.env.json';
+import { BACKEND_URL } from '../../env.json';
 import { toJSON } from '../util';
 
 export function oauthMobileURL(): Promise<GetOauthMobileURL> {

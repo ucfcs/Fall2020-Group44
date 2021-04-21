@@ -4,7 +4,7 @@
 
 - [Setup Environment](https://reactnative.dev/docs/environment-setup)
 - [Running on Device](https://reactnative.dev/docs/running-on-device)
-- Setup ngrok as a proxy for the backend and add that url to the `.env.json`
+- Setup ngrok as a proxy for the backend and add that url to the `env.json`
 
 ## Run instructions for iOS:
 
@@ -29,7 +29,7 @@ up-to-date instructions.
 
 ## Environment Variable File
 
-Create a `.env.json` file in the root folder for mobile and provide the
+Create a `env.json` file in the root folder for mobile and provide the
 following content. An object with one property, `BACKEND_URL`.
 
 ```json
@@ -49,7 +49,7 @@ tab 1 - youll need to run ngrok to act as a proxy for your backend
 - copy the url and update the following places
   - the redirect url on canvas developer keys
   - the backend .env redirect url var
-  - into the `.env.json` in the mobile folder
+  - into the `env.json` in the mobile folder
 
 tab 2 - will be used to run the backend. `npm run dev`
 
