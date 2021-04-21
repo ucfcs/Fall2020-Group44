@@ -57,6 +57,8 @@ const QuestionSelect = (): ReactElement => {
 
         const { data } = await res.json();
 
+        dispatch({ type: "update-session-id", payload: data.id });
+
         if (state.websocket) {
           state.websocket.send(
             JSON.stringify({

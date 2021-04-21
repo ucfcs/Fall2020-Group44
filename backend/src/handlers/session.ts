@@ -2,8 +2,6 @@ import { APIGatewayEvent, ProxyResult } from 'aws-lambda';
 import { Session, SessionQuestion, Question, QuestionOption } from '../models';
 import responses from '../util/api/responses';
 
-const mockUserid = 1;
-
 // GET /api/v1/cousrse/:courseId/session/:sessionId
 const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	const sessionId = event.pathParameters?.sessionId;
@@ -11,7 +9,6 @@ const get = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		const session = await Session.findOne({
 			where: {
 				id: sessionId,
-				userId: mockUserid,
 			},
 			include: {
 				model: Question,
@@ -46,7 +43,6 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 		const data = await Session.create({
 			name: new Date().toDateString(),
 			courseId: courseId as string,
-			userId: mockUserid,
 		});
 		const sessionId = data.get().id;
 
