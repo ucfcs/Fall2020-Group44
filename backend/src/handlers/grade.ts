@@ -2,6 +2,7 @@ import {
 	APIGatewayProxyHandler,
 	APIGatewayEvent,
 	ProxyResult,
+	APIGatewayEventDefaultAuthorizerContext,
 } from 'aws-lambda';
 import {
 	Question,
@@ -15,12 +16,12 @@ import { createAssignment, getStudents, postGrades } from '../util/canvas';
 import { calculate } from './sessionGrades';
 import { Sequelize } from 'sequelize';
 
-const mockUserid = 1;
-
 // GET /api/v1/courses/:courseId/grades
 export const getSessionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
+	const currentUser: APIGatewayEventDefaultAuthorizerContext =
+		event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 
 	if (!courseId) {
@@ -56,7 +57,7 @@ export const getSessionsGrades = async (
 
 		// Get all students belong to the current course from Canvas
 		const canvasStudents: CanvasStudent[] = await getStudents(
-			mockUserid,
+			currentUser.canvasId,
 			courseId
 		);
 
@@ -116,6 +117,8 @@ export const getSessionsGrades = async (
 export const getQuestionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
+	const currentUser: APIGatewayEventDefaultAuthorizerContext =
+		event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 	const sessionId = Number(event.pathParameters?.sessionId);
 
@@ -169,7 +172,7 @@ export const getQuestionsGrades = async (
 
 		// Get all students belong to the current course from Canvas
 		const canvasStudents: CanvasStudent[] = await getStudents(
-			mockUserid,
+			currentUser.canvasId,
 			courseId
 		);
 
@@ -229,6 +232,8 @@ export const getQuestionsGrades = async (
 export const exportGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
+	const currentUser: APIGatewayEventDefaultAuthorizerContext =
+		event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 
 	if (!courseId) {
@@ -251,8 +256,13 @@ export const exportGrades = async (
 		const assignmentPoints = Number(body.points);
 
 		const [assignmentId, canvasStudents] = await Promise.all([
-			createAssignment(mockUserid, courseId, assignmentName, assignmentPoints), // Create a new assignment
-			getStudents(mockUserid, courseId), // Get all students belong to the current course from Canvas
+			createAssignment(
+				currentUser.canvasId,
+				courseId,
+				assignmentName,
+				assignmentPoints
+			), // Create a new assignment
+			getStudents(currentUser.canvasId, courseId), // Get all students belong to the current course from Canvas
 		]);
 
 		// Calculate assignment points for each students
@@ -281,7 +291,7 @@ export const exportGrades = async (
 			})
 		);
 
-		await postGrades(mockUserid, courseId, assignmentId, grades);
+		await postGrades(currentUser.canvasId, courseId, assignmentId, grades);
 
 		return responses.ok({
 			message: 'success',
@@ -295,6 +305,8 @@ export const exportGrades = async (
 };
 
 export const setQuestionsGrades: APIGatewayProxyHandler = async (event) => {
+	const currentUser: APIGatewayEventDefaultAuthorizerContext =
+		event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 	const sessionId = Number(event.pathParameters?.sessionId);
 
@@ -311,7 +323,7 @@ export const setQuestionsGrades: APIGatewayProxyHandler = async (event) => {
 	}
 
 	try {
-		await calculate(courseId, sessionId);
+		await calculate(courseId, sessionId, Number(currentUser.canvasId));
 		return responses.ok();
 	} catch (error) {
 		console.error(error);
