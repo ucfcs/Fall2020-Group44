@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../../constants";
 import { store } from "../../../store";
 import "./session-controls.scss";
+import { postSessionGrades } from "../../../util/api";
 
 const SessionControls = (props: SessionControlsProps): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -58,9 +59,15 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
   const nextQuestion = (): void => {
     // on the final question
     if (questionNumber >= props.questionCount - 1) {
+      postSessionGrades(
+        state.courseId,
+        state.sessionId,
+        state.jwt
+      ).catch((error) => console.log(error));
       // this would make an api call to record what happened since it is the end of the session
       dispatch({ type: "update-question-number", payload: 0 });
       dispatch({ type: "update-session-questions", payload: [] });
+      dispatch({ type: "update-session-id", payload: -1 });
 
       // notify students the session has ended
       if (state.websocket) {
