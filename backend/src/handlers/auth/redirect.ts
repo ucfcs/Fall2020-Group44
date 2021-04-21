@@ -70,7 +70,7 @@ const mobileRedirect = async (code: string) => {
 		);
 
 		return responses.movedPermanently(
-			`ucf-react://authentication?token=${token}`
+			`ucfreact://authentication?token=${token}`
 		);
 	} catch (error) {
 		console.error(error);

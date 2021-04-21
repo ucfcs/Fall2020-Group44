@@ -26,10 +26,10 @@
 			<key>CFBundleTypeRole</key>
 			<string>Editor</string>
 			<key>CFBundleURLName</key>
-			<string>ucf-react</string>
+			<string>ucfreact</string>
 			<key>CFBundleURLSchemes</key>
 			<array>
-				<string>ucf-react</string>
+				<string>ucfreact</string>
 			</array>
 		</dict>
 	</array>
