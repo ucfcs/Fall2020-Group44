@@ -53,7 +53,7 @@ const GradebookSession = (props: Props): ReactElement => {
           return response.json();
         })
         .then((response: SessionGradesResponse) => {
-          setStudents(response.students.filter(filterStudents));
+          setStudents(response.students);
           setSessionName(response.session.name);
           setClassAverage(response.classAverage);
           setQuestions(response.session.Questions);
@@ -64,16 +64,6 @@ const GradebookSession = (props: Props): ReactElement => {
       setFirstLoad(false);
     }
   }, [firstLoad, dataLoaded, state.courseId, state.jwt, props.match.params.id]);
-
-  // @TODO
-  // REMOVE THIS IT IS ONLY FOR TESTING BAD BACKEND DATA
-  const filterStudents = (student: StudentQuestionInfo): boolean => {
-    return (
-      student.name !== undefined &&
-      student.canvasId !== undefined &&
-      student.QuestionGrades !== undefined
-    );
-  };
 
   const getBackgroundColor = (percentage: number): string => {
     if (percentage < RED) return "#FF0033";
@@ -181,7 +171,11 @@ const GradebookSession = (props: Props): ReactElement => {
                   )}
                 </tr>
                 {students.map((student: StudentQuestionInfo, index: number) => (
-                  <Student key={index} student={student} />
+                  <Student
+                    key={index}
+                    student={student}
+                    questions={questions}
+                  />
                 ))}
               </tbody>
             </table>

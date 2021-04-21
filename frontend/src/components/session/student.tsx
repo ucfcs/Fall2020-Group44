@@ -1,7 +1,7 @@
 import React, { ReactElement } from "react";
-import { Grade, StudentQuestionInfo } from "../../types";
+import { Grade, StudentQuestionInfo, QuestionGradeInfo } from "../../types";
 
-const Student = ({ student }: Props): ReactElement => {
+const Student = ({ student, questions }: Props): ReactElement => {
   return (
     <tr className="student table-body-text">
       <td>{student.name}</td>
@@ -9,17 +9,24 @@ const Student = ({ student }: Props): ReactElement => {
         {student.total.toFixed(2)}
       </td>
 
-      {student.QuestionGrades.map((sessionGrade: Grade, sIndex: number) => (
-        <td key={sIndex} className="align-right table-body-text">
-          {sessionGrade.points.toFixed(2)}
-        </td>
-      ))}
+      {student.QuestionGrades
+        ? student.QuestionGrades.map((sessionGrade: Grade, sIndex: number) => (
+            <td key={sIndex} className="align-right table-body-text">
+              {sessionGrade.points.toFixed(2)}
+            </td>
+          ))
+        : questions.map((_, index) => (
+            <td key={index} className="align-right table-body-text">
+              -
+            </td>
+          ))}
     </tr>
   );
 };
 
 interface Props {
   student: StudentQuestionInfo;
+  questions: QuestionGradeInfo[];
 }
 
 export default Student;
