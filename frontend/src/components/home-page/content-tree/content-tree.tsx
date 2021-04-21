@@ -4,6 +4,7 @@ import React, {
   ReactElement,
   MouseEvent,
   SyntheticEvent,
+  useEffect,
 } from "react";
 import { store } from "../../../store";
 import { Folder, FolderAndQuestionResponse } from "../../../types";
@@ -34,6 +35,28 @@ const ContentTree = (): ReactElement => {
     new Array(questions.length).fill(false)
   );
 
+  const [foldersUnderEdit, setFoldersUnderEdit] = useState<TempFolders>({});
+
+  const cancelEditFolder = () => {
+    for (const folderId in foldersUnderEdit) {
+      questions[folderId].name = foldersUnderEdit[folderId];
+    }
+
+    dispatch({
+      type: "update-session-questions",
+      payload: questions,
+    });
+
+    setFoldersUnderEdit({});
+    window.removeEventListener("click", cancelEditFolder);
+  };
+
+  useEffect(() => {
+    window.addEventListener("click", cancelEditFolder);
+
+    return () => window.removeEventListener("click", cancelEditFolder);
+  }, [foldersUnderEdit]);
+
   const handleUpdatePreviewQuestion = (
     folderIndex: number,
     questionIndex: number
@@ -57,33 +80,12 @@ const ContentTree = (): ReactElement => {
     setFolderCollapse(newFolderCollapse);
   };
 
-  const searchQuestions = (event: SyntheticEvent) => {
-    // needs to be updated to search using the backend in preparation for lazy loading
-    return;
-    // const newFolders: Folder[] = [];
-
-    // state.questions.forEach((folder: Folder) => {
-    //   const newQuestions: Question[] = [];
-
-    //   folder.Questions.forEach((question) => {
-    //     if (
-    //       question.title
-    //         .toLowerCase()
-    //         .includes((event.target as HTMLInputElement).value.toLowerCase())
-    //     ) {
-    //       newQuestions.push(question);
-    //     }
-    //   });
-
-    //   if (newQuestions.length) {
-    //     newFolders.push({ name: folder.name, Questions: newQuestions });
-    //   }
-    // });
-
-    // setQuestions(newFolders);
-  };
-
   const setFolderName = (e: SyntheticEvent, folder: number) => {
+    const newFolders = foldersUnderEdit;
+    delete newFolders[folder];
+
+    setFoldersUnderEdit(newFolders);
+
     const value: string = (e.target as HTMLInputElement).value;
     const oldFolder: Folder = questions[folder];
     const id: number | undefined = oldFolder.id;
@@ -118,11 +120,14 @@ const ContentTree = (): ReactElement => {
 
   const editFolder = (e: MouseEvent, folder: number) => {
     e.stopPropagation();
+    const newFolders = {
+      ...foldersUnderEdit,
+      [folder]: questions[folder].name,
+    };
+    setFoldersUnderEdit(newFolders);
 
-    const newQuestions = questions;
     questions[folder].name = "";
-
-    dispatch({ type: "update-session-questions", payload: newQuestions });
+    dispatch({ type: "update-session-questions", payload: questions });
   };
 
   const deleteFolderLocal = (e: MouseEvent, folder: number) => {
@@ -152,7 +157,7 @@ const ContentTree = (): ReactElement => {
 
   return (
     <div className="content-tree">
-      <div className="tree-options">
+      {/* <div className="tree-options">
         <input
           type="text"
           tabIndex={0}
@@ -162,7 +167,7 @@ const ContentTree = (): ReactElement => {
         />
 
         <button className="filter-button">Filter</button>
-      </div>
+      </div> */}
 
       <div className="create-buttons">
         <button
@@ -222,6 +227,7 @@ const ContentTree = (): ReactElement => {
                               onKeyPress={(e) => {
                                 if (e.key === "Enter") {
                                   e.preventDefault();
+                                  e.stopPropagation();
                                   setFolderName(e, fIndex);
                                 }
                               }}
@@ -415,5 +421,9 @@ const ContentTree = (): ReactElement => {
     </div>
   );
 };
+
+interface TempFolders {
+  [key: number]: string;
+}
 
 export default ContentTree;
