@@ -2,6 +2,7 @@ import {
 	APIGatewayProxyHandler,
 	APIGatewayEvent,
 	ProxyResult,
+	APIGatewayEventDefaultAuthorizerContext,
 } from 'aws-lambda';
 import {
 	Question,
@@ -21,7 +22,7 @@ export const getSessionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
 
-	const currentUser: any = event.requestContext.authorizer;
+	const currentUser: APIGatewayEventDefaultAuthorizerContext = event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 
 	if (!courseId) {
@@ -117,7 +118,7 @@ export const getSessionsGrades = async (
 export const getQuestionsGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
-	const currentUser: any = event.requestContext.authorizer;
+	const currentUser: APIGatewayEventDefaultAuthorizerContext= event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 	const sessionId = Number(event.pathParameters?.sessionId);
 
@@ -231,7 +232,7 @@ export const getQuestionsGrades = async (
 export const exportGrades = async (
 	event: APIGatewayEvent
 ): Promise<ProxyResult> => {
-	const user: any = event.requestContext.authorizer;
+	const currentUser: APIGatewayEventDefaultAuthorizerContext= event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 
 	if (!courseId) {
@@ -254,8 +255,8 @@ export const exportGrades = async (
 		const assignmentPoints = Number(body.points);
 
 		const [assignmentId, canvasStudents] = await Promise.all([
-			createAssignment(user.canvasId, courseId, assignmentName, assignmentPoints), // Create a new assignment
-			getStudents(user.canvasId, courseId), // Get all students belong to the current course from Canvas
+			createAssignment(currentUser.canvasId, courseId, assignmentName, assignmentPoints), // Create a new assignment
+			getStudents(currentUser.canvasId, courseId), // Get all students belong to the current course from Canvas
 		]);
 
 		// Calculate assignment points for each students
@@ -284,7 +285,7 @@ export const exportGrades = async (
 			})
 		);
 
-		await postGrades(user.canvasId, courseId, assignmentId, grades);
+		await postGrades(currentUser.canvasId, courseId, assignmentId, grades);
 
 		return responses.ok({
 			message: 'success',
