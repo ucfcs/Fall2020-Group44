@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { store } from "../../store";
 import Modal from "../modal/modal";
 import "./warning-modal.scss";
+import { postSessionGrades } from "../../util/api";
 
 const WarningModal = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,8 +22,14 @@ const WarningModal = (): ReactElement => {
   };
 
   const clearSession = (): void => {
+    postSessionGrades(
+      state.courseId,
+      state.sessionId,
+      state.jwt
+    ).catch((error) => console.log(error));
     dispatch({ type: "update-question-number", payload: 0 });
     dispatch({ type: "update-session-questions", payload: [] });
+    dispatch({ type: "update-session-id", payload: -1 });
 
     // tell websocket server to end the session,
     // notifying all students

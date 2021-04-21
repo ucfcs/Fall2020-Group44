@@ -20,6 +20,7 @@ const init = {
   previewQuestion: 0,
   creatorFolderIndex: -1,
   sessionInProgress: false,
+  sessionId: -1,
   openExitWarning: false,
   courseId: null,
   questions: [],
@@ -50,6 +51,8 @@ const StateProvider = ({ children }) => {
         return { ...state, creatorFolderIndex: action.payload };
       case "enable-exit-warning":
         return { ...state, sessionInProgress: true };
+      case "update-session-id":
+        return { ...state, sessionId: action.payload };
       case "disable-exit-warning":
         return { ...state, sessionInProgress: false };
       case "show-exit-warning-modal":

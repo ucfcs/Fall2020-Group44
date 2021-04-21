@@ -4,7 +4,6 @@ import { APIGatewayEvent, APIGatewayProxyResult } from 'aws-lambda';
 import dynamodb from '../config/dynamo';
 import { QuestionUserResponse } from '../models/QuestionUserResponse';
 import responses from './api/responses';
-import fetch from 'node-fetch';
 
 export class Connection {
 	client?: AWS.DynamoDB.DocumentClient;
@@ -625,17 +624,6 @@ export class Connection {
 
 			if (!sessionId) {
 				throw `sessionId of session ended in ${courseId} not obtainable from DynamoDB`;
-			}
-
-			// just invoke calc grades and dont wait on what happens
-
-			if (process.env.BASE_REST_URL) {
-				fetch(
-					`${process.env.BASE_REST_URL}/api/v1/courses/${courseId}/session/${sessionId}/grades`,
-					{
-						method: 'POST',
-					}
-				).catch(console.error);
 			}
 
 			return responses.ok({
