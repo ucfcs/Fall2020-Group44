@@ -5,6 +5,7 @@ import React, {
   MouseEvent,
   SyntheticEvent,
   useEffect,
+  useRef,
 } from "react";
 import { store } from "../../../store";
 import { Folder, FolderAndQuestionResponse } from "../../../types";
@@ -30,32 +31,51 @@ const ContentTree = (): ReactElement => {
 
   const questions: Folder[] = state.questions;
 
+  const inputRefs = useRef<HTMLDivElement[]>([]);
+
   // Array of booleans indicating whether each folder is collapsed
   const [folderCollapse, setFolderCollapse] = useState(
     new Array(questions.length).fill(false)
   );
 
-  const [foldersUnderEdit, setFoldersUnderEdit] = useState<TempFolders>({});
+  const [folderUnderEdit, setFolderUnderEdit] = useState<TempFolder>({
+    folder: -1,
+    value: "",
+  });
 
-  const cancelEditFolder = () => {
-    for (const folderId in foldersUnderEdit) {
-      questions[folderId].name = foldersUnderEdit[folderId];
-    }
-
-    dispatch({
-      type: "update-session-questions",
-      payload: questions,
+  const resetFolderUnderEdit = () => {
+    setFolderUnderEdit({
+      folder: -1,
+      value: "",
     });
+  };
 
-    setFoldersUnderEdit({});
-    window.removeEventListener("click", cancelEditFolder);
+  // Property 'path' does not exist on type 'MouseEvent'.ts ??????
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const cancelEditFolder = (e: any) => {
+    if (
+      folderUnderEdit.folder !== -1 &&
+      !e.path.includes(inputRefs.current[folderUnderEdit.folder])
+    ) {
+      questions[folderUnderEdit.folder].name = folderUnderEdit.value;
+
+      dispatch({
+        type: "update-session-questions",
+        payload: questions,
+      });
+
+      resetFolderUnderEdit();
+    }
   };
 
   useEffect(() => {
-    window.addEventListener("click", cancelEditFolder);
+    const funcWrapper = function (this: Window, ev: Event) {
+      cancelEditFolder(ev);
+    };
+    window.addEventListener("click", funcWrapper, true);
 
-    return () => window.removeEventListener("click", cancelEditFolder);
-  }, [foldersUnderEdit]);
+    return () => window.removeEventListener("click", funcWrapper, true);
+  }, [folderUnderEdit]);
 
   const handleUpdatePreviewQuestion = (
     folderIndex: number,
@@ -81,10 +101,7 @@ const ContentTree = (): ReactElement => {
   };
 
   const setFolderName = (e: SyntheticEvent, folder: number) => {
-    const newFolders = foldersUnderEdit;
-    delete newFolders[folder];
-
-    setFoldersUnderEdit(newFolders);
+    resetFolderUnderEdit();
 
     const value: string = (e.target as HTMLInputElement).value;
     const oldFolder: Folder = questions[folder];
@@ -119,12 +136,10 @@ const ContentTree = (): ReactElement => {
   };
 
   const editFolder = (e: MouseEvent, folder: number) => {
-    e.stopPropagation();
-    const newFolders = {
-      ...foldersUnderEdit,
-      [folder]: questions[folder].name,
-    };
-    setFoldersUnderEdit(newFolders);
+    setFolderUnderEdit({
+      folder,
+      value: questions[folder].name,
+    });
 
     questions[folder].name = "";
     dispatch({ type: "update-session-questions", payload: questions });
@@ -192,151 +207,155 @@ const ContentTree = (): ReactElement => {
             <div>
               {questions.map((folder: Folder, fIndex: number) =>
                 folder.name !== null ? (
-                  <div key={fIndex}>
-                    <div>
-                      <div
-                        className={`folder ${
-                          folderCollapse[fIndex] ? "collapsed" : ""
-                        }`}
-                        onClick={() => handleFolderCollapse(fIndex)}
-                      >
-                        {folder.name === "" ? (
-                          <>
-                            <label
-                              htmlFor={`folder-name-${fIndex}`}
-                              className="folder-name-label"
-                            >
-                              Name:{" "}
-                            </label>
-                            <input
-                              type="text"
-                              id={`folder-name-${fIndex}`}
-                              defaultValue={questions[fIndex].name}
-                              onKeyPress={(e) => {
-                                if (e.key === "Enter") {
-                                  e.preventDefault();
-                                  e.stopPropagation();
-                                  setFolderName(e, fIndex);
-                                }
-                              }}
-                            />{" "}
-                          </>
-                        ) : (
-                          <div className="folder-item">
-                            <div className="dropdown">
-                              {folderCollapse[fIndex] ? (
-                                <img
-                                  src="/img/dropdown-closed.svg"
-                                  alt="Closed dropdown"
-                                  className="dropdown-closed"
-                                />
-                              ) : (
-                                <img
-                                  src="/img/dropdown-open.svg"
-                                  alt="Open dropdown"
-                                  className="dropdown-open"
-                                />
-                              )}
-                            </div>
-
-                            <div />
-
-                            <img
-                              className="folder-icon"
-                              src="/img/folder-icon.svg"
-                              alt=""
-                            />
-
-                            <div />
-
-                            <span>{folder.name}</span>
-
-                            <div className="content-tree-icons">
-                              <button
-                                onClick={(e) => {
-                                  editFolder(e, fIndex);
-                                }}
-                              >
-                                <img
-                                  className="content-tree-icon"
-                                  alt="Edit"
-                                  src="/img/edit.svg"
-                                />
-                              </button>
-
-                              <button
-                                className="delete-button"
-                                onClick={(e) => {
-                                  deleteFolderLocal(e, fIndex);
-                                }}
-                              >
-                                <img
-                                  className="content-tree-icon"
-                                  alt="Delete"
-                                  src="/img/delete.svg"
-                                />
-                              </button>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-                      {folder.Questions.map((question, qIndex) => (
-                        <div key={fIndex + "-" + qIndex}>
-                          <div
-                            key={fIndex + "-" + qIndex}
-                            className={`preview-question ${
-                              selectedPreviewQuestion[0] === fIndex &&
-                              selectedPreviewQuestion[1] === qIndex
-                                ? "selected"
-                                : ""
-                            } ${
-                              folderCollapse[fIndex] ? "collapsed-item" : ""
-                            }`}
-                            onClick={() =>
-                              handleUpdatePreviewQuestion(fIndex, qIndex)
-                            }
+                  <div
+                    key={fIndex}
+                    ref={(e) => {
+                      if (e) {
+                        inputRefs.current[fIndex] = e;
+                      }
+                    }}
+                  >
+                    <div
+                      className={`folder ${
+                        folderCollapse[fIndex] ? "collapsed" : ""
+                      }`}
+                      onClick={() => handleFolderCollapse(fIndex)}
+                    >
+                      {folder.name === "" ? (
+                        <>
+                          <label
+                            htmlFor={`folder-name-${fIndex}`}
+                            className="folder-name-label"
                           >
-                            <div className="title">{question.title}</div>
+                            Name:{" "}
+                          </label>
+                          <input
+                            type="text"
+                            id={`folder-name-${fIndex}`}
+                            defaultValue={questions[fIndex].name}
+                            autoComplete="off"
+                            onKeyPress={(e) => {
+                              if (e.key === "Enter") {
+                                e.preventDefault();
+                                e.stopPropagation();
+                                setFolderName(e, fIndex);
+                              }
+                            }}
+                          />{" "}
+                        </>
+                      ) : (
+                        <div className="folder-item">
+                          <div className="dropdown">
+                            {folderCollapse[fIndex] ? (
+                              <img
+                                src="/img/dropdown-closed.svg"
+                                alt="Closed dropdown"
+                                className="dropdown-closed"
+                              />
+                            ) : (
+                              <img
+                                src="/img/dropdown-open.svg"
+                                alt="Open dropdown"
+                                className="dropdown-open"
+                              />
+                            )}
+                          </div>
 
-                            <div />
+                          <div />
 
-                            <div className="type">{question.type}</div>
+                          <img
+                            className="folder-icon"
+                            src="/img/folder-icon.svg"
+                            alt=""
+                          />
 
-                            <div className="content-tree-icons">
-                              <button
-                                onClick={() => {
-                                  handleUpdatePreviewQuestion(fIndex, qIndex);
-                                  dispatch({
-                                    type: "update-creator-module-folder-index",
-                                    payload: fIndex,
-                                  });
-                                  toggleEditQuestion();
-                                }}
-                              >
-                                <img
-                                  className="content-tree-icon"
-                                  alt="Edit"
-                                  src="/img/edit.svg"
-                                />
-                              </button>
+                          <div />
 
-                              <button
-                                onClick={(e) => {
-                                  deleteQuestionLocal(e, fIndex, qIndex);
-                                }}
-                                className="delete-button"
-                              >
-                                <img
-                                  className="content-tree-icon"
-                                  alt="Delete"
-                                  src="/img/delete.svg"
-                                />
-                              </button>
-                            </div>
+                          <span>{folder.name}</span>
+
+                          <div className="content-tree-icons">
+                            <button
+                              onClick={(e) => {
+                                editFolder(e, fIndex);
+                              }}
+                            >
+                              <img
+                                className="content-tree-icon"
+                                alt="Edit"
+                                src="/img/edit.svg"
+                              />
+                            </button>
+
+                            <button
+                              className="delete-button"
+                              onClick={(e) => {
+                                deleteFolderLocal(e, fIndex);
+                              }}
+                            >
+                              <img
+                                className="content-tree-icon"
+                                alt="Delete"
+                                src="/img/delete.svg"
+                              />
+                            </button>
                           </div>
                         </div>
-                      ))}
+                      )}
                     </div>
+                    {folder.Questions.map((question, qIndex) => (
+                      <div key={fIndex + "-" + qIndex}>
+                        <div
+                          key={fIndex + "-" + qIndex}
+                          className={`preview-question ${
+                            selectedPreviewQuestion[0] === fIndex &&
+                            selectedPreviewQuestion[1] === qIndex
+                              ? "selected"
+                              : ""
+                          } ${folderCollapse[fIndex] ? "collapsed-item" : ""}`}
+                          onClick={() =>
+                            handleUpdatePreviewQuestion(fIndex, qIndex)
+                          }
+                        >
+                          <div className="title">{question.title}</div>
+
+                          <div />
+
+                          <div className="type">{question.type}</div>
+
+                          <div className="content-tree-icons">
+                            <button
+                              onClick={() => {
+                                handleUpdatePreviewQuestion(fIndex, qIndex);
+                                dispatch({
+                                  type: "update-creator-module-folder-index",
+                                  payload: fIndex,
+                                });
+                                toggleEditQuestion();
+                              }}
+                            >
+                              <img
+                                className="content-tree-icon"
+                                alt="Edit"
+                                src="/img/edit.svg"
+                              />
+                            </button>
+
+                            <button
+                              onClick={(e) => {
+                                deleteQuestionLocal(e, fIndex, qIndex);
+                              }}
+                              className="delete-button"
+                            >
+                              <img
+                                className="content-tree-icon"
+                                alt="Delete"
+                                src="/img/delete.svg"
+                              />
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 ) : (
                   <div key={fIndex}>
@@ -410,8 +429,9 @@ const ContentTree = (): ReactElement => {
   );
 };
 
-interface TempFolders {
-  [key: number]: string;
+interface TempFolder {
+  folder: number;
+  value: string;
 }
 
 export default ContentTree;
