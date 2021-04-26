@@ -53,10 +53,12 @@ const ContentTree = (): ReactElement => {
   // Property 'path' does not exist on type 'MouseEvent'.ts ??????
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const cancelEditFolder = (e: any) => {
+    // if a folder is in edit mode and it's no the thing we clicked on
     if (
       folderUnderEdit.folder !== -1 &&
-      !e.path.includes(inputRefs.current[folderUnderEdit.folder])
+      !e.composedPath().includes(inputRefs.current[folderUnderEdit.folder])
     ) {
+      // reset that folder's name and cancel edit
       questions[folderUnderEdit.folder].name = folderUnderEdit.value;
 
       dispatch({
@@ -68,6 +70,7 @@ const ContentTree = (): ReactElement => {
     }
   };
 
+  // event listeners for clicking on the page
   useEffect(() => {
     const funcWrapper = function (this: Window, ev: Event) {
       cancelEditFolder(ev);
