@@ -20,7 +20,7 @@ const SelectedList = (): ReactElement => {
 
       <div className="option-buttons">
         <button className="present-button">
-          <Link to="/poll/present">&#9658;&nbsp;Present</Link>
+          <Link to="/session/present">&#9658;&nbsp;Present</Link>
         </button>
       </div>
     </div>

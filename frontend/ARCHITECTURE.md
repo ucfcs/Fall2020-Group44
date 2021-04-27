@@ -64,7 +64,7 @@ The `GradebookSession` page is where the user views the grades of students from 
 
 #### Route
 
-`<base url>/poll/present`
+`<base url>/session/present`
 
 #### File
 
@@ -78,7 +78,7 @@ The `Present` page is where the user goes to after selecting questions to presen
 
 #### Route
 
-`<base url>/poll/display`
+`<base url>/session/display`
 
 #### File
 

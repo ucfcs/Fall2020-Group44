@@ -70,7 +70,7 @@ const QuestionSelect = (): ReactElement => {
           );
         }
 
-        history.push("/poll/present");
+        history.push("/session/present");
       })
       .catch(catchError);
   };
