@@ -168,3 +168,19 @@ This modal is used to export grades to Canvas. It can be activated by either the
 #### About
 
 This modal warns professors if they are closing a session early. This could mean that one or more questions have not been answered by students. Currently it is based off of how many questions are locked. If they are all locked, no warning will be given and the full grade will be calculated. If they are not all locked this modal will be activated. If the user continues to close the session then the grade will be based off of only the locked questions.
+
+# File Structure
+
+An atomic file structure is used to create self contained components.
+
+## src/
+
+- `App.tsx` - Sets up WebSocket connection and handles routing.
+- `index.tsx` - Sets up the React App with the state provider.
+- `index.scss` - Global styles for all the components.
+- `store.js` - Handles the global state store.
+- `types.ts` - Stores type declarations that are shared across components.
+
+## src/components/
+
+Each top level folder in this section represents either a specific page, modal, or a component that is shared across more than one top level components. Each folder can have more folders inside if the top level component is broken up into several different files that are only used for that one specific component.
