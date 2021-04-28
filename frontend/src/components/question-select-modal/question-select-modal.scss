@@ -210,8 +210,9 @@
   }
 
   .rogue-question {
-    width: calc(100% - 12px);
+    width: calc(100% - 16px);
     padding: 4px 0 4px 12px;
+    border: 1px solid transparent;
 
     &:first-child {
       border-top: 1px solid gray;
@@ -220,7 +221,7 @@
     }
 
     &:focus-within {
-      background-color: whitesmoke;
+      border-color: black;
     }
   }
 
@@ -276,6 +277,7 @@
     display: grid;
 
     grid-template-columns: 24px 0.5rem 24px auto;
+    border: 1px solid transparent;
 
     &:hover {
       .content-tree-icon {
@@ -284,7 +286,7 @@
     }
 
     &:focus-within {
-      background: whitesmoke;
+      border-color: black;
     }
   }
 

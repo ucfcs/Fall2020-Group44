@@ -52,7 +52,9 @@ const Creator = (): ReactElement => {
   ]);
 
   const [isPreview, setIsPreview] = useState(false);
-  const questionInfo: Question = state.currentQuestionInfo;
+  const questionInfo: Question = JSON.parse(
+    JSON.stringify(state.currentQuestionInfo)
+  );
 
   const closePreviewQuestion = (): void => {
     dispatch({ type: "close-preview-question" });
