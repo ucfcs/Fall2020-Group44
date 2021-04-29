@@ -72,7 +72,7 @@ The `GradebookSession` page is where the user views the grades of students from 
 
 #### About
 
-The `Present` page is where the user goes to after selecting questions to present in the present modal. This relies on a session being started in the present modal, and is where the user will wait while students join their session. There is a count of how many students are connected to the session. Once the user is ready to start displaying questions, they navigate to the `SessionInProgress` screen, which is the only navigable screen from this page.
+The `Present` page is where the user goes to after selecting questions to present in the present modal. This relies on a session being started in the present modal, and is where the user will wait while students join their session. There is a count of how many students are connected to the session. Once the user is ready to start displaying questions, they navigate to the `SessionInProgress` screen. Users are also able to navigate back to the home screen from here.
 
 ### SessionInProgress
 
