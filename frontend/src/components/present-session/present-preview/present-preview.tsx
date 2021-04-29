@@ -27,7 +27,7 @@ const PresentPreview = (props: Props): ReactElement => {
         />
         <h2>{"Let's Begin!"}</h2>
         <button onClick={setClassSize} className="start-button">
-          <Link to="/poll/display" onClick={startSession}>
+          <Link to="/session/display" onClick={startSession}>
             Start Session &gt;
           </Link>
         </button>
