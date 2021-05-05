@@ -3,6 +3,8 @@
 This project was bootstrapped with
 [Create React App](https://github.com/facebook/create-react-app).
 
+See ARCHITECTURE.md for more info on the frontend structure
+
 ## Available Scripts
 
 In the project directory, you can run:
