@@ -167,6 +167,7 @@ const CreatorEdit = (): ReactElement => {
             id="folder-select"
             defaultValue={state.creatorFolderIndex}
             onChange={handleFolderChange}
+            required
           >
             {state.questions.map((folder: Folder, fIndex: number) => (
               <option key={fIndex} value={folder.name ? fIndex : -1}>
