@@ -42,6 +42,7 @@ const ExportModal = (): ReactElement => {
 
   useEffect(() => {
     if (firstLoad) {
+      // if the path is /gradebook/:id set that id to be selected
       if (id !== null) {
         setSelectedIds([id]);
       }
@@ -117,7 +118,7 @@ const ExportModal = (): ReactElement => {
           <h3>Export to Webcourses</h3>
 
           <button className="exit-button" onClick={cancel}>
-            X
+            ×
           </button>
         </div>
 

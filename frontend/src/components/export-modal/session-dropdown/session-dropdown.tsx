@@ -27,6 +27,7 @@ const SessionDropdown = (props: Props): ReactElement => {
   const handleDropdown = (event: SyntheticEvent): void => {
     event.preventDefault();
 
+    // load the questions if the dropdown is open and they aren't already loaded
     if (!isOpen && questions.length <= 0) {
       getSessionGrades(state.courseId, props.id, state.jwt)
         .then((response: Response) => response.json())
