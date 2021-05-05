@@ -11,7 +11,9 @@ import {
   Draggable,
   DropResult,
 } from "react-beautiful-dnd";
+
 import { store } from "../../../store";
+
 import "./present-footer.scss";
 
 function useForceUpdate() {

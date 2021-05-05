@@ -1,9 +1,11 @@
 import React, { ReactElement } from "react";
-import "./question.scss";
 
-import SessionControls from "../session-controls/session-controls";
 import { QuestionOption } from "../../../types";
 import { CORRECT_RESPONSE } from "../../../constants";
+
+import SessionControls from "../session-controls/session-controls";
+
+import "./question.scss";
 
 const QuestionComponent = (props: QuestionProps): ReactElement => {
   // determine which of the answer choices are correct options

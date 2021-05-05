@@ -5,6 +5,7 @@ import React, {
   MouseEvent,
   SyntheticEvent,
 } from "react";
+
 import { store } from "../../../store";
 import { Folder, FolderAndQuestionResponse } from "../../../types";
 import {
@@ -14,6 +15,7 @@ import {
   getFolders,
   updateFolder,
 } from "../../../util/api";
+
 import "./content-tree.scss";
 
 const ContentTree = (): ReactElement => {

@@ -1,8 +1,11 @@
 import React, { useContext, SyntheticEvent, ReactElement } from "react";
-import MultipleChoice from "../multiple-choice/multiple-choice";
+
 import { store } from "../../../store";
-import "./creator-edit.scss";
 import { Folder, Question } from "../../../types";
+
+import MultipleChoice from "../multiple-choice/multiple-choice";
+
+import "./creator-edit.scss";
 
 const CreatorEdit = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,8 +1,9 @@
 import React, { ReactElement, useContext } from "react";
 import { Link } from "react-router-dom";
-import "./present-preview.scss";
 
 import { store } from "../../../store";
+
+import "./present-preview.scss";
 
 const PresentPreview = (props: Props): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

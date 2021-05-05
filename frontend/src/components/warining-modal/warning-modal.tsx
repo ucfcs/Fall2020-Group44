@@ -1,9 +1,12 @@
 import React, { useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
+
 import { store } from "../../store";
-import Modal from "../modal/modal";
-import "./warning-modal.scss";
 import { postSessionGrades } from "../../util/api";
+
+import Modal from "../modal/modal";
+
+import "./warning-modal.scss";
 
 const WarningModal = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

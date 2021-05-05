@@ -1,5 +1,7 @@
 import React, { ReactElement } from "react";
+
 import { QuestionOption } from "../../../types";
+
 import "./multiple-choice.scss";
 
 const MultipleChoice = ({

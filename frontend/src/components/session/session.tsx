@@ -1,18 +1,19 @@
 import React, { useState, ReactElement, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Student from "./student";
+
 import {
   QuestionGradeInfo,
   SessionGradesResponse,
   StudentQuestionInfo,
   ClassAverageInfo,
 } from "../../types";
-
-import "./session.scss";
-
-import HomeHeader from "../home-header/home-header";
 import { store } from "../../store";
 import { catchError, getSessionGrades } from "../../util/api";
+
+import HomeHeader from "../home-header/home-header";
+import Student from "./student";
+
+import "./session.scss";
 
 const RED = 0.5;
 const YELLOW = 0.75;

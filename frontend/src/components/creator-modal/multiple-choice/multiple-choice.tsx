@@ -1,8 +1,11 @@
 import React, { ReactElement, useContext } from "react";
-import { Question } from "../../../types";
-import AnswerChoice from "../answer-choice/answer-choice";
 import { v4 as uuid } from "uuid";
+
+import { Question } from "../../../types";
 import { store } from "../../../store";
+
+import AnswerChoice from "../answer-choice/answer-choice";
+
 import "./multiple-choice.scss";
 
 const MultipleChoice = (): ReactElement => {

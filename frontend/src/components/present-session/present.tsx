@@ -1,9 +1,12 @@
 import React, { useState, ReactElement, useContext } from "react";
+
+import { store } from "../../store";
+
 import PresentPreview from "./present-preview/present-preview";
 import PresentFooter from "./present-footer/present-footer";
-import "./present.scss";
 import PollHeader from "../session-header/session-header";
-import { store } from "../../store";
+
+import "./present.scss";
 
 const Present = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

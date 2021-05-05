@@ -1,13 +1,14 @@
-import { Question, QuestionOption } from "../../types";
 import React, { ReactElement, useContext, useEffect, useState } from "react";
+
+import { store } from "../../store";
+import { Question, QuestionOption } from "../../types";
+
+import Sidebar from "./sidebar/sidebar";
+import PollHeader from "../session-header/session-header";
 import SessionProgress from "./session-progress/session-progress";
 import QuestionComponent from "./question/question";
 
 import "./session-in-progress.scss";
-
-import PollHeader from "../session-header/session-header";
-import { store } from "../../store";
-import Sidebar from "./sidebar/sidebar";
 
 const SessionInProgress = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

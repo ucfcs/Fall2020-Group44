@@ -1,8 +1,11 @@
 import React, { useState, useContext, ReactElement } from "react";
-import "./question-preview.scss";
+
 import { store } from "../../../store";
-import MultipleChoice from "../multiple-choice/multiple-choice";
 import { Question } from "../../../types";
+
+import MultipleChoice from "../multiple-choice/multiple-choice";
+
+import "./question-preview.scss";
 
 const QuestionPreview = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

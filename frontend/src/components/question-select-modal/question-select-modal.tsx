@@ -11,11 +11,13 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { useHistory } from "react-router";
-import { store } from "../../store";
 
+import { store } from "../../store";
 import { createSession, catchError } from "../../util/api";
 import { Folder, Question, QuestionOption } from "../../types";
+
 import Modal from "../modal/modal";
+
 import "./question-select-modal.scss";
 
 const QuestionSelect = (): ReactElement => {

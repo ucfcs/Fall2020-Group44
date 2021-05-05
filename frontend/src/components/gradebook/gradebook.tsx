@@ -1,6 +1,8 @@
 import React, { useState, ReactElement, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
-import Student from "./student";
+
+import { store } from "../../store";
+import { catchError, getCourseGrades } from "../../util/api";
 import {
   BasicSessionInfo,
   ClassAverageInfo,
@@ -8,11 +10,10 @@ import {
   StudentSessionInfo,
 } from "../../types";
 
-import "./gradebook.scss";
-
+import Student from "./student";
 import HomeHeader from "../home-header/home-header";
-import { store } from "../../store";
-import { catchError, getCourseGrades } from "../../util/api";
+
+import "./gradebook.scss";
 
 const RED = 0.5;
 const YELLOW = 0.75;

@@ -1,9 +1,11 @@
 import React, { ReactElement, useContext } from "react";
 import { Link } from "react-router-dom";
+
 import { CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../../constants";
 import { store } from "../../../store";
-import "./session-controls.scss";
 import { postSessionGrades } from "../../../util/api";
+
+import "./session-controls.scss";
 
 const SessionControls = (props: SessionControlsProps): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -5,18 +5,21 @@ import React, {
   useEffect,
   SyntheticEvent,
 } from "react";
-import "./creator.scss";
+
 import { store } from "../../store";
-import CreatorEdit from "./creator-edit/creator-edit";
-import CreatorPreview from "./creator-preview/creator-preview";
-import Modal from "../modal/modal";
 import {
   catchError,
   createQuestion,
   getFolders,
   updateQuestion,
 } from "../../util/api";
+
+import CreatorEdit from "./creator-edit/creator-edit";
+import CreatorPreview from "./creator-preview/creator-preview";
+import Modal from "../modal/modal";
 import { Question, FolderAndQuestionResponse } from "../../types";
+
+import "./creator.scss";
 
 const Creator = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,4 +1,5 @@
 import React, { ReactElement } from "react";
+
 import { Grade, StudentSessionInfo, BasicSessionInfo } from "../../types";
 
 const Student = ({ student, sessions }: Props): ReactElement => {

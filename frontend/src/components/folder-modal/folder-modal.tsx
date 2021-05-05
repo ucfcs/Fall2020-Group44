@@ -1,8 +1,11 @@
 import React, { useState, useContext, ReactElement, FormEvent } from "react";
+
 import { store } from "../../store";
 import { FolderAndQuestionResponse } from "../../types";
 import { catchError, createFolder, getFolders } from "../../util/api";
+
 import Modal from "../modal/modal";
+
 import "./folder-modal.scss";
 
 const FolderModal = (): ReactElement => {

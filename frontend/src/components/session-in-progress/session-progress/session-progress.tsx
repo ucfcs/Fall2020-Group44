@@ -4,12 +4,12 @@ import React, {
   useContext,
   useEffect,
 } from "react";
+
 import { RESPOND, RESPONSES, CORRECT_RESPONSE } from "../../../constants";
 import { Question } from "../../../types";
+import { store } from "../../../store";
 
 import "./session-progress.scss";
-
-import { store } from "../../../store";
 
 const SessionProgress = (props: Props): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
