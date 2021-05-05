@@ -1,7 +1,7 @@
 import React, { useState, useContext, ReactElement } from "react";
 import "./question-preview.scss";
 import { store } from "../../../store";
-import MultipleChoice from "../question-types/multiple-choice";
+import MultipleChoice from "../multiple-choice/multiple-choice";
 import { Question } from "../../../types";
 
 const QuestionPreview = (): ReactElement => {
@@ -9,14 +9,9 @@ const QuestionPreview = (): ReactElement => {
   const global = useContext(store) as any;
   const state = global.state;
 
-  const [showPreviewResponse, setShowPreviewResponse] = useState(false);
   const [showCorrectPreviewResponse, setShowCorrectPreviewResponse] = useState(
     false
   );
-
-  // const toggleShowResponse = () => {
-  //   setShowPreviewResponse(!showPreviewResponse);
-  // };
 
   const toggleShowCorrectResponse = () => {
     setShowCorrectPreviewResponse(!showCorrectPreviewResponse);
@@ -48,17 +43,11 @@ const QuestionPreview = (): ReactElement => {
           >
             {showCorrectPreviewResponse ? "Hide" : "Show"} Correct Answers{" "}
           </button>
-
-          {/* <button className="see-responses" onClick={toggleShowResponse}>
-            {showPreviewResponse ? "Hide" : "Show"} Responses
-          </button> */}
         </div>
 
         <div className="answer-choice-wrapper">
           <MultipleChoice
             answers={previewQuestion.QuestionOptions}
-            responses={["20%", "30%", "50%"]}
-            showPreviewResponse={showPreviewResponse}
             showCorrectPreviewResponse={showCorrectPreviewResponse}
           />
         </div>

@@ -54,33 +54,8 @@ const ContentTree = (): ReactElement => {
   const handleFolderCollapse = (folder: number) => {
     const newFolderCollapse = folderCollapse.slice();
     newFolderCollapse[folder] = !newFolderCollapse[folder];
+
     setFolderCollapse(newFolderCollapse);
-  };
-
-  const searchQuestions = (event: SyntheticEvent) => {
-    // needs to be updated to search using the backend in preparation for lazy loading
-    return;
-    // const newFolders: Folder[] = [];
-
-    // state.questions.forEach((folder: Folder) => {
-    //   const newQuestions: Question[] = [];
-
-    //   folder.Questions.forEach((question) => {
-    //     if (
-    //       question.title
-    //         .toLowerCase()
-    //         .includes((event.target as HTMLInputElement).value.toLowerCase())
-    //     ) {
-    //       newQuestions.push(question);
-    //     }
-    //   });
-
-    //   if (newQuestions.length) {
-    //     newFolders.push({ name: folder.name, Questions: newQuestions });
-    //   }
-    // });
-
-    // setQuestions(newFolders);
   };
 
   const setFolderName = (e: SyntheticEvent, folder: number) => {
@@ -106,6 +81,7 @@ const ContentTree = (): ReactElement => {
     questionIndex: number
   ): void => {
     event.preventDefault();
+
     const id: number | undefined =
       questions[folderIndex].Questions[questionIndex].id;
 
@@ -152,18 +128,6 @@ const ContentTree = (): ReactElement => {
 
   return (
     <div className="content-tree">
-      <div className="tree-options">
-        <input
-          type="text"
-          tabIndex={0}
-          className="input-box"
-          placeholder="Search..."
-          onChange={searchQuestions}
-        />
-
-        <button className="filter-button">Filter</button>
-      </div>
-
       <div className="create-buttons">
         <button
           className="create-question-button"
@@ -286,6 +250,7 @@ const ContentTree = (): ReactElement => {
                           </div>
                         )}
                       </div>
+
                       {folder.Questions.map((question, qIndex) => (
                         <div key={fIndex + "-" + qIndex}>
                           <div
@@ -346,7 +311,8 @@ const ContentTree = (): ReactElement => {
                   </div>
                 ) : (
                   <div key={fIndex}>
-                    <div className="rogue-question-separator"></div>
+                    <div className="rogue-question-separator" />
+
                     {folder.Questions.map((question, qIndex) => (
                       <div
                         key={qIndex}

@@ -13,6 +13,7 @@ const HomeHeader = (): ReactElement => {
           src="/img/UCFReactLogoBlackBackground.png"
         />
       </Link>
+
       <nav>
         <ul>
           <li>
@@ -20,6 +21,7 @@ const HomeHeader = (): ReactElement => {
               Questions
             </NavLink>
           </li>
+
           <li>
             <NavLink to="/gradebook">Gradebook</NavLink>
           </li>

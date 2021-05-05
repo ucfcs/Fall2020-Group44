@@ -34,6 +34,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     if (questionProgress < CORRECT_RESPONSE) {
       const newQuestions = state.sessionQuestions;
       newQuestions[questionNumber].progress = questionProgress + 1;
+
       dispatch({
         type: "update-session-questions",
         payload: newQuestions,
@@ -47,6 +48,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     if (questionProgress > RESPOND) {
       const newQuestions = state.sessionQuestions;
       newQuestions[questionNumber].progress = questionProgress - 1;
+
       dispatch({
         type: "update-session-questions",
         payload: newQuestions,
@@ -64,6 +66,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
         state.sessionId,
         state.jwt
       ).catch((error) => console.log(error));
+
       // this would make an api call to record what happened since it is the end of the session
       dispatch({ type: "update-question-number", payload: 0 });
       dispatch({ type: "update-session-questions", payload: [] });
@@ -81,6 +84,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     } else {
       const newQuestions = state.sessionQuestions;
       newQuestions[questionNumber + 1].progress = RESPOND;
+
       dispatch({
         type: "update-session-questions",
         payload: newQuestions,
@@ -93,6 +97,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     if (questionNumber > 0) {
       const newQuestions = state.sessionQuestions;
       newQuestions[questionNumber - 1].progress = RESPOND;
+
       dispatch({
         type: "update-session-questions",
         payload: newQuestions,

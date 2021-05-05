@@ -27,6 +27,7 @@ const WarningModal = (): ReactElement => {
       state.sessionId,
       state.jwt
     ).catch((error) => console.log(error));
+
     dispatch({ type: "update-question-number", payload: 0 });
     dispatch({ type: "update-session-questions", payload: [] });
     dispatch({ type: "update-session-id", payload: -1 });
@@ -58,6 +59,7 @@ const WarningModal = (): ReactElement => {
 
           <span className="header-title">Warning</span>
         </div>
+
         <div className="warning-body">
           <p className="warning-message">
             The session is incomplete because responses are still open for some

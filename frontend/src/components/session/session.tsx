@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  ReactElement,
-  useContext,
-  useEffect,
-  Dispatch,
-  SetStateAction,
-} from "react";
+import React, { useState, ReactElement, useContext, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Student from "./student";
 import {
@@ -32,19 +25,14 @@ const GradebookSession = (props: Props): ReactElement => {
 
   const [dataLoaded, setDataLoaded] = useState(false);
   const [firstLoad, setFirstLoad] = useState(true);
+
   const [sessionName, setSessionName] = useState<string>("");
-  const [classAverage, setClassAverage]: [
-    ClassAverageInfo,
-    Dispatch<SetStateAction<ClassAverageInfo>>
-  ] = useState<ClassAverageInfo>({ points: 0, maxPoints: 0 });
-  const [questions, setQuestions]: [
-    QuestionGradeInfo[],
-    Dispatch<SetStateAction<QuestionGradeInfo[]>>
-  ] = useState<QuestionGradeInfo[]>([]);
-  const [students, setStudents]: [
-    StudentQuestionInfo[],
-    Dispatch<SetStateAction<StudentQuestionInfo[]>>
-  ] = useState<StudentQuestionInfo[]>([]);
+  const [classAverage, setClassAverage] = useState<ClassAverageInfo>({
+    points: 0,
+    maxPoints: 0,
+  });
+  const [questions, setQuestions] = useState<QuestionGradeInfo[]>([]);
+  const [students, setStudents] = useState<StudentQuestionInfo[]>([]);
 
   useEffect(() => {
     if (firstLoad) {
@@ -66,9 +54,13 @@ const GradebookSession = (props: Props): ReactElement => {
   }, [firstLoad, dataLoaded, state.courseId, state.jwt, props.match.params.id]);
 
   const getBackgroundColor = (percentage: number): string => {
-    if (percentage < RED) return "#FF0033";
-    else if (percentage < YELLOW) return "#FFC904";
-    else return "#00CA51";
+    if (percentage < RED) {
+      return "#FF0033";
+    } else if (percentage < YELLOW) {
+      return "#FFC904";
+    } else {
+      return "#00CA51";
+    }
   };
 
   const exportToCanvas = (): void => {
@@ -102,6 +94,7 @@ const GradebookSession = (props: Props): ReactElement => {
               <thead>
                 <tr>
                   <th className="header-text first-column">Student</th>
+
                   <th className="header-text">Totals</th>
 
                   {questions.map(
@@ -122,11 +115,13 @@ const GradebookSession = (props: Props): ReactElement => {
               <tbody>
                 <tr className="averages">
                   <td className="first-column averages-text">Class Average</td>
+
                   <td className="align-right averages-text">
                     <div>
                       {classAverage.points.toFixed(2)} /{" "}
                       {classAverage.maxPoints.toFixed(2)}
                     </div>
+
                     <div className="bar">
                       <div
                         className="bar-value"
@@ -139,13 +134,15 @@ const GradebookSession = (props: Props): ReactElement => {
                             classAverage.points / classAverage.maxPoints
                           ),
                         }}
-                      ></div>
+                      />
                     </div>
                   </td>
+
                   {questions.map(
                     (question: QuestionGradeInfo, sIndex: number) => {
                       const average = question.QuestionGrades[0].avgPoints;
                       const max = question.QuestionGrades[0].maxPoints;
+
                       return (
                         <td
                           key={sIndex}
@@ -154,6 +151,7 @@ const GradebookSession = (props: Props): ReactElement => {
                           <div>
                             {average.toFixed(2)} / {max.toFixed(2)}
                           </div>
+
                           <div className="bar">
                             <div
                               className="bar-value"
@@ -163,13 +161,14 @@ const GradebookSession = (props: Props): ReactElement => {
                                   average / max
                                 ),
                               }}
-                            ></div>
+                            />
                           </div>
                         </td>
                       );
                     }
                   )}
                 </tr>
+
                 {students.map((student: StudentQuestionInfo, index: number) => (
                   <Student
                     key={index}

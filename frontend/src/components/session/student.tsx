@@ -5,6 +5,7 @@ const Student = ({ student, questions }: Props): ReactElement => {
   return (
     <tr className="student table-body-text">
       <td>{student.name}</td>
+
       <td className="align-right table-body-text">
         {student.total.toFixed(2)}
       </td>

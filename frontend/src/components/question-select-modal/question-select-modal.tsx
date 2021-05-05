@@ -215,7 +215,7 @@ const QuestionSelect = (): ReactElement => {
             tabIndex={0}
             onClick={closeQuestionSelect}
           >
-            X
+            ×
           </button>
 
           <span className="header-title">Select Questions to Present</span>
@@ -333,6 +333,7 @@ const QuestionSelect = (): ReactElement => {
                                 <div>{folder.name}</div>
                               </label>
                             </div>
+
                             {folder.Questions.map((question, qIndex) => (
                               <div key={fIndex + "-" + qIndex}>
                                 <label

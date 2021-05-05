@@ -35,11 +35,19 @@ const QuestionComponent = (props: QuestionProps): ReactElement => {
           // calculate percentage for each answer choice
           // if not calculable then set to 0
           let responseCount = answer.responseCount || 0;
-          if (responseCount < 0) responseCount = 0;
+
+          if (responseCount < 0) {
+            responseCount = 0;
+          }
+
           const responseTotal =
             props.responseTotal > 0 ? props.responseTotal : 1;
           let percentage = Math.round((responseCount / responseTotal) * 100);
-          if (percentage > 100) percentage = 100;
+
+          if (percentage > 100) {
+            percentage = 100;
+          }
+
           return (
             <div key={index} className="answer">
               <div

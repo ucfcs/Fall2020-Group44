@@ -17,6 +17,7 @@ const SessionHeader = (): ReactElement => {
       state.sessionId,
       state.jwt
     ).catch((error) => console.log(error));
+
     dispatch({ type: "update-question-number", payload: 0 });
     dispatch({ type: "update-session-questions", payload: [] });
     dispatch({ type: "update-session-id", payload: -1 });
