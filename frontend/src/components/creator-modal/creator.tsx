@@ -18,8 +18,6 @@ import {
 } from "../../util/api";
 import { Question, FolderAndQuestionResponse } from "../../types";
 
-//todo: create question props
-
 const Creator = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
@@ -30,6 +28,7 @@ const Creator = (): ReactElement => {
 
   useEffect((): void => {
     if (firstLoad) {
+      // if editing an existing question, load that question's info
       if (state.editPreviewQuestion) {
         dispatch({
           type: "set-current-question-info",
@@ -52,13 +51,8 @@ const Creator = (): ReactElement => {
   ]);
 
   const [isPreview, setIsPreview] = useState(false);
-  const questionInfo: Question = state.currentQuestionInfo;
 
-  const closePreviewQuestion = (): void => {
-    dispatch({ type: "close-preview-question" });
-    dispatch({ type: "close-creator" });
-    dispatch({ type: "reset-current-question-info" });
-  };
+  const questionInfo: Question = state.currentQuestionInfo;
 
   const saveQuestion = (event: SyntheticEvent) => {
     event?.preventDefault();
@@ -79,10 +73,10 @@ const Creator = (): ReactElement => {
         .then(updateAndClose)
         .catch(catchError);
     } else {
-      // remove the keys from the payload
-      info.QuestionOptions = info.QuestionOptions.map((q) => ({
-        text: q.text,
-        isAnswer: q.isAnswer,
+      // remove the keys used for react mapping from the payload
+      info.QuestionOptions = info.QuestionOptions.map((question) => ({
+        text: question.text,
+        isAnswer: question.isAnswer,
       }));
 
       createQuestion({ ...info, courseId: state.courseId }, state.jwt)
@@ -108,6 +102,12 @@ const Creator = (): ReactElement => {
         });
       })
       .catch(catchError);
+  };
+
+  const closePreviewQuestion = (): void => {
+    dispatch({ type: "close-preview-question" });
+    dispatch({ type: "close-creator" });
+    dispatch({ type: "reset-current-question-info" });
   };
 
   return (

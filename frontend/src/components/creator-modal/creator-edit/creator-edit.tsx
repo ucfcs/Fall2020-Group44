@@ -4,8 +4,6 @@ import { store } from "../../../store";
 import "./creator-edit.scss";
 import { Folder, Question } from "../../../types";
 
-//TODO: create question props
-
 const CreatorEdit = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const global = useContext(store) as any;
@@ -157,7 +155,7 @@ const CreatorEdit = (): ReactElement => {
 
         <div className="question-info">
           <label htmlFor="folder-select">
-            <span className="red"></span> Folder:
+            <span className="red">*</span> Folder:
           </label>
 
           <select
@@ -187,7 +185,9 @@ const CreatorEdit = (): ReactElement => {
 
         <div className="options-grading">
           <div className="participation">
-            <label htmlFor="participation-input">Participation Points:</label>
+            <label htmlFor="participation-input">
+              <span className="red">*</span> Participation Points:
+            </label>
 
             <input
               id="participation-input"
@@ -200,7 +200,9 @@ const CreatorEdit = (): ReactElement => {
           </div>
 
           <div className="correctness">
-            <label htmlFor="correctness-input">Correctness Points:</label>
+            <label htmlFor="correctness-input">
+              <span className="red">*</span> Correctness Points:
+            </label>
 
             <input
               id="correctness-input"

@@ -86,7 +86,7 @@ const AnswerChoice = ({
         type="button"
         onClick={() => handleAnswerDelete(index)}
       >
-        X
+        ×
       </button>
     </div>
   );
