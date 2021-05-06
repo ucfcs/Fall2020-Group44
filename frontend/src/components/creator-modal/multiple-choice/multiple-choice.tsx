@@ -14,7 +14,9 @@ const MultipleChoice = (): ReactElement => {
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: Question = state.currentQuestionInfo;
+  const question: Question = JSON.parse(
+    JSON.stringify(state.currentQuestionInfo)
+  );
 
   const addAnswer = (): void => {
     const blankAnswer = {

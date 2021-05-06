@@ -55,7 +55,9 @@ const Creator = (): ReactElement => {
 
   const [isPreview, setIsPreview] = useState(false);
 
-  const questionInfo: Question = state.currentQuestionInfo;
+  const questionInfo: Question = JSON.parse(
+    JSON.stringify(state.currentQuestionInfo)
+  );
 
   const saveQuestion = (event: SyntheticEvent) => {
     event?.preventDefault();

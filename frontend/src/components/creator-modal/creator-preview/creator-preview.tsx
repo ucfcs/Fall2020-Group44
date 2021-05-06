@@ -10,7 +10,9 @@ const CreatorPreview = (): ReactElement => {
   const global = useContext(store) as any;
   const state = global.state;
 
-  const question: Question = state.currentQuestionInfo;
+  const question: Question = JSON.parse(
+    JSON.stringify(state.currentQuestionInfo)
+  );
 
   const previewQuestion: Question = state.editPreviewQuestion
     ? state.questions[state.previewFolder].Questions[state.previewQuestion]

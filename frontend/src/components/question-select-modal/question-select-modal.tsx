@@ -233,7 +233,7 @@ const QuestionSelect = (): ReactElement => {
                 }
               }}
             >
-              Edit
+              Select
             </div>
 
             <div
