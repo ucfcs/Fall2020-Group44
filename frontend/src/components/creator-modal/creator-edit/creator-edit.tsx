@@ -196,6 +196,7 @@ const CreatorEdit = (): ReactElement => {
             <input
               id="participation-input"
               type="number"
+              required
               onChange={updateParticipation}
               value={state.currentQuestionInfo.participationPoints}
               step="0.1"
@@ -211,6 +212,7 @@ const CreatorEdit = (): ReactElement => {
             <input
               id="correctness-input"
               type="number"
+              required
               onChange={updateCorrectness}
               value={state.currentQuestionInfo.correctnessPoints}
               step="0.1"
