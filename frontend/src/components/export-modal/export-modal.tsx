@@ -6,13 +6,15 @@ import React, {
   useState,
 } from "react";
 import { useLocation } from "react-router-dom";
-import { store } from "../../store";
 
-import "./export-modal.scss";
-import SessionDropdown from "./session-dropdown/session-dropdown";
-import Modal from "../modal/modal";
+import { store } from "../../store";
 import { BasicSessionInfo, CourseGradesResponse } from "../../types";
 import { getCourseGrades, catchError, exportGrades } from "../../util/api";
+
+import SessionDropdown from "./session-dropdown/session-dropdown";
+import Modal from "../modal/modal";
+
+import "./export-modal.scss";
 
 const ExportModal = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -42,6 +44,7 @@ const ExportModal = (): ReactElement => {
 
   useEffect(() => {
     if (firstLoad) {
+      // if the path is /gradebook/:id set that id to be selected
       if (id !== null) {
         setSelectedIds([id]);
       }
@@ -117,7 +120,7 @@ const ExportModal = (): ReactElement => {
           <h3>Export to Webcourses</h3>
 
           <button className="exit-button" onClick={cancel}>
-            X
+            ×
           </button>
         </div>
 

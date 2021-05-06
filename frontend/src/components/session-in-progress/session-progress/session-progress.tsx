@@ -4,12 +4,12 @@ import React, {
   useContext,
   useEffect,
 } from "react";
+
 import { RESPOND, RESPONSES, CORRECT_RESPONSE } from "../../../constants";
 import { Question } from "../../../types";
+import { store } from "../../../store";
 
 import "./session-progress.scss";
-
-import { store } from "../../../store";
 
 const SessionProgress = (props: Props): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -22,7 +22,7 @@ const SessionProgress = (props: Props): ReactElement => {
   const isClosed = state.sessionQuestions[questionNumber].isClosed;
 
   // do this to compare objects
-  // because useEffect doesn't do deep compare
+  // because useEffect dependency array doesn't do deep compare
   const effectDependency = JSON.stringify(state.sessionQuestions);
 
   useEffect(() => {
@@ -40,6 +40,7 @@ const SessionProgress = (props: Props): ReactElement => {
 
     if (target.tagName === "SPAN") {
       const parent = target.parentElement as HTMLInputElement;
+
       progress = parseInt(parent.value);
     } else {
       progress = parseInt(target.value);
@@ -47,6 +48,7 @@ const SessionProgress = (props: Props): ReactElement => {
 
     const newQuestions = state.sessionQuestions;
     newQuestions[questionNumber].progress = progress;
+
     dispatch({
       type: "update-session-questions",
       payload: newQuestions,
@@ -80,6 +82,7 @@ const SessionProgress = (props: Props): ReactElement => {
     //  update the isClosed attribute of the current Question
     const newQuestions = state.sessionQuestions;
     newQuestions[questionNumber].isClosed = !isClosed;
+
     dispatch({ type: "update-session-questions", payload: newQuestions });
   };
 
@@ -148,6 +151,7 @@ const SessionProgress = (props: Props): ReactElement => {
         ) : (
           <img src="/img/unlock.svg" alt="" />
         )}
+
         {isClosed ? "Open Responses" : "Stop Responses"}
       </button>
     </div>

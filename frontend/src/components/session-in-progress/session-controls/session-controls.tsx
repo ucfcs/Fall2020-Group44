@@ -1,9 +1,11 @@
 import React, { ReactElement, useContext } from "react";
 import { Link } from "react-router-dom";
+
 import { CORRECT_RESPONSE, RESPOND, RESPONSES } from "../../../constants";
 import { store } from "../../../store";
-import "./session-controls.scss";
 import { postSessionGrades } from "../../../util/api";
+
+import "./session-controls.scss";
 
 const SessionControls = (props: SessionControlsProps): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -34,6 +36,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     if (questionProgress < CORRECT_RESPONSE) {
       const newQuestions = state.sessionQuestions;
       newQuestions[questionNumber].progress = questionProgress + 1;
+
       dispatch({
         type: "update-session-questions",
         payload: newQuestions,
@@ -47,6 +50,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     if (questionProgress > RESPOND) {
       const newQuestions = state.sessionQuestions;
       newQuestions[questionNumber].progress = questionProgress - 1;
+
       dispatch({
         type: "update-session-questions",
         payload: newQuestions,
@@ -64,6 +68,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
         state.sessionId,
         state.jwt
       ).catch((error) => console.log(error));
+
       // this would make an api call to record what happened since it is the end of the session
       dispatch({ type: "update-question-number", payload: 0 });
       dispatch({ type: "update-session-questions", payload: [] });
@@ -81,6 +86,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     } else {
       const newQuestions = state.sessionQuestions;
       newQuestions[questionNumber + 1].progress = RESPOND;
+
       dispatch({
         type: "update-session-questions",
         payload: newQuestions,
@@ -93,6 +99,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     if (questionNumber > 0) {
       const newQuestions = state.sessionQuestions;
       newQuestions[questionNumber - 1].progress = RESPOND;
+
       dispatch({
         type: "update-session-questions",
         payload: newQuestions,

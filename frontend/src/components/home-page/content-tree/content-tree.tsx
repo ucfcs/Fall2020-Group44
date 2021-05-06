@@ -7,6 +7,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
+
 import { store } from "../../../store";
 import { Folder, FolderAndQuestionResponse } from "../../../types";
 import {
@@ -16,6 +17,7 @@ import {
   getFolders,
   updateFolder,
 } from "../../../util/api";
+
 import "./content-tree.scss";
 
 const ContentTree = (): ReactElement => {
@@ -100,6 +102,7 @@ const ContentTree = (): ReactElement => {
   const handleFolderCollapse = (folder: number) => {
     const newFolderCollapse = folderCollapse.slice();
     newFolderCollapse[folder] = !newFolderCollapse[folder];
+
     setFolderCollapse(newFolderCollapse);
   };
 
@@ -128,6 +131,7 @@ const ContentTree = (): ReactElement => {
     questionIndex: number
   ): void => {
     event.preventDefault();
+
     const id: number | undefined =
       questions[folderIndex].Questions[questionIndex].id;
 
@@ -362,7 +366,8 @@ const ContentTree = (): ReactElement => {
                   </div>
                 ) : (
                   <div key={fIndex}>
-                    <div className="rogue-question-separator"></div>
+                    <div className="rogue-question-separator" />
+
                     {folder.Questions.map((question, qIndex) => (
                       <div
                         key={qIndex}

@@ -1,12 +1,9 @@
 import React, { ReactElement, useContext } from "react";
+
 import { store } from "../../../store";
 import { Question, QuestionOption } from "../../../types";
 
 import "./creator-preview.scss";
-
-//TODO: finish creator Preview
-
-//TODO: add props for question
 
 const CreatorPreview = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,7 +21,9 @@ const CreatorPreview = (): ReactElement => {
   return (
     <div className="creator-preview">
       <div className="preview-title">{previewQuestion.title}</div>
+
       <div className="preview-question">{previewQuestion.question}</div>
+
       {previewQuestion.QuestionOptions.map(
         (answer: QuestionOption, index: number) => (
           <div key={index} className="answer">

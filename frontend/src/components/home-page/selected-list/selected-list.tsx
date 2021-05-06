@@ -1,7 +1,9 @@
 import React, { useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
-import "./selected-list.scss";
+
 import { store } from "../../../store";
+
+import "./selected-list.scss";
 
 const SelectedList = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -1,5 +1,6 @@
 import React, { ReactElement, useContext, useEffect } from "react";
 import { Redirect } from "react-router";
+
 import { store } from "../../store";
 
 const LogIn = (props: Props): ReactElement => {

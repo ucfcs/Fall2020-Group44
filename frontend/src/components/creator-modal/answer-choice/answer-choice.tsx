@@ -1,4 +1,5 @@
 import React, { ReactElement, SyntheticEvent, useContext } from "react";
+
 import { store } from "../../../store";
 import { Question, QuestionOption } from "../../../types";
 
@@ -88,7 +89,7 @@ const AnswerChoice = ({
         type="button"
         onClick={() => handleAnswerDelete(index)}
       >
-        X
+        ×
       </button>
     </div>
   );
