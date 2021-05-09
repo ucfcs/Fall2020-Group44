@@ -184,3 +184,625 @@ An atomic file structure is used to create self contained components.
 ## src/components/
 
 Each top level folder in this section represents either a specific page, modal, or a component that is shared across more than one top level components. Each folder can have more folders inside if the top level component is broken up into several different files that are only used for that one specific component.
+
+# Global State Management
+
+## Data
+
+### `previewFolder`
+
+#### Type
+
+Number
+
+#### Usage
+
+Number representing the index of the folder in the questions array. For editing and previewing folder info.
+
+### `previewQuestion`
+
+#### Type
+
+Number
+
+#### Usage
+
+Number representing the index of the question in the questions array. For editing and previewing question info.
+
+### `creatorFolderIndex`
+
+#### Type
+
+Number
+
+#### Usage
+
+Number used when creating or editing a question to pre select the folder the question will be associated with.
+
+### `sessionInProgress`
+
+#### Type
+
+Boolean
+
+#### Usage
+
+True when there is an active session running with unanswered questions. False when it is over and all questions are answered.
+
+### `sessionId`
+
+#### Type
+
+Number
+
+#### Usage
+
+The ID of the currently running session. Used for making API calls.
+
+### `openExitWarning`
+
+#### Type
+
+Boolean
+
+#### Usage
+
+Controls the exit warning modal. Displays the modal when true and hides it when false.
+
+### `courseId`
+
+#### Type
+
+String
+
+#### Usage
+
+The ID of the course that the user is authenticated with. Used for API calls.
+
+### `questions`
+
+#### Type
+
+Array
+
+#### Structure
+
+A 2D array. Each array is a folder containing questions.
+
+```
+[[<question 1>, <question 2>], [<question 3>, <question 4>]]
+```
+
+#### Usage
+
+Used for displaying questions on the home page and question management throughout the app.
+
+### `sessionQuestions`
+
+#### Type
+
+Array
+
+#### Structure
+
+A 2D array. Each array is a folder containing questions.
+
+```
+[[<question 1>, <question 2>], [<question 3>, <question 4>]]
+```
+
+#### Usage
+
+Similar to the `questions` array, but it is only the questions being used in an active session.
+
+### `editPreviewQuestion`
+
+#### Type
+
+Boolean
+
+#### Usage
+
+True if the creator modal is being used to edit an existing question instead of creating a new question.
+
+### `openCreator`
+
+#### Type
+
+Boolean
+
+#### Usage
+
+True if the creator modal is to be open, false if not.
+
+### `openFolderCreator`
+
+#### Type
+
+Boolean
+
+#### Usage
+
+True if the folder creator modal is to be open, false if not.
+
+### `openQuestionSelect`
+
+#### Type
+
+Boolean
+
+#### Usage
+
+True if the modal used to select questions to present is to be open, false if not.
+
+### `questionNumber`
+
+#### Type
+
+Number
+
+#### Usage
+
+The index of the question that is currently active in a session. Used in the `sessionQuestions` array.
+
+### `classSize`
+
+#### Type
+
+Number
+
+#### Usage
+
+The number of students currently in a session.
+
+### `openExportModal`
+
+#### Type
+
+Boolean
+
+#### Usage
+
+True if the modal used to export questions to Canvas is to be open, false if not.
+
+### `currentQuestionInfo`
+
+#### Type
+
+Object
+
+#### Structure
+
+A 2D array. Each array is a folder containing questions.
+
+```javascript
+{
+  title: "<question title>",
+  question: "<question text>",
+  type: "Mult Choice",
+  QuestionOptions: [
+    { key?: "<uuid>", text: "<answer text>", isAnswer: boolean }
+  ],
+  folderId: null | number,
+  participationPoints: number,
+  correctnessPoints: number
+}
+```
+
+#### Usage
+
+The question info used for editing and creating a question, primarily in the creator modal.
+
+### `websocket`
+
+#### Type
+
+WebSocket Connection
+
+#### Usage
+
+The WebSocket connection that is maintained when the user is logged in.
+
+### `jwt`
+
+#### Type
+
+String
+
+#### Usage
+
+The JavaScript Web Token used when the user is authenticated with Canvas. Sent with all API calls.
+
+## Actions
+
+### `update-preview-folder`
+
+#### Associated State Variable
+
+`previewFolder`
+
+#### Payload
+
+Number
+
+#### Usage
+
+Changes the number of the `previewFolder` variable.
+
+### `update-preview-question`
+
+#### Associated State Variable
+
+`previewQuestion`
+
+#### Payload
+
+Number
+
+#### Usage
+
+Changes the number of the `previewQuestion` variable.
+
+### `update-creator-module-folder-index`
+
+#### Associated State Variable
+
+`creatorFolderIndex`
+
+#### Payload
+
+Number
+
+#### Usage
+
+Changes the number of the `creatorFolderIndex` variable.
+
+### `enable-exit-warning`
+
+#### Associated State Variable
+
+`sessionInProgress`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `sessionInProgress` variable to true.
+
+### `update-session-id`
+
+#### Associated State Variable
+
+`sessionId`
+
+#### Payload
+
+Number
+
+#### Usage
+
+Changes the number of the `sessionId` variable.
+
+### `disable-exit-warning`
+
+#### Associated State Variable
+
+`sessionInProgress`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `sessionInProgress` variable to false.
+
+### `show-exit-warning-modal`
+
+#### Associated State Variable
+
+`openExitWarning`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `openExitWarning` variable to true.
+
+### `hide-exit-warning-modal`
+
+#### Associated State Variable
+
+`openExitWarning`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `openExitWarning` variable to false.
+
+### `edit-preview-question`
+
+#### Associated State Variable
+
+`editPreviewQuestion`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `editPreviewQuestion` variable to true.
+
+### `close-preview-question`
+
+#### Associated State Variable
+
+`editPreviewQuestion`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `editPreviewQuestion` variable to false.
+
+### `update-session-questions`
+
+#### Associated State Variable
+
+`sessionQuestions`
+
+#### Payload
+
+Array of questions.
+
+#### Usage
+
+Sets the `sessionQuestions` array.
+
+### `open-creator`
+
+#### Associated State Variable
+
+`openCreator`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `openCreator` variable to true.
+
+### `close-creator`
+
+#### Associated State Variable
+
+`openCreator`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `openCreator` variable to false.
+
+### `open-folder`
+
+#### Associated State Variable
+
+`openFolderCreator`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `openFolderCreator` variable to true.
+
+### `close-folder`
+
+#### Associated State Variable
+
+`openFolderCreator`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `openFolderCreator` variable to false.
+
+### `open-question-select`
+
+#### Associated State Variable
+
+`openQuestionSelect`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `openQuestionSelect` variable to true.
+
+### `close-question-select`
+
+#### Associated State Variable
+
+`openQuestionSelect`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `openQuestionSelect` variable to false.
+
+### `update-question-number`
+
+#### Associated State Variable
+
+`questionNumber`
+
+#### Payload
+
+Number
+
+#### Usage
+
+Changes number of the `questionNumber` variable.
+
+### `update-class-size`
+
+#### Associated State Variable
+
+`classSize`
+
+#### Payload
+
+Number
+
+#### Usage
+
+Changes number of the `classSize` variable.
+
+### `open-export-modal`
+
+#### Associated State Variable
+
+`openExportModal`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `openExportModal` variable to true.
+
+### `close-export-modal`
+
+#### Associated State Variable
+
+`openExportModal`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `openExportModal` variable to false.
+
+### `reset-current-question-info`
+
+#### Associated State Variable
+
+`currentQuestionInfo`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `currentQuestionInfo` variable to the value of the `baseQuestionInfo` in `store.js`.
+
+### `set-current-question-info`
+
+#### Associated State Variable
+
+`currentQuestionInfo`
+
+#### Payload
+
+A question object.
+
+#### Usage
+
+Sets the `currentQuestionInfo` variable to the retrieved value from the `questions` array.
+
+### `set-websocket`
+
+#### Associated State Variable
+
+`websocket`
+
+#### Payload
+
+A WebSocket connection
+
+#### Usage
+
+Sets the `websocket` variable to the current active WebSocket connection.
+
+### `clear-websocket`
+
+#### Associated State Variable
+
+`websocket`
+
+#### Payload
+
+None
+
+#### Usage
+
+Sets the `websocket` variable to `null`.
+
+### `update-questions`
+
+#### Associated State Variable
+
+`questions`
+
+#### Payload
+
+2D array of arrays of questions.
+
+#### Usage
+
+Updates the `questions` array with the latest info from the backend.
+
+### `set-course-id`
+
+#### Associated State Variable
+
+`courseId`
+
+#### Payload
+
+String
+
+#### Usage
+
+Updates the `courseId` variable.
+
+### `set-jwt`
+
+#### Associated State Variable
+
+`jwt`
+
+#### Payload
+
+String
+
+#### Usage
+
+Updates the `jwt` variable to the token retrieved after authenticating.
