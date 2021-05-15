@@ -24,3 +24,6 @@ npm run db:rebuild
 ```
 npm run dev
 ```
+### Lmao
+
+see ya nerds
