@@ -77,15 +77,15 @@ npm i
 
 ### Update MySQL
 
-In order for MySQL to allow `GROUP BY` commands, we need to update the `sql_mode` global variable. 
+In order for MySQL to allow `GROUP BY` commands, we need to update the `sql_mode` global variable.
 
-To do this locally, you will have to enter your docker container, then enter your MySQL instance with the following commands. 
+To do this locally, you will have to enter your docker container, then enter your MySQL instance with the following commands.
 ```
 docker exec -it <MySQL CONTAINER ID> /bin/bash
 mysql -u <MYSQL_USER> -p
 ```
 
-After entering the `MYSQL_ROOT_PASSWORD`, you can run the following command in MySQL: 
+After entering the `MYSQL_ROOT_PASSWORD`, you can run the following command in MySQL:
 ```
 SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
 ```
@@ -115,6 +115,16 @@ npx serverless invoke local --function hello
 npm run deploy
 ```
 
+## Setup Canvas LMS
+
+How to get Canvas LMS running on your machine locally
+
+1. Clone the Canvas LMS [repo](https://github.com/instructure/canvas-lms)
+2. Follow the Quick Start instructions
+   [here](https://github.com/instructure/canvas-lms/wiki/Quick-Start)
+
 ## Resouces
 
 - [TS with Serverless](https://lesscodeismore.dev/serverless-typescript/)
+- [Canvas LMS](https://github.com/instructure/canvas-lms)
+- [Canvas LMS Install](https://github.com/instructure/canvas-lms/wiki/Quick-Start)

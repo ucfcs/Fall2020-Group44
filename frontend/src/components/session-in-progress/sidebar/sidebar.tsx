@@ -1,4 +1,5 @@
 import React, { ReactElement, SyntheticEvent, useContext } from "react";
+
 import { Question } from "../../../types";
 import { store } from "../../../store";
 
@@ -18,6 +19,8 @@ const Sidebar = (props: SidebarProps): ReactElement => {
     buttons.push(i + 1);
   }
 
+  // for selecting the next question in the sidebar.
+  // have to be handle clicking all the elements inside the question button
   const pickQuestion = (event: SyntheticEvent): void => {
     const target: HTMLInputElement = event.target as HTMLInputElement;
     let num: number;

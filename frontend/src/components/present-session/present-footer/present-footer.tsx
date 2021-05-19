@@ -5,10 +5,6 @@ import React, {
   useState,
   useContext,
 } from "react";
-import { store } from "../../../store";
-import "./present-footer.scss";
-
-// https://github.com/atlassian/react-beautiful-dnd
 import {
   DragDropContext,
   Droppable,
@@ -16,13 +12,9 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 
-interface PollQuestion {
-  title: string;
-  question: string;
-  type: string;
-  choices: string[];
-  correct: number;
-}
+import { store } from "../../../store";
+
+import "./present-footer.scss";
 
 function useForceUpdate() {
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -52,7 +44,9 @@ const PresentFooter = (): ReactElement => {
     if (result.destination) {
       const newQuestions: PollQuestion[] = questions;
       const [srcQuestion] = questions.splice(result.source.index, 1);
+
       newQuestions.splice(result.destination.index, 0, srcQuestion);
+
       dispatch({ type: "update-session-questions", payload: newQuestions });
       setQuestions(newQuestions);
     }
@@ -64,8 +58,10 @@ const PresentFooter = (): ReactElement => {
   ) => {
     e.preventDefault();
     e.stopPropagation();
+
     const newShowArray = showTooltip;
     newShowArray[index] = true;
+
     setShowTooltip(newShowArray);
     forceUpdate();
   };
@@ -76,14 +72,17 @@ const PresentFooter = (): ReactElement => {
   ) => {
     e.preventDefault();
     e.stopPropagation();
+
     const newShowArray = showTooltip;
     newShowArray[index] = false;
+
     setShowTooltip(newShowArray);
     forceUpdate();
   };
 
   const handleDeleteQuestion = (index: number) => {
     const newQuestions = questions.filter((_, i) => i !== index);
+
     dispatch({ type: "update-session-questions", payload: newQuestions });
     setQuestions(newQuestions);
   };
@@ -117,15 +116,18 @@ const PresentFooter = (): ReactElement => {
                     >
                       {question.title}
                     </div>
+
                     <img src="/img/logo.svg" />
+
                     <p>
                       {"Q" + (index + 1)} {question.title}
                     </p>
+
                     <button
                       className="delete"
                       onClick={() => handleDeleteQuestion(index)}
                     >
-                      X
+                      ×
                     </button>
                   </li>
                 )}
@@ -138,5 +140,13 @@ const PresentFooter = (): ReactElement => {
     </DragDropContext>
   );
 };
+
+interface PollQuestion {
+  title: string;
+  question: string;
+  type: string;
+  choices: string[];
+  correct: number;
+}
 
 export default PresentFooter;

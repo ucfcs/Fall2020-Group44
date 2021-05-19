@@ -1,10 +1,11 @@
 import React, { useContext, SyntheticEvent, ReactElement } from "react";
-import MultipleChoice from "../multiple-choice/multiple-choice";
+
 import { store } from "../../../store";
-import "./creator-edit.scss";
 import { Folder, Question } from "../../../types";
 
-//TODO: create question props
+import MultipleChoice from "../multiple-choice/multiple-choice";
+
+import "./creator-edit.scss";
 
 const CreatorEdit = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,7 +13,9 @@ const CreatorEdit = (): ReactElement => {
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: Question = state.currentQuestionInfo;
+  const question: Question = JSON.parse(
+    JSON.stringify(state.currentQuestionInfo)
+  );
 
   const handleTitleChange = (event: SyntheticEvent): void => {
     const tempQuestion = {
@@ -157,7 +160,7 @@ const CreatorEdit = (): ReactElement => {
 
         <div className="question-info">
           <label htmlFor="folder-select">
-            <span className="red"></span> Folder:
+            <span className="red">*</span> Folder:
           </label>
 
           <select
@@ -166,6 +169,7 @@ const CreatorEdit = (): ReactElement => {
             id="folder-select"
             defaultValue={state.creatorFolderIndex}
             onChange={handleFolderChange}
+            required
           >
             {state.questions.map((folder: Folder, fIndex: number) => (
               <option key={fIndex} value={folder.name ? fIndex : -1}>
@@ -187,26 +191,38 @@ const CreatorEdit = (): ReactElement => {
 
         <div className="options-grading">
           <div className="participation">
-            <label htmlFor="participation-input">Participation Points:</label>
+            <label htmlFor="participation-input">
+              <span className="red">*</span> Participation Points:
+            </label>
 
             <input
               id="participation-input"
               type="number"
+              required
               onChange={updateParticipation}
-              value={state.currentQuestionInfo.participationPoints}
+              value={
+                JSON.parse(JSON.stringify(state.currentQuestionInfo))
+                  .participationPoints
+              }
               step="0.1"
               min="0.0"
             />
           </div>
 
           <div className="correctness">
-            <label htmlFor="correctness-input">Correctness Points:</label>
+            <label htmlFor="correctness-input">
+              <span className="red">*</span> Correctness Points:
+            </label>
 
             <input
               id="correctness-input"
               type="number"
+              required
               onChange={updateCorrectness}
-              value={state.currentQuestionInfo.correctnessPoints}
+              value={
+                JSON.parse(JSON.stringify(state.currentQuestionInfo))
+                  .correctnessPoints
+              }
               step="0.1"
               min="0.0"
             />

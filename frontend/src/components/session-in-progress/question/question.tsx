@@ -1,9 +1,11 @@
 import React, { ReactElement } from "react";
-import "./question.scss";
 
-import SessionControls from "../session-controls/session-controls";
 import { QuestionOption } from "../../../types";
 import { CORRECT_RESPONSE } from "../../../constants";
+
+import SessionControls from "../session-controls/session-controls";
+
+import "./question.scss";
 
 const QuestionComponent = (props: QuestionProps): ReactElement => {
   // determine which of the answer choices are correct options
@@ -35,11 +37,19 @@ const QuestionComponent = (props: QuestionProps): ReactElement => {
           // calculate percentage for each answer choice
           // if not calculable then set to 0
           let responseCount = answer.responseCount || 0;
-          if (responseCount < 0) responseCount = 0;
+
+          if (responseCount < 0) {
+            responseCount = 0;
+          }
+
           const responseTotal =
             props.responseTotal > 0 ? props.responseTotal : 1;
           let percentage = Math.round((responseCount / responseTotal) * 100);
-          if (percentage > 100) percentage = 100;
+
+          if (percentage > 100) {
+            percentage = 100;
+          }
+
           return (
             <div key={index} className="answer">
               <div

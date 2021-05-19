@@ -74,14 +74,14 @@ export async function updateQuestion(
 ): Promise<[Response, Response]> {
   const url: string = getBaseUrl();
 
-  // first lets up the first level of the question
+  // first update the first level of the question
   const questionUpdateResponse: Promise<Response> = sendPut(
     `${url}/question/${questionId}`,
     newQuestion,
     token
   );
 
-  // then well update the nest props of a question object
+  // then update the nested props of a question object
   // i.e. the question options
   const optionsUpdateManyResponse: Promise<Response> = sendPut(
     `${url}/question/${questionId}/option`,

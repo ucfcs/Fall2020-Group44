@@ -65,11 +65,11 @@ function App(): ReactElement {
 
         <Route path="/course/:courseId" component={LogIn} />
 
-        <PrivateRoute path="/poll/present">
+        <PrivateRoute path="/session/present">
           <Present />
         </PrivateRoute>
 
-        <PrivateRoute path="/poll/display">
+        <PrivateRoute path="/session/display">
           <SessionInProgress />
         </PrivateRoute>
 

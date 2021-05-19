@@ -1,7 +1,10 @@
 import React, { useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
+
 import { store } from "../../store";
+
 import Modal from "../modal/modal";
+
 import "./warning-modal.scss";
 import { postSessionGrades } from "../../util/api";
 import { Question } from "../../types";
@@ -29,6 +32,7 @@ const WarningModal = (): ReactElement => {
       state.jwt,
       unansweredQuestions()
     ).catch((error) => console.log(error));
+
     dispatch({ type: "update-question-number", payload: 0 });
     dispatch({ type: "update-session-questions", payload: [] });
     dispatch({ type: "update-session-id", payload: -1 });
@@ -72,6 +76,7 @@ const WarningModal = (): ReactElement => {
 
           <span className="header-title">Warning</span>
         </div>
+
         <div className="warning-body">
           <p className="warning-message">
             The session is incomplete because responses are still open for some

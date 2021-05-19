@@ -1,11 +1,11 @@
 import React, { ReactElement } from "react";
+
 import { QuestionOption } from "../../../types";
+
 import "./multiple-choice.scss";
 
 const MultipleChoice = ({
   answers,
-  responses,
-  showPreviewResponse,
   showCorrectPreviewResponse,
 }: Props): ReactElement => {
   return (
@@ -30,20 +30,12 @@ const MultipleChoice = ({
               <div
                 className="response-bar"
                 style={{
-                  width: showPreviewResponse
-                    ? responses[index]
-                    : showCorrectPreviewResponse
-                    ? "100%"
-                    : "",
+                  width: showCorrectPreviewResponse ? "100%" : "",
                 }}
               />
 
               <div className="answer-text">
                 <span>{answer.text}</span>
-              </div>
-
-              <div className="responses">
-                {showPreviewResponse ? responses[index] : ""}
               </div>
             </div>
           </div>
@@ -55,8 +47,6 @@ const MultipleChoice = ({
 
 type Props = {
   answers: QuestionOption[];
-  responses: string[];
-  showPreviewResponse: boolean;
   showCorrectPreviewResponse: boolean;
 };
 

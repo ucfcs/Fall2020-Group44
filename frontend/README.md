@@ -1,7 +1,9 @@
-# Getting Started with Create React App
+# UCF React Frontend
 
 This project was bootstrapped with
 [Create React App](https://github.com/facebook/create-react-app).
+
+See ARCHITECTURE.md for more info on the frontend structure
 
 ## Available Scripts
 
@@ -21,8 +23,8 @@ Runs eslint and prettier on the frontend files in `src/`.
 
 ### `npm start`
 
-Runs the app in the development mode.\
-Open [http://localhost:5000/dev/mock_launch](http://localhost:5000/dev/mock_launch) to view it in the browser.
+Runs the app in development mode.\
+This will open `http://localhost:3000` in the browser, but it is necessary to open [http://localhost:5000/dev/mock_launch](http://localhost:5000/dev/mock_launch) to authenticate properly.
 
 The page will reload if you make edits.\
 You will also see any lint errors in the console.
@@ -80,24 +82,7 @@ The frontend is authenticated through a redirect in Canvas. It is `<base url>/co
 
 If you want to access the frontend locally you will need to navigate to `http://localhost:5000/dev/mock_launch`. This enpoint will simulate a LTI launch
 
-## Learn More
-
-You can learn more in the
-[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-## Setup Canvas LMS
-
-How to get Canvas LMS running on your machine locally
-
-1. Clone the Canvas LMS [repo](https://github.com/instructure/canvas-lms)
-2. Follow the Quick Start instructions
-   [here](https://github.com/instructure/canvas-lms/wiki/Quick-Start)
-
 ## Resouces
 
 - [React app setup](https://create-react-app.dev/docs/adding-typescript/)
 - [React SCSS](https://create-react-app.dev/docs/adding-a-sass-stylesheet/)
-- [Canvas LMS](https://github.com/instructure/canvas-lms)
-- [Canvas LMS Install](https://github.com/instructure/canvas-lms/wiki/Quick-Start)

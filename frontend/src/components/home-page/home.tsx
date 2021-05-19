@@ -1,11 +1,14 @@
 import React, { ReactElement, useContext, useEffect, useState } from "react";
-import ContentTree from "./content-tree/content-tree";
-import "./home.scss";
-import HomeHeader from "../home-header/home-header";
-import QuestionPreview from "./question-preview/question-preview";
+
 import { catchError, getFolders } from "../../util/api";
 import { store } from "../../store";
 import { FolderAndQuestionResponse } from "../../types";
+
+import ContentTree from "./content-tree/content-tree";
+import HomeHeader from "../home-header/home-header";
+import QuestionPreview from "./question-preview/question-preview";
+
+import "./home.scss";
 
 const Body = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

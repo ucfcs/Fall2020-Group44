@@ -1,7 +1,9 @@
 import React, { useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
-import "./selected-list.scss";
+
 import { store } from "../../../store";
+
+import "./selected-list.scss";
 
 const SelectedList = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -20,7 +22,7 @@ const SelectedList = (): ReactElement => {
 
       <div className="option-buttons">
         <button className="present-button">
-          <Link to="/poll/present">&#9658;&nbsp;Present</Link>
+          <Link to="/session/present">&#9658;&nbsp;Present</Link>
         </button>
       </div>
     </div>

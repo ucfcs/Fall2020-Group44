@@ -1,4 +1,5 @@
 import React, { ReactElement, SyntheticEvent, useContext } from "react";
+
 import { store } from "../../../store";
 import { Question, QuestionOption } from "../../../types";
 
@@ -14,7 +15,9 @@ const AnswerChoice = ({
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: Question = state.currentQuestionInfo;
+  const question: Question = JSON.parse(
+    JSON.stringify(state.currentQuestionInfo)
+  );
 
   const handleAnswerChange = (e: SyntheticEvent, index: number) => {
     const tempQuestion = question;
@@ -86,7 +89,7 @@ const AnswerChoice = ({
         type="button"
         onClick={() => handleAnswerDelete(index)}
       >
-        X
+        ×
       </button>
     </div>
   );

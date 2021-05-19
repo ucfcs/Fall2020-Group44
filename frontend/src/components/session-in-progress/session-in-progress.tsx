@@ -1,13 +1,14 @@
-import { Question, QuestionOption } from "../../types";
 import React, { ReactElement, useContext, useEffect, useState } from "react";
+
+import { store } from "../../store";
+import { Question, QuestionOption } from "../../types";
+
+import Sidebar from "./sidebar/sidebar";
+import PollHeader from "../session-header/session-header";
 import SessionProgress from "./session-progress/session-progress";
 import QuestionComponent from "./question/question";
 
 import "./session-in-progress.scss";
-
-import PollHeader from "../session-header/session-header";
-import { store } from "../../store";
-import Sidebar from "./sidebar/sidebar";
 
 const SessionInProgress = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -37,6 +38,7 @@ const SessionInProgress = (): ReactElement => {
           if (!isClosed) {
             // set response for that question option
             const newQuestions = state.sessionQuestions;
+
             newQuestions[questionNumber].QuestionOptions.forEach(
               (option: QuestionOption) => {
                 // increment the response count of the QuestionOption
@@ -49,6 +51,7 @@ const SessionInProgress = (): ReactElement => {
                 }
               }
             );
+
             dispatch({
               type: "update-session-questions",
               payload: newQuestions,
@@ -59,6 +62,7 @@ const SessionInProgress = (): ReactElement => {
           if (!isClosed) {
             // set response for that question option
             const newQuestions = state.sessionQuestions;
+
             newQuestions[questionNumber].QuestionOptions.forEach(
               (option: QuestionOption) => {
                 if (message.payload.previous !== message.payload.new) {
@@ -75,6 +79,7 @@ const SessionInProgress = (): ReactElement => {
                 }
               }
             );
+
             dispatch({
               type: "update-session-questions",
               payload: newQuestions,
@@ -82,7 +87,9 @@ const SessionInProgress = (): ReactElement => {
           }
           break;
         case "studentLeft":
-          if (classSize > 0) setClassSize(classSize - 1);
+          if (classSize > 0) {
+            setClassSize(classSize - 1);
+          }
           break;
         case "studentJoined":
           setClassSize(classSize + 1);
@@ -123,11 +130,13 @@ const SessionInProgress = (): ReactElement => {
       <PollHeader />
 
       <Sidebar questions={questions} />
+
       <div className="session-content">
         <SessionProgress
           classSize={classSize}
           responseCount={state.sessionQuestions[questionNumber].responseCount}
         />
+
         <div className="content">{content()}</div>
       </div>
     </div>

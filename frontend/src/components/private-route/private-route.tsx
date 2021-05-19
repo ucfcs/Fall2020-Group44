@@ -1,5 +1,6 @@
 import React, { ComponentType, ReactElement, useContext } from "react";
 import { Route, RouteComponentProps } from "react-router-dom";
+
 import { store } from "../../store";
 
 const PrivateRoute = (props: Props): ReactElement => {

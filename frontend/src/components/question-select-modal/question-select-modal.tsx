@@ -11,11 +11,13 @@ import {
   DropResult,
 } from "react-beautiful-dnd";
 import { useHistory } from "react-router";
-import { store } from "../../store";
 
+import { store } from "../../store";
 import { createSession, catchError } from "../../util/api";
 import { Folder, Question, QuestionOption } from "../../types";
+
 import Modal from "../modal/modal";
+
 import "./question-select-modal.scss";
 
 const QuestionSelect = (): ReactElement => {
@@ -70,7 +72,7 @@ const QuestionSelect = (): ReactElement => {
           );
         }
 
-        history.push("/poll/present");
+        history.push("/session/present");
       })
       .catch(catchError);
   };
@@ -215,7 +217,7 @@ const QuestionSelect = (): ReactElement => {
             tabIndex={0}
             onClick={closeQuestionSelect}
           >
-            X
+            ×
           </button>
 
           <span className="header-title">Select Questions to Present</span>
@@ -231,7 +233,7 @@ const QuestionSelect = (): ReactElement => {
                 }
               }}
             >
-              Edit
+              Select
             </div>
 
             <div
@@ -333,6 +335,7 @@ const QuestionSelect = (): ReactElement => {
                                 <div>{folder.name}</div>
                               </label>
                             </div>
+
                             {folder.Questions.map((question, qIndex) => (
                               <div key={fIndex + "-" + qIndex}>
                                 <label

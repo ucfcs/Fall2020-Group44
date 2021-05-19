@@ -1,8 +1,11 @@
 import React, { ReactElement, useContext } from "react";
-import { Question } from "../../../types";
-import AnswerChoice from "../answer-choice/answer-choice";
 import { v4 as uuid } from "uuid";
+
+import { Question } from "../../../types";
 import { store } from "../../../store";
+
+import AnswerChoice from "../answer-choice/answer-choice";
+
 import "./multiple-choice.scss";
 
 const MultipleChoice = (): ReactElement => {
@@ -11,7 +14,9 @@ const MultipleChoice = (): ReactElement => {
   const state = global.state;
   const dispatch = global.dispatch;
 
-  const question: Question = state.currentQuestionInfo;
+  const question: Question = JSON.parse(
+    JSON.stringify(state.currentQuestionInfo)
+  );
 
   const addAnswer = (): void => {
     const blankAnswer = {
