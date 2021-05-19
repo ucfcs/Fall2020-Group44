@@ -31,6 +31,8 @@ const SessionProgress = (props: Props): ReactElement => {
     ) {
       dispatch({ type: "disable-exit-warning" });
       dispatch({ type: "hide-exit-warning-modal" });
+    } else {
+      dispatch({ type: "enable-exit-warning" });
     }
   }, [dispatch, state.sessionQuestions, effectDependency]);
 

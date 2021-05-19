@@ -75,7 +75,8 @@ const WarningModal = (): ReactElement => {
         <div className="warning-body">
           <p className="warning-message">
             The session is incomplete because responses are still open for some
-            questions. Are you sure you want to end the session?
+            questions. Any questions that have not been stopped will not have
+            recorded grades. Are you sure you want to end the session?
           </p>
         </div>
 
