@@ -4,6 +4,7 @@ import { store } from "../../store";
 import Modal from "../modal/modal";
 import "./warning-modal.scss";
 import { postSessionGrades } from "../../util/api";
+import { Question } from "../../types";
 
 const WarningModal = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -25,7 +26,8 @@ const WarningModal = (): ReactElement => {
     postSessionGrades(
       state.courseId,
       state.sessionId,
-      state.jwt
+      state.jwt,
+      unansweredQuestions()
     ).catch((error) => console.log(error));
     dispatch({ type: "update-question-number", payload: 0 });
     dispatch({ type: "update-session-questions", payload: [] });
@@ -41,6 +43,18 @@ const WarningModal = (): ReactElement => {
         })
       );
     }
+  };
+
+  const unansweredQuestions = (): number[] => {
+    const unanswered: number[] = [];
+    state.sessionQuestions.forEach((question: Question) => {
+      if (question.isClosed == false) {
+        if (question.id) {
+          unanswered.push(question.id);
+        }
+      }
+    });
+    return unanswered;
   };
 
   return (
