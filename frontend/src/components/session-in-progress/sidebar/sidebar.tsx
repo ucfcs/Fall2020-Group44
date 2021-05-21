@@ -48,7 +48,7 @@ const Sidebar = (props: SidebarProps): ReactElement => {
               value={number - 1}
               onClick={pickQuestion}
             >
-              Question {number} {props.questions[index].isClosed ? "✓" : ""}
+              Question {number} {props.questions[index].interacted ? "✓" : ""}
             </button>
           </li>
         ))}

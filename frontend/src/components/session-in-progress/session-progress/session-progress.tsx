@@ -27,7 +27,7 @@ const SessionProgress = (props: Props): ReactElement => {
 
   useEffect(() => {
     if (
-      state.sessionQuestions.every((question: Question) => question.isClosed)
+      state.sessionQuestions.every((question: Question) => question.interacted)
     ) {
       dispatch({ type: "disable-exit-warning" });
       dispatch({ type: "hide-exit-warning-modal" });
@@ -50,6 +50,10 @@ const SessionProgress = (props: Props): ReactElement => {
 
     const newQuestions = state.sessionQuestions;
     newQuestions[questionNumber].progress = progress;
+
+    if (progress > 0) {
+      newQuestions[questionNumber].interacted = true;
+    }
 
     dispatch({
       type: "update-session-questions",
@@ -84,6 +88,7 @@ const SessionProgress = (props: Props): ReactElement => {
     //  update the isClosed attribute of the current Question
     const newQuestions = state.sessionQuestions;
     newQuestions[questionNumber].isClosed = !isClosed;
+    newQuestions[questionNumber].interacted = true;
 
     dispatch({ type: "update-session-questions", payload: newQuestions });
   };

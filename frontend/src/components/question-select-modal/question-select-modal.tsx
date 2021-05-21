@@ -195,6 +195,7 @@ const QuestionSelect = (): ReactElement => {
       sessionQuestions[f].forEach((q: number) => {
         const question = state.questions[f].Questions[q];
         question.isClosed = false;
+        question.interacted = false;
         question.responseCount = 0;
         question.progress = 0;
         question.QuestionOptions.forEach((qOption: QuestionOption) => {

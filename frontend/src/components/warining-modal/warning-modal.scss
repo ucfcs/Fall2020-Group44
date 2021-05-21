@@ -117,6 +117,10 @@
       padding: 1rem 2rem;
       background: white;
       text-align: center;
+      ul {
+        list-style-type: none;
+        padding-left: 0;
+      }
 
       input:focus {
         outline: none;

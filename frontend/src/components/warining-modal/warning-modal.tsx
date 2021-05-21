@@ -30,7 +30,7 @@ const WarningModal = (): ReactElement => {
       state.courseId,
       state.sessionId,
       state.jwt,
-      unansweredQuestions()
+      unansweredQuestionIds()
     ).catch((error) => console.log(error));
 
     dispatch({ type: "update-question-number", payload: 0 });
@@ -49,13 +49,23 @@ const WarningModal = (): ReactElement => {
     }
   };
 
-  const unansweredQuestions = (): number[] => {
+  const unansweredQuestionIds = (): number[] => {
     const unanswered: number[] = [];
     state.sessionQuestions.forEach((question: Question) => {
-      if (question.isClosed == false) {
+      if (question.interacted == false) {
         if (question.id) {
           unanswered.push(question.id);
         }
+      }
+    });
+    return unanswered;
+  };
+
+  const unansweredQuestionNums = (): number[] => {
+    const unanswered: number[] = [];
+    state.sessionQuestions.forEach((question: Question, index: number) => {
+      if (question.interacted == false) {
+        unanswered.push(index + 1);
       }
     });
     return unanswered;
@@ -78,11 +88,21 @@ const WarningModal = (): ReactElement => {
         </div>
 
         <div className="warning-body">
-          <p className="warning-message">
-            The session is incomplete because responses are still open for some
-            questions. Any questions that have not been stopped will not have
-            recorded grades. Are you sure you want to end the session?
-          </p>
+          <div className="warning-message">
+            <p>
+              The session is incomplete because the following questions have
+              open responses:
+            </p>
+            <ul>
+              {unansweredQuestionNums().map((question: number) => (
+                <li key={question}>Question {question}</li>
+              ))}
+            </ul>
+            <p>
+              These questions will not record responses in the gradebook. Are
+              you sure you want to end the session?
+            </p>
+          </div>
         </div>
 
         <div className="buttons">

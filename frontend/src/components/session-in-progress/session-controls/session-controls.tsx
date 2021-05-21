@@ -36,6 +36,7 @@ const SessionControls = (props: SessionControlsProps): ReactElement => {
     if (questionProgress < CORRECT_RESPONSE) {
       const newQuestions = state.sessionQuestions;
       newQuestions[questionNumber].progress = questionProgress + 1;
+      newQuestions[questionNumber].interacted = true;
 
       dispatch({
         type: "update-session-questions",
