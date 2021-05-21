@@ -66,17 +66,17 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-// remove unanswered questions from a session
-const removeUnanswered = async (
+// remove questions from a session if not interacted with
+const removeOpenQuestions = async (
 	sessionId: number,
-	unanswered: number[]
+	open: number[]
 ): Promise<ProxyResult> => {
 	try {
 		await Session.findOne({
 			where: { id: sessionId },
 		}).then((session) => {
 			if (session) {
-				session.removeQuestions(unanswered);
+				session.removeQuestions(open);
 			}
 		});
 		return responses.ok({
@@ -89,4 +89,4 @@ const removeUnanswered = async (
 	}
 };
 
-export { get, create, removeUnanswered };
+export { get, create, removeOpenQuestions };

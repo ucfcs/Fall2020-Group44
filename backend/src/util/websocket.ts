@@ -21,7 +21,7 @@ export class Connection {
 			apiVersion: '2018-11-29',
 			endpoint:
 				process.env.NODE_ENV == 'development'
-					? 'http://localhost:3001'
+					? 'http://localhost:5001'
 					: `${event?.requestContext.domainName}/${event?.requestContext.stage}`,
 			credentials: dynamodb.config.credentials,
 		});

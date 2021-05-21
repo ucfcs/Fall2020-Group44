@@ -25,12 +25,14 @@ const WarningModal = (): ReactElement => {
     dispatch({ type: "hide-exit-warning-modal" });
   };
 
+  // When ending the session, post the grades and reset all global vars
+  // notify the students via websocket
   const clearSession = (): void => {
     postSessionGrades(
       state.courseId,
       state.sessionId,
       state.jwt,
-      unansweredQuestionIds()
+      openQuestionIds()
     ).catch((error) => console.log(error));
 
     dispatch({ type: "update-question-number", payload: 0 });
@@ -49,7 +51,11 @@ const WarningModal = (): ReactElement => {
     }
   };
 
-  const unansweredQuestionIds = (): number[] => {
+  // returns list of question IDs for those questions that have not been
+  // interacted with (i.e. stopped/viewed/view correct responses).
+  // These will be sent to the server to remove them from the session so
+  // they are not graded.
+  const openQuestionIds = (): number[] => {
     const unanswered: number[] = [];
     state.sessionQuestions.forEach((question: Question) => {
       if (question.interacted == false) {
@@ -61,7 +67,10 @@ const WarningModal = (): ReactElement => {
     return unanswered;
   };
 
-  const unansweredQuestionNums = (): number[] => {
+  // returns list of question numbers that have not yet been interacted
+  // with, (i.e. stopped/viewed/view correct responses). These will be
+  // displayed in the warning modal
+  const openQuestionNums = (): number[] => {
     const unanswered: number[] = [];
     state.sessionQuestions.forEach((question: Question, index: number) => {
       if (question.interacted == false) {
@@ -94,7 +103,7 @@ const WarningModal = (): ReactElement => {
               open responses:
             </p>
             <ul>
-              {unansweredQuestionNums().map((question: number) => (
+              {openQuestionNums().map((question: number) => (
                 <li key={question}>Question {question}</li>
               ))}
             </ul>
