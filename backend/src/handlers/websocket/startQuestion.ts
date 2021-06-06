@@ -53,6 +53,7 @@ interface Question {
 	participationPoints: number;
 	createdAt: string;
 	isClosed: boolean;
+	interacted: boolean; //did the professor close, view, or view correct responses?
 	progress: number;
 	id: number;
 	courseId: string;

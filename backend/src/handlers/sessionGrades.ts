@@ -10,7 +10,6 @@ import {
 import responses from '../util/api/responses';
 import { getStudents } from '../util/canvas';
 
-
 const calculate = async (
 	courseId: string,
 	sessionId: number,

@@ -26,14 +26,19 @@ const SessionProgress = (props: Props): ReactElement => {
   const effectDependency = JSON.stringify(state.sessionQuestions);
 
   useEffect(() => {
+    // if every question has been interacted with (i.e. stopped responses or progress changed),
+    // they will all be graded. Disable the warning modal from popping up when exiting the session
     if (
-      state.sessionQuestions.every((question: Question) => question.isClosed)
+      state.sessionQuestions.every((question: Question) => question.interacted)
     ) {
       dispatch({ type: "disable-exit-warning" });
       dispatch({ type: "hide-exit-warning-modal" });
+    } else {
+      dispatch({ type: "enable-exit-warning" });
     }
   }, [dispatch, state.sessionQuestions, effectDependency]);
 
+  // user clicks on a progress step
   const updateProgress = (event: SyntheticEvent): void => {
     let progress: number;
     const target = event.target as HTMLInputElement;
@@ -48,6 +53,12 @@ const SessionProgress = (props: Props): ReactElement => {
 
     const newQuestions = state.sessionQuestions;
     newQuestions[questionNumber].progress = progress;
+
+    // if user clicks "View" or "Correct" responses, the question has been
+    // interacted with and its responses will be graded
+    if (progress > 0) {
+      newQuestions[questionNumber].interacted = true;
+    }
 
     dispatch({
       type: "update-session-questions",
@@ -82,6 +93,8 @@ const SessionProgress = (props: Props): ReactElement => {
     //  update the isClosed attribute of the current Question
     const newQuestions = state.sessionQuestions;
     newQuestions[questionNumber].isClosed = !isClosed;
+    // the question has been interacted with and its responses will be graded
+    newQuestions[questionNumber].interacted = true;
 
     dispatch({ type: "update-session-questions", payload: newQuestions });
   };

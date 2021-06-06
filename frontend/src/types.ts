@@ -15,6 +15,7 @@ export interface Question {
   id?: number;
   responseCount?: number;
   isClosed?: boolean;
+  interacted?: boolean; //did the professor close, view, or view correct responses?
   progress?: number;
 }
 

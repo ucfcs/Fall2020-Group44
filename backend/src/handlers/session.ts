@@ -66,4 +66,27 @@ const create = async (event: APIGatewayEvent): Promise<ProxyResult> => {
 	}
 };
 
-export { get, create };
+// remove questions from a session if not interacted with
+const removeOpenQuestions = async (
+	sessionId: number,
+	open: number[]
+): Promise<ProxyResult> => {
+	try {
+		await Session.findOne({
+			where: { id: sessionId },
+		}).then((session) => {
+			if (session) {
+				session.removeQuestions(open);
+			}
+		});
+		return responses.ok({
+			message: 'Success',
+		});
+	} catch (error) {
+		return responses.badRequest({
+			message: error || 'Fail to remove unanswered questions',
+		});
+	}
+};
+
+export { get, create, removeOpenQuestions };

@@ -157,13 +157,14 @@ export async function getSessionGrades(
 export async function postSessionGrades(
   courseId: string,
   sessionId: number,
-  token: string
+  token: string,
+  openQuestions?: number[]
 ): Promise<Response> {
   const url: string = getBaseUrl();
 
   const response: Response = await sendPost(
     `${url}/courses/${courseId}/session/${sessionId}/grades`,
-    {},
+    { openQuestions },
     token
   );
 

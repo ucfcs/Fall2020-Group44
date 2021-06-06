@@ -2,11 +2,12 @@ import React, { useContext, ReactElement } from "react";
 import { Link } from "react-router-dom";
 
 import { store } from "../../store";
-import { postSessionGrades } from "../../util/api";
 
 import Modal from "../modal/modal";
 
 import "./warning-modal.scss";
+import { postSessionGrades } from "../../util/api";
+import { Question } from "../../types";
 
 const WarningModal = (): ReactElement => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -24,11 +25,14 @@ const WarningModal = (): ReactElement => {
     dispatch({ type: "hide-exit-warning-modal" });
   };
 
+  // When ending the session, post the grades and reset all global vars
+  // notify the students via websocket
   const clearSession = (): void => {
     postSessionGrades(
       state.courseId,
       state.sessionId,
-      state.jwt
+      state.jwt,
+      openQuestionIds()
     ).catch((error) => console.log(error));
 
     dispatch({ type: "update-question-number", payload: 0 });
@@ -45,6 +49,35 @@ const WarningModal = (): ReactElement => {
         })
       );
     }
+  };
+
+  // returns list of question IDs for those questions that have not been
+  // interacted with (i.e. stopped/viewed/view correct responses).
+  // These will be sent to the server to remove them from the session so
+  // they are not graded.
+  const openQuestionIds = (): number[] => {
+    const unanswered: number[] = [];
+    state.sessionQuestions.forEach((question: Question) => {
+      if (question.interacted == false) {
+        if (question.id) {
+          unanswered.push(question.id);
+        }
+      }
+    });
+    return unanswered;
+  };
+
+  // returns list of question numbers that have not yet been interacted
+  // with, (i.e. stopped/viewed/view correct responses). These will be
+  // displayed in the warning modal
+  const openQuestionNums = (): number[] => {
+    const unanswered: number[] = [];
+    state.sessionQuestions.forEach((question: Question, index: number) => {
+      if (question.interacted == false) {
+        unanswered.push(index + 1);
+      }
+    });
+    return unanswered;
   };
 
   return (
@@ -64,10 +97,21 @@ const WarningModal = (): ReactElement => {
         </div>
 
         <div className="warning-body">
-          <p className="warning-message">
-            The session is incomplete because responses are still open for some
-            questions. Are you sure you want to end the session?
-          </p>
+          <div className="warning-message">
+            <p>
+              The session is incomplete because the following questions have
+              open responses:
+            </p>
+            <ul>
+              {openQuestionNums().map((question: number) => (
+                <li key={question}>Question {question}</li>
+              ))}
+            </ul>
+            <p>
+              These questions will not record responses in the gradebook. Are
+              you sure you want to end the session?
+            </p>
+          </div>
         </div>
 
         <div className="buttons">

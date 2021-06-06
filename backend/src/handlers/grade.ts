@@ -14,6 +14,7 @@ import {
 import responses from '../util/api/responses';
 import { createAssignment, getStudents, postGrades } from '../util/canvas';
 import { calculate } from './sessionGrades';
+import { removeOpenQuestions } from './session';
 import { Sequelize } from 'sequelize';
 
 // GET /api/v1/courses/:courseId/grades
@@ -303,6 +304,7 @@ export const setQuestionsGrades: APIGatewayProxyHandler = async (event) => {
 		event.requestContext.authorizer || {};
 	const courseId = event.pathParameters?.courseId;
 	const sessionId = Number(event.pathParameters?.sessionId);
+	const body = JSON.parse(event.body || '{}');
 
 	if (!courseId) {
 		return responses.badRequest({
@@ -317,6 +319,11 @@ export const setQuestionsGrades: APIGatewayProxyHandler = async (event) => {
 	}
 
 	try {
+		// first remove open questions from the session so they are not graded
+		if (body.openQuestions) {
+			await removeOpenQuestions(sessionId, body.openQuestions);
+		}
+		// then calculate the grades for all students
 		await calculate(courseId, sessionId, Number(currentUser.canvasId));
 		return responses.ok();
 	} catch (error) {
